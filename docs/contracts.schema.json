@@ -1,0 +1,5993 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LexSim API contracts",
+  "generated": "2026-11-20T22:37:52.549Z",
+  "$defs": {
+    "AppealRequest": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 1500
+        }
+      },
+      "required": [
+        "reason"
+      ]
+    },
+    "Assessment": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string"
+        },
+        "scenarioId": {
+          "type": "string"
+        },
+        "rubricVersion": {
+          "type": "string"
+        },
+        "scoreTotal": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "zeroedByEthics": {
+          "type": "boolean"
+        },
+        "outcome": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "enum": [
+                "excellent",
+                "average",
+                "poor",
+                "failed"
+              ]
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "description"
+          ]
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "enum": [
+                  "legal",
+                  "facts",
+                  "procedure",
+                  "communication",
+                  "ethics",
+                  "document"
+                ]
+              },
+              "label": {
+                "type": "string"
+              },
+              "score": {
+                "type": "number",
+                "minimum": 0
+              },
+              "max": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "explanation": {
+                "type": "string"
+              },
+              "supportingTurnIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "label",
+              "score",
+              "max",
+              "explanation",
+              "supportingTurnIds"
+            ]
+          }
+        },
+        "feedback": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "strength",
+                  "error",
+                  "mentor-review"
+                ]
+              },
+              "title": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "quote": {
+                "type": "string"
+              },
+              "relatedTurnIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "sources": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "officialUrl": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "articleNumber": {
+                      "type": "string"
+                    },
+                    "effectiveAt": {
+                      "type": "string"
+                    },
+                    "verifiedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "title",
+                    "officialUrl",
+                    "verifiedAt"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "kind",
+              "title",
+              "message",
+              "relatedTurnIds",
+              "sources"
+            ]
+          }
+        },
+        "betterAnswer": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "original": {
+                  "type": "string"
+                },
+                "improved": {
+                  "type": "string"
+                },
+                "why": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "original",
+                "improved",
+                "why"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "idealPath": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "step": {
+                "type": "string"
+              },
+              "done": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "step",
+              "done"
+            ]
+          }
+        },
+        "nextScenario": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "reason"
+          ]
+        },
+        "reviewStatus": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "needs-mentor",
+            "mentor-approved"
+          ]
+        },
+        "appeal": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "at": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "at",
+                "reason"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "turns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "index": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "speaker": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "npc",
+                  "system"
+                ]
+              },
+              "text": {
+                "type": "string"
+              },
+              "at": {
+                "type": "string"
+              },
+              "emotion": {
+                "type": "string",
+                "enum": [
+                  "neutral",
+                  "impatient",
+                  "upset",
+                  "confused",
+                  "uncertain",
+                  "calm",
+                  "reassured"
+                ]
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "judge",
+                  "secretary",
+                  "opponent",
+                  "witness",
+                  "expert"
+                ]
+              },
+              "scene": {
+                "type": "object",
+                "properties": {
+                  "judgeIn": {
+                    "type": "boolean"
+                  },
+                  "everyoneStands": {
+                    "type": "boolean"
+                  },
+                  "witnessIn": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "articles": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "label",
+                    "url"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "id",
+              "index",
+              "speaker",
+              "text",
+              "at"
+            ]
+          }
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "unlockedAtTurn": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "id",
+              "text",
+              "unlockedAtTurn"
+            ]
+          }
+        },
+        "factsTotal": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "evaluatedAt": {
+          "type": "string"
+        },
+        "decisions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "at": {
+                "type": "number"
+              },
+              "prompt": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "chose": {
+                "type": "string"
+              },
+              "tone": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "good",
+                      "bad",
+                      "info"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "points": {
+                "type": "number"
+              },
+              "why": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "better": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "article": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "at",
+              "prompt",
+              "chose",
+              "tone",
+              "points",
+              "why",
+              "better",
+              "article"
+            ]
+          }
+        },
+        "hints": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "reflect": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "inputModes": {
+          "type": "object",
+          "properties": {
+            "option": {
+              "type": "number"
+            },
+            "text": {
+              "type": "number"
+            },
+            "voice": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "required": [
+        "sessionId",
+        "scenarioId",
+        "rubricVersion",
+        "scoreTotal",
+        "zeroedByEthics",
+        "outcome",
+        "criteria",
+        "feedback",
+        "betterAnswer",
+        "idealPath",
+        "nextScenario",
+        "reviewStatus",
+        "appeal",
+        "turns",
+        "facts",
+        "factsTotal",
+        "evaluatedAt"
+      ]
+    },
+    "CourtScene": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "judgeIn": {
+          "type": "boolean"
+        },
+        "everyoneStands": {
+          "type": "boolean"
+        },
+        "witnessIn": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "judgeIn",
+        "everyoneStands",
+        "witnessIn"
+      ]
+    },
+    "CreateSessionRequest": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "scenarioId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mode": {
+          "default": "tutorial",
+          "type": "string",
+          "enum": [
+            "tutorial",
+            "assessment"
+          ]
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "beginner",
+            "intermediate",
+            "advanced"
+          ]
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "scenarioId"
+      ]
+    },
+    "CriterionId": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "legal",
+        "facts",
+        "procedure",
+        "communication",
+        "ethics",
+        "document"
+      ]
+    },
+    "DocumentDraft": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "service": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "archive-reference",
+                "pension-recalculation",
+                "refer-elsewhere",
+                "written-complaint"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "applicantName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "periodFrom": {
+          "type": "string",
+          "maxLength": 10
+        },
+        "periodTo": {
+          "type": "string",
+          "maxLength": 10
+        },
+        "employer": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "evidence": {
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "passport",
+              "workbook-photos",
+              "employer-details",
+              "pension-decision",
+              "witness-statement"
+            ]
+          }
+        },
+        "nextStep": {
+          "type": "string",
+          "maxLength": 1200
+        },
+        "notify": {
+          "type": "string",
+          "enum": [
+            "sms",
+            "written",
+            "none"
+          ]
+        }
+      },
+      "required": [
+        "service",
+        "applicantName",
+        "periodFrom",
+        "periodTo",
+        "employer",
+        "evidence",
+        "nextStep",
+        "notify"
+      ]
+    },
+    "DocumentRequest": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "clientActionId": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 64
+        },
+        "draft": {
+          "type": "object",
+          "properties": {
+            "service": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "archive-reference",
+                    "pension-recalculation",
+                    "refer-elsewhere",
+                    "written-complaint"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "applicantName": {
+              "type": "string",
+              "maxLength": 120
+            },
+            "periodFrom": {
+              "type": "string",
+              "maxLength": 10
+            },
+            "periodTo": {
+              "type": "string",
+              "maxLength": 10
+            },
+            "employer": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "evidence": {
+              "maxItems": 8,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "passport",
+                  "workbook-photos",
+                  "employer-details",
+                  "pension-decision",
+                  "witness-statement"
+                ]
+              }
+            },
+            "nextStep": {
+              "type": "string",
+              "maxLength": 1200
+            },
+            "notify": {
+              "type": "string",
+              "enum": [
+                "sms",
+                "written",
+                "none"
+              ]
+            }
+          },
+          "required": [
+            "service",
+            "applicantName",
+            "periodFrom",
+            "periodTo",
+            "employer",
+            "evidence",
+            "nextStep",
+            "notify"
+          ]
+        },
+        "submit": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "clientActionId",
+        "draft",
+        "submit"
+      ]
+    },
+    "Emotion": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "neutral",
+        "impatient",
+        "upset",
+        "confused",
+        "uncertain",
+        "calm",
+        "reassured"
+      ]
+    },
+    "EvidenceId": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "passport",
+        "workbook-photos",
+        "employer-details",
+        "pension-decision",
+        "witness-statement"
+      ]
+    },
+    "Fact": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "unlockedAtTurn": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "unlockedAtTurn"
+      ]
+    },
+    "FinishRequest": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "clientActionId": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "clientActionId"
+      ]
+    },
+    "Gesture": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "none",
+        "nod",
+        "shake-head",
+        "sigh",
+        "lean-in",
+        "check-watch",
+        "show-phone",
+        "offer-envelope",
+        "withdraw-envelope",
+        "stand"
+      ]
+    },
+    "Hint": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "stage": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "todo": {
+          "type": "string"
+        },
+        "example": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "commonMistake": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sources": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "officialUrl": {
+                "type": "string"
+              },
+              "articleNumber": {
+                "type": "string"
+              },
+              "effectiveAt": {
+                "type": "string"
+              },
+              "verifiedAt": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "title",
+              "officialUrl",
+              "verifiedAt"
+            ]
+          }
+        }
+      },
+      "required": [
+        "stage",
+        "title",
+        "todo"
+      ]
+    },
+    "InputMode": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "option",
+        "text",
+        "voice"
+      ]
+    },
+    "InteractionRequest": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "clientActionId": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 64
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "start",
+            "enter-room",
+            "sit-at-desk",
+            "open-terminal",
+            "inspect-phone",
+            "stand",
+            "sit",
+            "reveal-options",
+            "silence"
+          ]
+        }
+      },
+      "required": [
+        "clientActionId",
+        "action"
+      ]
+    },
+    "Level": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ]
+    },
+    "MutationResponse": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "eventId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sequence": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "sessionId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "timestamp": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "dialogue.userTurn"
+                  },
+                  "payload": {
+                    "type": "object",
+                    "properties": {
+                      "turn": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "index": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          },
+                          "speaker": {
+                            "type": "string",
+                            "enum": [
+                              "user",
+                              "npc",
+                              "system"
+                            ]
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "at": {
+                            "type": "string"
+                          },
+                          "emotion": {
+                            "type": "string",
+                            "enum": [
+                              "neutral",
+                              "impatient",
+                              "upset",
+                              "confused",
+                              "uncertain",
+                              "calm",
+                              "reassured"
+                            ]
+                          },
+                          "role": {
+                            "type": "string",
+                            "enum": [
+                              "judge",
+                              "secretary",
+                              "opponent",
+                              "witness",
+                              "expert"
+                            ]
+                          },
+                          "scene": {
+                            "type": "object",
+                            "properties": {
+                              "judgeIn": {
+                                "type": "boolean"
+                              },
+                              "everyoneStands": {
+                                "type": "boolean"
+                              },
+                              "witnessIn": {
+                                "type": "boolean"
+                              }
+                            }
+                          },
+                          "articles": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "label": {
+                                  "type": "string"
+                                },
+                                "url": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "label",
+                                "url"
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "index",
+                          "speaker",
+                          "text",
+                          "at"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "turn"
+                    ]
+                  }
+                },
+                "required": [
+                  "eventId",
+                  "sequence",
+                  "sessionId",
+                  "timestamp",
+                  "type",
+                  "payload"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "eventId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sequence": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "sessionId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "timestamp": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "dialogue.npcTurn"
+                  },
+                  "payload": {
+                    "type": "object",
+                    "properties": {
+                      "turn": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "index": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          },
+                          "speaker": {
+                            "type": "string",
+                            "enum": [
+                              "user",
+                              "npc",
+                              "system"
+                            ]
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "at": {
+                            "type": "string"
+                          },
+                          "emotion": {
+                            "type": "string",
+                            "enum": [
+                              "neutral",
+                              "impatient",
+                              "upset",
+                              "confused",
+                              "uncertain",
+                              "calm",
+                              "reassured"
+                            ]
+                          },
+                          "role": {
+                            "type": "string",
+                            "enum": [
+                              "judge",
+                              "secretary",
+                              "opponent",
+                              "witness",
+                              "expert"
+                            ]
+                          },
+                          "scene": {
+                            "type": "object",
+                            "properties": {
+                              "judgeIn": {
+                                "type": "boolean"
+                              },
+                              "everyoneStands": {
+                                "type": "boolean"
+                              },
+                              "witnessIn": {
+                                "type": "boolean"
+                              }
+                            }
+                          },
+                          "articles": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "label": {
+                                  "type": "string"
+                                },
+                                "url": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "label",
+                                "url"
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "index",
+                          "speaker",
+                          "text",
+                          "at"
+                        ]
+                      },
+                      "revealedFactIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "turn",
+                      "revealedFactIds"
+                    ]
+                  }
+                },
+                "required": [
+                  "eventId",
+                  "sequence",
+                  "sessionId",
+                  "timestamp",
+                  "type",
+                  "payload"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "eventId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sequence": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "sessionId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "timestamp": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "npc.emotion"
+                  },
+                  "payload": {
+                    "type": "object",
+                    "properties": {
+                      "npcId": {
+                        "type": "string"
+                      },
+                      "emotion": {
+                        "type": "string",
+                        "enum": [
+                          "neutral",
+                          "impatient",
+                          "upset",
+                          "confused",
+                          "uncertain",
+                          "calm",
+                          "reassured"
+                        ]
+                      },
+                      "intensity": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      }
+                    },
+                    "required": [
+                      "npcId",
+                      "emotion",
+                      "intensity"
+                    ]
+                  }
+                },
+                "required": [
+                  "eventId",
+                  "sequence",
+                  "sessionId",
+                  "timestamp",
+                  "type",
+                  "payload"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "eventId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sequence": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "sessionId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "timestamp": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "npc.gesture"
+                  },
+                  "payload": {
+                    "type": "object",
+                    "properties": {
+                      "npcId": {
+                        "type": "string"
+                      },
+                      "clip": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "nod",
+                          "shake-head",
+                          "sigh",
+                          "lean-in",
+                          "check-watch",
+                          "show-phone",
+                          "offer-envelope",
+                          "withdraw-envelope",
+                          "stand"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "npcId",
+                      "clip"
+                    ]
+                  }
+                },
+                "required": [
+                  "eventId",
+                  "sequence",
+                  "sessionId",
+                  "timestamp",
+                  "type",
+                  "payload"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "eventId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sequence": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "sessionId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "timestamp": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "scene.objectState"
+                  },
+                  "payload": {
+                    "type": "object",
+                    "properties": {
+                      "objectId": {
+                        "type": "string"
+                      },
+                      "state": {
+                        "type": "string",
+                        "enum": [
+                          "active",
+                          "disabled",
+                          "open",
+                          "closed"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "objectId",
+                      "state"
+                    ]
+                  }
+                },
+                "required": [
+                  "eventId",
+                  "sequence",
+                  "sessionId",
+                  "timestamp",
+                  "type",
+                  "payload"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "eventId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sequence": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "sessionId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "timestamp": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "objective.updated"
+                  },
+                  "payload": {
+                    "type": "object",
+                    "properties": {
+                      "objectiveId": {
+                        "type": "string"
+                      },
+                      "done": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "objectiveId",
+                      "done"
+                    ]
+                  }
+                },
+                "required": [
+                  "eventId",
+                  "sequence",
+                  "sessionId",
+                  "timestamp",
+                  "type",
+                  "payload"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "eventId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sequence": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "sessionId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "timestamp": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "session.status"
+                  },
+                  "payload": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "briefing",
+                          "in-progress",
+                          "evaluating",
+                          "report-ready",
+                          "aborted"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "status"
+                    ]
+                  }
+                },
+                "required": [
+                  "eventId",
+                  "sequence",
+                  "sessionId",
+                  "timestamp",
+                  "type",
+                  "payload"
+                ]
+              }
+            ]
+          }
+        },
+        "snapshot": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "type": "number",
+              "const": 1
+            },
+            "sessionId": {
+              "type": "string"
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "briefing",
+                "in-progress",
+                "evaluating",
+                "report-ready",
+                "aborted"
+              ]
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "tutorial",
+                "assessment"
+              ]
+            },
+            "engine": {
+              "type": "string",
+              "enum": [
+                "scripted",
+                "llm"
+              ]
+            },
+            "scenario": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "level": {
+                  "type": "string"
+                },
+                "durationMinutes": {
+                  "type": "string"
+                },
+                "roomId": {
+                  "type": "string"
+                },
+                "briefing": {
+                  "type": "object",
+                  "properties": {
+                    "workplace": {
+                      "type": "string"
+                    },
+                    "position": {
+                      "type": "string"
+                    },
+                    "authority": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "task": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "workplace",
+                    "position",
+                    "authority",
+                    "task"
+                  ]
+                },
+                "npc": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "age": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "age"
+                  ]
+                },
+                "disclaimer": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "title",
+                "role",
+                "level",
+                "durationMinutes",
+                "roomId",
+                "briefing",
+                "npc",
+                "disclaimer"
+              ]
+            },
+            "meters": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "patience": {
+                      "type": "number"
+                    },
+                    "trust": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "patience",
+                    "trust"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "npc": {
+              "type": "object",
+              "properties": {
+                "emotion": {
+                  "type": "string",
+                  "enum": [
+                    "neutral",
+                    "impatient",
+                    "upset",
+                    "confused",
+                    "uncertain",
+                    "calm",
+                    "reassured"
+                  ]
+                },
+                "intensity": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              },
+              "required": [
+                "emotion",
+                "intensity"
+              ]
+            },
+            "turns": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "index": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "speaker": {
+                    "type": "string",
+                    "enum": [
+                      "user",
+                      "npc",
+                      "system"
+                    ]
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "at": {
+                    "type": "string"
+                  },
+                  "emotion": {
+                    "type": "string",
+                    "enum": [
+                      "neutral",
+                      "impatient",
+                      "upset",
+                      "confused",
+                      "uncertain",
+                      "calm",
+                      "reassured"
+                    ]
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "judge",
+                      "secretary",
+                      "opponent",
+                      "witness",
+                      "expert"
+                    ]
+                  },
+                  "scene": {
+                    "type": "object",
+                    "properties": {
+                      "judgeIn": {
+                        "type": "boolean"
+                      },
+                      "everyoneStands": {
+                        "type": "boolean"
+                      },
+                      "witnessIn": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "articles": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "url": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "label",
+                        "url"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "index",
+                  "speaker",
+                  "text",
+                  "at"
+                ]
+              }
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "ask",
+                      "explain",
+                      "react"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "text",
+                  "kind"
+                ]
+              }
+            },
+            "facts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "unlockedAtTurn": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "id",
+                  "text",
+                  "unlockedAtTurn"
+                ]
+              }
+            },
+            "factsTotal": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "objectives": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "done": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "id",
+                  "label",
+                  "done"
+                ]
+              }
+            },
+            "objects": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "disabled",
+                  "open",
+                  "closed"
+                ]
+              }
+            },
+            "document": {
+              "type": "object",
+              "properties": {
+                "service": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "archive-reference",
+                        "pension-recalculation",
+                        "refer-elsewhere",
+                        "written-complaint"
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "applicantName": {
+                  "type": "string",
+                  "maxLength": 120
+                },
+                "periodFrom": {
+                  "type": "string",
+                  "maxLength": 10
+                },
+                "periodTo": {
+                  "type": "string",
+                  "maxLength": 10
+                },
+                "employer": {
+                  "type": "string",
+                  "maxLength": 200
+                },
+                "evidence": {
+                  "maxItems": 8,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "passport",
+                      "workbook-photos",
+                      "employer-details",
+                      "pension-decision",
+                      "witness-statement"
+                    ]
+                  }
+                },
+                "nextStep": {
+                  "type": "string",
+                  "maxLength": 1200
+                },
+                "notify": {
+                  "type": "string",
+                  "enum": [
+                    "sms",
+                    "written",
+                    "none"
+                  ]
+                }
+              },
+              "required": [
+                "service",
+                "applicantName",
+                "periodFrom",
+                "periodTo",
+                "employer",
+                "evidence",
+                "nextStep",
+                "notify"
+              ]
+            },
+            "documentSubmitted": {
+              "type": "boolean"
+            },
+            "outcome": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "enum": [
+                        "excellent",
+                        "average",
+                        "poor",
+                        "failed"
+                      ]
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "title",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "startedAt": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "pending": {
+              "type": "boolean"
+            },
+            "scene": {
+              "type": "object",
+              "properties": {
+                "judgeIn": {
+                  "type": "boolean"
+                },
+                "everyoneStands": {
+                  "type": "boolean"
+                },
+                "witnessIn": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "judgeIn",
+                "everyoneStands",
+                "witnessIn"
+              ]
+            },
+            "standing": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "level": {
+              "type": "string",
+              "enum": [
+                "beginner",
+                "intermediate",
+                "advanced"
+              ]
+            },
+            "inputModes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "option",
+                  "text",
+                  "voice"
+                ]
+              }
+            },
+            "optionsRevealed": {
+              "type": "boolean"
+            },
+            "silenceSec": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "hintsAllowed": {
+              "type": "boolean"
+            },
+            "feedback": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "tone": {
+                      "type": "string",
+                      "enum": [
+                        "good",
+                        "bad",
+                        "info"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "article": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "optionId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "tone",
+                    "message"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "protocol",
+            "sessionId",
+            "sequence",
+            "status",
+            "mode",
+            "engine",
+            "scenario",
+            "meters",
+            "npc",
+            "turns",
+            "options",
+            "facts",
+            "factsTotal",
+            "objectives",
+            "objects",
+            "document",
+            "documentSubmitted",
+            "outcome",
+            "startedAt"
+          ]
+        }
+      },
+      "required": [
+        "events",
+        "snapshot"
+      ]
+    },
+    "ObjectState": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "active",
+        "disabled",
+        "open",
+        "closed"
+      ]
+    },
+    "Objective": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "done": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "done"
+      ]
+    },
+    "Outcome": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "enum": [
+            "excellent",
+            "average",
+            "poor",
+            "failed"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "description"
+      ]
+    },
+    "RemoteStatus": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "ok": {
+          "type": "boolean"
+        },
+        "llm": {
+          "type": "boolean"
+        },
+        "scenarios": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string"
+              },
+              "durationMinutes": {
+                "type": "string"
+              },
+              "briefing": {
+                "type": "string"
+              },
+              "disclaimer": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title",
+              "role",
+              "durationMinutes",
+              "briefing",
+              "disclaimer"
+            ]
+          }
+        }
+      },
+      "required": [
+        "enabled",
+        "ok",
+        "llm",
+        "scenarios"
+      ]
+    },
+    "ReplyOption": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ask",
+            "explain",
+            "react"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "kind"
+      ]
+    },
+    "ScenarioPublic": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string"
+        },
+        "durationMinutes": {
+          "type": "string"
+        },
+        "roomId": {
+          "type": "string"
+        },
+        "briefing": {
+          "type": "object",
+          "properties": {
+            "workplace": {
+              "type": "string"
+            },
+            "position": {
+              "type": "string"
+            },
+            "authority": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "task": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "workplace",
+            "position",
+            "authority",
+            "task"
+          ]
+        },
+        "npc": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "age": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "age"
+          ]
+        },
+        "disclaimer": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "role",
+        "level",
+        "durationMinutes",
+        "roomId",
+        "briefing",
+        "npc",
+        "disclaimer"
+      ]
+    },
+    "ServiceId": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "archive-reference",
+        "pension-recalculation",
+        "refer-elsewhere",
+        "written-complaint"
+      ]
+    },
+    "SessionMode": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "tutorial",
+        "assessment"
+      ]
+    },
+    "SessionStatus": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "briefing",
+        "in-progress",
+        "evaluating",
+        "report-ready",
+        "aborted"
+      ]
+    },
+    "SimEvent": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "eventId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "sessionId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "timestamp": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "dialogue.userTurn"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "turn": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "index": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "speaker": {
+                      "type": "string",
+                      "enum": [
+                        "user",
+                        "npc",
+                        "system"
+                      ]
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "type": "string"
+                    },
+                    "emotion": {
+                      "type": "string",
+                      "enum": [
+                        "neutral",
+                        "impatient",
+                        "upset",
+                        "confused",
+                        "uncertain",
+                        "calm",
+                        "reassured"
+                      ]
+                    },
+                    "role": {
+                      "type": "string",
+                      "enum": [
+                        "judge",
+                        "secretary",
+                        "opponent",
+                        "witness",
+                        "expert"
+                      ]
+                    },
+                    "scene": {
+                      "type": "object",
+                      "properties": {
+                        "judgeIn": {
+                          "type": "boolean"
+                        },
+                        "everyoneStands": {
+                          "type": "boolean"
+                        },
+                        "witnessIn": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "articles": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "label",
+                          "url"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "index",
+                    "speaker",
+                    "text",
+                    "at"
+                  ]
+                }
+              },
+              "required": [
+                "turn"
+              ]
+            }
+          },
+          "required": [
+            "eventId",
+            "sequence",
+            "sessionId",
+            "timestamp",
+            "type",
+            "payload"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "eventId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "sessionId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "timestamp": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "dialogue.npcTurn"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "turn": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "index": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "speaker": {
+                      "type": "string",
+                      "enum": [
+                        "user",
+                        "npc",
+                        "system"
+                      ]
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "type": "string"
+                    },
+                    "emotion": {
+                      "type": "string",
+                      "enum": [
+                        "neutral",
+                        "impatient",
+                        "upset",
+                        "confused",
+                        "uncertain",
+                        "calm",
+                        "reassured"
+                      ]
+                    },
+                    "role": {
+                      "type": "string",
+                      "enum": [
+                        "judge",
+                        "secretary",
+                        "opponent",
+                        "witness",
+                        "expert"
+                      ]
+                    },
+                    "scene": {
+                      "type": "object",
+                      "properties": {
+                        "judgeIn": {
+                          "type": "boolean"
+                        },
+                        "everyoneStands": {
+                          "type": "boolean"
+                        },
+                        "witnessIn": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "articles": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "label",
+                          "url"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "index",
+                    "speaker",
+                    "text",
+                    "at"
+                  ]
+                },
+                "revealedFactIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "turn",
+                "revealedFactIds"
+              ]
+            }
+          },
+          "required": [
+            "eventId",
+            "sequence",
+            "sessionId",
+            "timestamp",
+            "type",
+            "payload"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "eventId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "sessionId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "timestamp": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "npc.emotion"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "npcId": {
+                  "type": "string"
+                },
+                "emotion": {
+                  "type": "string",
+                  "enum": [
+                    "neutral",
+                    "impatient",
+                    "upset",
+                    "confused",
+                    "uncertain",
+                    "calm",
+                    "reassured"
+                  ]
+                },
+                "intensity": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              },
+              "required": [
+                "npcId",
+                "emotion",
+                "intensity"
+              ]
+            }
+          },
+          "required": [
+            "eventId",
+            "sequence",
+            "sessionId",
+            "timestamp",
+            "type",
+            "payload"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "eventId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "sessionId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "timestamp": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "npc.gesture"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "npcId": {
+                  "type": "string"
+                },
+                "clip": {
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "nod",
+                    "shake-head",
+                    "sigh",
+                    "lean-in",
+                    "check-watch",
+                    "show-phone",
+                    "offer-envelope",
+                    "withdraw-envelope",
+                    "stand"
+                  ]
+                }
+              },
+              "required": [
+                "npcId",
+                "clip"
+              ]
+            }
+          },
+          "required": [
+            "eventId",
+            "sequence",
+            "sessionId",
+            "timestamp",
+            "type",
+            "payload"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "eventId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "sessionId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "timestamp": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "scene.objectState"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "objectId": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "active",
+                    "disabled",
+                    "open",
+                    "closed"
+                  ]
+                }
+              },
+              "required": [
+                "objectId",
+                "state"
+              ]
+            }
+          },
+          "required": [
+            "eventId",
+            "sequence",
+            "sessionId",
+            "timestamp",
+            "type",
+            "payload"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "eventId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "sessionId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "timestamp": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "objective.updated"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "objectiveId": {
+                  "type": "string"
+                },
+                "done": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "objectiveId",
+                "done"
+              ]
+            }
+          },
+          "required": [
+            "eventId",
+            "sequence",
+            "sessionId",
+            "timestamp",
+            "type",
+            "payload"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "eventId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "sessionId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "timestamp": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "session.status"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "briefing",
+                    "in-progress",
+                    "evaluating",
+                    "report-ready",
+                    "aborted"
+                  ]
+                }
+              },
+              "required": [
+                "status"
+              ]
+            }
+          },
+          "required": [
+            "eventId",
+            "sequence",
+            "sessionId",
+            "timestamp",
+            "type",
+            "payload"
+          ]
+        }
+      ]
+    },
+    "Snapshot": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "type": "number",
+          "const": 1
+        },
+        "sessionId": {
+          "type": "string"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "briefing",
+            "in-progress",
+            "evaluating",
+            "report-ready",
+            "aborted"
+          ]
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "tutorial",
+            "assessment"
+          ]
+        },
+        "engine": {
+          "type": "string",
+          "enum": [
+            "scripted",
+            "llm"
+          ]
+        },
+        "scenario": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            },
+            "level": {
+              "type": "string"
+            },
+            "durationMinutes": {
+              "type": "string"
+            },
+            "roomId": {
+              "type": "string"
+            },
+            "briefing": {
+              "type": "object",
+              "properties": {
+                "workplace": {
+                  "type": "string"
+                },
+                "position": {
+                  "type": "string"
+                },
+                "authority": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "task": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "workplace",
+                "position",
+                "authority",
+                "task"
+              ]
+            },
+            "npc": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "age": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "age"
+              ]
+            },
+            "disclaimer": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "role",
+            "level",
+            "durationMinutes",
+            "roomId",
+            "briefing",
+            "npc",
+            "disclaimer"
+          ]
+        },
+        "meters": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "patience": {
+                  "type": "number"
+                },
+                "trust": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "patience",
+                "trust"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "npc": {
+          "type": "object",
+          "properties": {
+            "emotion": {
+              "type": "string",
+              "enum": [
+                "neutral",
+                "impatient",
+                "upset",
+                "confused",
+                "uncertain",
+                "calm",
+                "reassured"
+              ]
+            },
+            "intensity": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          },
+          "required": [
+            "emotion",
+            "intensity"
+          ]
+        },
+        "turns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "index": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "speaker": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "npc",
+                  "system"
+                ]
+              },
+              "text": {
+                "type": "string"
+              },
+              "at": {
+                "type": "string"
+              },
+              "emotion": {
+                "type": "string",
+                "enum": [
+                  "neutral",
+                  "impatient",
+                  "upset",
+                  "confused",
+                  "uncertain",
+                  "calm",
+                  "reassured"
+                ]
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "judge",
+                  "secretary",
+                  "opponent",
+                  "witness",
+                  "expert"
+                ]
+              },
+              "scene": {
+                "type": "object",
+                "properties": {
+                  "judgeIn": {
+                    "type": "boolean"
+                  },
+                  "everyoneStands": {
+                    "type": "boolean"
+                  },
+                  "witnessIn": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "articles": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "label",
+                    "url"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "id",
+              "index",
+              "speaker",
+              "text",
+              "at"
+            ]
+          }
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "ask",
+                  "explain",
+                  "react"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "text",
+              "kind"
+            ]
+          }
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "unlockedAtTurn": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "id",
+              "text",
+              "unlockedAtTurn"
+            ]
+          }
+        },
+        "factsTotal": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "objectives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "done": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id",
+              "label",
+              "done"
+            ]
+          }
+        },
+        "objects": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "enum": [
+              "active",
+              "disabled",
+              "open",
+              "closed"
+            ]
+          }
+        },
+        "document": {
+          "type": "object",
+          "properties": {
+            "service": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "archive-reference",
+                    "pension-recalculation",
+                    "refer-elsewhere",
+                    "written-complaint"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "applicantName": {
+              "type": "string",
+              "maxLength": 120
+            },
+            "periodFrom": {
+              "type": "string",
+              "maxLength": 10
+            },
+            "periodTo": {
+              "type": "string",
+              "maxLength": 10
+            },
+            "employer": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "evidence": {
+              "maxItems": 8,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "passport",
+                  "workbook-photos",
+                  "employer-details",
+                  "pension-decision",
+                  "witness-statement"
+                ]
+              }
+            },
+            "nextStep": {
+              "type": "string",
+              "maxLength": 1200
+            },
+            "notify": {
+              "type": "string",
+              "enum": [
+                "sms",
+                "written",
+                "none"
+              ]
+            }
+          },
+          "required": [
+            "service",
+            "applicantName",
+            "periodFrom",
+            "periodTo",
+            "employer",
+            "evidence",
+            "nextStep",
+            "notify"
+          ]
+        },
+        "documentSubmitted": {
+          "type": "boolean"
+        },
+        "outcome": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "excellent",
+                    "average",
+                    "poor",
+                    "failed"
+                  ]
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "title",
+                "description"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "startedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "pending": {
+          "type": "boolean"
+        },
+        "scene": {
+          "type": "object",
+          "properties": {
+            "judgeIn": {
+              "type": "boolean"
+            },
+            "everyoneStands": {
+              "type": "boolean"
+            },
+            "witnessIn": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "judgeIn",
+            "everyoneStands",
+            "witnessIn"
+          ]
+        },
+        "standing": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "beginner",
+            "intermediate",
+            "advanced"
+          ]
+        },
+        "inputModes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "option",
+              "text",
+              "voice"
+            ]
+          }
+        },
+        "optionsRevealed": {
+          "type": "boolean"
+        },
+        "silenceSec": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "hintsAllowed": {
+          "type": "boolean"
+        },
+        "feedback": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "tone": {
+                  "type": "string",
+                  "enum": [
+                    "good",
+                    "bad",
+                    "info"
+                  ]
+                },
+                "message": {
+                  "type": "string"
+                },
+                "article": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "optionId": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "tone",
+                "message"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "sessionId",
+        "sequence",
+        "status",
+        "mode",
+        "engine",
+        "scenario",
+        "meters",
+        "npc",
+        "turns",
+        "options",
+        "facts",
+        "factsTotal",
+        "objectives",
+        "objects",
+        "document",
+        "documentSubmitted",
+        "outcome",
+        "startedAt"
+      ]
+    },
+    "Source": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "officialUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "articleNumber": {
+          "type": "string"
+        },
+        "effectiveAt": {
+          "type": "string"
+        },
+        "verifiedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "officialUrl",
+        "verifiedAt"
+      ]
+    },
+    "TurnRequest": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "clientTurnId": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 64
+        },
+        "optionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "inputMode": {
+          "type": "string",
+          "enum": [
+            "option",
+            "text",
+            "voice"
+          ]
+        },
+        "stt": {
+          "type": "object",
+          "properties": {
+            "confidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "durationMs": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          }
+        }
+      },
+      "required": [
+        "clientTurnId"
+      ]
+    },
+    "Turn": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "speaker": {
+          "type": "string",
+          "enum": [
+            "user",
+            "npc",
+            "system"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "at": {
+          "type": "string"
+        },
+        "emotion": {
+          "type": "string",
+          "enum": [
+            "neutral",
+            "impatient",
+            "upset",
+            "confused",
+            "uncertain",
+            "calm",
+            "reassured"
+          ]
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "judge",
+            "secretary",
+            "opponent",
+            "witness",
+            "expert"
+          ]
+        },
+        "scene": {
+          "type": "object",
+          "properties": {
+            "judgeIn": {
+              "type": "boolean"
+            },
+            "everyoneStands": {
+              "type": "boolean"
+            },
+            "witnessIn": {
+              "type": "boolean"
+            }
+          }
+        },
+        "articles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "label",
+              "url"
+            ]
+          }
+        }
+      },
+      "required": [
+        "id",
+        "index",
+        "speaker",
+        "text",
+        "at"
+      ]
+    },
+    "CaseActRequest": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "hint"
+            },
+            "clientActionId": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 64
+            }
+          },
+          "required": [
+            "type",
+            "clientActionId"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "reveal"
+            },
+            "clientActionId": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 64
+            }
+          },
+          "required": [
+            "type",
+            "clientActionId"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "say"
+            },
+            "clientActionId": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 64
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 800
+            },
+            "inputMode": {
+              "type": "string",
+              "enum": [
+                "text",
+                "voice"
+              ]
+            },
+            "stt": {
+              "type": "object",
+              "properties": {
+                "confidence": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "required": [
+            "type",
+            "clientActionId",
+            "text",
+            "inputMode"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "enter"
+            },
+            "clientActionId": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 64
+            },
+            "stage": {
+              "type": "string",
+              "enum": [
+                "consult",
+                "draft",
+                "filing",
+                "chamber",
+                "hearing",
+                "report",
+                "interview",
+                "complaint"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "clientActionId",
+            "stage"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "choose"
+            },
+            "clientActionId": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 64
+            },
+            "optionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            }
+          },
+          "required": [
+            "type",
+            "clientActionId",
+            "optionId"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "stand"
+            },
+            "clientActionId": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 64
+            },
+            "up": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "type",
+            "clientActionId",
+            "up"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "draft"
+            },
+            "clientActionId": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 64
+            },
+            "draft": {
+              "type": "object",
+              "properties": {
+                "court": {
+                  "type": "string",
+                  "enum": [
+                    "district",
+                    "regional",
+                    "economic"
+                  ]
+                },
+                "representative": {
+                  "type": "boolean"
+                },
+                "respondent": {
+                  "type": "string",
+                  "enum": [
+                    "company",
+                    "director"
+                  ]
+                },
+                "demand": {
+                  "type": "string",
+                  "enum": [
+                    "reinstate",
+                    "punish",
+                    "apology"
+                  ]
+                },
+                "facts": {
+                  "maxItems": 12,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 32
+                  }
+                },
+                "evidence": {
+                  "maxItems": 12,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 32
+                  }
+                },
+                "pretrial": {
+                  "type": "boolean"
+                },
+                "email": {
+                  "type": "boolean"
+                },
+                "attachments": {
+                  "maxItems": 16,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 32
+                  }
+                },
+                "copies": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "signed": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "court",
+                "representative",
+                "respondent",
+                "demand",
+                "facts",
+                "evidence",
+                "pretrial",
+                "email",
+                "attachments",
+                "copies",
+                "signed"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "clientActionId",
+            "draft"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "leave"
+            },
+            "clientActionId": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 64
+            }
+          },
+          "required": [
+            "type",
+            "clientActionId"
+          ]
+        }
+      ]
+    },
+    "CaseEnvelope": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "case": {
+          "type": "object",
+          "properties": {
+            "caseId": {
+              "type": "string"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "labour",
+                "theft"
+              ]
+            },
+            "title": {
+              "type": "string"
+            },
+            "note": {
+              "type": "string"
+            },
+            "parties": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "client",
+                      "clerk",
+                      "judge",
+                      "secretary",
+                      "respondent",
+                      "witness",
+                      "officer",
+                      "investigator",
+                      "chief",
+                      "you",
+                      "system"
+                    ]
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "voice": {
+                    "type": "string",
+                    "enum": [
+                      "elder_m",
+                      "male",
+                      "female",
+                      "female_alt"
+                    ]
+                  }
+                },
+                "required": [
+                  "role",
+                  "label",
+                  "name"
+                ]
+              }
+            },
+            "stages": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "enum": [
+                      "consult",
+                      "draft",
+                      "filing",
+                      "chamber",
+                      "hearing",
+                      "report",
+                      "interview",
+                      "complaint"
+                    ]
+                  },
+                  "number": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "place": {
+                    "type": "string"
+                  },
+                  "goal": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "open",
+                      "active",
+                      "done",
+                      "returned"
+                    ]
+                  },
+                  "score": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": -9007199254740991,
+                        "maximum": 9007199254740991
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "number",
+                  "title",
+                  "place",
+                  "goal",
+                  "status",
+                  "score"
+                ]
+              }
+            },
+            "stage": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "consult",
+                    "draft",
+                    "filing",
+                    "chamber",
+                    "hearing",
+                    "report",
+                    "interview",
+                    "complaint"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "lines": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "speaker": {
+                    "type": "string",
+                    "enum": [
+                      "client",
+                      "clerk",
+                      "judge",
+                      "secretary",
+                      "respondent",
+                      "witness",
+                      "officer",
+                      "investigator",
+                      "chief",
+                      "you",
+                      "system"
+                    ]
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "scene": {
+                    "type": "object",
+                    "properties": {
+                      "witnessIn": {
+                        "type": "boolean"
+                      },
+                      "judgeIn": {
+                        "type": "boolean"
+                      },
+                      "judgeEntries": {
+                        "type": "integer",
+                        "minimum": -9007199254740991,
+                        "maximum": 9007199254740991
+                      },
+                      "clientPresent": {
+                        "type": "boolean"
+                      },
+                      "everyoneStands": {
+                        "type": "boolean"
+                      },
+                      "clientMood": {
+                        "type": "string",
+                        "enum": [
+                          "neutral",
+                          "uncertain",
+                          "upset",
+                          "reassured",
+                          "calm",
+                          "confused"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "witnessIn",
+                      "judgeIn",
+                      "judgeEntries",
+                      "clientPresent",
+                      "everyoneStands",
+                      "clientMood"
+                    ]
+                  },
+                  "emotion": {
+                    "type": "string",
+                    "enum": [
+                      "neutral",
+                      "impatient",
+                      "upset",
+                      "confused",
+                      "uncertain",
+                      "calm",
+                      "reassured"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "speaker",
+                  "text",
+                  "scene"
+                ]
+              }
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "say",
+                      "act"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "text",
+                  "kind"
+                ]
+              }
+            },
+            "await": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "stand",
+                    "sit",
+                    "draft"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "standing": {
+              "type": "boolean"
+            },
+            "feedback": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "tone": {
+                      "type": "string",
+                      "enum": [
+                        "good",
+                        "bad",
+                        "info"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "article": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "tone",
+                    "message",
+                    "article"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "facts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "detail": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "label",
+                  "detail"
+                ]
+              }
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "detail": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "label",
+                  "detail"
+                ]
+              }
+            },
+            "draft": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "court": {
+                      "type": "string",
+                      "enum": [
+                        "district",
+                        "regional",
+                        "economic"
+                      ]
+                    },
+                    "representative": {
+                      "type": "boolean"
+                    },
+                    "respondent": {
+                      "type": "string",
+                      "enum": [
+                        "company",
+                        "director"
+                      ]
+                    },
+                    "demand": {
+                      "type": "string",
+                      "enum": [
+                        "reinstate",
+                        "punish",
+                        "apology"
+                      ]
+                    },
+                    "facts": {
+                      "maxItems": 12,
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "maxLength": 32
+                      }
+                    },
+                    "evidence": {
+                      "maxItems": 12,
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "maxLength": 32
+                      }
+                    },
+                    "pretrial": {
+                      "type": "boolean"
+                    },
+                    "email": {
+                      "type": "boolean"
+                    },
+                    "attachments": {
+                      "maxItems": 16,
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "maxLength": 32
+                      }
+                    },
+                    "copies": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 5
+                    },
+                    "signed": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "court",
+                    "representative",
+                    "respondent",
+                    "demand",
+                    "facts",
+                    "evidence",
+                    "pretrial",
+                    "email",
+                    "attachments",
+                    "copies",
+                    "signed"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "rulings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "accepted",
+                      "returned",
+                      "scheduled",
+                      "judgment"
+                    ]
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "body": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "articles": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "kind",
+                  "title",
+                  "body",
+                  "articles"
+                ]
+              }
+            },
+            "scene": {
+              "type": "object",
+              "properties": {
+                "witnessIn": {
+                  "type": "boolean"
+                },
+                "judgeIn": {
+                  "type": "boolean"
+                },
+                "judgeEntries": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "clientPresent": {
+                  "type": "boolean"
+                },
+                "everyoneStands": {
+                  "type": "boolean"
+                },
+                "clientMood": {
+                  "type": "string",
+                  "enum": [
+                    "neutral",
+                    "uncertain",
+                    "upset",
+                    "reassured",
+                    "calm",
+                    "confused"
+                  ]
+                }
+              },
+              "required": [
+                "witnessIn",
+                "judgeIn",
+                "judgeEntries",
+                "clientPresent",
+                "everyoneStands",
+                "clientMood"
+              ]
+            },
+            "stageDone": {
+              "type": "boolean"
+            },
+            "code": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "edition": {
+                  "type": "string"
+                },
+                "retrievedAt": {
+                  "type": "string"
+                },
+                "articles": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "number": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "text": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string",
+                        "format": "uri"
+                      }
+                    },
+                    "required": [
+                      "number",
+                      "title",
+                      "text",
+                      "url"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "title",
+                "url",
+                "edition",
+                "retrievedAt",
+                "articles"
+              ]
+            },
+            "hints": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "level": {
+              "type": "string",
+              "enum": [
+                "beginner",
+                "intermediate",
+                "advanced"
+              ]
+            },
+            "inputModes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "option",
+                  "text",
+                  "voice"
+                ]
+              }
+            },
+            "revealed": {
+              "type": "boolean"
+            },
+            "answering": {
+              "type": "boolean"
+            },
+            "result": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "score": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "verdict": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "good": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "notes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "log": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "at": {
+                            "type": "number"
+                          },
+                          "prompt": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "chose": {
+                            "type": "string"
+                          },
+                          "tone": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "good",
+                                  "bad",
+                                  "info"
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "points": {
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991
+                          },
+                          "why": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "better": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "article": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "inputMode": {
+                            "type": "string",
+                            "enum": [
+                              "option",
+                              "text",
+                              "voice"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "at",
+                          "prompt",
+                          "chose",
+                          "tone",
+                          "points",
+                          "why",
+                          "better",
+                          "article"
+                        ]
+                      }
+                    },
+                    "hints": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "reflect": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "score",
+                    "verdict",
+                    "good",
+                    "notes",
+                    "log",
+                    "hints",
+                    "reflect"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "caseId",
+            "kind",
+            "title",
+            "note",
+            "parties",
+            "stages",
+            "stage",
+            "lines",
+            "options",
+            "await",
+            "standing",
+            "feedback",
+            "facts",
+            "evidence",
+            "draft",
+            "rulings",
+            "scene",
+            "stageDone",
+            "code",
+            "hints",
+            "level",
+            "inputModes",
+            "revealed",
+            "answering",
+            "result"
+          ]
+        }
+      },
+      "required": [
+        "case"
+      ]
+    },
+    "CaseItem": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "detail"
+      ]
+    },
+    "CaseKind": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "labour",
+        "theft"
+      ]
+    },
+    "CaseLine": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "speaker": {
+          "type": "string",
+          "enum": [
+            "client",
+            "clerk",
+            "judge",
+            "secretary",
+            "respondent",
+            "witness",
+            "officer",
+            "investigator",
+            "chief",
+            "you",
+            "system"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "scene": {
+          "type": "object",
+          "properties": {
+            "witnessIn": {
+              "type": "boolean"
+            },
+            "judgeIn": {
+              "type": "boolean"
+            },
+            "judgeEntries": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "clientPresent": {
+              "type": "boolean"
+            },
+            "everyoneStands": {
+              "type": "boolean"
+            },
+            "clientMood": {
+              "type": "string",
+              "enum": [
+                "neutral",
+                "uncertain",
+                "upset",
+                "reassured",
+                "calm",
+                "confused"
+              ]
+            }
+          },
+          "required": [
+            "witnessIn",
+            "judgeIn",
+            "judgeEntries",
+            "clientPresent",
+            "everyoneStands",
+            "clientMood"
+          ]
+        },
+        "emotion": {
+          "type": "string",
+          "enum": [
+            "neutral",
+            "impatient",
+            "upset",
+            "confused",
+            "uncertain",
+            "calm",
+            "reassured"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "speaker",
+        "text",
+        "scene"
+      ]
+    },
+    "CaseOption": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "say",
+            "act"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "kind"
+      ]
+    },
+    "CaseSnapshot": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "caseId": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "labour",
+            "theft"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        },
+        "parties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": {
+                "type": "string",
+                "enum": [
+                  "client",
+                  "clerk",
+                  "judge",
+                  "secretary",
+                  "respondent",
+                  "witness",
+                  "officer",
+                  "investigator",
+                  "chief",
+                  "you",
+                  "system"
+                ]
+              },
+              "label": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "voice": {
+                "type": "string",
+                "enum": [
+                  "elder_m",
+                  "male",
+                  "female",
+                  "female_alt"
+                ]
+              }
+            },
+            "required": [
+              "role",
+              "label",
+              "name"
+            ]
+          }
+        },
+        "stages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "enum": [
+                  "consult",
+                  "draft",
+                  "filing",
+                  "chamber",
+                  "hearing",
+                  "report",
+                  "interview",
+                  "complaint"
+                ]
+              },
+              "number": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "title": {
+                "type": "string"
+              },
+              "place": {
+                "type": "string"
+              },
+              "goal": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "open",
+                  "active",
+                  "done",
+                  "returned"
+                ]
+              },
+              "score": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "number",
+              "title",
+              "place",
+              "goal",
+              "status",
+              "score"
+            ]
+          }
+        },
+        "stage": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "consult",
+                "draft",
+                "filing",
+                "chamber",
+                "hearing",
+                "report",
+                "interview",
+                "complaint"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lines": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "speaker": {
+                "type": "string",
+                "enum": [
+                  "client",
+                  "clerk",
+                  "judge",
+                  "secretary",
+                  "respondent",
+                  "witness",
+                  "officer",
+                  "investigator",
+                  "chief",
+                  "you",
+                  "system"
+                ]
+              },
+              "text": {
+                "type": "string"
+              },
+              "scene": {
+                "type": "object",
+                "properties": {
+                  "witnessIn": {
+                    "type": "boolean"
+                  },
+                  "judgeIn": {
+                    "type": "boolean"
+                  },
+                  "judgeEntries": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  },
+                  "clientPresent": {
+                    "type": "boolean"
+                  },
+                  "everyoneStands": {
+                    "type": "boolean"
+                  },
+                  "clientMood": {
+                    "type": "string",
+                    "enum": [
+                      "neutral",
+                      "uncertain",
+                      "upset",
+                      "reassured",
+                      "calm",
+                      "confused"
+                    ]
+                  }
+                },
+                "required": [
+                  "witnessIn",
+                  "judgeIn",
+                  "judgeEntries",
+                  "clientPresent",
+                  "everyoneStands",
+                  "clientMood"
+                ]
+              },
+              "emotion": {
+                "type": "string",
+                "enum": [
+                  "neutral",
+                  "impatient",
+                  "upset",
+                  "confused",
+                  "uncertain",
+                  "calm",
+                  "reassured"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "speaker",
+              "text",
+              "scene"
+            ]
+          }
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "say",
+                  "act"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "text",
+              "kind"
+            ]
+          }
+        },
+        "await": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "stand",
+                "sit",
+                "draft"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "standing": {
+          "type": "boolean"
+        },
+        "feedback": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "tone": {
+                  "type": "string",
+                  "enum": [
+                    "good",
+                    "bad",
+                    "info"
+                  ]
+                },
+                "message": {
+                  "type": "string"
+                },
+                "article": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "tone",
+                "message",
+                "article"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "detail": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "label",
+              "detail"
+            ]
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "detail": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "label",
+              "detail"
+            ]
+          }
+        },
+        "draft": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "court": {
+                  "type": "string",
+                  "enum": [
+                    "district",
+                    "regional",
+                    "economic"
+                  ]
+                },
+                "representative": {
+                  "type": "boolean"
+                },
+                "respondent": {
+                  "type": "string",
+                  "enum": [
+                    "company",
+                    "director"
+                  ]
+                },
+                "demand": {
+                  "type": "string",
+                  "enum": [
+                    "reinstate",
+                    "punish",
+                    "apology"
+                  ]
+                },
+                "facts": {
+                  "maxItems": 12,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 32
+                  }
+                },
+                "evidence": {
+                  "maxItems": 12,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 32
+                  }
+                },
+                "pretrial": {
+                  "type": "boolean"
+                },
+                "email": {
+                  "type": "boolean"
+                },
+                "attachments": {
+                  "maxItems": 16,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 32
+                  }
+                },
+                "copies": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "signed": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "court",
+                "representative",
+                "respondent",
+                "demand",
+                "facts",
+                "evidence",
+                "pretrial",
+                "email",
+                "attachments",
+                "copies",
+                "signed"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rulings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "accepted",
+                  "returned",
+                  "scheduled",
+                  "judgment"
+                ]
+              },
+              "title": {
+                "type": "string"
+              },
+              "body": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "articles": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "kind",
+              "title",
+              "body",
+              "articles"
+            ]
+          }
+        },
+        "scene": {
+          "type": "object",
+          "properties": {
+            "witnessIn": {
+              "type": "boolean"
+            },
+            "judgeIn": {
+              "type": "boolean"
+            },
+            "judgeEntries": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "clientPresent": {
+              "type": "boolean"
+            },
+            "everyoneStands": {
+              "type": "boolean"
+            },
+            "clientMood": {
+              "type": "string",
+              "enum": [
+                "neutral",
+                "uncertain",
+                "upset",
+                "reassured",
+                "calm",
+                "confused"
+              ]
+            }
+          },
+          "required": [
+            "witnessIn",
+            "judgeIn",
+            "judgeEntries",
+            "clientPresent",
+            "everyoneStands",
+            "clientMood"
+          ]
+        },
+        "stageDone": {
+          "type": "boolean"
+        },
+        "code": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string",
+              "format": "uri"
+            },
+            "edition": {
+              "type": "string"
+            },
+            "retrievedAt": {
+              "type": "string"
+            },
+            "articles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "number": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "required": [
+                  "number",
+                  "title",
+                  "text",
+                  "url"
+                ]
+              }
+            }
+          },
+          "required": [
+            "title",
+            "url",
+            "edition",
+            "retrievedAt",
+            "articles"
+          ]
+        },
+        "hints": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "beginner",
+            "intermediate",
+            "advanced"
+          ]
+        },
+        "inputModes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "option",
+              "text",
+              "voice"
+            ]
+          }
+        },
+        "revealed": {
+          "type": "boolean"
+        },
+        "answering": {
+          "type": "boolean"
+        },
+        "result": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "verdict": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "good": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "notes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "log": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "at": {
+                        "type": "number"
+                      },
+                      "prompt": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "chose": {
+                        "type": "string"
+                      },
+                      "tone": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "good",
+                              "bad",
+                              "info"
+                            ]
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "points": {
+                        "type": "integer",
+                        "minimum": -9007199254740991,
+                        "maximum": 9007199254740991
+                      },
+                      "why": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "better": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "article": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "inputMode": {
+                        "type": "string",
+                        "enum": [
+                          "option",
+                          "text",
+                          "voice"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "at",
+                      "prompt",
+                      "chose",
+                      "tone",
+                      "points",
+                      "why",
+                      "better",
+                      "article"
+                    ]
+                  }
+                },
+                "hints": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "reflect": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "score",
+                "verdict",
+                "good",
+                "notes",
+                "log",
+                "hints",
+                "reflect"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "caseId",
+        "kind",
+        "title",
+        "note",
+        "parties",
+        "stages",
+        "stage",
+        "lines",
+        "options",
+        "await",
+        "standing",
+        "feedback",
+        "facts",
+        "evidence",
+        "draft",
+        "rulings",
+        "scene",
+        "stageDone",
+        "code",
+        "hints",
+        "level",
+        "inputModes",
+        "revealed",
+        "answering",
+        "result"
+      ]
+    },
+    "CaseSpeaker": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "client",
+        "clerk",
+        "judge",
+        "secretary",
+        "respondent",
+        "witness",
+        "officer",
+        "investigator",
+        "chief",
+        "you",
+        "system"
+      ]
+    },
+    "ClaimDraft": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "court": {
+          "type": "string",
+          "enum": [
+            "district",
+            "regional",
+            "economic"
+          ]
+        },
+        "representative": {
+          "type": "boolean"
+        },
+        "respondent": {
+          "type": "string",
+          "enum": [
+            "company",
+            "director"
+          ]
+        },
+        "demand": {
+          "type": "string",
+          "enum": [
+            "reinstate",
+            "punish",
+            "apology"
+          ]
+        },
+        "facts": {
+          "maxItems": 12,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 32
+          }
+        },
+        "evidence": {
+          "maxItems": 12,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 32
+          }
+        },
+        "pretrial": {
+          "type": "boolean"
+        },
+        "email": {
+          "type": "boolean"
+        },
+        "attachments": {
+          "maxItems": 16,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 32
+          }
+        },
+        "copies": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "signed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "court",
+        "representative",
+        "respondent",
+        "demand",
+        "facts",
+        "evidence",
+        "pretrial",
+        "email",
+        "attachments",
+        "copies",
+        "signed"
+      ]
+    },
+    "Decision": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "at": {
+          "type": "number"
+        },
+        "prompt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "chose": {
+          "type": "string"
+        },
+        "tone": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "good",
+                "bad",
+                "info"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "points": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "why": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "better": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "article": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "inputMode": {
+          "type": "string",
+          "enum": [
+            "option",
+            "text",
+            "voice"
+          ]
+        }
+      },
+      "required": [
+        "at",
+        "prompt",
+        "chose",
+        "tone",
+        "points",
+        "why",
+        "better",
+        "article"
+      ]
+    },
+    "Ruling": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "accepted",
+            "returned",
+            "scheduled",
+            "judgment"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "articles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "title",
+        "body",
+        "articles"
+      ]
+    },
+    "Scene": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "witnessIn": {
+          "type": "boolean"
+        },
+        "judgeIn": {
+          "type": "boolean"
+        },
+        "judgeEntries": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "clientPresent": {
+          "type": "boolean"
+        },
+        "everyoneStands": {
+          "type": "boolean"
+        },
+        "clientMood": {
+          "type": "string",
+          "enum": [
+            "neutral",
+            "uncertain",
+            "upset",
+            "reassured",
+            "calm",
+            "confused"
+          ]
+        }
+      },
+      "required": [
+        "witnessIn",
+        "judgeIn",
+        "judgeEntries",
+        "clientPresent",
+        "everyoneStands",
+        "clientMood"
+      ]
+    },
+    "StageId": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "consult",
+        "draft",
+        "filing",
+        "chamber",
+        "hearing",
+        "report",
+        "interview",
+        "complaint"
+      ]
+    },
+    "StageView": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "enum": [
+            "consult",
+            "draft",
+            "filing",
+            "chamber",
+            "hearing",
+            "report",
+            "interview",
+            "complaint"
+          ]
+        },
+        "number": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "title": {
+          "type": "string"
+        },
+        "place": {
+          "type": "string"
+        },
+        "goal": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "active",
+            "done",
+            "returned"
+          ]
+        },
+        "score": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "number",
+        "title",
+        "place",
+        "goal",
+        "status",
+        "score"
+      ]
+    },
+    "VoiceId": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "elder_m",
+        "male",
+        "female",
+        "female_alt"
+      ]
+    }
+  }
+}

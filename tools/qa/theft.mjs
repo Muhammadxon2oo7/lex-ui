@@ -1,0 +1,38 @@
+// QA: "Ish yoʻli 2" — theft report through three rooms. Usage: node tools/qa/theft.mjs [outDir]
+import { chromium } from 'playwright';
+import { mkdirSync } from 'node:fs';
+const OUT = process.argv[2] ?? 'qa-shots';
+const BASE = process.env.BASE ?? 'http://localhost:3000';
+mkdirSync(OUT, { recursive: true });
+const browser = await chromium.launch({ args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'] });
+const page = await browser.newPage({ viewport: { width: 1440, height: 810 } });
+const logs = [];
+page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message.slice(0, 300)}`));
+page.on('console', (m) => m.type() === 'error' && logs.push(`[error] ${m.text().slice(0, 200)}`));
+const shot = async (name) => { await page.waitForTimeout(500); await page.screenshot({ path: `${OUT}/${name}.png` }); console.log('shot', name); };
+const group = page.getByRole('group', { name: 'Javoblar' });
+const until = async (loc = group) => { for (let i = 0; i < 40 && !(await loc.count()); i++) { await page.keyboard.press('Space'); await page.waitForTimeout(250); } await loc.first().waitFor({ timeout: 15000 }); };
+const say = async (re) => { await until(); await group.getByRole('button', { name: re }).click(); await page.waitForTimeout(300); };
+const next = (re) => page.getByRole('dialog').getByRole('link', { name: re });
+
+await page.goto(`${BASE}/`);
+await page.evaluate(() => localStorage.setItem('lexsim.profile.v1', JSON.stringify({ name: 'Karimova Aziza', avatar: 'woman', role: 'student' })));
+const id = await page.evaluate(async () => (await (await fetch('/api/v1/cases', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{"fresh":true,"kind":"theft"}' })).json()).case.caseId);
+await page.goto(`${BASE}/ish/${id}/report`);
+await page.waitForTimeout(4000); await shot('t1-desk-arrive');
+await page.waitForTimeout(3000); await until(); await shot('t2-desk');
+for (const re of [/jinoyat toʻgʻrisida ariza bermoqchimiz/, /Yozma ariza tayyor/, /ogohlantirishni tushuntirib/, /IMEI raqami bor/]) await say(re);
+await until(next(/Tergovchi kabineti/)); await shot('t3-desk-result');
+await next(/Tergovchi kabineti/).click();
+await page.waitForTimeout(6000); await until(); await shot('t4-investigator');
+for (const re of [/huquq va majburiyatlarini tushuntirishingizni/, /qiyofasini/, /bayonnomani oʻqib chiqamiz/]) await say(re);
+await until(next(/Tergov boʻlinmasi/)); await shot('t5-interview-result');
+await next(/Tergov boʻlinmasi/).click();
+await page.waitForTimeout(6000); await until(); await shot('t6-chief');
+await say(/harakatsizligi ustidan shikoyat qilamiz/);
+await page.getByRole('dialog', { name: /natija/ }).waitFor({ timeout: 30000 }); await shot('t7-result');
+await page.goto(`${BASE}/`);
+await page.getByRole('heading', { name: /Nodira K\./ }).waitFor({ timeout: 60000 });
+await page.waitForTimeout(2500); await shot('t8-kiosk');
+console.log(logs.join('\n') || 'no console errors');
+await browser.close();

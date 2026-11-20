@@ -1,0 +1,298 @@
+{
+  "generatedAt": "2026-11-20T12:06:50.037Z",
+  "assets": [
+    {
+      "id": "terrazzo_tiles",
+      "kind": "texture",
+      "name": "Terrazzo Tiles",
+      "authors": [
+        "Amal Kumar"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/terrazzo_tiles"
+    },
+    {
+      "id": "laminate_floor_02",
+      "kind": "texture",
+      "name": "Laminate Floor 02",
+      "authors": [
+        "Dario Barresi",
+        "Charlotte Baglioni"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/laminate_floor_02"
+    },
+    {
+      "id": "painted_plaster_wall",
+      "kind": "texture",
+      "name": "Painted Plaster Wall",
+      "authors": [
+        "Amal Kumar"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/painted_plaster_wall"
+    },
+    {
+      "id": "oak_veneer_01",
+      "kind": "texture",
+      "name": "Oak Veneer 01",
+      "authors": [
+        "Jenelle van Heerden"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/oak_veneer_01"
+    },
+    {
+      "id": "walnut_veneer",
+      "kind": "texture",
+      "name": "Walnut Veneer",
+      "authors": [
+        "Jenelle van Heerden"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/walnut_veneer"
+    },
+    {
+      "id": "ceiling_interior",
+      "kind": "texture",
+      "name": "Ceiling Interior",
+      "authors": [
+        "Dimitrios Savva"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/ceiling_interior"
+    },
+    {
+      "id": "fabric_pattern_07",
+      "kind": "texture",
+      "name": "Fabric Pattern 07",
+      "authors": [
+        "Rob Tuytel"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/fabric_pattern_07"
+    },
+    {
+      "id": "brown_leather",
+      "kind": "texture",
+      "name": "Brown Leather",
+      "authors": [
+        "Rob Tuytel"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/brown_leather"
+    },
+    {
+      "id": "precast_stone_paving",
+      "kind": "texture",
+      "name": "Precast Stone Paving",
+      "authors": [
+        "Dimitrios Savva"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/precast_stone_paving"
+    },
+    {
+      "id": "concrete_tile_facade",
+      "kind": "texture",
+      "name": "Concrete Tile Facade",
+      "authors": [
+        "Charlotte Baglioni"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/concrete_tile_facade"
+    },
+    {
+      "id": "leafy_grass",
+      "kind": "texture",
+      "name": "Leafy Grass",
+      "authors": [
+        "Charlotte Baglioni"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/leafy_grass"
+    },
+    {
+      "id": "small_empty_room_1",
+      "kind": "hdri",
+      "name": "Small Empty Room 1",
+      "authors": [
+        "Sergej Majboroda"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/small_empty_room_1"
+    },
+    {
+      "id": "kloofendal_48d_partly_cloudy_puresky",
+      "kind": "hdri",
+      "name": "Kloofendal 48d Partly Cloudy (Pure Sky)",
+      "authors": [
+        "Greg Zaal",
+        "Jarod Guest"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky"
+    },
+    {
+      "id": "modern_arm_chair_01",
+      "kind": "model",
+      "name": "Modern Arm Chair 01",
+      "authors": [
+        "Vibrant Nordic"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/modern_arm_chair_01"
+    },
+    {
+      "id": "dining_chair_02",
+      "kind": "model",
+      "name": "Dining Chair 02",
+      "authors": [
+        "James Ray Cock"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/dining_chair_02"
+    },
+    {
+      "id": "sofa_03",
+      "kind": "model",
+      "name": "Sofa 03",
+      "authors": [
+        "Fran Calvente"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/sofa_03"
+    },
+    {
+      "id": "potted_plant_04",
+      "kind": "model",
+      "name": "Potted Plant 04",
+      "authors": [
+        "James Ray Cock"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/potted_plant_04"
+    },
+    {
+      "id": "potted_plant_02",
+      "kind": "model",
+      "name": "Potted Plant 02",
+      "authors": [
+        "Rico Cilliers"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/potted_plant_02"
+    },
+    {
+      "id": "wall_clock",
+      "kind": "model",
+      "name": "Wall Clock",
+      "authors": [
+        "PierreB3D"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/wall_clock"
+    },
+    {
+      "id": "desk_lamp_arm_01",
+      "kind": "model",
+      "name": "Desk Lamp Arm 01",
+      "authors": [
+        "Yann Kervran",
+        "Kuutti Siitonen"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/desk_lamp_arm_01"
+    },
+    {
+      "id": "binder_notebook",
+      "kind": "model",
+      "name": "Binder Notebook",
+      "authors": [
+        "DaDrood"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/binder_notebook"
+    },
+    {
+      "id": "book_encyclopedia_set_01",
+      "kind": "model",
+      "name": "Book Encyclopedia Set 01",
+      "authors": [
+        "John Malcolm"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/book_encyclopedia_set_01"
+    },
+    {
+      "id": "drawer_cabinet",
+      "kind": "model",
+      "name": "Drawer Cabinet",
+      "authors": [
+        "Ulan Cabanilla"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/drawer_cabinet"
+    },
+    {
+      "id": "modern_coffee_table_01",
+      "kind": "model",
+      "name": "Modern Coffee Table 01",
+      "authors": [
+        "Amin"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/modern_coffee_table_01"
+    },
+    {
+      "id": "Shelf_01",
+      "kind": "model",
+      "name": "Shelf 01",
+      "authors": [
+        "Gabriel Radić"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/Shelf_01"
+    },
+    {
+      "id": "street_lamp_01",
+      "kind": "model",
+      "name": "Street Lamp 01",
+      "authors": [
+        "Josh Dean"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/street_lamp_01"
+    },
+    {
+      "id": "modular_street_seating",
+      "kind": "model",
+      "name": "Modular Street Seating",
+      "authors": [
+        "Stuart Attenborrow"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/modular_street_seating"
+    },
+    {
+      "id": "planter_box_02",
+      "kind": "model",
+      "name": "Planter Box 02",
+      "authors": [
+        "James Ray Cock"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/planter_box_02"
+    },
+    {
+      "id": "shrub_02",
+      "kind": "model",
+      "name": "Shrub 02",
+      "authors": [
+        "Rico Cilliers"
+      ],
+      "license": "CC0 1.0",
+      "source": "https://polyhaven.com/a/shrub_02"
+    }
+  ]
+}

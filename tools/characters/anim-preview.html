@@ -1,0 +1,188 @@
+<!doctype html>
+<!-- Standalone QA page for public/assets/characters/anims_*.glb.
+     Loads a character GLB, clones it with SkeletonUtils.clone, binds clips from an
+     animation GLB with AnimationMixer on the clone's root and renders film strips.
+     Driven by tools/characters/anim-shots.mjs through window.api -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+html,body{margin:0;height:100%;background:#cfd6dd;overflow:hidden}canvas{display:block}
+#label{position:fixed;left:6px;top:4px;font:600 15px/1.2 -apple-system,Helvetica,Arial,sans-serif;color:#102030;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:4px}
+.t{position:fixed;bottom:4px;font:12px -apple-system,Helvetica,Arial,sans-serif;color:#102030;background:rgba(255,255,255,.6);padding:1px 5px;border-radius:3px}
+</style>
+<script type="importmap">
+{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}
+</script>
+</head>
+<body>
+<div id="label"></div>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import * as SkeletonUtils from 'three/addons/utils/SkeletonUtils.js';
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.autoClear = false;
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(30, 1, 0.05, 50);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x777788, 1.8));
+const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(1.5, 3, 3); scene.add(key);
+const rim = new THREE.DirectionalLight(0xffffff, 0.8); rim.position.set(-2, 2, -2); scene.add(rim);
+scene.add(new THREE.GridHelper(4, 8, 0x556677, 0x8899aa)); // 0.5 m cells, y = 0
+const axes = new THREE.AxesHelper(0.5); axes.position.set(0, 0.002, 0); scene.add(axes); // X red, Y green, Z blue
+// optional reference chair: seat slab + back
+const chair = new THREE.Group(); chair.visible = false; scene.add(chair);
+const chairMat = new THREE.MeshStandardMaterial({ color: 0x8a5a2b, transparent: true, opacity: 0.55 });
+const seat = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.04, 0.45), chairMat); chair.add(seat);
+const back = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.5, 0.03), chairMat); chair.add(back);
+
+const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
+const cache = {};
+let root = null, bones = {}, meshes = [], mixer = null, clips = {}, action = null;
+const V = () => new THREE.Vector3();
+
+const VIEWS = { q3: [1.6, 0.35, 3.2], front: [0, 0.1, 3.6], side: [3.6, 0.1, 0], back: [-1.2, 0.35, -3.2], top: [0.01, 4, 0.01] };
+
+const api = {
+  /** load a character and add a SkeletonUtils.clone of it to the scene */
+  async loadChar(id) {
+    cache[id] ??= await loader.loadAsync(`/public/assets/characters/${id}.glb`);
+    if (root) scene.remove(root);
+    root = SkeletonUtils.clone(cache[id].scene);
+    scene.add(root);
+    bones = {}; meshes = [];
+    root.traverse((o) => {
+      if (o.isBone || o.name === 'Bip01') bones[o.name] = o;
+      if (o.isSkinnedMesh) { meshes.push(o); o.frustumCulled = false; }
+    });
+    mixer = null; action = null;
+    root.updateMatrixWorld(true);
+    return { bones: Object.keys(bones).length, meshes: meshes.length, hip: bones.Bip01.position.y };
+  },
+  async loadAnims(file) {
+    cache[file] ??= await loader.loadAsync(`/public/assets/characters/${file}`);
+    clips = Object.fromEntries(cache[file].animations.map((c) => [c.name, c]));
+    return cache[file].animations.map((c) => ({
+      name: c.name, duration: c.duration, tracks: c.tracks.length,
+      trackNames: c.tracks.map((t) => t.name),
+      positionTracks: c.tracks.filter((t) => t.name.endsWith('.position')).map((t) => t.name),
+    }));
+  },
+  /** mixer.clipAction(clip, root) exactly like the app; rootScale scales the Bip01 position track */
+  bind(name, { rootScale = 1 } = {}) {
+    let clip = clips[name];
+    if (!clip) throw new Error('no clip ' + name);
+    if (rootScale !== 1) {
+      clip = clip.clone();
+      for (const t of clip.tracks) if (t.name === 'Bip01.position') t.values = t.values.map((v) => v * rootScale);
+    }
+    if (mixer) { mixer.stopAllAction(); mixer.uncacheRoot(root); }
+    mixer = new THREE.AnimationMixer(root);
+    action = mixer.clipAction(clip, root);
+    action.play();
+    // number of tracks that resolved to a node of the clone
+    const bound = action._propertyBindings.filter((b) => b.binding.node).length;
+    return { tracks: clip.tracks.length, bound, duration: clip.duration };
+  },
+  chair(opts) {
+    chair.visible = !!opts;
+    if (opts) {
+      seat.position.set(opts.x ?? 0, opts.seatY - 0.02, opts.z);
+      back.position.set(opts.x ?? 0, opts.seatY + 0.25, opts.z - 0.24);
+    }
+  },
+  setTime(t) {
+    mixer.setTime(t);
+    root.updateMatrixWorld(true);
+  },
+  /** render `times` side by side into the canvas (film strip) */
+  strip(times, view = 'q3', target = [0, 0.9, 0], scale = 1, label = '') {
+    const n = times.length, w = Math.floor(innerWidth / n), h = innerHeight;
+    renderer.setScissorTest(true);
+    document.querySelectorAll('.t').forEach((e) => e.remove());
+    const out = [];
+    times.forEach((t, i) => {
+      api.setTime(t);
+      const p = VIEWS[view];
+      camera.aspect = w / h;
+      camera.position.set(target[0] + p[0] * scale, target[1] + p[1] * scale, target[2] + p[2] * scale);
+      camera.lookAt(...target);
+      camera.updateProjectionMatrix();
+      renderer.setViewport(i * w, 0, w, h); renderer.setScissor(i * w, 0, w, h);
+      renderer.setClearColor(i % 2 ? 0xc6ced6 : 0xd3dae0); renderer.clear();
+      renderer.render(scene, camera);
+      const d = document.createElement('div'); d.className = 't'; d.style.left = i * w + 6 + 'px'; d.textContent = `t=${t.toFixed(2)}s`; document.body.appendChild(d);
+      out.push(api.metrics());
+    });
+    document.getElementById('label').textContent = label;
+    return out;
+  },
+  /** cheap bone-only scan of the bound clip: extremes over the whole clip */
+  scan(duration, step = 1 / 15) {
+    const wp = (n) => bones[n].getWorldPosition(V());
+    const o = { footMinY: 9, footMaxY: -9, toeMinY: 9, headMinY: 9, headMaxY: -9, handMaxY: -9, pelvisMinY: 9, pelvisMaxY: -9, maxPelvisXZ: 0, maxJumpDeg: 0 };
+    let prev = null;
+    for (let t = 0; t <= duration + 1e-6; t += step) {
+      api.setTime(Math.min(t, duration - 1e-4));
+      const fl = wp('Bip01_L_Foot').y, fr = wp('Bip01_R_Foot').y, h = wp('Bip01_Head').y, p = wp('Bip01_Pelvis');
+      o.footMinY = Math.min(o.footMinY, fl, fr); o.footMaxY = Math.max(o.footMaxY, fl, fr);
+      o.toeMinY = Math.min(o.toeMinY, wp('Bip01_L_Toe0').y, wp('Bip01_R_Toe0').y);
+      o.headMinY = Math.min(o.headMinY, h); o.headMaxY = Math.max(o.headMaxY, h);
+      o.handMaxY = Math.max(o.handMaxY, wp('Bip01_L_Hand').y, wp('Bip01_R_Hand').y);
+      o.pelvisMinY = Math.min(o.pelvisMinY, p.y); o.pelvisMaxY = Math.max(o.pelvisMaxY, p.y);
+      o.maxPelvisXZ = Math.max(o.maxPelvisXZ, Math.hypot(p.x, p.z));
+      const cur = Object.values(bones).map((b) => b.quaternion.clone());
+      if (prev) cur.forEach((q, i) => { o.maxJumpDeg = Math.max(o.maxJumpDeg, q.angleTo(prev[i]) * 180 / Math.PI); });
+      prev = cur;
+    }
+    for (const k in o) o[k] = +o[k].toFixed(3);
+    return o;
+  },
+  /** measurements of the current pose (world space, metres) */
+  metrics() {
+    const wp = (n) => bones[n].getWorldPosition(V());
+    const r = (v) => +v.toFixed(4);
+    const pel = wp('Bip01_Pelvis');
+    const left = wp('Bip01_L_Thigh').sub(wp('Bip01_R_Thigh')); left.y = 0; left.normalize();
+    const fwd = V().crossVectors(left, V().set(0, 1, 0)); // +X × +Y = +Z
+    let minY = Infinity, seatY = Infinity, maxY = -Infinity, thighY = Infinity;
+    const v = V();
+    for (const m of meshes) {
+      const pos = m.geometry.attributes.position;
+      for (let i = 0; i < pos.count; i += 2) {
+        m.getVertexPosition(i, v).applyMatrix4(m.matrixWorld);
+        if (v.y < minY) minY = v.y;
+        if (v.y > maxY) maxY = v.y;
+        // underside of the buttocks: a 24 cm wide, 16 cm deep patch centred 4 cm behind the pelvis joint
+        const dx = v.x - pel.x, dz = v.z - pel.z;
+        const s = dx * left.x + dz * left.z, f = dx * fwd.x + dz * fwd.z;
+        if (Math.abs(s) < 0.12 && f > -0.12 && f < 0.04 && v.y < seatY) seatY = v.y;
+        // underside of the thighs, 12-28 cm in front of the pelvis joint (only meaningful when seated)
+        if (Math.abs(s) < 0.2 && f > 0.12 && f < 0.28 && v.y > 0.25 && v.y < thighY) thighY = v.y;
+      }
+    }
+    const toeL = wp('Bip01_L_Toe0'), toeR = wp('Bip01_R_Toe0'), footL = wp('Bip01_L_Foot'), footR = wp('Bip01_R_Foot');
+    return {
+      bip: bones.Bip01.getWorldPosition(V()).toArray().map(r),
+      pelvis: pel.toArray().map(r),
+      yawDeg: +(Math.atan2(fwd.x, fwd.z) * 180 / Math.PI).toFixed(1),
+      meshMinY: r(minY), meshMaxY: r(maxY), buttocksUndersideY: r(seatY), thighUndersideY: r(thighY),
+      head: wp('Bip01_Head').toArray().map(r),
+      footL: footL.toArray().map(r), footR: footR.toArray().map(r),
+      toeL: toeL.toArray().map(r), toeR: toeR.toArray().map(r),
+      handL: wp('Bip01_L_Hand').toArray().map(r), handR: wp('Bip01_R_Hand').toArray().map(r),
+      kneeL: wp('Bip01_L_Calf').toArray().map(r),
+    };
+  },
+};
+window.api = api;
+window.ready = true;
+</script>
+</body>
+</html>

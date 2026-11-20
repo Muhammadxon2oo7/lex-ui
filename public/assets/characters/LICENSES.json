@@ -1,0 +1,168 @@
+{
+  "generatedAt": "2026-11-20T17:41:14.799Z",
+  "generator": "tools/characters/build-characters.mjs",
+  "citation": "Gonzalez-Franco M. et al. (2020) \"The Rocketbox Library and the Utility of Freely Available Rigged Avatars.\" Frontiers in Virtual Reality 1:561558. doi:10.3389/frvir.2020.561558",
+  "assets": [
+    {
+      "file": "elder_man.glb",
+      "description": "Older man, grey hair, tweed jacket",
+      "name": "Microsoft Rocketbox Avatar Library: Male_Adult_03",
+      "author": "Microsoft (original avatars by Rocketbox Studios; facial blendshapes contributed by Matias Volonte and Fang Ma)",
+      "license": "MIT",
+      "licenseUrl": "https://github.com/microsoft/Microsoft-Rocketbox/blob/master/LICENSE.md",
+      "source": "https://github.com/microsoft/Microsoft-Rocketbox/tree/master/Assets/Avatars/Adults/Male_Adult_03",
+      "sourceFiles": [
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Male_Adult_03/Export/Male_Adult_03_facial.fbx",
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Male_Adult_03/Textures/m004_*.tga"
+      ],
+      "attribution": "\"Male_Adult_03\" from the Microsoft Rocketbox Avatar Library, Copyright (c) 2020 Microsoft, MIT License. https://github.com/microsoft/Microsoft-Rocketbox",
+      "modifications": "Converted FBX to glTF (FBX2glTF), textures resized and re-encoded as WebP, blendshapes reduced to ARKit + viseme sets and renamed, Meshopt compression.",
+      "bytes": 2261888
+    },
+    {
+      "file": "woman.glb",
+      "description": "Adult woman, cardigan and blouse",
+      "name": "Microsoft Rocketbox Avatar Library: Female_Adult_09",
+      "author": "Microsoft (original avatars by Rocketbox Studios; facial blendshapes contributed by Matias Volonte and Fang Ma)",
+      "license": "MIT",
+      "licenseUrl": "https://github.com/microsoft/Microsoft-Rocketbox/blob/master/LICENSE.md",
+      "source": "https://github.com/microsoft/Microsoft-Rocketbox/tree/master/Assets/Avatars/Adults/Female_Adult_09",
+      "sourceFiles": [
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Female_Adult_09/Export/Female_Adult_09_facial.fbx",
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Female_Adult_09/Textures/f009_*.tga"
+      ],
+      "attribution": "\"Female_Adult_09\" from the Microsoft Rocketbox Avatar Library, Copyright (c) 2020 Microsoft, MIT License. https://github.com/microsoft/Microsoft-Rocketbox",
+      "modifications": "Converted FBX to glTF (FBX2glTF), textures resized and re-encoded as WebP, blendshapes reduced to ARKit + viseme sets and renamed, Meshopt compression.",
+      "bytes": 1120268
+    },
+    {
+      "file": "man.glb",
+      "description": "Adult man, blue shirt",
+      "name": "Microsoft Rocketbox Avatar Library: Male_Adult_08",
+      "author": "Microsoft (original avatars by Rocketbox Studios; facial blendshapes contributed by Matias Volonte and Fang Ma)",
+      "license": "MIT",
+      "licenseUrl": "https://github.com/microsoft/Microsoft-Rocketbox/blob/master/LICENSE.md",
+      "source": "https://github.com/microsoft/Microsoft-Rocketbox/tree/master/Assets/Avatars/Adults/Male_Adult_08",
+      "sourceFiles": [
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Male_Adult_08/Export/Male_Adult_08_facial.fbx",
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Male_Adult_08/Textures/m014_*.tga"
+      ],
+      "attribution": "\"Male_Adult_08\" from the Microsoft Rocketbox Avatar Library, Copyright (c) 2020 Microsoft, MIT License. https://github.com/microsoft/Microsoft-Rocketbox",
+      "modifications": "Converted FBX to glTF (FBX2glTF), textures resized and re-encoded as WebP, blendshapes reduced to ARKit + viseme sets and renamed, Meshopt compression.",
+      "bytes": 977488
+    },
+    {
+      "file": "secretary.glb",
+      "description": "Young woman, white blouse and skirt (court secretary)",
+      "name": "Microsoft Rocketbox Avatar Library: Female_Adult_02",
+      "author": "Microsoft (original avatars by Rocketbox Studios; facial blendshapes contributed by Matias Volonte and Fang Ma)",
+      "license": "MIT",
+      "licenseUrl": "https://github.com/microsoft/Microsoft-Rocketbox/blob/master/LICENSE.md",
+      "source": "https://github.com/microsoft/Microsoft-Rocketbox/tree/master/Assets/Avatars/Adults/Female_Adult_02",
+      "sourceFiles": [
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Female_Adult_02/Export/Female_Adult_02_facial.fbx",
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Female_Adult_02/Textures/f002_*.tga"
+      ],
+      "attribution": "\"Female_Adult_02\" from the Microsoft Rocketbox Avatar Library, Copyright (c) 2020 Microsoft, MIT License. https://github.com/microsoft/Microsoft-Rocketbox",
+      "modifications": "Converted FBX to glTF (FBX2glTF), textures resized and re-encoded as WebP, blendshapes reduced to ARKit + viseme sets and renamed, Meshopt compression.",
+      "bytes": 1063068
+    },
+    {
+      "file": "lawyer.glb",
+      "description": "Woman in a blazer (respondent’s counsel)",
+      "name": "Microsoft Rocketbox Avatar Library: Female_Adult_05",
+      "author": "Microsoft (original avatars by Rocketbox Studios; facial blendshapes contributed by Matias Volonte and Fang Ma)",
+      "license": "MIT",
+      "licenseUrl": "https://github.com/microsoft/Microsoft-Rocketbox/blob/master/LICENSE.md",
+      "source": "https://github.com/microsoft/Microsoft-Rocketbox/tree/master/Assets/Avatars/Adults/Female_Adult_05",
+      "sourceFiles": [
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Female_Adult_05/Export/Female_Adult_05_facial.fbx",
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Female_Adult_05/Textures/f005_*.tga"
+      ],
+      "attribution": "\"Female_Adult_05\" from the Microsoft Rocketbox Avatar Library, Copyright (c) 2020 Microsoft, MIT License. https://github.com/microsoft/Microsoft-Rocketbox",
+      "modifications": "Converted FBX to glTF (FBX2glTF), textures resized and re-encoded as WebP, blendshapes reduced to ARKit + viseme sets and renamed, Meshopt compression.",
+      "bytes": 1072840
+    },
+    {
+      "file": "client.glb",
+      "description": "Man in his thirties, dark jacket over a shirt (the claimant)",
+      "name": "Microsoft Rocketbox Avatar Library: Male_Adult_07",
+      "author": "Microsoft (original avatars by Rocketbox Studios; facial blendshapes contributed by Matias Volonte and Fang Ma)",
+      "license": "MIT",
+      "licenseUrl": "https://github.com/microsoft/Microsoft-Rocketbox/blob/master/LICENSE.md",
+      "source": "https://github.com/microsoft/Microsoft-Rocketbox/tree/master/Assets/Avatars/Adults/Male_Adult_07",
+      "sourceFiles": [
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Male_Adult_07/Export/Male_Adult_07_facial.fbx",
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Male_Adult_07/Textures/m013_*.tga"
+      ],
+      "attribution": "\"Male_Adult_07\" from the Microsoft Rocketbox Avatar Library, Copyright (c) 2020 Microsoft, MIT License. https://github.com/microsoft/Microsoft-Rocketbox",
+      "modifications": "Converted FBX to glTF (FBX2glTF), textures resized and re-encoded as WebP, blendshapes reduced to ARKit + viseme sets and renamed, Meshopt compression.",
+      "bytes": 936164
+    },
+    {
+      "file": "clerk.glb",
+      "description": "Woman in a brown jacket (court office clerk)",
+      "name": "Microsoft Rocketbox Avatar Library: Female_Adult_07",
+      "author": "Microsoft (original avatars by Rocketbox Studios; facial blendshapes contributed by Matias Volonte and Fang Ma)",
+      "license": "MIT",
+      "licenseUrl": "https://github.com/microsoft/Microsoft-Rocketbox/blob/master/LICENSE.md",
+      "source": "https://github.com/microsoft/Microsoft-Rocketbox/tree/master/Assets/Avatars/Adults/Female_Adult_07",
+      "sourceFiles": [
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Female_Adult_07/Export/Female_Adult_07_facial.fbx",
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Female_Adult_07/Textures/f007_*.tga"
+      ],
+      "attribution": "\"Female_Adult_07\" from the Microsoft Rocketbox Avatar Library, Copyright (c) 2020 Microsoft, MIT License. https://github.com/microsoft/Microsoft-Rocketbox",
+      "modifications": "Converted FBX to glTF (FBX2glTF), textures resized and re-encoded as WebP, blendshapes reduced to ARKit + viseme sets and renamed, Meshopt compression.",
+      "bytes": 1133920
+    },
+    {
+      "file": "investigator.glb",
+      "description": "Man in a dark shirt (investigator)",
+      "name": "Microsoft Rocketbox Avatar Library: Male_Adult_11",
+      "author": "Microsoft (original avatars by Rocketbox Studios; facial blendshapes contributed by Matias Volonte and Fang Ma)",
+      "license": "MIT",
+      "licenseUrl": "https://github.com/microsoft/Microsoft-Rocketbox/blob/master/LICENSE.md",
+      "source": "https://github.com/microsoft/Microsoft-Rocketbox/tree/master/Assets/Avatars/Adults/Male_Adult_11",
+      "sourceFiles": [
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Male_Adult_11/Export/Male_Adult_11_facial.fbx",
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Male_Adult_11/Textures/m001_*.tga"
+      ],
+      "attribution": "\"Male_Adult_11\" from the Microsoft Rocketbox Avatar Library, Copyright (c) 2020 Microsoft, MIT License. https://github.com/microsoft/Microsoft-Rocketbox",
+      "modifications": "Converted FBX to glTF (FBX2glTF), textures resized and re-encoded as WebP, blendshapes reduced to ARKit + viseme sets and renamed, Meshopt compression.",
+      "bytes": 616792
+    },
+    {
+      "file": "chief.glb",
+      "description": "Older man in a patterned sweater (head of the investigation unit)",
+      "name": "Microsoft Rocketbox Avatar Library: Male_Adult_13",
+      "author": "Microsoft (original avatars by Rocketbox Studios; facial blendshapes contributed by Matias Volonte and Fang Ma)",
+      "license": "MIT",
+      "licenseUrl": "https://github.com/microsoft/Microsoft-Rocketbox/blob/master/LICENSE.md",
+      "source": "https://github.com/microsoft/Microsoft-Rocketbox/tree/master/Assets/Avatars/Adults/Male_Adult_13",
+      "sourceFiles": [
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Male_Adult_13/Export/Male_Adult_13_facial.fbx",
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Male_Adult_13/Textures/m010_*.tga"
+      ],
+      "attribution": "\"Male_Adult_13\" from the Microsoft Rocketbox Avatar Library, Copyright (c) 2020 Microsoft, MIT License. https://github.com/microsoft/Microsoft-Rocketbox",
+      "modifications": "Converted FBX to glTF (FBX2glTF), textures resized and re-encoded as WebP, blendshapes reduced to ARKit + viseme sets and renamed, Meshopt compression.",
+      "bytes": 783028
+    },
+    {
+      "file": "worker.glb",
+      "description": "Middle-aged man, work vest over green shirt (the witness)",
+      "name": "Microsoft Rocketbox Avatar Library: Male_Adult_05",
+      "author": "Microsoft (original avatars by Rocketbox Studios; facial blendshapes contributed by Matias Volonte and Fang Ma)",
+      "license": "MIT",
+      "licenseUrl": "https://github.com/microsoft/Microsoft-Rocketbox/blob/master/LICENSE.md",
+      "source": "https://github.com/microsoft/Microsoft-Rocketbox/tree/master/Assets/Avatars/Adults/Male_Adult_05",
+      "sourceFiles": [
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Male_Adult_05/Export/Male_Adult_05_facial.fbx",
+        "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/master/Assets/Avatars/Adults/Male_Adult_05/Textures/m009_*.tga"
+      ],
+      "attribution": "\"Male_Adult_05\" from the Microsoft Rocketbox Avatar Library, Copyright (c) 2020 Microsoft, MIT License. https://github.com/microsoft/Microsoft-Rocketbox",
+      "modifications": "Converted FBX to glTF (FBX2glTF), textures resized and re-encoded as WebP, blendshapes reduced to ARKit + viseme sets and renamed, Meshopt compression.",
+      "bytes": 1175780
+    }
+  ],
+  "licenseText": "MIT License\n\nCopyright (c) 2020 Microsoft\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+}

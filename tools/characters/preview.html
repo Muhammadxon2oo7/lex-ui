@@ -1,0 +1,127 @@
+<!doctype html>
+<!-- Standalone QA viewer for public/assets/characters/*.glb.
+     Serve the lexsim-web folder statically and open
+     /tools/characters/preview.html  — driven by tools/characters/shots.mjs through window.api -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>html,body{margin:0;height:100%;background:#cfd6dd;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">
+{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}
+</script>
+</head>
+<body>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xcfd6dd);
+const camera = new THREE.PerspectiveCamera(30, innerWidth / innerHeight, 0.05, 50);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x777788, 1.6));
+const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(1.5, 3, 3); scene.add(key);
+const rim = new THREE.DirectionalLight(0xffffff, 0.8); rim.position.set(-2, 2, -2); scene.add(rim);
+const grid = new THREE.GridHelper(4, 8, 0x556677, 0x8899aa); scene.add(grid);
+const axes = new THREE.AxesHelper(0.5); axes.position.set(-0.9, 0.001, 0); scene.add(axes); // X red, Y green, Z blue
+
+const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
+let model = null, bones = {}, rest = {}, meshes = [];
+const V = () => new THREE.Vector3();
+const render = () => renderer.render(scene, camera);
+
+const api = {
+  async load(url, { alphaTest = null } = {}) {
+    if (model) scene.remove(model);
+    const gltf = await loader.loadAsync(url);
+    model = gltf.scene; scene.add(model);
+    bones = {}; rest = {}; meshes = [];
+    model.traverse((o) => {
+      if (o.isBone) { bones[o.name] = o; rest[o.name] = o.quaternion.clone(); }
+      if (o.isSkinnedMesh) {
+        meshes.push(o); o.frustumCulled = false;
+        if (alphaTest !== null && o.material.transparent) { o.material.transparent = false; o.material.alphaTest = alphaTest; o.material.depthWrite = true; }
+      }
+    });
+    model.updateMatrixWorld(true);
+    api.view('front'); render();
+    return api.info();
+  },
+  info() {
+    const box = new THREE.Box3();
+    for (const m of meshes) { m.computeBoundingBox(); box.union(m.boundingBox.clone().applyMatrix4(m.matrixWorld)); }
+    const wp = (n) => bones[n] ? bones[n].getWorldPosition(V()).toArray().map((v) => +v.toFixed(3)) : null;
+    return {
+      bbox: { min: box.min.toArray().map((v) => +v.toFixed(3)), max: box.max.toArray().map((v) => +v.toFixed(3)) },
+      nodes: (() => { const a = []; model.traverse((o) => a.push(`${o.type}:${o.name}`)); return a; })(),
+      meshes: meshes.map((m) => ({
+        name: m.name, type: m.type, tris: m.geometry.index.count / 3, verts: m.geometry.attributes.position.count,
+        material: m.material.name, matType: m.material.type, transparent: m.material.transparent, alphaTest: m.material.alphaTest,
+        side: m.material.side, map: !!m.material.map, mapSize: m.material.map ? [m.material.map.image.width, m.material.map.image.height] : null,
+        normalMap: !!m.material.normalMap, roughness: m.material.roughness,
+        morphs: m.morphTargetDictionary ? Object.keys(m.morphTargetDictionary) : [],
+        skeletonBones: m.skeleton.bones.map((b) => b.name),
+      })),
+      sameBoneObjects: meshes.every((m) => m.skeleton.bones.every((b, i) => b === meshes[0].skeleton.bones[i])),
+      world: Object.fromEntries(['Bip01', 'Bip01_Pelvis', 'Bip01_Head', 'Bip01_L_Hand', 'Bip01_R_Hand', 'Bip01_L_Foot', 'Bip01_L_Toe0', 'Bip01_L_Thigh', 'Bip01_L_Calf', 'Bip01_LEye', 'Bip01_MNose'].map((n) => [n, wp(n)])),
+    };
+  },
+  /** pose = { boneName: [x,y,z] } Euler XYZ radians, applied as rest * delta (local, post-multiplied). */
+  pose(p = {}) {
+    for (const n in bones) bones[n].quaternion.copy(rest[n]);
+    for (const [n, e] of Object.entries(p)) {
+      if (!bones[n]) throw new Error('no bone ' + n);
+      bones[n].quaternion.copy(rest[n]).multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(e[0], e[1], e[2], 'XYZ')));
+    }
+    model.updateMatrixWorld(true); render();
+  },
+  setRoot(y) { model.position.y = y; model.updateMatrixWorld(true); render(); },
+  morph(w = {}) {
+    for (const m of meshes) {
+      if (!m.morphTargetDictionary) continue;
+      m.morphTargetInfluences.fill(0);
+      for (const [k, v] of Object.entries(w)) if (k in m.morphTargetDictionary) m.morphTargetInfluences[m.morphTargetDictionary[k]] = v;
+    }
+    render();
+  },
+  /** world-space unit direction from bone a to bone b */
+  dir(a, b) {
+    return bones[b].getWorldPosition(V()).sub(bones[a].getWorldPosition(V())).normalize().toArray().map((v) => +v.toFixed(3));
+  },
+  /** lowest skinned vertex (world y) of the Body mesh inside a z slab: used to find the underside of the thighs */
+  minY(zMin, zMax) {
+    const m = meshes.find((x) => x.name === 'Body'); const v = V(); let y = Infinity;
+    for (let i = 0; i < m.geometry.attributes.position.count; i++) {
+      m.getVertexPosition(i, v).applyMatrix4(m.matrixWorld);
+      if (v.z >= zMin && v.z <= zMax) y = Math.min(y, v.y);
+    }
+    return +y.toFixed(3);
+  },
+  pos(n) { return bones[n].getWorldPosition(V()).toArray().map((v) => +v.toFixed(3)); },
+  /** local axes of a bone expressed in world space (rows: local X, Y, Z) */
+  axes(n) {
+    const q = bones[n].getWorldQuaternion(new THREE.Quaternion());
+    return [[1, 0, 0], [0, 1, 0], [0, 0, 1]].map((a) => new THREE.Vector3(...a).applyQuaternion(q).toArray().map((v) => +v.toFixed(3)));
+  },
+  restLocal(n) { return { q: rest[n].toArray().map((v) => +v.toFixed(4)), p: bones[n].position.toArray().map((v) => +v.toFixed(4)) }; },
+  view(name, target = null, dist = null) {
+    const t = target ? new THREE.Vector3(...target) : new THREE.Vector3(0, 0.9, 0);
+    const d = dist ?? 4.6;
+    const o = { front: [0, 0.05, 1], back: [0, 0.05, -1], side: [1, 0.05, 0], left: [-1, 0.05, 0], q3: [0.7, 0.25, 0.8], top: [0, 1, 0.001] }[name];
+    camera.position.copy(t).add(new THREE.Vector3(...o).normalize().multiplyScalar(d));
+    camera.lookAt(t); render();
+  },
+};
+window.api = api;
+window.ready = true;
+addEventListener('resize', () => { renderer.setSize(innerWidth, innerHeight); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); render(); });
+const q = new URLSearchParams(location.search);
+if (q.get('file')) api.load(q.get('file'));
+</script>
+</body>
+</html>

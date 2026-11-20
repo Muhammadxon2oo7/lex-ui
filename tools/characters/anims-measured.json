@@ -1,0 +1,271 @@
+{
+  "note": "Measured by tools/characters/anim-shots.mjs from the rendered, skinned meshes (metres, character root at the origin, facing +Z, floor y = 0). Cross-rig rows use the Bip01 position track scaled by character.hipHeight / set.hipHeight.",
+  "seated": {
+    "elder_man__anims_m": {
+      "pelvisY": 0.5908,
+      "buttocksUndersideY": 0.4541,
+      "thighUndersideY": 0.4205,
+      "kneeForwardZ": 0.3672,
+      "footForwardZ": 0.4266,
+      "headY": 1.2614,
+      "table": {
+        "pelvisY": 0.5786,
+        "thighUndersideY": 0.4176,
+        "handY": 0.7894,
+        "handForwardZ": 0.3742
+      }
+    },
+    "elder_man__anims_f": {
+      "pelvisY": 0.5927,
+      "buttocksUndersideY": 0.4458,
+      "thighUndersideY": 0.335,
+      "kneeForwardZ": 0.3391,
+      "footForwardZ": 0.2927,
+      "headY": 1.2554,
+      "table": {
+        "pelvisY": 0.5927,
+        "thighUndersideY": 0.338,
+        "handY": 0.7634,
+        "handForwardZ": 0.1944
+      }
+    },
+    "man__anims_m": {
+      "pelvisY": 0.5908,
+      "buttocksUndersideY": 0.4685,
+      "thighUndersideY": 0.3477,
+      "kneeForwardZ": 0.3672,
+      "footForwardZ": 0.4266,
+      "headY": 1.2614,
+      "table": {
+        "pelvisY": 0.5786,
+        "thighUndersideY": 0.4332,
+        "handY": 0.7894,
+        "handForwardZ": 0.3742
+      }
+    },
+    "man__anims_f": {
+      "pelvisY": 0.5927,
+      "buttocksUndersideY": 0.457,
+      "thighUndersideY": 0.3308,
+      "kneeForwardZ": 0.3391,
+      "footForwardZ": 0.2927,
+      "headY": 1.2554,
+      "table": {
+        "pelvisY": 0.5927,
+        "thighUndersideY": 0.3338,
+        "handY": 0.7634,
+        "handForwardZ": 0.1944
+      }
+    },
+    "woman__anims_m": {
+      "pelvisY": 0.6094,
+      "buttocksUndersideY": 0.3913,
+      "thighUndersideY": 0.4651,
+      "kneeForwardZ": 0.3957,
+      "footForwardZ": 0.4557,
+      "headY": 1.1998,
+      "table": {
+        "pelvisY": 0.5968,
+        "thighUndersideY": 0.4654,
+        "handY": 0.7827,
+        "handForwardZ": 0.3072
+      }
+    },
+    "woman__anims_f": {
+      "pelvisY": 0.6113,
+      "buttocksUndersideY": 0.3915,
+      "thighUndersideY": 0.2737,
+      "kneeForwardZ": 0.3677,
+      "footForwardZ": 0.3208,
+      "headY": 1.1909,
+      "table": {
+        "pelvisY": 0.6113,
+        "thighUndersideY": 0.3502,
+        "handY": 0.7619,
+        "handForwardZ": 0.1527
+      }
+    }
+  },
+  "transitions": {
+    "elder_man__anims_m": {
+      "stand_to_sit": {
+        "pelvisStart": [
+          0,
+          0.895,
+          0
+        ],
+        "pelvisEnd": [
+          0,
+          0.5908,
+          -0.4604
+        ],
+        "feetStartZ": -0.0168,
+        "feetEndZ": -0.0338
+      },
+      "sit_to_stand": {
+        "pelvisStart": [
+          0,
+          0.5908,
+          0
+        ],
+        "pelvisEnd": [
+          0.0161,
+          0.895,
+          0.4229
+        ],
+        "feetStartZ": 0.4266,
+        "feetEndZ": 0.406
+      }
+    },
+    "elder_man__anims_f": {
+      "stand_to_sit": {
+        "pelvisStart": [
+          0,
+          0.8915,
+          0
+        ],
+        "pelvisEnd": [
+          0,
+          0.5927,
+          -0.4398
+        ],
+        "feetStartZ": -0.035,
+        "feetEndZ": -0.1471
+      },
+      "sit_to_stand": {
+        "pelvisStart": [
+          0,
+          0.5927,
+          0
+        ],
+        "pelvisEnd": [
+          0,
+          0.8915,
+          0.3887
+        ],
+        "feetStartZ": 0.2927,
+        "feetEndZ": 0.3536
+      }
+    },
+    "man__anims_m": {
+      "stand_to_sit": {
+        "pelvisStart": [
+          0,
+          0.895,
+          0
+        ],
+        "pelvisEnd": [
+          0,
+          0.5908,
+          -0.4604
+        ],
+        "feetStartZ": -0.0168,
+        "feetEndZ": -0.0338
+      },
+      "sit_to_stand": {
+        "pelvisStart": [
+          0,
+          0.5908,
+          0
+        ],
+        "pelvisEnd": [
+          0.0161,
+          0.895,
+          0.4229
+        ],
+        "feetStartZ": 0.4266,
+        "feetEndZ": 0.406
+      }
+    },
+    "man__anims_f": {
+      "stand_to_sit": {
+        "pelvisStart": [
+          0,
+          0.8915,
+          0
+        ],
+        "pelvisEnd": [
+          0,
+          0.5927,
+          -0.4398
+        ],
+        "feetStartZ": -0.035,
+        "feetEndZ": -0.1471
+      },
+      "sit_to_stand": {
+        "pelvisStart": [
+          0,
+          0.5927,
+          0
+        ],
+        "pelvisEnd": [
+          0,
+          0.8915,
+          0.3887
+        ],
+        "feetStartZ": 0.2927,
+        "feetEndZ": 0.3536
+      }
+    },
+    "woman__anims_m": {
+      "stand_to_sit": {
+        "pelvisStart": [
+          0,
+          0.9231,
+          0
+        ],
+        "pelvisEnd": [
+          0,
+          0.6094,
+          -0.4749
+        ],
+        "feetStartZ": -0.0132,
+        "feetEndZ": -0.0192
+      },
+      "sit_to_stand": {
+        "pelvisStart": [
+          0,
+          0.6094,
+          0
+        ],
+        "pelvisEnd": [
+          0.0166,
+          0.9231,
+          0.4361
+        ],
+        "feetStartZ": 0.4557,
+        "feetEndZ": 0.423
+      }
+    },
+    "woman__anims_f": {
+      "stand_to_sit": {
+        "pelvisStart": [
+          0,
+          0.9194,
+          0
+        ],
+        "pelvisEnd": [
+          0,
+          0.6113,
+          -0.4536
+        ],
+        "feetStartZ": -0.0334,
+        "feetEndZ": -0.1328
+      },
+      "sit_to_stand": {
+        "pelvisStart": [
+          0,
+          0.6113,
+          0
+        ],
+        "pelvisEnd": [
+          0,
+          0.9194,
+          0.4008
+        ],
+        "feetStartZ": 0.3208,
+        "feetEndZ": 0.3675
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+import { chromium } from 'playwright';
+const OUT = process.argv[2];
+const browser = await chromium.launch({ args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'] });
+const page = await browser.newPage({ viewport: { width: 1440, height: 810 } });
+await page.addInitScript(() => localStorage.setItem('lexsim.debug', '1'));
+await page.goto('http://localhost:3000/hub');
+await page.getByRole('button', { name: 'Boshlash' }).first().click();
+await page.getByRole('button', { name: 'Ishni boshlash' }).click({ timeout: 90000 });
+await page.waitForTimeout(1200);
+await page.evaluate(() => window.__lexsimDebug.game.setState({ mode: 'exploring' }));
+await page.evaluate(() => window.__lexsimDebug.teleport(4.9, -1.7, 0.35, -0.25));
+await page.waitForTimeout(3000);
+await page.screenshot({ path: `${OUT}/doppi-a.png` });
+await page.evaluate(() => window.__lexsimDebug.game.getState().sit());
+await page.waitForTimeout(4500);
+await page.screenshot({ path: `${OUT}/doppi-b.png` });
+await browser.close();

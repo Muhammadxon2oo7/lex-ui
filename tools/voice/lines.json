@@ -1,0 +1,685 @@
+{
+  "generated": "2026-11-20T22:09:29.819Z",
+  "count": 97,
+  "lines": [
+    {
+      "voice": "male",
+      "text": "Assalomu alaykum. Meni ishdan boʻshatishdi… Nima qilishni bilmayapman.",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "consult"
+    },
+    {
+      "voice": "male",
+      "text": "Rahmat… Kechadan beri uxlay olmadim.",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "consult"
+    },
+    {
+      "voice": "male",
+      "text": "14-oktabr kuni buyruq bilan boʻshatishdi: 9–10-oktabr ishga kelmagansan, deb. Lekin oʻsha kunlari kasal edim, boshligʻimga telefon qilib aytganman.",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "consult"
+    },
+    {
+      "voice": "male",
+      "text": "Mehnat shartnomam, buyruq nusxasi va kasallik varaqasi. Varaqani kadrlarga olib borgandim — olishmadi.",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "consult"
+    },
+    {
+      "voice": "male",
+      "text": "Hamkasbim Bahodir aka. U oʻshanda boshliqning yonida edi.",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "consult"
+    },
+    {
+      "voice": "male",
+      "text": "«Namuna Savdo» MChJ, Namuna tumanida. Besh yil omborchi boʻldim, oyligim 4,2 million.",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "consult"
+    },
+    {
+      "voice": "male",
+      "text": "Yoʻq. Hech narsa soʻrashmadi — toʻgʻridan-toʻgʻri buyruq chiqarishdi.",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "consult"
+    },
+    {
+      "voice": "male",
+      "text": "14-oktabrning oʻzida berishdi, imzo qoʻydirib.",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "consult"
+    },
+    {
+      "voice": "male",
+      "text": "Roziman. Qayerga imzo qoʻyay?",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "consult"
+    },
+    {
+      "voice": "male",
+      "text": "Rostdanmi?! Unda xotirjam boʻldim…",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "consult"
+    },
+    {
+      "voice": "male",
+      "text": "Yoʻq… Men bunday ishlarga aralashmayman. Qonun boʻyicha qilaylik.",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "consult"
+    },
+    {
+      "voice": "male",
+      "text": "Katta rahmat. Sizga ishonaman.",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "consult"
+    },
+    {
+      "voice": "female",
+      "text": "Assalomu alaykum. Qanday masalada keldingiz?",
+      "speaker": "clerk",
+      "case": "labour",
+      "stage": "filing"
+    },
+    {
+      "voice": "female",
+      "text": "Ariza, javobgar uchun nusxa, ilovalar va vakolat hujjatingizni bering.",
+      "speaker": "clerk",
+      "case": "labour",
+      "stage": "filing"
+    },
+    {
+      "voice": "female",
+      "text": "Arizalar devonxona orqali roʻyxatdan oʻtadi. Qabul qilish masalasini sudya yakka tartibda hal qiladi.",
+      "speaker": "clerk",
+      "case": "labour",
+      "stage": "filing"
+    },
+    {
+      "voice": "female",
+      "text": "Olib qoʻying! Buni qabul qilmayman.",
+      "speaker": "clerk",
+      "case": "labour",
+      "stage": "filing"
+    },
+    {
+      "voice": "female",
+      "text": "Qabul qildim. Roʻyxat raqami — 2-1407/26. Sudya oʻn kun ichida ajrim chiqaradi, nusxasi pochta orqali yuboriladi.",
+      "speaker": "clerk",
+      "case": "labour",
+      "stage": "filing"
+    },
+    {
+      "voice": "female",
+      "text": "Shart. Javobgar oʻz nusxasini oladi.",
+      "speaker": "clerk",
+      "case": "labour",
+      "stage": "filing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Oʻtiring. Ishni tayyorlash tartibida taraflarni soʻroq qilaman. Daʼvogar vakili, talablaringiz mohiyatini qisqacha bayon qiling.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "chamber"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Tushunarli.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "chamber"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Asossiz deysiz — qaysi holatlarga tayanasiz?",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "chamber"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Bu baho, holat emas. Qaysi holatlarga asoslanasiz?",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "chamber"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Javobgar eʼtiroz bildirishi aniq. Qoʻshimcha dalil yoki iltimosingiz bormi?",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "chamber"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Iltimos qanoatlantiriladi.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "chamber"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Yaxshi.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "chamber"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Mumkin emas: vakil vakillik munosabati bilan bilgan holatlar boʻyicha guvoh boʻla olmaydi.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "chamber"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Taraflar kelishuv bitimi yoki mediativ kelishuv tuzishi mumkin. Daʼvogar bunga qanday qaraydi?",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "chamber"
+    },
+    {
+      "voice": "male",
+      "text": "Ha, shunday.",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "chamber"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Qayd etildi. Ish 2-zalda, soat 10:00 da koʻriladi.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "chamber"
+    },
+    {
+      "voice": "male",
+      "text": "(sekin) Meni ham bir soʻrasangiz boʻlardi…",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "chamber"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Bu qarorni daʼvogarning oʻzi qabul qiladi. Ish 2-zalda, soat 10:00 da koʻriladi.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "chamber"
+    },
+    {
+      "voice": "female",
+      "text": "Sud kelmoqda! Barchangizdan oʻrningizdan turishingizni soʻrayman.",
+      "speaker": "secretary",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Sud majlisini ochiq deb eʼlon qilaman. Sardor N.ning «Namuna Savdo» MChJga nisbatan ishga tiklash toʻgʻrisidagi daʼvosi boʻyicha fuqarolik ishi koʻriladi. Oʻtiring.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "female",
+      "text": "Hurmatli sud! Ish boʻyicha chaqirilganlardan daʼvogar Sardor N. va uning vakili — advokat, javobgar «Namuna Savdo» MChJ vakili hozir. Guvoh Bahodir R. chaqiruv qogʻozini olgan, yoʻlakda kutmoqda.",
+      "speaker": "secretary",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "female",
+      "text": "Hurmatli sud! Ish boʻyicha chaqirilganlardan daʼvogar Sardor N. va uning vakili — advokat, javobgar «Namuna Savdo» MChJ vakili hozir.",
+      "speaker": "secretary",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Ish sudya B. Islomov tomonidan yakka tartibda koʻriladi, sud majlisi kotibi — Malika S. Taraflar rad qilish toʻgʻrisida arz qilishga haqli. Daʼvogar tomonida arizalar bormi?",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Sudga «Hurmatli sud!» deb murojaat qilinadi.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Rad qilish sudya, prokuror, ekspert, mutaxassis, tarjimon va sud majlisi kotibiga nisbatan bildiriladi. Taraf vakili rad qilinmaydi.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Ishda ishtirok etuvchi shaxslarga protsessual huquq va majburiyatlari tushuntiriladi: dalillar taqdim etish, iltimosnoma berish, boshqa ishtirokchilarga va guvohlarga savol berish, tushuntirish berish huquqiga egasiz.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Ish mazmunan koʻriladi. Daʼvogar 14-oktabrdagi buyruq bilan boʻshatilgan va ishga tiklashni soʻraydi. Daʼvogar tomoni, talablaringizni quvvatlaysizmi? Tushuntirish bering.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "female_alt",
+      "text": "Hurmatli sud! Varaqa vaqtida topshirilmagan, shu sababli kunlar uzrsiz deb topildi.",
+      "speaker": "respondent",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "female_alt",
+      "text": "Hurmatli sud! Daʼvogar ikki kun ishga kelmagan. Boʻshatish qonuniy.",
+      "speaker": "respondent",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Ish holatlari boʻyicha gapiring.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Yozma dalillar oʻqib eshittiriladi: 14-oktabrdagi 47-k-sonli buyruq va mehnatga layoqatsizlik varaqasi. Taraflar, dalillar yuzasidan fikringiz?",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Qayd etildi.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Yozma dalillar sud majlisida oʻqib eshittiriladi — qaror faqat majlisda tekshirilgan dalillarga asoslanadi.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Guvoh Bahodir R.ni zalga taklif qiling.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "female",
+      "text": "Guvoh, marhamat, tribunaga oʻting.",
+      "speaker": "secretary",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Guvohning shaxsi, mashgʻuloti va taraflar bilan munosabati aniqlandi: daʼvogarning hamkasbi. Guvoh, bila turib yolgʻon koʻrsatuv berganlik uchun Jinoyat kodeksining 238-moddasiga muvofiq javobgarlik toʻgʻrisida ogohlantirilasiz. Qasamyod qiling va tilxatga imzo qoʻying.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "male",
+      "text": "Ish yuzasidan oʻzimga maʼlum boʻlgan barcha maʼlumotlarni sudga aytib berishga qasamyod qilaman. Faqat haqiqatni gapirib beraman.",
+      "speaker": "witness",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Daʼvogar vakili, savolingiz?",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "male",
+      "text": "Boshliqning yonida edim. Sardor qoʻngʻiroq qilib, isitmasi baland, poliklinikaga ketayotganini aytdi.",
+      "speaker": "witness",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "female_alt",
+      "text": "Hurmatli sud, guvohga savol. Qoʻngʻiroqni oʻzingiz eshitdingizmi yoki keyin aytib berishganmi?",
+      "speaker": "respondent",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "male",
+      "text": "Oʻzim eshitdim — telefon baland ovozda edi.",
+      "speaker": "witness",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Guvohga javobni oʻzingiz aytib bermang.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "male",
+      "text": "U kasal boʻlib qolganini aytgan edi.",
+      "speaker": "witness",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Ish materiallarini toʻldirish istagi yoʻq. Ishni mazmunan muhokama qilish tugallandi. Sud muzokaralariga oʻtamiz — soʻz daʼvogar vakiliga.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "female_alt",
+      "text": "Hurmatli sud, daʼvoni rad etishingizni soʻrayman.",
+      "speaker": "respondent",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Sud ushbu ishda tekshirilgan dalillar va qonunga asoslanadi. Dalillaringizni tahlil qiling.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Muzokarada sud majlisida tekshirilmagan dalillarga asoslanish mumkin emas.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Sud hal qiluv qarorini qabul qilish uchun maslahatxonaga chiqadi.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "female",
+      "text": "Sud chiqmoqda! Oʻrningizdan turing.",
+      "speaker": "secretary",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "female",
+      "text": "Sud kelmoqda! Hal qiluv qarori eʼlon qilinadi — oʻrningizdan turing.",
+      "speaker": "secretary",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Oʻzbekiston Respublikasi nomidan: daʼvo qanoatlantirilmasin — kelmaslik sababi uzrli ekani yetarli isbotlanmadi.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Qaror ustidan bir oy ichida apellyatsiya shikoyati berilishi mumkin. Sud majlisi yopildi.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Oʻzbekiston Respublikasi nomidan: daʼvo qanoatlantirilsin. Sardor N. avvalgi lavozimiga tiklansin, majburiy progul vaqti uchun haq undirilsin.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Hal qiluv qarorining ishga tiklash qismi darhol ijro etilsin.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "hearing"
+    },
+    {
+      "voice": "female",
+      "text": "Kecha kechqurun bozorda sumkamdan telefonimni olib qoʻyishdi… Endi nima qilamiz?",
+      "speaker": "client",
+      "case": "theft",
+      "stage": "report"
+    },
+    {
+      "voice": "male",
+      "text": "Navbatchi qism. Qanday masalada keldingiz?",
+      "speaker": "officer",
+      "case": "theft",
+      "stage": "report"
+    },
+    {
+      "voice": "male",
+      "text": "Tushunarli. Ariza yozma boʻladimi yoki ogʻzaki? Ogʻzaki boʻlsa, bayonnomaga yozaman.",
+      "speaker": "officer",
+      "case": "theft",
+      "stage": "report"
+    },
+    {
+      "voice": "male",
+      "text": "Imzosiz, anonim xabar jinoyat ishini qoʻzgʻatishga sabab boʻla olmaydi.",
+      "speaker": "officer",
+      "case": "theft",
+      "stage": "report"
+    },
+    {
+      "voice": "male",
+      "text": "Yaxshi, qabul qilaman.",
+      "speaker": "officer",
+      "case": "theft",
+      "stage": "report"
+    },
+    {
+      "voice": "male",
+      "text": "Bayonnomada arizachi, yashash va ish joyi, shaxsiy hujjatlari koʻrsatiladi; holatlar uning nomidan, iloji boricha soʻzma-soʻz yoziladi.",
+      "speaker": "officer",
+      "case": "theft",
+      "stage": "report"
+    },
+    {
+      "voice": "male",
+      "text": "Shart. Yozma ariza arz qiluvchi tomonidan imzolangan boʻlishi lozim.",
+      "speaker": "officer",
+      "case": "theft",
+      "stage": "report"
+    },
+    {
+      "voice": "male",
+      "text": "Arizachi, bila turib yolgʻon xabar berganlik uchun jinoiy javobgarlik toʻgʻrisida ogohlantirilasiz. Bu bayonnomada qayd etiladi — imzolang.",
+      "speaker": "officer",
+      "case": "theft",
+      "stage": "report"
+    },
+    {
+      "voice": "female",
+      "text": "Tushundim. Imzolayman.",
+      "speaker": "client",
+      "case": "theft",
+      "stage": "report"
+    },
+    {
+      "voice": "male",
+      "text": "Ariza roʻyxatga olindi. Mana, qabul qilingani haqida maʼlumot — raqami shunda.",
+      "speaker": "officer",
+      "case": "theft",
+      "stage": "report"
+    },
+    {
+      "voice": "male",
+      "text": "Shart. Bu Kodeks talabi, advokatning ishtirokidan qatʼi nazar.",
+      "speaker": "officer",
+      "case": "theft",
+      "stage": "report"
+    },
+    {
+      "voice": "female",
+      "text": "Mayli, imzolayman.",
+      "speaker": "client",
+      "case": "theft",
+      "stage": "report"
+    },
+    {
+      "voice": "male",
+      "text": "Ariza roʻyxatga olindi va darhol koʻriladi; tekshiruv kerak boʻlsa — oʻn sutkadan kechiktirmay hal qilinadi. Qoʻshimcha nima taqdim etasiz?",
+      "speaker": "officer",
+      "case": "theft",
+      "stage": "report"
+    },
+    {
+      "voice": "male",
+      "text": "Qabul qildim, ilova qilaman. Kamera boʻyicha topshiriq beriladi.",
+      "speaker": "officer",
+      "case": "theft",
+      "stage": "report"
+    },
+    {
+      "voice": "male",
+      "text": "Oʻzboshimchalik qilmang. Tekshiruvni vakolatli organ oʻtkazadi.",
+      "speaker": "officer",
+      "case": "theft",
+      "stage": "report"
+    },
+    {
+      "voice": "male",
+      "text": "Jinoyat ishi qoʻzgʻatildi, Nodira K. jabrlanuvchi deb eʼtirof etildi. Vaqt kam — soʻroqni boshlaymiz. Qachon, qayerda boʻldi?",
+      "speaker": "investigator",
+      "case": "theft",
+      "stage": "interview"
+    },
+    {
+      "voice": "male",
+      "text": "Toʻgʻri. Siz koʻrsatuv berish, dalil taqdim qilish, iltimosnoma berish, vakil olish, ona tilingizdan foydalanish huquqiga egasiz. Bila turib yolgʻon koʻrsatuv berganlik uchun javobgarlik toʻgʻrisida ogohlantirilasiz.",
+      "speaker": "investigator",
+      "case": "theft",
+      "stage": "interview"
+    },
+    {
+      "voice": "female",
+      "text": "Tushunarli.",
+      "speaker": "client",
+      "case": "theft",
+      "stage": "interview"
+    },
+    {
+      "voice": "female",
+      "text": "Kecha soat yettilarda bozorda edim…",
+      "speaker": "client",
+      "case": "theft",
+      "stage": "interview"
+    },
+    {
+      "voice": "female",
+      "text": "Kecha soat yettilarda bozorda meva olayotgandim. Yonimda koʻk kurtkali yigit turgan edi, keyin sumkamning ochiq ekanini koʻrdim.",
+      "speaker": "client",
+      "case": "theft",
+      "stage": "interview"
+    },
+    {
+      "voice": "male",
+      "text": "Advokat, sizda savol bormi?",
+      "speaker": "investigator",
+      "case": "theft",
+      "stage": "interview"
+    },
+    {
+      "voice": "female",
+      "text": "Baland boʻyli, qoʻlida qora sumka bor edi. Avtobus bekati tomonga ketdi.",
+      "speaker": "client",
+      "case": "theft",
+      "stage": "interview"
+    },
+    {
+      "voice": "male",
+      "text": "Jabrlanuvchiga javobni oʻzingiz aytib bermang.",
+      "speaker": "investigator",
+      "case": "theft",
+      "stage": "interview"
+    },
+    {
+      "voice": "male",
+      "text": "Soʻroq tugadi. Bayonnomani imzolang.",
+      "speaker": "investigator",
+      "case": "theft",
+      "stage": "interview"
+    },
+    {
+      "voice": "male",
+      "text": "Haqlisiz, tuzatamiz. Arzingiz bayonnomaga kiritildi.",
+      "speaker": "investigator",
+      "case": "theft",
+      "stage": "interview"
+    },
+    {
+      "voice": "female",
+      "text": "Nimani imzolayotganimni bilmayman…",
+      "speaker": "client",
+      "case": "theft",
+      "stage": "interview"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Eshitaman. Qanday shikoyat?",
+      "speaker": "chief",
+      "case": "theft",
+      "stage": "complaint"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Shikoyatingiz qabul qilindi. Tergovchiga koʻrsatma beraman, natijasini sizga yozma maʼlum qilamiz.",
+      "speaker": "chief",
+      "case": "theft",
+      "stage": "complaint"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Aniq qaysi harakat yoki qaror ustidan shikoyat qilyapsiz? Talabingizni aniq ayting.",
+      "speaker": "chief",
+      "case": "theft",
+      "stage": "complaint"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Tergovchining harakatlari ustidan shikoyat tergov boʻlinmasi boshligʻiga yoki nazorat qiluvchi prokurorga beriladi.",
+      "speaker": "chief",
+      "case": "theft",
+      "stage": "complaint"
+    }
+  ]
+}

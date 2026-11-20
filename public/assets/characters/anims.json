@@ -1,0 +1,1816 @@
+{
+  "generatedAt": "2026-11-20T11:50:14.729Z",
+  "generator": "tools/characters/build-animations.mjs",
+  "source": "https://github.com/microsoft/Microsoft-Rocketbox/tree/master/Assets/Animations",
+  "license": "MIT",
+  "fps": 30,
+  "rootNode": "Bip01",
+  "conventions": {
+    "units": "metres, Y up, character faces +Z at yaw 0",
+    "root": "All root translation and root rotation is keyed on the node \"Bip01\" (parent of the bone \"Bip01_Pelvis\", which sits at the same position). Every other bone only has a rotation track.",
+    "rootMotion": "Displacement of Bip01 (= pelvis) between the first and the last frame, in the character's local space. yawDeg = change of facing direction about +Y (positive = turns to its left, towards +X).",
+    "pelvisHeight": "Y of Bip01 / Bip01_Pelvis above the floor. Values are those of the rig the set was authored on (hipHeight of the set). To play a set on another rig, scale the Bip01 position track by character.hipHeight / set.hipHeight."
+  },
+  "sets": {
+    "m": {
+      "file": "anims_m.glb",
+      "description": "male clip set (authored on the male rig: elder_man, man)",
+      "authoredOnRig": "elder_man",
+      "hipHeight": 0.8952,
+      "bytes": 2491612,
+      "clips": 36,
+      "tracksPerClip": 54
+    },
+    "f": {
+      "file": "anims_f.glb",
+      "description": "female clip set (authored on the female rig: woman)",
+      "authoredOnRig": "woman",
+      "hipHeight": 0.9233,
+      "bytes": 2114716,
+      "clips": 36,
+      "tracksPerClip": 54
+    }
+  },
+  "characters": {
+    "elder_man": {
+      "file": "elder_man.glb",
+      "hipHeight": 0.8952,
+      "nativeSet": "m"
+    },
+    "woman": {
+      "file": "woman.glb",
+      "hipHeight": 0.9233,
+      "nativeSet": "f"
+    },
+    "man": {
+      "file": "man.glb",
+      "hipHeight": 0.8952,
+      "nativeSet": "m"
+    }
+  },
+  "clips": {
+    "sit_idle": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_sit_chair_idle_neutral_01.max.fbx",
+        "duration": 36.1,
+        "frames": 1084,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.5911,
+        "pelvisHeightEnd": 0.5911,
+        "loopSeamDeg": 0.62,
+        "notes": "Long neutral seated idle, hands on the thighs."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_sit_chair_idle_neutral_01.max.fbx",
+        "duration": 33.2333,
+        "frames": 998,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.6112,
+        "pelvisHeightEnd": 0.6112,
+        "loopSeamDeg": 0.06,
+        "notes": "Long neutral seated idle, hands on the thighs."
+      }
+    },
+    "sit_breathe": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_sit_chair_breathe_01.max.fbx",
+        "duration": 12.7,
+        "frames": 382,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.5911,
+        "pelvisHeightEnd": 0.5911,
+        "loopSeamDeg": 0.04,
+        "notes": "Seated, breathing only (calmest seated loop)."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_sit_chair_breathe_01.max.fbx",
+        "duration": 19.2,
+        "frames": 577,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.6112,
+        "pelvisHeightEnd": 0.6112,
+        "loopSeamDeg": 0.04,
+        "notes": "Seated, breathing only (calmest seated loop)."
+      }
+    },
+    "sit_look_around": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_sit_chair_idle_look_around.max.fbx",
+        "duration": 8.6667,
+        "frames": 261,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.5911,
+        "pelvisHeightEnd": 0.5911,
+        "loopSeamDeg": 0.04,
+        "notes": "Seated, looks around once."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_sit_chair_idle_look_around.max.fbx",
+        "duration": 7.1667,
+        "frames": 216,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.6112,
+        "pelvisHeightEnd": 0.6112,
+        "loopSeamDeg": 0.04,
+        "notes": "Seated, looks around once."
+      }
+    },
+    "sit_thoughtful": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_sit_chair_gestic_thoughtful.max.fbx",
+        "duration": 16.3333,
+        "frames": 491,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.5911,
+        "pelvisHeightEnd": 0.5911,
+        "loopSeamDeg": 0.04,
+        "notes": "Seated, thoughtful gesture."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_sit_chair_gestic_thoughtful.max.fbx",
+        "duration": 8.9,
+        "frames": 268,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.6112,
+        "pelvisHeightEnd": 0.6112,
+        "loopSeamDeg": 0.04,
+        "notes": "Seated, thoughtful gesture."
+      }
+    },
+    "sit_shrug": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_sit_chair_gestic_shrug_01.max.fbx",
+        "duration": 3,
+        "frames": 91,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.5911,
+        "pelvisHeightEnd": 0.5911,
+        "loopSeamDeg": 0.04,
+        "notes": "Seated shrug."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_sit_chair_gestic_shrug_01.max.fbx",
+        "duration": 1.4667,
+        "frames": 45,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.6112,
+        "pelvisHeightEnd": 0.6112,
+        "loopSeamDeg": 0.04,
+        "notes": "Seated shrug."
+      }
+    },
+    "sit_table_idle": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_sit_table_idle_neutral_01.max.fbx",
+        "duration": 45.7,
+        "frames": 1372,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.5787,
+        "pelvisHeightEnd": 0.5787,
+        "loopSeamDeg": 0.04,
+        "notes": "Seated at a table, forearms on the table top."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_sit_table_idle_neutral_01.max.fbx",
+        "duration": 26.2333,
+        "frames": 788,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.6112,
+        "pelvisHeightEnd": 0.6112,
+        "loopSeamDeg": 0.04,
+        "notes": "Seated at a table, forearms on the table top."
+      }
+    },
+    "sit_table_look_around": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_sit_table_idle_look_around.max.fbx",
+        "duration": 8.6667,
+        "frames": 261,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.5787,
+        "pelvisHeightEnd": 0.5787,
+        "loopSeamDeg": 0.04,
+        "notes": "Seated at a table, looks around once."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_sit_table_idle_look_around.max.fbx",
+        "duration": 4,
+        "frames": 121,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.6112,
+        "pelvisHeightEnd": 0.6112,
+        "loopSeamDeg": 0.04,
+        "notes": "Seated at a table, looks around once."
+      }
+    },
+    "sit_table_thoughtful": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_sit_table_gestic_thoughtful.max.fbx",
+        "duration": 16.6667,
+        "frames": 501,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.5787,
+        "pelvisHeightEnd": 0.5787,
+        "loopSeamDeg": 0.03,
+        "notes": "Seated at a table, thoughtful gesture."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_sit_table_gestic_thoughtful.max.fbx",
+        "duration": 15.1333,
+        "frames": 455,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.6112,
+        "pelvisHeightEnd": 0.6112,
+        "loopSeamDeg": 0.04,
+        "notes": "Seated at a table, thoughtful gesture."
+      }
+    },
+    "sit_talk_1": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_gestic_talk_neutral_01.max.fbx",
+        "duration": 35.5667,
+        "frames": 1068,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.5911,
+        "pelvisHeightEnd": 0.5911,
+        "loopSeamDeg": 72.81,
+        "notes": "Composed: arms + head of stand_talk_1 over the seated idle.",
+        "composedFrom": {
+          "base": "sit_idle",
+          "layer": "arms_head"
+        }
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_gestic_talk_neutral_01.max.fbx",
+        "duration": 27.3333,
+        "frames": 821,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.6112,
+        "pelvisHeightEnd": 0.6112,
+        "loopSeamDeg": 0.04,
+        "notes": "Composed: arms + head of stand_talk_1 over the seated idle.",
+        "composedFrom": {
+          "base": "sit_idle",
+          "layer": "arms_head"
+        }
+      }
+    },
+    "sit_talk_2": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_gestic_talk_neutral_02.max.fbx",
+        "duration": 44.4,
+        "frames": 1333,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.5911,
+        "pelvisHeightEnd": 0.5911,
+        "loopSeamDeg": 0.04,
+        "notes": "Composed: arms + head of stand_talk_2 over the seated idle.",
+        "composedFrom": {
+          "base": "sit_idle",
+          "layer": "arms_head"
+        }
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_gestic_talk_neutral_02.max.fbx",
+        "duration": 27.6667,
+        "frames": 831,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.6112,
+        "pelvisHeightEnd": 0.6112,
+        "loopSeamDeg": 0.04,
+        "notes": "Composed: arms + head of stand_talk_2 over the seated idle.",
+        "composedFrom": {
+          "base": "sit_idle",
+          "layer": "arms_head"
+        }
+      }
+    },
+    "sit_talk_3": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_gestic_talk_relaxed_01.max.fbx",
+        "duration": 32.3333,
+        "frames": 971,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.5911,
+        "pelvisHeightEnd": 0.5911,
+        "loopSeamDeg": 0.04,
+        "notes": "Composed: arms + head of stand_talk_3 over the seated idle.",
+        "composedFrom": {
+          "base": "sit_idle",
+          "layer": "arms_head"
+        }
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_gestic_talk_relaxed_01.max.fbx",
+        "duration": 27.5,
+        "frames": 826,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.6112,
+        "pelvisHeightEnd": 0.6112,
+        "loopSeamDeg": 0.04,
+        "notes": "Composed: arms + head of stand_talk_3 over the seated idle.",
+        "composedFrom": {
+          "base": "sit_idle",
+          "layer": "arms_head"
+        }
+      }
+    },
+    "sit_nod": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_gestic_listen_accept_01.max.fbx",
+        "duration": 3.7,
+        "frames": 112,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.5911,
+        "pelvisHeightEnd": 0.5911,
+        "loopSeamDeg": 0.04,
+        "notes": "Composed: head nod over the seated idle.",
+        "composedFrom": {
+          "base": "sit_idle",
+          "layer": "head"
+        }
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_gestic_listen_accept_01.max.fbx",
+        "duration": 2.0333,
+        "frames": 62,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.6112,
+        "pelvisHeightEnd": 0.6112,
+        "loopSeamDeg": 0.04,
+        "notes": "Composed: head nod over the seated idle.",
+        "composedFrom": {
+          "base": "sit_idle",
+          "layer": "head"
+        }
+      }
+    },
+    "sit_head_shake": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_gestic_listen_deny_01.max.fbx",
+        "duration": 3,
+        "frames": 91,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.5911,
+        "pelvisHeightEnd": 0.5911,
+        "loopSeamDeg": 0.04,
+        "notes": "Composed: head shake over the seated idle.",
+        "composedFrom": {
+          "base": "sit_idle",
+          "layer": "head"
+        }
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_gestic_listen_deny_01.max.fbx",
+        "duration": 3.1667,
+        "frames": 96,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.6112,
+        "pelvisHeightEnd": 0.6112,
+        "loopSeamDeg": 0.04,
+        "notes": "Composed: head shake over the seated idle.",
+        "composedFrom": {
+          "base": "sit_idle",
+          "layer": "head"
+        }
+      }
+    },
+    "stand_to_sit": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_xyz/m_sit_down_chair_01.max.fbx",
+        "duration": 2.9,
+        "frames": 88,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": -0.3041,
+          "z": -0.4606,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.5911,
+        "loopSeamDeg": 73.29,
+        "notes": "Sits down on a chair behind the character (root motion backwards and down)."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_xyz/f_sit_down_chair_01.max.fbx",
+        "duration": 4.9,
+        "frames": 148,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": -0.3082,
+          "z": -0.4534,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": true,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.6112,
+        "loopSeamDeg": 80.58,
+        "notes": "Sits down on a chair behind the character (root motion backwards and down)."
+      }
+    },
+    "sit_to_stand": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_xyz/m_sit_stand_up_chair_01.max.fbx",
+        "duration": 2.5,
+        "frames": 76,
+        "loop": false,
+        "rootMotion": {
+          "x": 0.0163,
+          "y": 0.3041,
+          "z": 0.4229,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.5911,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 73.29,
+        "notes": "Stands up from a chair (root motion forwards and up)."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_xyz/f_sit_stand_up_chair_01.max.fbx",
+        "duration": 3.3333,
+        "frames": 101,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0.3082,
+          "z": 0.4007,
+          "yawDeg": 0
+        },
+        "startsSeated": true,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.6112,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 80.57,
+        "notes": "Stands up from a chair (root motion forwards and up)."
+      }
+    },
+    "stand_idle": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_idle_neutral_01.max.fbx",
+        "duration": 11.6667,
+        "frames": 351,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Neutral standing idle."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_idle_neutral_01.max.fbx",
+        "duration": 15.5333,
+        "frames": 467,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.05,
+        "notes": "Neutral standing idle."
+      }
+    },
+    "stand_look_around": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_idle_look_around_01.max.fbx",
+        "duration": 4.6333,
+        "frames": 140,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, looks around once."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_idle_look_around_01.max.fbx",
+        "duration": 4.4667,
+        "frames": 135,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.07,
+        "notes": "Standing, looks around once."
+      }
+    },
+    "stand_talk_1": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_gestic_talk_neutral_01.max.fbx",
+        "duration": 35.5667,
+        "frames": 1068,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.06,
+        "notes": "Standing, talking with neutral gestures."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_gestic_talk_neutral_01.max.fbx",
+        "duration": 27.3333,
+        "frames": 821,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, talking with neutral gestures."
+      }
+    },
+    "stand_talk_2": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_gestic_talk_neutral_02.max.fbx",
+        "duration": 44.4,
+        "frames": 1333,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, talking with neutral gestures (variant)."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_gestic_talk_neutral_02.max.fbx",
+        "duration": 27.6667,
+        "frames": 831,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.05,
+        "notes": "Standing, talking with neutral gestures (variant)."
+      }
+    },
+    "stand_talk_3": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_gestic_talk_relaxed_01.max.fbx",
+        "duration": 32.3333,
+        "frames": 971,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, talking, relaxed."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_gestic_talk_relaxed_01.max.fbx",
+        "duration": 27.5,
+        "frames": 826,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, talking, relaxed."
+      }
+    },
+    "stand_talk_angry": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_xyz/m_gestic_talk_angry_01.max.fbx",
+        "duration": 39.2667,
+        "frames": 1179,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, talking angrily."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_gestic_talk_angry_01.max.fbx",
+        "duration": 32.7667,
+        "frames": 984,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, talking angrily."
+      }
+    },
+    "stand_present_left": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_gestic_presentation_left_01.max.fbx",
+        "duration": 22.3667,
+        "frames": 672,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, presenting / pointing to the left."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_gestic_presentation_left_01.max.fbx",
+        "duration": 16,
+        "frames": 481,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.07,
+        "notes": "Standing, presenting / pointing to the left."
+      }
+    },
+    "stand_present_right": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_gestic_presentation_right_01.max.fbx",
+        "duration": 25.1,
+        "frames": 754,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, presenting / pointing to the right."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_gestic_presentation_right_01.max.fbx",
+        "duration": 14.1667,
+        "frames": 426,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, presenting / pointing to the right."
+      }
+    },
+    "stand_listen": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_gestic_listen_neutral_01.max.fbx",
+        "duration": 32.5333,
+        "frames": 977,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, listening attentively."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_gestic_listen_neutral_01.max.fbx",
+        "duration": 21.4333,
+        "frames": 644,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, listening attentively."
+      }
+    },
+    "stand_nod": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_gestic_listen_accept_01.max.fbx",
+        "duration": 3.7,
+        "frames": 112,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, nods (agreement)."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_gestic_listen_accept_01.max.fbx",
+        "duration": 2.0333,
+        "frames": 62,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, nods (agreement)."
+      }
+    },
+    "stand_head_shake": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_gestic_listen_deny_01.max.fbx",
+        "duration": 3,
+        "frames": 91,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, shakes the head (disagreement)."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_gestic_listen_deny_01.max.fbx",
+        "duration": 3.1667,
+        "frames": 96,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, shakes the head (disagreement)."
+      }
+    },
+    "stand_shrug": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_gestic_shrug_01.max.fbx",
+        "duration": 1.8333,
+        "frames": 56,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing shrug."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_gestic_shrug_01.max.fbx",
+        "duration": 1.8333,
+        "frames": 56,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing shrug."
+      }
+    },
+    "stand_thoughtful": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_gestic_thoughtful_01.max.fbx",
+        "duration": 13.5,
+        "frames": 406,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, thoughtful gesture."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_gestic_thoughtful_01.max.fbx",
+        "duration": 9.4333,
+        "frames": 284,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.07,
+        "notes": "Standing, thoughtful gesture."
+      }
+    },
+    "stand_angry": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_idle_angry_01.max.fbx",
+        "duration": 28.3333,
+        "frames": 851,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, angry / impatient idle."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_idle_angry_01.max.fbx",
+        "duration": 23.8333,
+        "frames": 716,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.07,
+        "notes": "Standing, angry / impatient idle."
+      }
+    },
+    "stand_wave": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_wave_01.max.fbx",
+        "duration": 2.8333,
+        "frames": 86,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Raises the hand and waves."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_wave_01.max.fbx",
+        "duration": 5.5333,
+        "frames": 167,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.05,
+        "notes": "Raises the hand and waves."
+      }
+    },
+    "stand_write_notes": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_documents_note.max.fbx",
+        "duration": 10.0667,
+        "frames": 303,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, writes a note on documents held in the hand."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_documents_note.max.fbx",
+        "duration": 8.6667,
+        "frames": 261,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, writes a note on documents held in the hand."
+      }
+    },
+    "stand_documents_take": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_documents_take.max.fbx",
+        "duration": 5,
+        "frames": 151,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, takes / hands over a document."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_documents_take.max.fbx",
+        "duration": 7.6333,
+        "frames": 230,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.04,
+        "notes": "Standing, takes / hands over a document."
+      }
+    },
+    "work_table": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_static/m_work_table.max.fbx",
+        "duration": 11.3,
+        "frames": 340,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 0.04,
+        "notes": "Working at a table."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_static/f_work_table.max.fbx",
+        "duration": 28.3,
+        "frames": 850,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 0.05,
+        "notes": "Working at a table."
+      }
+    },
+    "walk": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_xy/m_walk_neutral.max.fbx",
+        "duration": 1.0667,
+        "frames": 33,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9018,
+        "pelvisHeightEnd": 0.9018,
+        "loopSeamDeg": 0.04,
+        "notes": "Walk cycle, made in-place (source has root motion; see inPlaceSpeed).",
+        "inPlace": true,
+        "inPlaceTravel": {
+          "x": 0,
+          "z": 1.4959
+        },
+        "inPlaceSpeed": 1.4024
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_xy/f_walk_neutral.max.fbx",
+        "duration": 1.2333,
+        "frames": 38,
+        "loop": true,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 0
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9136,
+        "pelvisHeightEnd": 0.9136,
+        "loopSeamDeg": 0.04,
+        "notes": "Walk cycle, made in-place (source has root motion; see inPlaceSpeed).",
+        "inPlace": true,
+        "inPlaceTravel": {
+          "x": 0,
+          "z": 1.5966
+        },
+        "inPlaceSpeed": 1.2946
+      }
+    },
+    "turn_left_90": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_xyz/m_turn_left_90.max.fbx",
+        "duration": 2.3333,
+        "frames": 71,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": 90
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 90,
+        "notes": "Turn 90° to the left on the spot (root rotation)."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_xyz/f_turn_left_90.max.fbx",
+        "duration": 2.3333,
+        "frames": 71,
+        "loop": false,
+        "rootMotion": {
+          "x": 0.0574,
+          "y": 0,
+          "z": -0.029,
+          "yawDeg": 90
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 90,
+        "notes": "Turn 90° to the left on the spot (root rotation)."
+      }
+    },
+    "turn_right_90": {
+      "m": {
+        "file": "anims_m.glb",
+        "source": "all_animations_max_motextr_xyz/m_turn_right_90.max.fbx",
+        "duration": 2.1667,
+        "frames": 66,
+        "loop": false,
+        "rootMotion": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "yawDeg": -90
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.8952,
+        "pelvisHeightEnd": 0.8952,
+        "loopSeamDeg": 90,
+        "notes": "Turn 90° to the right on the spot (root rotation)."
+      },
+      "f": {
+        "file": "anims_f.glb",
+        "source": "all_animations_max_motextr_xyz/f_turn_right_90.max.fbx",
+        "duration": 2.3333,
+        "frames": 71,
+        "loop": false,
+        "rootMotion": {
+          "x": -0.1547,
+          "y": 0,
+          "z": -0.0185,
+          "yawDeg": -90
+        },
+        "startsSeated": false,
+        "endsSeated": false,
+        "pelvisHeightStart": 0.9194,
+        "pelvisHeightEnd": 0.9194,
+        "loopSeamDeg": 90,
+        "notes": "Turn 90° to the right on the spot (root rotation)."
+      }
+    }
+  },
+  "measured": {
+    "note": "Measured by tools/characters/anim-shots.mjs from the rendered, skinned meshes (metres, character root at the origin, facing +Z, floor y = 0). Cross-rig rows use the Bip01 position track scaled by character.hipHeight / set.hipHeight.",
+    "seated": {
+      "elder_man__anims_m": {
+        "pelvisY": 0.5908,
+        "buttocksUndersideY": 0.4541,
+        "thighUndersideY": 0.4205,
+        "kneeForwardZ": 0.3672,
+        "footForwardZ": 0.4266,
+        "headY": 1.2614,
+        "table": {
+          "pelvisY": 0.5786,
+          "thighUndersideY": 0.4176,
+          "handY": 0.7894,
+          "handForwardZ": 0.3742
+        }
+      },
+      "elder_man__anims_f": {
+        "pelvisY": 0.5927,
+        "buttocksUndersideY": 0.4458,
+        "thighUndersideY": 0.335,
+        "kneeForwardZ": 0.3391,
+        "footForwardZ": 0.2927,
+        "headY": 1.2554,
+        "table": {
+          "pelvisY": 0.5927,
+          "thighUndersideY": 0.338,
+          "handY": 0.7634,
+          "handForwardZ": 0.1944
+        }
+      },
+      "man__anims_m": {
+        "pelvisY": 0.5908,
+        "buttocksUndersideY": 0.4685,
+        "thighUndersideY": 0.3477,
+        "kneeForwardZ": 0.3672,
+        "footForwardZ": 0.4266,
+        "headY": 1.2614,
+        "table": {
+          "pelvisY": 0.5786,
+          "thighUndersideY": 0.4332,
+          "handY": 0.7894,
+          "handForwardZ": 0.3742
+        }
+      },
+      "man__anims_f": {
+        "pelvisY": 0.5927,
+        "buttocksUndersideY": 0.457,
+        "thighUndersideY": 0.3308,
+        "kneeForwardZ": 0.3391,
+        "footForwardZ": 0.2927,
+        "headY": 1.2554,
+        "table": {
+          "pelvisY": 0.5927,
+          "thighUndersideY": 0.3338,
+          "handY": 0.7634,
+          "handForwardZ": 0.1944
+        }
+      },
+      "woman__anims_m": {
+        "pelvisY": 0.6094,
+        "buttocksUndersideY": 0.3913,
+        "thighUndersideY": 0.4651,
+        "kneeForwardZ": 0.3957,
+        "footForwardZ": 0.4557,
+        "headY": 1.1998,
+        "table": {
+          "pelvisY": 0.5968,
+          "thighUndersideY": 0.4654,
+          "handY": 0.7827,
+          "handForwardZ": 0.3072
+        }
+      },
+      "woman__anims_f": {
+        "pelvisY": 0.6113,
+        "buttocksUndersideY": 0.3915,
+        "thighUndersideY": 0.2737,
+        "kneeForwardZ": 0.3677,
+        "footForwardZ": 0.3208,
+        "headY": 1.1909,
+        "table": {
+          "pelvisY": 0.6113,
+          "thighUndersideY": 0.3502,
+          "handY": 0.7619,
+          "handForwardZ": 0.1527
+        }
+      }
+    },
+    "transitions": {
+      "elder_man__anims_m": {
+        "stand_to_sit": {
+          "pelvisStart": [
+            0,
+            0.895,
+            0
+          ],
+          "pelvisEnd": [
+            0,
+            0.5908,
+            -0.4604
+          ],
+          "feetStartZ": -0.0168,
+          "feetEndZ": -0.0338
+        },
+        "sit_to_stand": {
+          "pelvisStart": [
+            0,
+            0.5908,
+            0
+          ],
+          "pelvisEnd": [
+            0.0161,
+            0.895,
+            0.4229
+          ],
+          "feetStartZ": 0.4266,
+          "feetEndZ": 0.406
+        }
+      },
+      "elder_man__anims_f": {
+        "stand_to_sit": {
+          "pelvisStart": [
+            0,
+            0.8915,
+            0
+          ],
+          "pelvisEnd": [
+            0,
+            0.5927,
+            -0.4398
+          ],
+          "feetStartZ": -0.035,
+          "feetEndZ": -0.1471
+        },
+        "sit_to_stand": {
+          "pelvisStart": [
+            0,
+            0.5927,
+            0
+          ],
+          "pelvisEnd": [
+            0,
+            0.8915,
+            0.3887
+          ],
+          "feetStartZ": 0.2927,
+          "feetEndZ": 0.3536
+        }
+      },
+      "man__anims_m": {
+        "stand_to_sit": {
+          "pelvisStart": [
+            0,
+            0.895,
+            0
+          ],
+          "pelvisEnd": [
+            0,
+            0.5908,
+            -0.4604
+          ],
+          "feetStartZ": -0.0168,
+          "feetEndZ": -0.0338
+        },
+        "sit_to_stand": {
+          "pelvisStart": [
+            0,
+            0.5908,
+            0
+          ],
+          "pelvisEnd": [
+            0.0161,
+            0.895,
+            0.4229
+          ],
+          "feetStartZ": 0.4266,
+          "feetEndZ": 0.406
+        }
+      },
+      "man__anims_f": {
+        "stand_to_sit": {
+          "pelvisStart": [
+            0,
+            0.8915,
+            0
+          ],
+          "pelvisEnd": [
+            0,
+            0.5927,
+            -0.4398
+          ],
+          "feetStartZ": -0.035,
+          "feetEndZ": -0.1471
+        },
+        "sit_to_stand": {
+          "pelvisStart": [
+            0,
+            0.5927,
+            0
+          ],
+          "pelvisEnd": [
+            0,
+            0.8915,
+            0.3887
+          ],
+          "feetStartZ": 0.2927,
+          "feetEndZ": 0.3536
+        }
+      },
+      "woman__anims_m": {
+        "stand_to_sit": {
+          "pelvisStart": [
+            0,
+            0.9231,
+            0
+          ],
+          "pelvisEnd": [
+            0,
+            0.6094,
+            -0.4749
+          ],
+          "feetStartZ": -0.0132,
+          "feetEndZ": -0.0192
+        },
+        "sit_to_stand": {
+          "pelvisStart": [
+            0,
+            0.6094,
+            0
+          ],
+          "pelvisEnd": [
+            0.0166,
+            0.9231,
+            0.4361
+          ],
+          "feetStartZ": 0.4557,
+          "feetEndZ": 0.423
+        }
+      },
+      "woman__anims_f": {
+        "stand_to_sit": {
+          "pelvisStart": [
+            0,
+            0.9194,
+            0
+          ],
+          "pelvisEnd": [
+            0,
+            0.6113,
+            -0.4536
+          ],
+          "feetStartZ": -0.0334,
+          "feetEndZ": -0.1328
+        },
+        "sit_to_stand": {
+          "pelvisStart": [
+            0,
+            0.6113,
+            0
+          ],
+          "pelvisEnd": [
+            0,
+            0.9194,
+            0.4008
+          ],
+          "feetStartZ": 0.3208,
+          "feetEndZ": 0.3675
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+'use client';
+/** The single canvas of the campus: one world from the title screen to the corridor. */
+import { PerformanceMonitor } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import { Bloom, EffectComposer, N8AO, SMAA, ToneMapping } from '@react-three/postprocessing';
+import { Physics } from '@react-three/rapier';
+import { ToneMappingMode } from 'postprocessing';
+import { Suspense, useState } from 'react';
+import * as THREE from 'three';
+import type { AvatarModel } from '@/game/profile';
+import { CampusPlayer } from './CampusPlayer';
+import { CampusWorld } from './CampusWorld';
+import { DevProbe } from '@/components/case/stagecraft';
+
+export default function CampusCanvas({ avatar, reducedMotion, sensitivity, onReady }: { avatar: AvatarModel; reducedMotion: boolean; sensitivity: number; onReady: () => void }) {
+  const [high, setHigh] = useState(true);
+  return (
+    <Canvas
+      shadows="percentage"
+      dpr={high ? [1, 1.75] : [0.8, 1]}
+      gl={{ antialias: false, powerPreference: 'high-performance', stencil: false, toneMapping: THREE.NoToneMapping }}
+      camera={{ fov: 55, near: 0.08, far: 400, position: [16, 7, 32] }}
+      role="img"
+      aria-label="LexSim huquqiy amaliyot markazi — 3D bino, maydon va xonalar yoʻlagi"
+      onCreated={() => requestAnimationFrame(onReady)}
+    >
+      <PerformanceMonitor ms={300} iterations={6} threshold={0.75} onDecline={() => setHigh(false)} />
+      <DevProbe />
+      <Suspense fallback={null}>
+        <Physics timeStep="vary">
+          <CampusWorld shadows={high ? 2048 : 1024} />
+          <CampusPlayer avatar={avatar} reducedMotion={reducedMotion} sensitivity={sensitivity} />
+        </Physics>
+        <EffectComposer multisampling={0} enableNormalPass={false}>
+          {high ? <N8AO halfRes aoRadius={0.9} distanceFalloff={1} intensity={2.2} quality="medium" /> : <></>}
+          <Bloom mipmapBlur luminanceThreshold={1.05} intensity={0.35} />
+          <SMAA />
+          <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
+        </EffectComposer>
+      </Suspense>
+    </Canvas>
+  );
+}

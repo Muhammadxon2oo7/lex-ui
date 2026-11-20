@@ -1,0 +1,54 @@
+// QA: arrive at the orientation terminal → register → pick a room → back → another room → walk.
+import { chromium } from 'playwright';
+import { mkdirSync } from 'node:fs';
+const OUT = process.argv[2] ?? 'qa-shots';
+const BASE = process.env.BASE ?? 'http://localhost:3000';
+mkdirSync(OUT, { recursive: true });
+const browser = await chromium.launch({ args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'] });
+const page = await browser.newPage({ viewport: { width: 1440, height: 810 } });
+const logs = [];
+page.on('console', (m) => (m.type() === 'error' || m.type() === 'warning') && logs.push(`[${m.type()}] ${m.text().slice(0, 240)}`));
+page.on('pageerror', (e) => logs.push(`[pageerror] ${page.url()} ${e.message.slice(0, 2500)}`));
+await page.addInitScript(() => { localStorage.setItem('lexsim.debug', '1'); if (!sessionStorage.getItem('qa')) { sessionStorage.setItem('qa', '1'); localStorage.removeItem('lexsim.profile.v1'); } });
+const shot = async (name, wait = 1200) => { await page.waitForTimeout(wait); await page.screenshot({ path: `${OUT}/${name}.png` }); console.log('shot', name); };
+const loaded = () => page.waitForFunction(() => !document.querySelector('[aria-label="Yuklanmoqda"]'), null, { timeout: 120000 });
+
+await page.goto(BASE);
+await loaded();
+await shot('01-arrive-register', 3000);
+await page.getByLabel('Familiya, ism').fill('Karimova Aziza');
+await page.getByRole('radio', { name: 'Ayol' }).click();
+await shot('02-register-filled', 1500);
+await page.getByRole('button', { name: 'Davom etish' }).click();
+await shot('03-rooms', 1500);
+await page.getByRole('list', { name: 'Amaliyot xonalari' }).getByRole('button', { name: /Davlat xizmatlari markazi/ }).click();
+await page.waitForURL(/simulation\/sim_/, { timeout: 30000 });
+await page.getByRole('button', { name: 'Ishni boshlash' }).click({ timeout: 90000 });
+await page.waitForTimeout(1200);
+await page.evaluate(() => window.__lexsimDebug.game.getState().sit());
+await shot('04-dxm-seated', 4000);
+await page.evaluate(() => window.__lexsimDebug.teleport(5.4, -1.6, 0.6, -0.15));
+await page.evaluate(() => window.__lexsimDebug.game.setState({ mode: 'exploring' }));
+await shot('05-dxm-doppi', 2000);
+await page.evaluate(() => window.__lexsimDebug.game.getState().inspect('id-card'));
+await shot('06-idcard-front', 2000);
+await page.keyboard.press('KeyF');
+await shot('07-idcard-back', 1600);
+await page.keyboard.press('Escape');
+
+await page.goto(BASE);
+await loaded();
+await shot('08-back-at-kiosk', 2500);
+await page.getByRole('list', { name: 'Amaliyot xonalari' }).getByRole('button', { name: /Sud majlisi zali/ }).click();
+await page.waitForURL(/court\/crt_/, { timeout: 30000 });
+await page.getByRole('group', { name: 'Protsessual harakatlar' }).waitFor({ timeout: 90000 });
+await shot('09-court', 4000);
+
+await page.goto(BASE);
+await loaded();
+await page.getByRole('button', { name: 'Binoda yurish' }).click();
+await page.evaluate(() => window.__campus.store.getState().set({ phase: 'play' }));
+await page.evaluate(() => window.__campus.teleport(0, -6.5, 0, Math.PI * 0.08, 0.15));
+await shot('10-foyer-ornament', 2500);
+console.log(logs.filter((l) => !/THREE\.Clock|deprecated parameters|PCFSoft/.test(l)).slice(0, 15).join('\n') || 'no console errors');
+await browser.close();

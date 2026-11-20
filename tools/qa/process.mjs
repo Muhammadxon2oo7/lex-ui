@@ -1,0 +1,18 @@
+import { chromium } from 'playwright';
+const OUT = process.argv[2];
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+const logs = [];
+page.on('pageerror', (e) => logs.push(e.message.slice(0, 200)));
+await page.goto('http://localhost:3000/protsess');
+await page.getByRole('heading', { name: /Davlat organida/ }).waitFor({ timeout: 60000 });
+await page.screenshot({ path: `${OUT}/p1-admin.png`, fullPage: true });
+await page.getByRole('button', { name: /MTT 42-m/ }).first().click();
+await page.waitForTimeout(600);
+await page.screenshot({ path: `${OUT}/p2-article.png` });
+await page.keyboard.press('Escape');
+await page.getByRole('button', { name: /Jinoyat alomati/ }).click();
+await page.waitForTimeout(600);
+await page.screenshot({ path: `${OUT}/p3-jpk.png` });
+console.log(logs.join('\n') || 'no page errors');
+await browser.close();

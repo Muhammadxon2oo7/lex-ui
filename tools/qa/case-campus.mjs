@@ -1,0 +1,32 @@
+// QA: the terminal shows the case, locked doors refuse, entering and leaving a room. Usage: node tools/qa/case-campus.mjs [outDir]
+import { chromium } from 'playwright';
+import { mkdirSync } from 'node:fs';
+const OUT = process.argv[2] ?? 'qa-shots';
+const BASE = process.env.BASE ?? 'http://localhost:3000';
+mkdirSync(OUT, { recursive: true });
+const browser = await chromium.launch({ args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'] });
+const page = await browser.newPage({ viewport: { width: 1440, height: 810 } });
+const logs = [];
+page.on('console', (m) => m.type() === 'error' && logs.push(`[error] ${m.text().slice(0, 300)}`));
+page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message.slice(0, 300)}`));
+const shot = async (name) => { await page.waitForTimeout(600); await page.screenshot({ path: `${OUT}/${name}.png` }); console.log('shot', name); };
+
+await page.goto(`${BASE}/`);
+await page.evaluate(() => localStorage.setItem('lexsim.profile.v1', JSON.stringify({ name: 'Karimova Aziza', avatar: 'woman', role: 'student' })));
+await page.evaluate(() => fetch('/api/v1/cases', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{"fresh":true}' }));
+await page.reload();
+await page.getByRole('heading', { name: /Sardor N\. — «Namuna Savdo»/ }).waitFor({ timeout: 60000 });
+await page.waitForTimeout(3000);
+await shot('m1-kiosk');
+await page.getByRole('list', { name: 'Amaliyot xonalari' }).getByRole('button', { name: /Sud devonxonasi/ }).click();
+await page.waitForTimeout(2500);
+await shot('m2-locked');
+await page.getByRole('button', { name: /Ishni boshlash/ }).click();
+await page.waitForURL(/\/ish\/ish_.+\/consult/, { timeout: 30000 });
+await page.waitForTimeout(5000);
+await page.getByRole('button', { name: 'Yoʻlakka chiqish' }).click();
+await page.waitForURL(`${BASE}/`, { timeout: 30000 });
+await page.waitForTimeout(7000);
+await shot('m3-back-in-corridor');
+console.log(logs.join('\n') || 'no console errors');
+await browser.close();

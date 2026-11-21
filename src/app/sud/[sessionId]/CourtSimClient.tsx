@@ -26,7 +26,7 @@ import { ApiError, api, newId } from '@/game/api';
 import { audio } from '@/game/audio';
 import { useProfile } from '@/game/profile';
 import { useGame } from '@/game/store';
-import { lipTrack, prefetchLine, speak, stopSpeaking, voiceStatus, type VoiceId, dropVoice, takeVoice } from '@/game/voice';
+import { lipTrack, prefetchLine, speak, stopSpeaking, voiceStatus, type VoiceId, dropVoice, takeVoice, takeConfidence } from '@/game/voice';
 import { Talk } from '@/components/hud/Talk';
 import { courtStageFor } from '@/game/courtStage';
 import { useDismiss } from '@/lib/useDismiss';
@@ -78,11 +78,11 @@ function usePresenter(turns: Turn[], voices: Record<Role, VoiceId>) {
     const reading = Math.max(words, walksIn ? 5600 : 0);
     const voice = turn.speaker === 'npc' && turn.role ? voices[turn.role] : null;
     // the next lines of the same answer are fetched while this one plays: no gap waiting for audio
-    for (const next of turns.slice(at + 1, at + 4)) if (next.speaker === 'npc' && next.role) void prefetchLine(next.text, voices[next.role], next.emotion);
+    for (const next of turns.slice(at + 1, at + 4)) if (next.speaker === 'npc' && next.role) void prefetchLine(next.text, voices[next.role], next.emotion, next.audio);
     // a judge who walks in speaks once at his chair, not on the way
     const start = walksIn && voice ? new Promise<void>((r) => (timer = setTimeout(r, JUDGE_WALK_MS))) : Promise.resolve();
     void start
-      .then(() => (alive && voice ? speak(turn.text, voice, turn.emotion) : false))
+      .then(() => (alive && voice ? speak(turn.text, voice, turn.emotion, turn.audio) : false))
       .then((spoken) => {
         if (!alive) return;
         if (!spoken && voice) lipTrack(turn.text, reading - 500);
@@ -321,6 +321,9 @@ function Room({ initial }: { initial: Snapshot }) {
     // the student's own voice goes into the practice record with what was sent
     const wav = inputMode === 'voice' ? takeVoice() : (dropVoice(), null);
     if (wav) void saveVoice(id, said, wav);
+    // how sure the recogniser was (the court asks again, without a penalty, when it was not)
+    const heardWith = takeConfidence();
+    const confidence = inputMode === 'voice' ? heardWith : null;
     // the room as the answer was given (answers are sent only once every line before has been heard)
     const presence = { heardTurnId: snap.turns.at(-1)?.id, standing, ...(wav ? { spokenSeconds: Math.round(((wav.byteLength - 44) / 32000) * 10) / 10 } : {}) };
     setDraft('');
@@ -330,7 +333,7 @@ function Room({ initial }: { initial: Snapshot }) {
     void run(async () => {
       try {
         setFbGone(null); // the same note may come again for a new answer
-        await settle((await api.turn(id, clientTurnId, { text: said }, { inputMode, presence })).snapshot);
+        await settle((await api.turn(id, clientTurnId, { text: said }, { inputMode, presence, ...(confidence !== null ? { stt: { confidence } } : {}) })).snapshot);
       } catch (e) {
         setDraft(said); // nothing is lost: send it again (the same id would be answered once)
         throw e;

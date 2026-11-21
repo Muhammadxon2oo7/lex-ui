@@ -16,7 +16,7 @@
  * Two points of view: the presiding judge's (the bench exercise) and the
  * claimant's advocate's — you, at the claimant's table.
  */
-import { Environment } from '@react-three/drei';
+
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
@@ -28,7 +28,7 @@ import type { DeskDoc } from '@/components/case/documents';
 import { Prop } from './Furniture';
 import { TILE, UI_FONT, canvasTexture, tiledBox, useMaterials, type Materials } from './materials';
 import { Flag, StateEmblem } from './SetDressing';
-import { DevProbe, FitFov, FrameForPanel, QualityGovernor, RoomFx, SeatCamera, Window, useTier } from '@/components/case/stagecraft';
+import { DevProbe, FitFov, FrameForPanel, QualityGovernor, RoomFx, RoomLight, SeatCamera, Window, useTier } from '@/components/case/stagecraft';
 import { audio } from '@/game/audio';
 
 type V3 = [number, number, number];
@@ -96,8 +96,17 @@ const doorWood = new THREE.MeshStandardMaterial({ color: '#3a2620', roughness: 0
 export function useMahogany(m: Materials) {
   const mat = useMemo(() => {
     const c = m.walnut.clone();
-    c.color = new THREE.Color('#7e3a2b');
-    c.roughness = 0.62;
+    c.color = new THREE.Color('#8a3d2c');
+    // wood is never metallic: without this the veneer's packed map lends it a grey, mirror-like cast
+    c.metalnessMap = null;
+    c.metalness = 0;
+    // seen along its length from the advocate's seat, a smooth bench turns into a pale mirror of the white
+    // walls: an oiled, matt finish keeps the mahogany its colour at any angle
+    c.roughness = 0.66;
+    c.roughnessMap = null;
+    (c as THREE.MeshPhysicalMaterial).clearcoat = 0.12;
+    (c as THREE.MeshPhysicalMaterial).clearcoatRoughness = 0.55;
+    c.envMapIntensity = 0.75;
     return c;
   }, [m.walnut]);
   useEffect(() => () => mat.dispose(), [mat]);
@@ -125,8 +134,13 @@ function Shell({ m }: { m: Materials }) {
     ctx.fillStyle = '#7a5a2a';
     ctx.fillText('Fuqarolik ishlari boʻyicha Namuna tumanlararo sudi · oʻquv', w / 2, h * 0.8);
   });
+  // Light panels sit IN the ceiling grid, one per 60 cm tile: the grid starts at the corner of the
+  // raised field (its texture is laid from there), so each panel is snapped to the centre of its cell.
+  const fieldX = -(W - 1.4) / 2;
+  const fieldZ = ZC - (D - 1.4) / 2;
+  const cell = (v: number, min: number) => min + (Math.floor((v - min) / 0.6 + 1e-6) + 0.5) * 0.6;
   const panels: [number, number][] = [];
-  for (const x of [-3.3, -1.1, 1.1, 3.3]) for (const z of [-2.6, 0.2, 3.0, 5.4]) panels.push([x, z]);
+  for (const x of [-3.3, -1.1, 1.1, 3.3]) for (const z of [-2.6, 0.2, 2.6, 5.0]) panels.push([cell(x, fieldX), cell(z, fieldZ)]);
   return (
     <group>
       <Box m={m.laminate} size={[W, 0.1, D]} position={[0, -0.05, ZC]} tile={TILE.laminate} />
@@ -149,7 +163,8 @@ function Shell({ m }: { m: Materials }) {
       <Box m={doorWood} size={[0.02, 0.1, D - 0.4]} position={[W / 2 - 0.11, 0.05, ZC]} />
       {panels.map(([x, z]) => (
         <mesh key={`${x}:${z}`} material={ledPanel} position={[x, H - 0.012, z]}>
-          <boxGeometry args={[0.6, 0.02, 0.6]} />
+          {/* a touch smaller than the tile: the grid's T-bar stays visible all round */}
+          <boxGeometry args={[0.575, 0.02, 0.575]} />
         </mesh>
       ))}
       {[-2.2, 0.9, 4.0].map((z) => <Window key={z} m={m} position={[W / 2 - 0.13, 2.05, z]} rotation={-Math.PI / 2} size={[1.3, 1.3]} />)}
@@ -160,8 +175,9 @@ function Shell({ m }: { m: Materials }) {
       {/* the public entrance, back of the hall */}
       <Box m={doorWood} size={[1.0, 2.15, 0.06]} position={[-3.6, 1.075, ZC + D / 2 - 0.13]} />
       <Box m={gold} size={[0.03, 0.22, 0.04]} position={[-3.2, 1.05, ZC + D / 2 - 0.17]} />
-      <pointLight position={[0, 3.2, -2.6]} intensity={8} distance={12} decay={2} color="#fff4e6" />
-      <pointLight position={[0, 3.2, 2.6]} intensity={7} distance={12} decay={2} color="#fff4e6" />
+      {/* the hall's own light: gentle, so the dark wood of the bench keeps its colour instead of burning out to grey */}
+      <pointLight position={[0, 3.2, -2.6]} intensity={6} distance={12} decay={2} color="#fff0dc" />
+      <pointLight position={[0, 3.2, 2.6]} intensity={5.5} distance={12} decay={2} color="#fff0dc" />
     </group>
   );
 }
@@ -503,9 +519,8 @@ function Scene({ speaker, witnessPresent, witnessCalled, standing, view = 'judge
       ) : (
         <SeatCamera seated={EYE} base={Math.PI} focus={focus} limit={1.25} />
       )}
-      <Environment files="/assets/env/small_empty_room_1_1k.hdr" environmentIntensity={0.6} />
-      <hemisphereLight intensity={0.32} color="#ffffff" groundColor="#b6a58f" />
-      <directionalLight position={[8, 7, 1]} intensity={1.2} color="#fff0dc" castShadow shadow-mapSize={[2048, 2048]} shadow-camera-left={-8} shadow-camera-right={8} shadow-camera-top={8} shadow-camera-bottom={-8} shadow-bias={-0.0004} shadow-normalBias={0.03} />
+      {/* a big hall with a bench of dark wood facing the windows: a gentler sun keeps the mahogany deep */}
+      <RoomLight sun={[8, 7, 1]} reach={8} power={1.35} />
       <Shell m={m} />
       <AirConditioner position={[-W / 2 + 0.22, 2.75, -3.2]} rotation={Math.PI / 2} />
       <WallScreen position={[W / 2 - 0.14, 2.1, -4.2]} rotation={-Math.PI / 2} lines={screen} />

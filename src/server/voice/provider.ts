@@ -42,14 +42,16 @@ export async function voiceStatus(owner?: string) {
 }
 
 /** Small in-memory cache: the same scripted lines are spoken again and again. */
-const cache = new Map<string, Buffer>();
+const cache = new Map<string, { audio: Buffer; at: number }>();
 const CACHE_MAX = 300;
+/** A voice may be re-recorded on the court server (a clone replaced): our copy lives two hours at most. */
+const CACHE_AGE = 2 * 60 * 60 * 1000;
 
 /** The text goes unchanged (the backend's pre-rendered cache is keyed by it). */
 export async function synthesize(text: string, voice: VoiceId, owner?: string, emotion?: string): Promise<Buffer | null> {
   const id = createHash('sha256').update(`${voice}\n${emotion ?? ''}\n${text}`).digest('hex');
   const hit = cache.get(id);
-  if (hit) return hit;
+  if (hit && Date.now() - hit.at < CACHE_AGE) return hit.audio;
   const auth = await authFor(owner);
   if (!auth || !(await remoteVoiceStatus()).tts) return null;
   const ask = () => fetch(`${REMOTE}/voice/tts`, { method: 'POST', headers: { 'Content-Type': 'application/json', ...auth }, body: JSON.stringify({ text, voice, ...(emotion ? { emotion } : {}) }), signal: AbortSignal.timeout(20_000) });
@@ -61,17 +63,37 @@ export async function synthesize(text: string, voice: VoiceId, owner?: string, e
   }
   if (!res.ok) throw new Error(`tts ${res.status}`);
   const audio = Buffer.from(await res.arrayBuffer());
-  cache.set(id, audio);
+  cache.set(id, { audio, at: Date.now() });
   if (cache.size > CACHE_MAX) cache.delete(cache.keys().next().value!);
   return audio;
 }
 
+/** What the recogniser heard and how sure it is (v1.4.5: `confidence` 0–1, `lowConfidence` under 0.5). */
+export interface Heard {
+  text: string;
+  confidence: number | null;
+  low: boolean;
+}
+
 /** 16 kHz mono PCM WAV in, recognised Uzbek text out (Latin with ʻ/ʼ; the audio is not kept). */
-export async function transcribe(wav: ArrayBuffer, owner?: string): Promise<string | null> {
+export async function transcribe(wav: ArrayBuffer, owner?: string): Promise<Heard | null> {
   const auth = await authFor(owner);
   if (!auth || !(await remoteVoiceStatus()).stt) return null;
   // GPU ~1–2 s; when the GPU is off the backend falls back to CPU (up to ~37 s)
   const res = await fetch(`${REMOTE}/voice/stt`, { method: 'POST', headers: { 'Content-Type': 'audio/wav', ...auth }, body: wav, signal: AbortSignal.timeout(45_000) });
   if (!res.ok) throw new Error(`stt ${res.status}`);
-  return String(((await res.json()) as { text?: string }).text ?? '').trim();
+  const j = (await res.json()) as { text?: string; confidence?: number | null; lowConfidence?: boolean };
+  const confidence = typeof j.confidence === 'number' ? Math.max(0, Math.min(1, j.confidence)) : null;
+  return { text: String(j.text ?? '').trim(), confidence, low: j.lowConfidence === true || (confidence !== null && confidence < 0.5) };
+}
+
+/**
+ * A pre-rendered line by its id (`npcTurn.audio.url`, v1.4.5): the id carries the file's time, so a
+ * re-recorded voice has a new address and this one can be cached for good.
+ */
+export async function cachedAudio(file: string, owner?: string): Promise<Buffer | null> {
+  const auth = await authFor(owner);
+  if (!auth) return null;
+  const res = await fetch(`${REMOTE}/voice/cache/${encodeURIComponent(file)}`, { headers: auth, signal: AbortSignal.timeout(15_000) });
+  return res.ok ? Buffer.from(await res.arrayBuffer()) : null;
 }

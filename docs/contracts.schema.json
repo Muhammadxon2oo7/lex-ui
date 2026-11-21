@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "LexSim API contracts",
-  "generated": "2026-11-21T02:54:50.852Z",
+  "generated": "2026-11-21T05:38:20.851Z",
   "$defs": {
     "AppealRequest": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -311,6 +311,33 @@
                   "uncertain",
                   "calm",
                   "reassured"
+                ]
+              },
+              "audio": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "url": {
+                    "type": "string",
+                    "maxLength": 400
+                  },
+                  "durationMs": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "voice": {
+                    "type": "string",
+                    "maxLength": 40
+                  }
+                },
+                "required": [
+                  "id",
+                  "url",
+                  "durationMs",
+                  "voice"
                 ]
               },
               "engine": {
@@ -1090,6 +1117,33 @@
                               "reassured"
                             ]
                           },
+                          "audio": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "maxLength": 200
+                              },
+                              "url": {
+                                "type": "string",
+                                "maxLength": 400
+                              },
+                              "durationMs": {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              "voice": {
+                                "type": "string",
+                                "maxLength": 40
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "url",
+                              "durationMs",
+                              "voice"
+                            ]
+                          },
                           "engine": {
                             "type": "string",
                             "enum": [
@@ -1281,6 +1335,33 @@
                               "uncertain",
                               "calm",
                               "reassured"
+                            ]
+                          },
+                          "audio": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "maxLength": 200
+                              },
+                              "url": {
+                                "type": "string",
+                                "maxLength": 400
+                              },
+                              "durationMs": {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              "voice": {
+                                "type": "string",
+                                "maxLength": 40
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "url",
+                              "durationMs",
+                              "voice"
                             ]
                           },
                           "engine": {
@@ -2162,6 +2243,33 @@
                       "uncertain",
                       "calm",
                       "reassured"
+                    ]
+                  },
+                  "audio": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "maxLength": 200
+                      },
+                      "url": {
+                        "type": "string",
+                        "maxLength": 400
+                      },
+                      "durationMs": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "voice": {
+                        "type": "string",
+                        "maxLength": 40
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "url",
+                      "durationMs",
+                      "voice"
                     ]
                   },
                   "engine": {
@@ -3230,6 +3338,33 @@
                         "reassured"
                       ]
                     },
+                    "audio": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "maxLength": 200
+                        },
+                        "url": {
+                          "type": "string",
+                          "maxLength": 400
+                        },
+                        "durationMs": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "voice": {
+                          "type": "string",
+                          "maxLength": 40
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "url",
+                        "durationMs",
+                        "voice"
+                      ]
+                    },
                     "engine": {
                       "type": "string",
                       "enum": [
@@ -3421,6 +3556,33 @@
                         "uncertain",
                         "calm",
                         "reassured"
+                      ]
+                    },
+                    "audio": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "maxLength": 200
+                        },
+                        "url": {
+                          "type": "string",
+                          "maxLength": 400
+                        },
+                        "durationMs": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "voice": {
+                          "type": "string",
+                          "maxLength": 40
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "url",
+                        "durationMs",
+                        "voice"
                       ]
                     },
                     "engine": {
@@ -4304,6 +4466,33 @@
                   "reassured"
                 ]
               },
+              "audio": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "url": {
+                    "type": "string",
+                    "maxLength": 400
+                  },
+                  "durationMs": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "voice": {
+                    "type": "string",
+                    "maxLength": 40
+                  }
+                },
+                "required": [
+                  "id",
+                  "url",
+                  "durationMs",
+                  "voice"
+                ]
+              },
               "engine": {
                 "type": "string",
                 "enum": [
@@ -4878,6 +5067,33 @@
             "uncertain",
             "calm",
             "reassured"
+          ]
+        },
+        "audio": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "url": {
+              "type": "string",
+              "maxLength": 400
+            },
+            "durationMs": {
+              "type": "number",
+              "minimum": 0
+            },
+            "voice": {
+              "type": "string",
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "id",
+            "url",
+            "durationMs",
+            "voice"
           ]
         },
         "engine": {

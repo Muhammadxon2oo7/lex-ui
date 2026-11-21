@@ -15,7 +15,7 @@ import { CaseEnvelopeSchema, StageIdSchema, type CaseActRequest, type CaseLine, 
 import { newId } from '@/game/api';
 import { audio } from '@/game/audio';
 import { getProfile, useProfile } from '@/game/profile';
-import { type VoiceId, lipTrack, prefetchLine, speak, stopSpeaking, dropVoice, takeVoice } from '@/game/voice';
+import { type VoiceId, lipTrack, prefetchLine, speak, stopSpeaking, dropVoice, takeVoice, takeConfidence } from '@/game/voice';
 import { matchUtterance } from '@/lib/uz';
 import { CodePanel } from '@/components/hud/CodePanel';
 import { Talk } from '@/components/hud/Talk';
@@ -213,7 +213,8 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
     // the student's own voice goes into this room's practice record
     const wav = inputMode === 'voice' ? takeVoice() : (dropVoice(), null);
     if (wav) void saveVoice(`${snap.caseId}:${stage}`, t, wav);
-    void act({ type: 'say', text: t, inputMode });
+    const confidence = takeConfidence();
+    void act({ type: 'say', text: t, inputMode, ...(inputMode === 'voice' && confidence !== null ? { stt: { confidence } } : {}) });
   };
   const askHint = () => {
     audio.paper();

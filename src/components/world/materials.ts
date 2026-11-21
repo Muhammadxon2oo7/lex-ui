@@ -11,6 +11,7 @@ import { useTexture } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import { useMemo } from 'react';
 import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 type SetId =
   | 'terrazzo_tiles'
@@ -70,15 +71,18 @@ export function useMaterials(): Materials {
   const maxAniso = useThree((s) => s.gl.capabilities.getMaxAnisotropy());
 
   return useMemo(() => {
-    const pbr = (index: number, opts: THREE.MeshStandardMaterialParameters = {}) => {
+    const pbr = (index: number, opts: THREE.MeshPhysicalMaterialParameters = {}) => {
       const [map, normalMap, arm] = textures.slice(index * 3, index * 3 + 3);
       for (const t of [map, normalMap, arm]) {
         t.wrapS = t.wrapT = THREE.RepeatWrapping;
-        t.anisotropy = Math.min(8, maxAniso);
+        // full anisotropy: floors and desk tops are seen at a grazing angle, where 8× still smears
+        t.anisotropy = Math.min(16, maxAniso);
       }
       map.colorSpace = THREE.SRGBColorSpace;
       normalMap.colorSpace = arm.colorSpace = THREE.NoColorSpace;
-      return new THREE.MeshStandardMaterial({
+      // a lacquered surface (clearcoat) needs the physical material; everything else stays standard
+      const Mat = opts.clearcoat ? THREE.MeshPhysicalMaterial : THREE.MeshStandardMaterial;
+      return new Mat({
         map,
         normalMap,
         aoMap: arm,
@@ -92,13 +96,16 @@ export function useMaterials(): Materials {
     return {
       // Polished stone: let the windows and ceiling panels read in the floor.
       terrazzo: pbr(0, { roughness: 0.85, envMapIntensity: 1.1 }),
-      laminate: pbr(1),
+      // a sealed floor: a faint sheen that picks up the windows and the ceiling panels
+      laminate: pbr(1, { clearcoat: 0.25, clearcoatRoughness: 0.4 }),
       // Warm off-white: the plaster set is tinted, never pure #fff (keeps highlights unclipped).
       // Painted wall: only the plaster's relief and roughness are used — the
       // scanned colour is a dull grey that makes an office read as a bunker.
       plaster: pbr(2, { map: null, color: '#e2ddd3', normalScale: new THREE.Vector2(0.45, 0.45) }),
-      oak: pbr(3),
-      walnut: pbr(4),
+      // furniture wood is lacquered: a clear coat over the grain is what makes a desk read as a desk
+      // (a satin lacquer, not a mirror: under a ceiling of light panels a glossy coat washes the wood out)
+      oak: pbr(3, { clearcoat: 0.3, clearcoatRoughness: 0.42 }),
+      walnut: pbr(4, { clearcoat: 0.35, clearcoatRoughness: 0.4 }),
       ceiling: new THREE.MeshStandardMaterial({ map: ceilingGrid(), color: '#f3f1ec', roughness: 0.92, metalness: 0 }),
       fabric: pbr(6, { color: '#5f6b78' }),
       leather: pbr(7),
@@ -142,16 +149,42 @@ function ceilingGrid(): THREE.CanvasTexture {
 }
 
 /**
- * BoxGeometry whose UVs are in "repeats" of `tile` metres on every face.
- * Face order in BoxGeometry: +x, -x, +y, -y, +z, -z (4 vertices each).
+ * A box whose UVs are in "repeats" of `tile` metres on every face — with softly rounded edges.
+ * Nothing built by people has a razor edge: a few millimetres of radius catch the light along
+ * every corner, and that thin highlight is most of what separates furniture from a "3D box".
+ * Walls, floors and paper-thin sheets stay plain boxes (nothing to round, and no seams at corners).
  */
-export function tiledBox(w: number, h: number, d: number, tile: number): THREE.BoxGeometry {
-  const geo = new THREE.BoxGeometry(w, h, d);
+export function tiledBox(w: number, h: number, d: number, tile: number): THREE.BufferGeometry {
+  const min = Math.min(w, h, d);
+  const max = Math.max(w, h, d);
+  if (min < 0.018 || max > 5) {
+    const geo = new THREE.BoxGeometry(w, h, d);
+    const uv = geo.attributes.uv as THREE.BufferAttribute;
+    // face order in BoxGeometry: +x, -x, +y, -y, +z, -z (4 vertices each)
+    const spans: [number, number][] = [[d, h], [d, h], [w, d], [w, d], [w, h], [w, h]];
+    for (let face = 0; face < 6; face++) {
+      const [su, sv] = spans[face];
+      for (let i = face * 4; i < face * 4 + 4; i++) uv.setXY(i, (uv.getX(i) * su) / tile, (uv.getY(i) * sv) / tile);
+    }
+    uv.needsUpdate = true;
+    return geo;
+  }
+  const radius = Math.min(0.007, min * 0.16);
+  const geo = new RoundedBoxGeometry(w, h, d, 2, radius);
+  // tile the texture by position, per face (the dominant axis of the normal picks the projection)
+  const pos = geo.attributes.position as THREE.BufferAttribute;
+  const nor = geo.attributes.normal as THREE.BufferAttribute;
   const uv = geo.attributes.uv as THREE.BufferAttribute;
-  const spans: [number, number][] = [[d, h], [d, h], [w, d], [w, d], [w, h], [w, h]];
-  for (let face = 0; face < 6; face++) {
-    const [su, sv] = spans[face];
-    for (let i = face * 4; i < face * 4 + 4; i++) uv.setXY(i, (uv.getX(i) * su) / tile, (uv.getY(i) * sv) / tile);
+  for (let i = 0; i < pos.count; i++) {
+    const ax = Math.abs(nor.getX(i));
+    const ay = Math.abs(nor.getY(i));
+    const az = Math.abs(nor.getZ(i));
+    const x = pos.getX(i) + w / 2;
+    const y = pos.getY(i) + h / 2;
+    const z = pos.getZ(i) + d / 2;
+    if (ax >= ay && ax >= az) uv.setXY(i, z / tile, y / tile);
+    else if (ay >= az) uv.setXY(i, x / tile, z / tile);
+    else uv.setXY(i, x / tile, y / tile);
   }
   uv.needsUpdate = true;
   return geo;

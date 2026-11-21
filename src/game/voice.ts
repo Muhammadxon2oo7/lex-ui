@@ -68,13 +68,26 @@ function uzbekSystemVoice(): SpeechSynthesisVoice | null {
 
 /** Server audio, asked for once per line: lines that come next are fetched while the current one plays. */
 const fetched = new Map<string, Promise<ArrayBuffer | null>>();
-function serverAudio(text: string, voice: VoiceId, emotion?: string): Promise<ArrayBuffer | null> {
+/** A line's pre-rendered audio as the court server names it (`npcTurn.audio`). */
+export interface LineAudio {
+  url: string;
+  voice: string;
+}
+function serverAudio(text: string, voice: VoiceId, emotion?: string, ready?: LineAudio): Promise<ArrayBuffer | null> {
   const key = `${voice}\n${emotion ?? ''}\n${text}`;
   let p = fetched.get(key);
   if (!p) {
-    p = fetch('/api/v1/voice/tts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voice, ...(emotion ? { emotion } : {}) }), signal: AbortSignal.timeout(10_000) })
-      .then((r) => (r.ok ? r.arrayBuffer() : null))
-      .catch(() => null);
+    const tts = () =>
+      fetch('/api/v1/voice/tts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voice, ...(emotion ? { emotion } : {}) }), signal: AbortSignal.timeout(10_000) })
+        .then((r) => (r.ok ? r.arrayBuffer() : null))
+        .catch(() => null);
+    // the server already has this line recorded in this very voice: one cacheable GET, kept by the browser
+    const file = ready && ready.voice === voice ? ready.url.split('/').pop() : null;
+    p = file
+      ? fetch(`/api/v1/voice/cache/${encodeURIComponent(file)}`, { signal: AbortSignal.timeout(10_000) })
+          .then((r) => (r.ok ? r.arrayBuffer() : tts()))
+          .catch(tts)
+      : tts();
     fetched.set(key, p);
     p.then((a) => !a && fetched.delete(key)); // a failure may succeed next time
     if (fetched.size > 40) fetched.delete(fetched.keys().next().value!);
@@ -83,24 +96,24 @@ function serverAudio(text: string, voice: VoiceId, emotion?: string): Promise<Ar
 }
 
 /** Start fetching a line that will be spoken soon (no sound; ignored when the server has no voice). */
-export async function prefetchLine(line: string, voice: VoiceId, emotion?: string) {
+export async function prefetchLine(line: string, voice: VoiceId, emotion?: string, ready?: LineAudio) {
   const text = spokenText(line);
   if (muted || !text || !(await voiceStatus()).tts) return;
-  void serverAudio(text, voice, emotion);
+  void serverAudio(text, voice, emotion, ready);
 }
 
 /**
  * Speaks a line. Resolves when it has finished (or immediately when no
  * suitable voice exists). Returns whether anything was actually heard.
  */
-export async function speak(line: string, voice: VoiceId, emotion?: string): Promise<boolean> {
+export async function speak(line: string, voice: VoiceId, emotion?: string, ready?: LineAudio): Promise<boolean> {
   stopSpeaking();
   const text = spokenText(line); // «(sekin)» stays in the subtitle, never read aloud
   if (muted || !text) return false;
   const status = await voiceStatus();
 
   if (status.tts) {
-    const audio = await serverAudio(text, voice, emotion);
+    const audio = await serverAudio(text, voice, emotion, ready);
     if (audio) {
       fetched.delete(`${voice}\n${emotion ?? ''}\n${text}`); // decoded once; the server cache answers a repeat in ~10 ms
       try {
@@ -234,6 +247,13 @@ export interface Listening {
  * takes it (`takeVoice`) and files it with the transcript; a typed or chosen answer drops it.
  */
 let pendingVoice: ArrayBuffer[] = [];
+/** How sure the recogniser was of the last answer (0–1; null when it does not say) — sent on with the answer. */
+let lastConfidence: number | null = null;
+export function takeConfidence(): number | null {
+  const c = lastConfidence;
+  lastConfidence = null;
+  return c;
+}
 export function takeVoice(): ArrayBuffer | null {
   const all = pendingVoice;
   pendingVoice = [];
@@ -372,15 +392,19 @@ export async function startListening(): Promise<Listening> {
           return quick;
         }
         const abort = new AbortController();
+        type Heard = { text: string; confidence?: number | null; lowConfidence?: boolean };
         const server = fetch('/api/v1/voice/stt', { method: 'POST', headers: { 'Content-Type': 'audio/wav' }, body: wav, signal: typeof AbortSignal.any === 'function' ? AbortSignal.any([abort.signal, AbortSignal.timeout(45_000)]) : abort.signal })
-          .then(async (res) => (res.ok ? ((await res.json()) as { text: string }).text : null))
+          .then(async (res) => (res.ok ? ((await res.json()) as Heard) : null))
           .catch(() => null);
         // the server's (better) text if it comes within ~4 s; otherwise what the browser heard
-        const said = quick
-          ? await Promise.race([server.then((t) => t || quick), new Promise<string>((r) => setTimeout(() => r(quick), 4000))])
-          : await server;
+        const heard = quick ? await Promise.race([server, new Promise<null>((r) => setTimeout(() => r(null), 4000))]) : await server;
         abort.abort();
-        if (said === null) throw new Error('Nutqni tanib boʻlmadi. Qayta urinib koʻring.');
+        if (!heard && !quick) throw new Error('Nutqni tanib boʻlmadi. Qayta urinib koʻring.');
+        // the server is not sure of what it heard: never send a guess as the student's answer —
+        // take what the browser heard, or ask to say it again
+        if (heard?.lowConfidence && !quick) throw new Error('Aniq eshitilmadi. Yana bir bor, aniqroq ayting.');
+        const said = heard && !heard.lowConfidence && heard.text ? heard.text : quick;
+        lastConfidence = heard && !heard.lowConfidence && heard.text ? (heard.confidence ?? null) : null;
         if (said) pendingVoice.push(wav);
         return said;
       },

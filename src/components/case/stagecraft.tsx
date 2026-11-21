@@ -4,12 +4,13 @@
  * you steer by dragging, the post-processing chain, and simple
  * architectural primitives built on the PBR material library.
  */
-import { PerformanceMonitor } from '@react-three/drei';
+import { Environment, PerformanceMonitor, SoftShadows, useProgress } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
-import { Bloom, EffectComposer, N8AO, ToneMapping, Vignette } from '@react-three/postprocessing';
+import { Bloom, BrightnessContrast, EffectComposer, HueSaturation, N8AO, ToneMapping, Vignette } from '@react-three/postprocessing';
 import { ToneMappingMode } from 'postprocessing';
-import { useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import * as THREE from 'three';
+import { RectAreaLightUniformsLib } from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import { TILE, UI_FONT, canvasTexture, ornamentTexture, tiledBox, type Materials } from '@/components/world/materials';
 import { hand } from './interaction';
 import { TIERS, deviceTier, markDocument, type Tier } from '@/lib/deviceTier';
@@ -123,10 +124,11 @@ export function FrameForPanel({ side = 'right' }: { side?: 'left' | 'right' }) {
 export function DevProbe() {
   const scene = useThree((s) => s.scene);
   const camera = useThree((s) => s.camera);
+  const gl = useThree((s) => s.gl);
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') return;
-    Object.assign(window as unknown as Record<string, unknown>, { __lexScene: scene, __lexCamera: camera });
-  }, [scene, camera]);
+    Object.assign(window as unknown as Record<string, unknown>, { __lexScene: scene, __lexCamera: camera, __lexGl: gl });
+  }, [scene, camera, gl]);
   return null;
 }
 
@@ -219,15 +221,29 @@ export function QualityGovernor() {
     };
   }, [tier, gl, scene, setDpr, setFrameloop, advance]);
   const down = () => setTier(TIERS[Math.max(0, TIERS.indexOf(quality.tier) - 1)]);
-  // judged only while running at full pace (the 30 fps cap is not a decline)
-  return tier === 'low' ? null : <PerformanceMonitor ms={400} iterations={6} threshold={0.75} flipflops={2} onDecline={down} onFallback={() => setTier('low')} />;
+  // Frames are judged only once the room has settled: while models decode and shaders compile every
+  // machine stutters, and that is not a weak device (a MacBook Pro used to be sent to the light mode
+  // within ten seconds of opening a room). So: nothing is loading, then a few quiet seconds, tab visible.
+  const loading = useProgress((s) => s.active);
+  const [settled, setSettled] = useState(false);
+  useEffect(() => {
+    if (loading) return;
+    const t = setTimeout(() => setSettled(document.visibilityState === 'visible'), 6000);
+    return () => {
+      clearTimeout(t);
+      setSettled(false);
+    };
+  }, [loading, tier]);
+  // judged only while running at full pace (the 30 fps cap is not a decline); a real decline is sustained:
+  // well under 40 fps for several seconds, not one slow second
+  return tier === 'low' || !settled ? null : <PerformanceMonitor ms={500} iterations={8} threshold={0.8} bounds={() => [38, 200]} flipflops={2} onDecline={down} onFallback={() => setTier('low')} />;
 }
 /**
  * The rooms are framed for a landscape screen (~16:10). On a narrower screen
  * (portrait phone, split window) the lens widens so the desk and the people
  * stay in view instead of being cut at the sides.
  */
-export function FitFov({ base = 60, design = 1.6, max = 80 }: { base?: number; design?: number; max?: number }) {
+export function FitFov({ base = 52, design = 1.6, max = 78 }: { base?: number; design?: number; max?: number }) {
   const camera = useThree((s) => s.camera) as THREE.PerspectiveCamera;
   const size = useThree((s) => s.size);
   useEffect(() => {
@@ -252,10 +268,13 @@ export function RoomFx() {
     </EffectComposer>
   ) : (
     <EffectComposer multisampling={4} enableNormalPass={false}>
-      <N8AO halfRes aoRadius={0.6} distanceFalloff={1} intensity={1.8} quality="medium" />
+      <N8AO halfRes aoRadius={1.1} distanceFalloff={0.9} intensity={3} quality="medium" color="#1a120c" />
       <Bloom mipmapBlur luminanceThreshold={1.05} intensity={0.25} />
       <Vignette eskil={false} offset={0.25} darkness={0.4} />
       <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
+      {/* the grade, after the tone curve: a touch more contrast and colour (a graded photograph, not a render) */}
+      <BrightnessContrast brightness={0} contrast={0.07} />
+      <HueSaturation saturation={0.08} />
     </EffectComposer>
   );
 }
@@ -269,6 +288,42 @@ export function Box({ m, size, position, tile = 1, rotation = 0, cast = true }: 
 const panelLight = new THREE.MeshStandardMaterial({ color: '#ffffff', emissive: new THREE.Color('#fff4e2'), emissiveIntensity: 2.2, roughness: 0.6 });
 
 /** Floor, ceiling and four walls; `zc` is the room's centre along z. */
+/**
+ * The light of a room, the same in every room: a warm low sun through the windows (the only light
+ * that casts shadows — soft-edged, as real window light is), a cool sky fill from above and a warm
+ * bounce from the floor, and the room's own reflections. Warm key against cool fill is what gives
+ * a face and a desk their shape; an even white wash is what made the rooms look flat.
+ */
+export function RoomLight({ sun = [4, 6, -2] as V3, reach = 7, power = 2.1 }: { sun?: V3; reach?: number; power?: number }) {
+  const tier = useTier();
+  return (
+    <>
+      {tier === 'high' && <SoftShadows size={22} samples={12} focus={0.4} />}
+      <Environment files="/assets/env/small_empty_room_1_1k.hdr" environmentIntensity={0.5} />
+      <hemisphereLight intensity={0.22} color="#dfe8ff" groundColor="#c9a37a" />
+      <directionalLight position={sun} intensity={power} color="#ffdcb0" castShadow shadow-mapSize={[2048, 2048]} shadow-camera-left={-reach} shadow-camera-right={reach} shadow-camera-top={reach} shadow-camera-bottom={-reach} shadow-bias={-0.0004} shadow-normalBias={0.03} />
+    </>
+  );
+}
+
+/**
+ * A ceiling panel as what it is: a glowing rectangle. An area light gives the soft, shadowless wash
+ * and the long highlights on lacquered wood that a point light cannot; a weak point light under it
+ * keeps the old falloff for depth. On the light tier a single point light does the whole job.
+ */
+// the lookup tables area lights are shaded with (once, in the browser)
+if (typeof window !== 'undefined') RectAreaLightUniformsLib.init();
+export function PanelLight({ at, power, size = [1.2, 0.6] }: { at: V3; power: number; size?: [number, number] }) {
+  const tier = useTier();
+  if (tier === 'low') return <pointLight position={[at[0], at[1] - 0.27, at[2]]} intensity={power} distance={9} decay={2} color="#fff1dc" />;
+  return (
+    <>
+      <rectAreaLight args={['#fff3e0', power * 1.15, size[0], size[1]]} position={at} rotation={[-Math.PI / 2, 0, 0]} />
+      <pointLight position={[at[0], at[1] - 0.27, at[2]]} intensity={power * 0.45} distance={9} decay={2} color="#fff1dc" />
+    </>
+  );
+}
+
 export function Shell({ m, w, d, h = 3, zc = 0, floor = 'laminate', lights }: { m: Materials; w: number; d: number; h?: number; zc?: number; floor?: 'laminate' | 'terrazzo'; lights: V3[] }) {
   return (
     <group>
@@ -282,14 +337,20 @@ export function Shell({ m, w, d, h = 3, zc = 0, floor = 'laminate', lights }: { 
       <Box m={m.walnut} size={[w - 0.2, 0.09, 0.02]} position={[0, 0.045, zc + d / 2 - 0.11]} tile={TILE.walnut} cast={false} />
       <Box m={m.walnut} size={[0.02, 0.09, d - 0.26]} position={[-w / 2 + 0.11, 0.045, zc - 0.01]} tile={TILE.walnut} cast={false} />
       <Box m={m.walnut} size={[0.02, 0.09, d - 0.26]} position={[w / 2 - 0.11, 0.045, zc - 0.01]} tile={TILE.walnut} cast={false} />
-      {lights.map((p) => (
-        <group key={p.join(':')}>
-          <mesh material={panelLight} position={[p[0], h - 0.012, p[2]]}>
-            <boxGeometry args={[1.2, 0.02, 0.6]} />
-          </mesh>
-          <pointLight position={[p[0], h - 0.3, p[2]]} intensity={p[1]} distance={9} decay={2} color="#fff1dc" />
-        </group>
-      ))}
+      {lights.map((p) => {
+        // a 120 × 60 cm panel takes exactly two tiles of the ceiling grid (laid from the room's corner):
+        // centred on a grid line across, in the middle of a tile along
+        const x = -w / 2 + Math.round((p[0] + w / 2) / 0.6) * 0.6;
+        const z = zc - d / 2 + (Math.floor((p[2] - (zc - d / 2)) / 0.6 + 1e-6) + 0.5) * 0.6;
+        return (
+          <group key={p.join(':')}>
+            <mesh material={panelLight} position={[x, h - 0.012, z]}>
+              <boxGeometry args={[1.175, 0.02, 0.575]} />
+            </mesh>
+            <PanelLight at={[x, h - 0.03, z]} power={p[1]} />
+          </group>
+        );
+      })}
     </group>
   );
 }

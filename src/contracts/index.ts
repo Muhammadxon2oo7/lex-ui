@@ -72,6 +72,8 @@ export const TurnSchema = z.object({
   text: z.string(),
   at: z.string(),
   emotion: EmotionSchema.optional(),
+  /** Court sessions (v1.4.5): the line's pre-rendered audio; its id changes when the voice is re-recorded. */
+  audio: z.object({ id: z.string().max(200), url: z.string().max(400), durationMs: z.number().nonnegative(), voice: z.string().max(40) }).optional().catch(undefined),
   /** Court sessions: who wrote the line — a canonical script line, the reply bank, or the language model (v1.4.1). */
   engine: z.enum(['script', 'bank', 'llm']).optional().catch(undefined),
   /** Court sessions: a gesture with the line (nod, shake-head, lean-in…); unknown ones are dropped. */

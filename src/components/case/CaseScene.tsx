@@ -5,7 +5,7 @@
  * (or, at the court office window, standing). People are the rigged
  * Rocketbox avatars with mocap sitting, rising and talking.
  */
-import { Environment } from '@react-three/drei';
+
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Suspense, useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
@@ -26,7 +26,7 @@ import CourtRoom, { useMahogany } from '@/components/world/CourtRoom';
 import { Prop } from '@/components/world/Furniture';
 import { UI_FONT, canvasTexture, useMaterials, type Materials } from '@/components/world/materials';
 import { Flag, StateEmblem } from '@/components/world/SetDressing';
-import { QualityGovernor, againstWall, DevProbe, Bookcase, Box, Desk, FitFov, Folder, FrameForPanel, Monitor, Ornament, Papers, RoomFx, SeatCamera, Shell, TrayCeiling, WallSign, Window, type V3 } from './stagecraft';
+import { QualityGovernor, RoomLight, againstWall, DevProbe, Bookcase, Box, Desk, FitFov, Folder, FrameForPanel, Monitor, Ornament, Papers, RoomFx, SeatCamera, Shell, TrayCeiling, WallSign, Window, type V3 } from './stagecraft';
 
 export interface SceneProps {
   /** Papers on the desk you can pick up, move and take in your hands. */
@@ -47,15 +47,7 @@ export interface SceneProps {
   cues: { papers: number; handed: boolean; signed: boolean };
 }
 
-function Lights({ sun = [4, 6, -2] as V3 }) {
-  return (
-    <>
-      <Environment files="/assets/env/small_empty_room_1_1k.hdr" environmentIntensity={0.55} />
-      <hemisphereLight intensity={0.28} color="#ffffff" groundColor="#b6a58f" />
-      <directionalLight position={sun} intensity={1.1} color="#fff0dc" castShadow shadow-mapSize={[2048, 2048]} shadow-camera-left={-6} shadow-camera-right={6} shadow-camera-top={6} shadow-camera-bottom={-6} shadow-bias={-0.0004} shadow-normalBias={0.03} />
-    </>
-  );
-}
+const Lights = ({ sun }: { sun?: V3 }) => <RoomLight sun={sun} reach={6} />;
 
 /**
  * You, from inside: your own body sits (or stands) where the camera is, its

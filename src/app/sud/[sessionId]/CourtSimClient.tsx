@@ -41,6 +41,13 @@ const LABEL: Record<Role, string> = { judge: 'Sudya', secretary: 'Sud majlisi ko
 const LEVEL = { beginner: 'boshlangʻich', intermediate: 'oʻrta', advanced: 'professional' } as const;
 const EMPTY_SCENE: CourtScene = { judgeIn: false, everyoneStands: false, witnessIn: false };
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+/** Live procedure: what an advocate may do besides answering. The court recognises these from the words themselves. */
+const MOVES = (other: string) => [
+  { id: 'ask', label: 'Raqibga savol', start: `Hurmatli sud, ${other} vakilidan soʻramoqchiman: ` },
+  { id: 'motion', label: 'Iltimosnoma', start: 'Hurmatli sud, iltimosnoma bilan chiqaman: ' },
+  { id: 'object', label: 'Eʼtiroz', start: `Hurmatli sud, ${other} vakilining gapiga eʼtiroz bildiraman, chunki ` },
+  { id: 'settle', label: 'Kelishuv', start: 'Hurmatli sud, kelishuv bitimi tuzishni taklif qilamiz: ' },
+];
 
 /** New lines one at a time, each in its speaker's voice; a reload replays only the latest batch. */
 function usePresenter(turns: Turn[]) {
@@ -221,6 +228,17 @@ function Room({ initial }: { initial: Snapshot }) {
 
   // how the answer in the box came to be: spoken (T) or typed — reported with the turn
   const spoken = useRef(false);
+  const box = useRef<HTMLTextAreaElement>(null);
+  // a move chip writes the opening; the student finishes the sentence (caret at the end)
+  const begin = (start: string) => {
+    setDraft(start);
+    requestAnimationFrame(() => {
+      const el = box.current;
+      if (!el) return;
+      el.focus();
+      el.setSelectionRange(start.length, start.length);
+    });
+  };
   const send = (text: string) => {
     const said = text.trim();
     if (!said || !canSpeak) return;
@@ -428,8 +446,18 @@ function Room({ initial }: { initial: Snapshot }) {
             )}
             {snap.status === 'in-progress' && (
               <form className="border-t border-white/8 px-3 pt-3 pb-2.5" onSubmit={(e) => { e.preventDefault(); send(draft); }}>
+                {level !== 'advanced' && canSpeak && !draft.trim() && (
+                  <div role="group" aria-label="Protsessual harakatlar" className="-mx-1 mb-2 flex gap-1.5 overflow-x-auto overscroll-x-contain px-1 scrollbar-none">
+                    {MOVES(respondentSide ? 'daʼvogar' : 'javobgar').map((m) => (
+                      <button key={m.id} type="button" onClick={() => begin(m.start)} title={m.start.trim()}
+                        className="min-h-8 shrink-0 rounded-full bg-white/[0.07] px-3 text-[0.8rem] font-medium whitespace-nowrap text-white/75 transition-[background-color,transform] duration-150 hover:bg-white/12 hover:text-white active:scale-[0.97] pointer-coarse:min-h-10">
+                        {m.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
                 <label className="sr-only" htmlFor="court-answer">Sudga javobingiz</label>
-                <textarea id="court-answer" value={draft} rows={2} maxLength={800} disabled={!canSpeak}
+                <textarea ref={box} id="court-answer" value={draft} rows={2} maxLength={800} disabled={!canSpeak}
                   onChange={(e) => {
                     if (!draft.trim()) spoken.current = false; // typing a fresh answer
                     setDraft(e.target.value);

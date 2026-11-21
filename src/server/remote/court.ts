@@ -17,7 +17,7 @@
  *     trouble into clear Uzbek errors.
  *
  * Enabled only when LEXSIM_REMOTE_URL is set, e.g.
- *   LEXSIM_REMOTE_URL=http://192.168.88.110:8100/api/v1
+ *   LEXSIM_REMOTE_URL=https://lex-api.e-investment.uz/api/v1
  */
 import {
   AssessmentSchema,

@@ -41,7 +41,7 @@ npm run typecheck && npm run lint && npm run build
   - Raqib tomon javobi LLM'da tayyorlanayotganda «Raqib advokat javob tayyorlamoqda…» koʻrsatiladi.
   - Majlisdan keyin — mavjud hisobot sahifasi, qarorlar tahlili bilan.
 - **Adapter:** `src/server/remote/court.ts`. Brauzer server bilan toʻgʻridan-toʻgʻri gaplashmaydi; har bir javob bizning Zod sxemalarimizdan oʻtadi.
-- **Ovoz:** Azure kaliti boʻlmasa, sud serverining oʻzbekcha TTS/STT'si ishlatiladi. Hozircha faqat sud sessiyasi ochiq talabalar uchun.
+- **Ovoz:** sud serverining klonlangan rol ovozlari (TTS) va GPU STT. `LEXSIM_REMOTE_KEY` bilan barcha xonalarda, kalitsiz — faqat sud sessiyasi ochiq talabalar uchun.
 - **QA:** `node tools/qa/economic.mjs`.
 - **Hujjatlar:**
   - `docs/COURT_BACKEND.md` — kontraktni moslashtirish;
@@ -109,10 +109,8 @@ Aktyorlar gapiradi, talaba ovoz bilan javob beradi (`T` ni bosib turib gapirish)
 
 | Kalit | Natija |
 | --- | --- |
-| `AZURE_SPEECH_KEY` + `AZURE_SPEECH_REGION` | Oʻzbekcha neyron ovozlar (Sardor, Madina) va nutqni tanish; lab harakati ovoz balandligiga bogʻlangan |
-| kalitsiz | Brauzerning oʻzbekcha tizim ovozi boʻlsa — u; boʻlmasa aktyorlar faqat subtitr bilan. Nutqni tanish — brauzer `uz-UZ` ni qoʻllasa |
-
-Azure integratsiyasi hujjatlashtirilgan REST endpointlar boʻyicha yozilgan, lekin haqiqiy kalit bilan hali sinalmagan.
+| `LEXSIM_REMOTE_URL` + `LEXSIM_REMOTE_KEY` | Sud serverining klonlangan ovozlari (sudya, kotib, raqib, taraf), oldindan yozilgan gaplar ~0,01 s; GPU nutqni tanish ~1–2 s; lab harakati ovoz balandligiga bogʻlangan |
+| server yoʻq | Brauzerning oʻzbekcha tizim ovozi boʻlsa — u; boʻlmasa aktyorlar faqat subtitr bilan. Nutqni tanish — brauzer `uz-UZ` ni qoʻllasa |
 
 ## Ikki mashq
 

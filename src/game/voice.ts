@@ -2,7 +2,7 @@
  * Voice: actors speak, the student answers out loud.
  *
  * Output (actors):
- *   1. server TTS (Azure, Uzbek neural voices) → played through Web Audio so
+ *   1. server TTS (the court backend's cloned role voices) → played through Web Audio so
  *      the mouth follows the real loudness of the voice;
  *   2. otherwise the browser's own Uzbek voice, if the system has one;
  *   3. otherwise silence — the subtitle is still shown. We never read Uzbek
@@ -30,7 +30,7 @@ export function lipTrack(text: string, ms: number) {
   speech.track = { segments: visemeTrack(text), start: performance.now(), duration: Math.max(300, ms) };
 }
 
-type Status = { tts: 'azure' | 'server' | null; stt: 'azure' | 'server' | null };
+type Status = { tts: 'server' | null; stt: 'server' | null };
 let statusPromise: Promise<Status> | null = null;
 /** Read once per page; `refresh` after opening a court session (its server voice becomes available). */
 export function voiceStatus(refresh = false): Promise<Status> {

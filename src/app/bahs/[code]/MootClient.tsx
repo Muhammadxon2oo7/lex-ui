@@ -15,6 +15,7 @@ import type { MootAct, MootEntry, MootPlayer, MootRole, MootRoom, MootSide, Team
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
 import { Talk } from '@/components/hud/Talk';
 import { Drawer } from '@/components/ui/Drawer';
+import { CaseMeta, Debrief, Norms, Timeline } from '@/components/moot/CaseParts';
 import { modal, note } from '@/lib/motion';
 import { PracticeRecord } from '@/components/record/PracticeRecord';
 import { GlassLayer } from '@/components/ui/glass';
@@ -139,6 +140,7 @@ function CaseFile({ room, dark = false }: { room: MootRoom; dark?: boolean }) {
       <div className={box}>
         <p className={h}>Ish</p>
         <p className="mt-1 font-semibold">{c.title}</p>
+        <div className="mt-0.5 mb-1"><CaseMeta c={c} dark={dark} /></div>
         <p className={dim}>{c.summary}</p>
         <dl className="mt-2 grid gap-x-4 gap-y-1 sm:grid-cols-[auto_1fr]">
           <dt className={dim}>Daʼvogar</dt><dd>{c.parties.claimant}</dd>
@@ -162,10 +164,23 @@ function CaseFile({ room, dark = false }: { room: MootRoom; dark?: boolean }) {
         <p className={h}>Holatlar</p>
         <ul className="mt-1.5 space-y-2">{c.facts.map((f) => <li key={f.id}><span className="font-semibold">{f.title}. </span><span className={dim}>{f.text}</span></li>)}</ul>
       </div>
+      {c.timeline.length > 0 && (
+        <div className={box}>
+          <p className={h}>Sanalar zanjiri</p>
+          <Timeline items={c.timeline} dark={dark} />
+        </div>
+      )}
       <div className={box}>
         <p className={h}>Ish materiallaridagi dalillar</p>
         <ul className="mt-1.5 space-y-2">{c.evidence.map((f) => <li key={f.id}><span className="font-semibold">{f.title}. </span><span className={dim}>{f.text}</span></li>)}</ul>
       </div>
+      {c.norms.length > 0 && (
+        <div className={box}>
+          <p className={h}>Normalar · lex.uz</p>
+          <p className={`mt-1 text-[0.8rem] ${dim}`}>Ishga tegishli boʻlishi mumkin boʻlgan moddalar va Plenum bandlari. Qaysi biri kimga foydali - oʻzingiz aniqlaysiz.</p>
+          <Norms items={c.norms} dark={dark} />
+        </div>
+      )}
       <p className={`text-[0.78rem] ${dark ? 'text-white/45' : 'text-ink-3'}`}>{c.disclaimer}</p>
     </div>
   );
@@ -664,6 +679,8 @@ function Verdict({ room }: { room: MootRoom }) {
           </p>
         </section>
       )}
+
+      {room.case.debrief && <Debrief d={room.case.debrief} />}
 
       <section className="mt-4 surface rounded-[28px] p-5" aria-labelledby="people-title">
         <h2 id="people-title" className="display text-lg font-semibold">Ishtirokchilar</h2>

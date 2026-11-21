@@ -1,6 +1,7 @@
 /** Client side of domains and cases: everything goes through our own /api/v1/library routes. */
 import { z } from 'zod';
 import { DomainsEnvelope, DraftSchema, LibCaseSchema, type Draft, type LibCase } from '@/contracts/library';
+import { MootCatalogItemSchema, NormTextSchema } from '@/contracts/moot';
 import { ApiError } from './api';
 
 async function call<S extends z.ZodType>(schema: S, path: string, body?: unknown, timeout = 25_000): Promise<z.infer<S>> {
@@ -41,6 +42,10 @@ export const library = {
   mentorLogin: (code: string) => call(z.object({ mentor: z.boolean() }), '/library/mentor', { code }),
   queue: () => call(Many, '/library/review').then((r) => r.cases),
   review: (id: string, decision: 'approve' | 'reject', note: string) => call(One, `/library/cases/${encodeURIComponent(id)}/review`, { decision, note }),
+  /** The built-in «Bahs» cases (no backend needed). */
+  mootCatalog: () => call(z.object({ cases: z.array(MootCatalogItemSchema) }), '/moot/catalog').then((r) => r.cases),
+  /** One norm of the verified pack, verbatim. */
+  law: (ref: string) => call(z.object({ norm: NormTextSchema }), `/law?ref=${encodeURIComponent(ref)}`).then((r) => r.norm),
   mootCases: () => call(z.object({ cases: z.array(z.object({ id: z.string(), title: z.string(), domain: z.string(), summary: z.string() })) }), '/moot/cases').then((r) => r.cases),
 };
 

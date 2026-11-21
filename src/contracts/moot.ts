@@ -12,6 +12,14 @@ export const TeamSchema = z.enum(['A', 'B']);
 export type Team = z.infer<typeof TeamSchema>;
 export const MootSideSchema = z.enum(['claimant', 'respondent']);
 export type MootSide = z.infer<typeof MootSideSchema>;
+/**
+ * The five skills a contested economic case trains (from the research behind the catalogue):
+ * dalil - evidence matrix (each fact: document, date, source); qoida - citing the exact article / Plenum band;
+ * hisob - calculation (penya, the FK 327 floor, caps, exchange rate); protsess - procedural tactics
+ * (claims, counterclaim, expert examination, time limits); tavsif - characterisation and causation.
+ */
+export const MootSkillSchema = z.enum(['dalil', 'qoida', 'hisob', 'protsess', 'tavsif']);
+export type MootSkill = z.infer<typeof MootSkillSchema>;
 /** lead - opening and closing; second - evidence and questions; party - the client, answers questions (3 a side). */
 export const MootRoleSchema = z.enum(['lead', 'second', 'party']);
 export type MootRole = z.infer<typeof MootRoleSchema>;
@@ -60,6 +68,23 @@ export type MootEntry = z.infer<typeof MootEntrySchema>;
 export const MootChatSchema = z.object({ id: z.string(), at: z.number(), by: z.string(), name: z.string(), text: z.string() });
 
 const CaseItem = z.object({ id: z.string(), title: z.string(), text: z.string() });
+/** A norm from the verified pack: `ref` is «DOC:number» (FK:326-modda, PLENUM-OXS-163:4-band). */
+export const NormRefSchema = z.object({ ref: z.string(), label: z.string(), title: z.string(), url: z.string() });
+export type NormRef = z.infer<typeof NormRefSchema>;
+export const NormTextSchema = NormRefSchema.extend({ text: z.string(), document: z.string(), edition: z.string().nullable(), retrievedAt: z.string() });
+export type NormText = z.infer<typeof NormTextSchema>;
+
+/** One case of the built-in catalogue: what anyone may see before choosing it (no confidential facts). */
+export const MootCatalogItemSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  summary: z.string(),
+  topic: z.string(),
+  level: z.number().int().min(1).max(3),
+  skills: z.array(MootSkillSchema),
+  abroad: z.boolean(),
+});
+export type MootCatalogItem = z.infer<typeof MootCatalogItemSchema>;
 export const MootCaseViewSchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -75,6 +100,23 @@ export const MootCaseViewSchema = z.object({
   /** What your side is expected to do. */
   task: z.array(z.string()),
   disclaimer: z.string(),
+  topic: z.string().nullable().default(null),
+  level: z.number().int().min(1).max(3).nullable().default(null),
+  skills: z.array(MootSkillSchema).default([]),
+  /** The chain of dates (both sides). */
+  timeline: z.array(z.object({ date: z.string(), text: z.string() })).default([]),
+  /** Norms handed out with the file: verbatim text is fetched from /api/v1/law by `ref`. */
+  norms: z.array(NormRefSchema).default([]),
+  /** Only once the verdict is in: what the case is based on and what the real courts decided. */
+  debrief: z.object({
+    ruling: z.string(),
+    url: z.string(),
+    /** T - checked against the ruling's full text; I - from a reliable secondary source. */
+    mark: z.enum(['T', 'I']),
+    adapted: z.string(),
+    outcome: z.array(z.string()),
+    lessons: z.array(z.string()),
+  }).nullable().default(null),
 });
 export type MootCaseView = z.infer<typeof MootCaseViewSchema>;
 

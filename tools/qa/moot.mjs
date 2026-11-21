@@ -1,5 +1,5 @@
 // End-to-end QA of the moot court ("Bahs"): two browsers, one room, a whole hearing to the verdict.
-//   node tools/qa/moot.mjs [outDir]
+//   node tools/qa/moot.mjs [outDir]      CASE=<title words> picks a catalogue case (default: the built-in ijara)
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 
@@ -27,6 +27,10 @@ await a.goto(`${BASE}/bahs`);
 await a.getByPlaceholder('Masalan: Karimova Aziza').fill('Aziza Karimova');
 await a.getByRole('radio', { name: 'Ayol' }).click();
 await a.getByRole('radio', { name: /1 ga 1/ }).click();
+const CASE = process.env.CASE;
+await a.getByRole('radiogroup', { name: 'Ish' }).waitFor({ timeout: 20000 });
+check('the case catalogue lists the built-in cases', (await a.getByRole('radiogroup', { name: 'Ish' }).getByRole('radio').count()) >= 10);
+if (CASE) await a.getByRole('radiogroup', { name: 'Ish' }).getByRole('radio', { name: new RegExp(CASE) }).click();
 await shot(a, '01-home');
 await a.getByRole('button', { name: 'Xona ochish' }).click();
 await a.waitForURL(/\/bahs\/[A-Z0-9]{5}$/);
@@ -54,6 +58,13 @@ const sa = await sideOf(a), sb = await sideOf(b);
 check('sides are opposite', sa !== sb, `A ${sa}, B ${sb}`);
 const secret = async (p) => p.getByText('Faqat sizning jamoangiz biladi', { exact: true }).locator('..').innerText();
 check('confidential facts differ per side', (await secret(a)) !== (await secret(b)));
+if (CASE) {
+  check('the file has the chain of dates', (await a.getByText('Sanalar zanjiri').count()) > 0);
+  await a.getByRole('button', { name: /FK 298-modda|FK \d+-modda/ }).first().click();
+  await a.getByText(/lex\.uz saytida ochish/).first().waitFor({ timeout: 10000 });
+  check('a norm opens verbatim from the pack', true);
+  check('the real outcome is not shown before the verdict', (await a.getByText('Sudlar nima qildi').count()) === 0);
+}
 await shot(a, '03-briefing');
 await shot(b, '03-briefing-phone');
 for (const p of [a, b]) await p.getByRole('button', { name: /Oʻqib boʻldim/ }).click();
@@ -97,6 +108,7 @@ check('both reach the verdict', true);
 const ha = await a.getByRole('heading', { level: 1 }).innerText(), hb = await b.getByRole('heading', { level: 1 }).innerText();
 check('one side wins and the other sees the opposite', ha !== hb || /Durang/.test(ha), `A: ${ha} | B: ${hb}`);
 check('the verdict says which engine judged', (await a.getByText(/Dastlabki baho|til modeli tomonidan/).count()) > 0);
+if (CASE) check('the debrief opens after the verdict', (await a.getByRole('heading', { name: 'Sudlar nima qildi' }).count()) > 0);
 await shot(a, '06-verdict');
 await a.evaluate(() => window.scrollTo(0, 700));
 await shot(a, '06-verdict-2');

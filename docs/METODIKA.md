@@ -91,6 +91,17 @@ Talabaning ishi hukmni o'zgartiradi: dalillarni yaxshi tekshirtirsa ayblov hukmi
 - tergov bosqichidagi ayblov e'lon qilish va himoyachining tergovdagi ishi (hikoyada qisqa bayon qilinadi);
 - apellyatsiya bosqichi.
 
+### 3.3. Iqtisodiy sud: «Bahs» ishlari katalogi
+
+«Bahs»da 14 ta ish bor (`docs/BAHS_ISHLARI.md`). Har biri haqiqiy qarorga asoslangan: instansiyalar bir-biriga zid qaror chiqargan, shuning uchun ikkala tomonda ham bahslashadigan narsa bor. Ish papkasida quyidagilar bor:
+- holatlar;
+- dalillar;
+- sanalar zanjiri;
+- har tomonning maxfiy faktlari;
+- lex.uz normalari (bosilsa, matn ochiladi).
+
+Hukmdan keyin «Haqiqiy ishda» bloki ochiladi: sudlar nima qildi va ish nimani oʻrgatadi. Bu debrifing (9-komponent) va haqiqiy amaliyotga bogʻlash (10-komponent). Talaba oʻz bahsini haqiqiy natija bilan solishtiradi.
+
 ---
 
 ## 4. Tekshiruvda topilgan va tuzatilgan xato

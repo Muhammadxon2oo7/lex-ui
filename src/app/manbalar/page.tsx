@@ -11,7 +11,11 @@ const KIND: Record<string, string> = { code: 'Kodeks', law: 'Qonun', regulation:
 const doc = (id: string) => SOURCE_DOCS.find((d) => d.id === id)!;
 const cap = (t: string) => (t === t.toUpperCase() ? t.charAt(0) + t.slice(1).toLowerCase() : t);
 /** The prosecution law's page carries the title of the 2001 act that gave it its current wording. */
-const TITLE: Record<string, string> = { PROKURATURA: '«Prokuratura toʻgʻrisida»gi Qonun (29.08.2001-yildagi 257-II-son Qonun bilan tasdiqlangan tahrirda)' };
+const TITLE: Record<string, string> = {
+  PROKURATURA: '«Prokuratura toʻgʻrisida»gi Qonun (29.08.2001-yildagi 257-II-son Qonun bilan tasdiqlangan tahrirda)',
+  FK: 'Fuqarolik kodeksi (birinchi qism)',
+  FK2: 'Fuqarolik kodeksi (ikkinchi qism)',
+};
 const label = (d: SourceDoc) => TITLE[d.id] ?? cap(d.title).replace(/^Oʻzbekiston respublikasining /i, '');
 
 function Articles({ d, numbers }: { d: SourceDoc; numbers: string[] }) {

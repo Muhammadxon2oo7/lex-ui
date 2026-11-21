@@ -11,6 +11,8 @@ import { ApiError } from '@/game/api';
 import { moot } from '@/game/moot';
 import { getProfile, saveProfile, type AvatarModel } from '@/game/profile';
 import { GlassLayer, GlassToolbar, Segmented, ToolbarLink } from '@/components/ui/glass';
+import { Catalog } from '@/components/moot/CaseParts';
+import type { MootCatalogItem } from '@/contracts/moot';
 
 const noSubscribe = () => () => {};
 
@@ -45,14 +47,17 @@ export default function BahsHome() {
   // the case to argue: the built-in one, or one approved on the court server (?case= from a domain page)
   const asked = useSearchParams().get('case');
   const [cases, setCases] = useState<{ id: string; title: string }[]>([]);
+  const [catalog, setCatalog] = useState<MootCatalogItem[] | null>(null);
   const [caseId, setCaseId] = useState<string>(asked ?? 'ijara');
   useEffect(() => {
     let alive = true;
+    library.mootCatalog().then((list) => alive && setCatalog(list), () => alive && setCatalog([]));
     library.mootCases().then((list) => alive && setCases(list.filter((c) => c.id !== 'ijara')), () => {});
     return () => {
       alive = false;
     };
   }, []);
+  const chosen = catalog?.find((c) => c.id === caseId)?.title ?? cases.find((c) => c.id === caseId)?.title ?? 'Tanlangan case';
   const who = (name ?? saved?.name ?? '').trim();
   const look = avatar ?? saved?.avatar ?? 'man';
   const ok = who.length >= 2;
@@ -96,19 +101,24 @@ export default function BahsHome() {
         </div>
       )}
 
+      <section aria-labelledby="cases-title" className="surface mt-4 rounded-[28px] p-5 sm:p-6">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 id="cases-title" className="display text-xl font-semibold">Ishni tanlang</h2>
+          <p className="text-[0.8rem] text-ink-3">Haqiqiy sud qarorlari asosida · normalar lex.uz matni bilan</p>
+        </div>
+        <p className="mt-1 max-w-[64ch] text-[0.88rem] text-ink-2">Har bir ishda ikki instansiya bir-biriga zid qaror chiqargan. Haqiqiy sud nima qilgani bahsdan keyin ochiladi.</p>
+        <div className="mt-4">
+          {catalog === null ? <div className="grid gap-2.5 sm:grid-cols-2">{[0, 1, 2, 3].map((i) => <div key={i} className="h-32 animate-pulse rounded-[20px] bg-black/[0.04] motion-reduce:animate-none" />)}</div>
+            : <Catalog items={catalog} extra={[...cases, ...(asked && !catalog.some((c) => c.id === asked) && !cases.some((c) => c.id === asked) ? [{ id: asked, title: 'Tanlangan case' }] : [])]} value={caseId} onChange={setCaseId} />}
+        </div>
+      </section>
+
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         <section aria-labelledby="create-title" className="surface flex flex-col rounded-[28px] p-5 sm:p-6">
           <h2 id="create-title" className="display text-xl font-semibold">Xona ochish</h2>
           <p className="mt-1 text-[0.9rem] text-ink-2">Kod olasiz va uni doʻstlaringizga yuborasiz.</p>
           <div className="mt-4 space-y-4">
-            <label className="block">
-              <span className="text-[0.8rem] font-semibold text-ink-2">Ish</span>
-              <select value={caseId} onChange={(e) => setCaseId(e.target.value)} className="field mt-1.5">
-                <option value="ijara">Ijara qarzi va penya (oʻrnatilgan)</option>
-                {cases.map((c) => <option key={c.id} value={c.id}>{c.title}</option>)}
-                {asked && asked !== 'ijara' && !cases.some((c) => c.id === asked) && <option value={asked}>Tanlangan case</option>}
-              </select>
-            </label>
+            <p className="rounded-2xl bg-paper px-3.5 py-2.5 text-[0.88rem]"><span className="text-ink-3">Ish: </span><span className="font-semibold">{chosen}</span></p>
             <Choice label="Jamoa hajmi" value={size} onChange={setSize} options={[[1, '1 ga 1', 'yakkama-yakka'], [2, '2 ga 2', 'bosh va ikkinchi vakil'], [3, '3 ga 3', '+ taraf']]} />
             <Choice label="Jamoalar" value={assign} onChange={setAssign} options={[['pick', 'Oʻzimiz tanlaymiz', 'A yoki B jamoaga qoʻshilasiz'], ['random', 'Qurʼa bilan', 'kim kim bilan - boshlanganda maʼlum boʻladi']]} />
           </div>

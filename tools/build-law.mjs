@@ -52,7 +52,9 @@ console.log(`jpk-case.json: ${jpkArticles.length} articles, edition ${jpk.editio
 // ── The registry behind /manbalar and the citation test: every document of the pack, its edition,
 //    and the number, title and link of each article taken. Titles only — texts stay in the pack.
 const REGISTRY = ['FPK', 'JPK', 'IPK', 'MK', 'JK', 'DAVLATBOJI', 'ADVOKATURA', 'ADVKAFOLAT', 'ORDER', 'SUDLAR', 'PROKURATURA',
-  'PENSIYA', 'VMQ592', 'VMQ612', 'MUROJAAT', 'MTT', 'KORRUPSIYA', 'DFX', 'VMQ595', 'PLENUM-2018-14', 'PLENUM-2023-26'];
+  'PENSIYA', 'VMQ592', 'VMQ612', 'MUROJAAT', 'MTT', 'KORRUPSIYA', 'DFX', 'VMQ595', 'PLENUM-2018-14', 'PLENUM-2023-26',
+  // contested economic cases («Bahs»): Civil Code, the contractual-basis law, Higher Economic Court Plenums
+  'FK', 'FK2', 'SHARTNOMAVIY', 'PLENUM-OXS-163', 'PLENUM-OXS-234', 'PLENUM-OXS-306', 'PLENUM-OXS-103'];
 const docs = REGISTRY.map((id) => {
   const p = JSON.parse(readFileSync(join(ROOT, '..', 'legal', 'sources', `${id}.json`), 'utf8'));
   if (!p.lexUrl || !p.articles?.length) throw new Error(`${id}: no url or articles in the pack`);
@@ -74,3 +76,18 @@ const docs = REGISTRY.map((id) => {
 });
 writeFileSync(join(ROOT, 'src', 'data', 'sources.json'), JSON.stringify({ builtAt: new Date().toISOString().slice(0, 10), docs }, null, 1));
 console.log(`sources.json: ${docs.length} documents, ${docs.reduce((n, d) => n + d.articles.length, 0)} articles`);
+
+// ── «Bahs» economic cases: the verbatim texts handed out with a case file (server-only; served by
+//    /api/v1/law). Whole documents of the economic pack, plus the IPK articles the cases cite.
+const ECON = ['FK', 'FK2', 'SHARTNOMAVIY', 'PLENUM-OXS-163', 'PLENUM-OXS-234', 'PLENUM-OXS-306', 'PLENUM-OXS-103', 'IPK'];
+const ECON_IPK = new Set(['33-modda', '68-modda', '72-modda', '80-modda', '88-modda', '160-modda', '161-modda']);
+const econ = ECON.map((id) => {
+  const p = JSON.parse(readFileSync(join(ROOT, '..', 'legal', 'sources', `${id}.json`), 'utf8'));
+  const articles = p.articles.filter((a) => a.number !== 'kirish' && (id !== 'IPK' || ECON_IPK.has(a.number)));
+  if (id === 'IPK' && articles.length !== ECON_IPK.size) throw new Error('IPK: an article the cases cite is not in the pack');
+  for (const a of articles) if (!a.text?.trim() || !a.url) throw new Error(`${id} ${a.number}: no text or url`);
+  return { id, title: p.title, edition: p.editionSelected ?? null, retrievedAt: p.retrievedAt, url: p.lexUrl,
+    articles: articles.map((a) => ({ number: a.number, title: a.title, text: a.text, url: a.url })) };
+});
+writeFileSync(join(ROOT, 'src', 'server', 'law', 'econ.json'), JSON.stringify({ docs: econ }, null, 1));
+console.log(`econ.json: ${econ.length} documents, ${econ.reduce((n, d) => n + d.articles.length, 0)} articles`);

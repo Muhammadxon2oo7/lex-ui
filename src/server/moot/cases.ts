@@ -3,12 +3,21 @@
  * everyone knows, each side's own task and confidential facts, and the evidence in the file.
  * There are no scripted answers - people argue it.
  *
- * Facts come from the court server's published scenario (ijara, both briefings). Nothing is
- * invented here: no sums, dates or articles beyond what that scenario states. New cases are
- * written and signed off by a lawyer (see docs/BACKEND_TASKS.md) - never made up in code.
+ * «ijara» comes from the court server's published scenario (both briefings); the economic cases in
+ * ./econ.ts come from published court rulings (lex.uz and others, named in each case's `basis`).
+ * Nothing is invented: no sums, dates or articles beyond what the sources state, and every norm is
+ * in the verified pack (legal/sources ← lex.uz). A lawyer signs them off before real use.
  */
 import type { LibCase } from '@/contracts/library';
-import type { MootSide } from '@/contracts/moot';
+import { normRef } from '@/server/law/norms';
+import type { MootCatalogItem, MootSide, MootSkill } from '@/contracts/moot';
+import { ECON_CASES } from './econ';
+
+/** A norm from the verified pack (legal/sources ← lex.uz): the document id and the article / band number. */
+export interface CaseNorm {
+  doc: 'FK' | 'FK2' | 'SHARTNOMAVIY' | 'PLENUM-OXS-163' | 'PLENUM-OXS-234' | 'PLENUM-OXS-306' | 'PLENUM-OXS-103' | 'IPK';
+  n: string;
+}
 
 export interface MootCase {
   id: string;
@@ -26,6 +35,18 @@ export interface MootCase {
    */
   points: Record<MootSide, string[][]>;
   disclaimer: string;
+  /** Catalogue: the subject, how hard, which of the five skills it trains. */
+  topic?: string;
+  level?: 1 | 2 | 3;
+  skills?: MootSkill[];
+  /** The chain of dates both sides see. */
+  timeline?: { date: string; text: string }[];
+  /** Norms handed out with the file (from the verified pack only). */
+  norms?: CaseNorm[];
+  /** Opened after the verdict: what the case is based on, what the real courts decided, what it teaches. */
+  basis?: { ruling: string; url: string; mark: 'T' | 'I'; adapted: string };
+  outcome?: string[];
+  lessons?: string[];
 }
 
 export const MOOT_CASES: Record<string, MootCase> = {
@@ -61,10 +82,26 @@ export const MOOT_CASES: Record<string, MootCase> = {
       respondent: [['dalolatnoma'], ['imzolanmagan', 'imzolanma'], ['topshiril'], ['uch oy', '3 oy'], ['penya'], ['kamaytir', 'nomutanosib'], ['moliyaviy', 'ahvol']],
     },
     disclaimer: 'Oʻquv ishi. Real iqtisodiy sud ishi asosida, sezilarli oʻzgartirilgan. Huquqiy maslahat emas.',
+    topic: 'Ijara',
+    level: 1,
+    skills: ['dalil', 'qoida'],
+    timeline: [{ date: '01.04.2022', text: '32-P-sonli ijara shartnomasi tuzildi (9,5 m²).' }],
+    norms: [{ doc: 'FK2', n: '541-modda' }, { doc: 'PLENUM-OXS-234', n: '9-band' }, { doc: 'FK', n: '326-modda' }, { doc: 'PLENUM-OXS-163', n: '4-band' }],
   },
+  ...ECON_CASES,
 };
 
 export const DEFAULT_CASE = 'ijara';
+
+/** The built-in catalogue for the case picker: public fields only, easiest first. */
+export function mootCatalog(): MootCatalogItem[] {
+  return Object.values(MOOT_CASES)
+    .map((c) => ({
+      id: c.id, title: c.title, summary: c.summary, topic: c.topic ?? 'Boshqa', level: c.level ?? 2, skills: c.skills ?? [],
+      abroad: Boolean(c.basis && !/lex\.uz|buxgalter\.uz/.test(c.basis.url)),
+    }))
+    .sort((a, b) => a.level - b.level);
+}
 
 /**
  * A case approved on the court server (GET /moot/cases/{id}) as a room's case file. Its own `points`
@@ -78,4 +115,40 @@ export function fromLibrary(c: LibCase): MootCase {
     id: c.id, title: c.title, court: c.court || 'Oʻquv sudi', summary: c.summary, parties: c.parties, claim: c.claim,
     facts: c.facts, evidence: c.evidence, side: c.side, points, disclaimer: c.disclaimer,
   };
+}
+
+/** Which line of practice («Sohalar», the court server's domain ids) each built-in case belongs to. */
+export const CASE_DOMAIN: Record<string, string> = {
+  ijara: 'lease',
+  'penya-foiz': 'lease',
+  'lizing-chegara': 'lease',
+  'ijara-qaytarish': 'lease',
+  'vaziyat-ozgarishi': 'lease',
+  'ogzaki-ozgartirish': 'lease',
+  'kam-yetkazish': 'supply',
+  'kafillik-muddati': 'supply',
+  'qurilish-kechikish': 'construction',
+  'qurilish-qabul': 'construction',
+  'video-natija': 'construction',
+  'penya-bekor': 'construction',
+  'qoriqlash-dalolatnoma': 'services',
+  'fors-major': 'services',
+  'narx-sharti': 'sale',
+};
+
+/**
+ * The built-in cases of a domain as library cards (source «system», approved, mode «Bahs»).
+ * Public view only: no side's confidential facts, no scorer points, no real outcome.
+ */
+export function builtinLibCases(domain: string): LibCase[] {
+  return Object.values(MOOT_CASES)
+    .filter((c) => CASE_DOMAIN[c.id] === domain)
+    .sort((a, b) => (a.level ?? 2) - (b.level ?? 2))
+    .map((c) => ({
+      id: c.id, domain, source: 'system', status: 'approved', mine: false, modes: ['moot'],
+      title: c.title, court: c.court, summary: c.summary, parties: c.parties, claim: c.claim, facts: c.facts, evidence: c.evidence,
+      side: { claimant: { task: c.side.claimant.task, confidential: [] }, respondent: { task: c.side.respondent.task, confidential: [] } },
+      legal: (c.norms ?? []).map((n) => { const r = normRef(n); return { normId: r.ref, label: r.label, url: r.url, why: r.title }; }),
+      balance: null, questions: [], disclaimer: c.disclaimer, reviewNote: null, createdAt: null, updatedAt: null,
+    }));
 }

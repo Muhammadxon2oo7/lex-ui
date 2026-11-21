@@ -12,6 +12,7 @@
 import { createHash, randomInt, randomUUID } from 'node:crypto';
 import type { MootAct, MootEntry, MootPhase, MootRole, MootRoom, MootSide, MootStep, MootVerdict, Team } from '@/contracts/moot';
 import { HttpError } from '@/server/engine/session';
+import { normRef } from '@/server/law/norms';
 import { DEFAULT_CASE, MOOT_CASES, type MootCase } from './cases';
 import { askJudge, ruleVerdict } from './judge';
 
@@ -318,6 +319,13 @@ function view(r: Room, me: Player): MootRoom {
       confidential: side ? c.side[side].confidential : [],
       task: side ? c.side[side].task : [],
       disclaimer: c.disclaimer,
+      topic: c.topic ?? null,
+      level: c.level ?? null,
+      skills: c.skills ?? [],
+      timeline: c.timeline ?? [],
+      norms: (c.norms ?? []).map(normRef),
+      // what the real courts decided opens only after the verdict - before it, it would hand out the answer
+      debrief: r.phase === 'verdict' && c.basis ? { ...c.basis, outcome: c.outcome ?? [], lessons: c.lessons ?? [] } : null,
     },
     agenda: r.agenda,
     step: r.step,

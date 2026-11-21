@@ -87,9 +87,17 @@ export const DIRECTION_SOURCES: DirectionSources[] = [
   },
   {
     id: 'bahs', role: 'Jamoaviy bahs', title: 'Kursdoshlar bilan sudda',
-    note: 'Bahs tartibi (14 qadam, vaqt chegaralari) - oʻquv tartibi: IPKdagi majlis tartibiga yaqinlashtirilgan, lekin uning oʻzi emas. Ish papkasi sud serveridagi ssenariydan olingan. Gʻolibni aniqlash - oʻquv bahosi, sud qarori emas.',
+    note: 'Bahs tartibi (14 qadam, vaqt chegaralari) - oʻquv tartibi: IPKdagi majlis tartibiga yaqinlashtirilgan, lekin uning oʻzi emas. Ishlar: ikki instansiya bir-biriga zid qaror chiqargan haqiqiy ishlar (Oliy xoʻjalik sudi qarorlari va chet el sudlari), taraflar nomi oʻzgartirilgan; haqiqiy natija bahsdan keyin ochiladi. Gʻolibni aniqlash - oʻquv bahosi, sud qarori emas.',
     uses: [
-      { doc: 'IPK', why: 'Majlis tartibining asosi: tushuntirishlar, dalillar, sud muzokaralari va replika', articles: ['165-modda', '173-modda', '174-modda', '175-modda', '176-modda', '177-modda'] },
+      { doc: 'IPK', why: 'Majlis tartibining asosi: tushuntirishlar, dalillar, sud muzokaralari va replika; ishlarda: isbotlash, ekspertiza, guvoh, qarshi daʼvo, sudlovga tegishlilik', articles: ['165-modda', '173-modda', '174-modda', '175-modda', '176-modda', '177-modda', '33-modda', '68-modda', '72-modda', '80-modda', '88-modda', '160-modda', '161-modda'] },
+      // ishlar katalogi (src/server/moot/econ.ts): har ishga beriladigan normalar - econ.test.ts roʻyxat bilan solishtiradi
+      { doc: 'FK', why: 'Neustoyka va uni kamaytirish, foiz, kafillik, javobgarlik asoslari va fors-major, novatsiya, vaziyatning jiddiy oʻzgarishi, shartnomani oʻzgartirish shakli', articles: ['9-modda', '14-modda', '236-modda', '245-modda', '260-modda', '261-modda', '263-modda', '292-modda', '294-modda', '298-modda', '324-modda', '325-modda', '326-modda', '327-modda', '333-modda', '335-modda', '347-modda', '383-modda', '384-modda'] },
+      { doc: 'FK2', why: 'Yetkazib berish, ijara, lizing, pudrat va qurilish pudrati (ishni qabul qilish, bir tomonlama dalolatnoma), haq evaziga xizmat', articles: ['437-modda', '440-modda', '541-modda', '553-modda', '587-modda', '642-modda', '646-modda', '666-modda', '680-modda', '703-modda', '705-modda'] },
+      { doc: 'SHARTNOMAVIY', why: 'Qonuniy neustoyka: toʻlovni kechiktirganlik uchun kuniga 0,4 foiz, 50 foiz chegara; toʻlovdan bosh tortganlik uchun 15 foiz jarima', articles: ['32-modda'] },
+      { doc: 'PLENUM-OXS-163', why: 'Neustoyka: bitta buzilishga bitta chora, quyi chegara (FK 327), penya yoki foiz, ayb, tender shartnomalari', articles: ['2-band', '3-band', '3²-band', '4-band', '12-band', '13-band', '16-band', '20-band'] },
+      { doc: 'PLENUM-OXS-234', why: 'Ijara: topshirish dalolatnomasisiz munosabat, shartnomaning nomaʼlum muddatga qayta tuzilishi', articles: ['9-band', '12-band'] },
+      { doc: 'PLENUM-OXS-306', why: 'Qurilish pudrati: bir tomonlama dalolatnoma, ekspertiza, vakolatsiz vakil', articles: ['9-band', '10-band', '11-band'] },
+      { doc: 'PLENUM-OXS-103', why: 'Yozma shaklsiz bajarilgan majburiyatlar boʻyicha dalillarga baho', articles: ['3-band'] },
     ],
   },
 ];

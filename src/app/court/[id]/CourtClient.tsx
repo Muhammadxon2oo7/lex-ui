@@ -100,7 +100,7 @@ export default function CourtClient() {
         <div>
           <h1 className="display text-2xl font-semibold">Sud majlisi ochilmadi</h1>
           <p className="mt-2 text-ink-2">{error}</p>
-          <Link href="/" className="btn btn-primary mt-6">Yoʻlakka qaytish</Link>
+          <Link href="/kampus" className="btn btn-primary mt-6">Yoʻlakka qaytish</Link>
         </div>
       </main>
     );
@@ -200,7 +200,7 @@ function Stage({ hearing, busy, error, code, setCode, choose }: { hearing: Heari
 
       <div className="absolute top-4 right-4 flex gap-2">
         <button type="button" className="glass btn !min-h-10 !px-4 text-[0.86rem]" onClick={() => setCode('')}><kbd>K</kbd> Kodeks</button>
-        <Link href="/" className="glass btn !min-h-10 !px-4 text-[0.86rem]">Zaldan chiqish</Link>
+        <Link href="/kampus" className="glass btn !min-h-10 !px-4 text-[0.86rem]">Zaldan chiqish</Link>
       </div>
 
       <div className="absolute inset-x-0 bottom-0 z-20 mx-auto flex w-full max-w-4xl flex-col gap-3 px-4 pb-5 sm:px-8">
@@ -289,7 +289,7 @@ function Stage({ hearing, busy, error, code, setCode, choose }: { hearing: Heari
               Moddalar matni lex.uz saytidan {hearing.code.retrievedAt} kuni olingan ({hearing.code.edition} tahriri). Ish holatlari toʻqilgan; ssenariy amaliyotchi sudya yoki mentor tomonidan hali tasdiqlanmagan.
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
-              <Link href="/" className="btn btn-primary">Yoʻlakka qaytish</Link>
+              <Link href="/kampus" className="btn btn-primary">Yoʻlakka qaytish</Link>
               <button type="button" className="btn btn-quiet" onClick={() => setCode('')}>Kodeksni koʻrish</button>
             </div>
           </motion.section>

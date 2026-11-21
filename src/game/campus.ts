@@ -40,7 +40,7 @@ export interface DoorDef {
  */
 export const DOORS: DoorDef[] = [
   { id: 'r1', number: '1', title: 'Advokatlik byurosi', subtitle: 'Mijoz bilan maslahat', side: -1, z: -13, action: 'case', stage: 'consult', role: 'Advokat', basis: 'Holatlar va dalillarni aniqlash, vakolat (FPK 65, 67, 68)', minutes: '5–8' },
-  { id: 'r2', number: '2', title: 'Hujjatlar xonasi', subtitle: 'Daʼvo arizasini tuzish', side: 1, z: -13, action: 'case', stage: 'draft', role: 'Advokat', basis: 'Ariza mazmuni va ilovalar (FPK 188–191)', minutes: '5–8' },
+  { id: 'r2', number: '2', title: 'Hujjatlar', subtitle: 'Daʼvo arizasini tuzish', side: 1, z: -13, action: 'case', stage: 'draft', role: 'Advokat', basis: 'Ariza mazmuni va ilovalar (FPK 188–191)', minutes: '5–8' },
   { id: 'r3', number: '3', title: 'Sud devonxonasi', subtitle: 'Arizani topshirish · ajrim', side: -1, z: -20.5, action: 'case', stage: 'filing', role: 'Advokat', basis: 'Qabul qilish yoki qaytarish (FPK 192, 193, 195)', minutes: '3–5' },
   { id: 'r4', number: '4', title: 'Sudya kabineti', subtitle: 'Ishni sud muhokamasiga tayyorlash', side: 1, z: -20.5, action: 'case', stage: 'chamber', role: 'Daʼvogar vakili', basis: 'Taraflarni soʻroq qilish, dalillar, kelishuv (FPK 203–205)', minutes: '4–6' },
   { id: 'r5', number: '5', title: 'Sud majlisi zali', subtitle: 'Ishni koʻrish · hal qiluv qarori', side: -1, z: -28, action: 'case', stage: 'hearing', role: 'Daʼvogar vakili', basis: 'Majlis tartibi, «Hurmatli sud!», tik turib (FPK 210–248)', minutes: '8–12' },

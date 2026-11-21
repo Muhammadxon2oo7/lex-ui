@@ -191,7 +191,7 @@ export function PauseMenu() {
         <div className="mt-6 flex flex-wrap gap-2">
           <button type="button" className="btn btn-primary flex-1" onClick={resume} autoFocus>Davom etish</button>
           <Link href={`/simulation/${sessionId}?view=2d`} className="btn btn-quiet" replace>2D rejim</Link>
-          <Link href="/" className="btn btn-quiet">Yoʻlakka chiqish</Link>
+          <Link href="/kampus" className="btn btn-quiet">Yoʻlakka chiqish</Link>
         </div>
       </motion.div>
     </div>

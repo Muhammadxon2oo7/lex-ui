@@ -34,7 +34,7 @@ function Sources({ sources }: { sources: Source[] }) {
             <span className="font-medium">{s.title}</span>
           )}
           <span className={`rounded-full px-2 py-0.5 text-[0.7rem] font-semibold ${s.verifiedAt ? 'bg-accent-soft text-accent-ink' : 'bg-warn-soft text-warn'}`}>
-            {s.verifiedAt ? `Tasdiqlangan · ${s.effectiveAt ?? s.verifiedAt}` : 'Modda va tahrir sanasi: mentor tekshirsin'}
+            {s.verifiedAt ? `lex.uz · tahrir ${s.effectiveAt ?? s.verifiedAt}` : 'Modda va tahrir sanasi: mentor tekshirsin'}
           </span>
         </li>
       ))}
@@ -110,7 +110,7 @@ export default function ReportClient() {
         <div>
           <h1 className="display text-2xl font-semibold">Hisobot ochilmadi</h1>
           <p className="mt-2 text-ink-2">{error}</p>
-          <Link href="/" className="btn btn-primary mt-6">Yoʻlakka qaytish</Link>
+          <Link href="/kampus" className="btn btn-primary mt-6">Yoʻlakka qaytish</Link>
         </div>
       </main>
     );
@@ -320,7 +320,7 @@ export default function ReportClient() {
           <p className="mt-1 text-lg font-semibold">{report.nextScenario.title}</p>
           <p className="text-[0.9rem] text-ink-2">{report.nextScenario.reason}</p>
         </div>
-        <Link href="/" className="btn btn-primary">Yoʻlakka qaytish</Link>
+        <Link href="/kampus" className="btn btn-primary">Yoʻlakka qaytish</Link>
       </section>
       <p className="mt-6 text-[0.78rem] text-ink-3">Rubrika: {report.rubricVersion} · {new Date(report.evaluatedAt).toLocaleString('uz-UZ')}</p>
     </main>

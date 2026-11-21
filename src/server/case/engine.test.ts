@@ -3,6 +3,7 @@ import type { CaseActRequest, ClaimDraft } from '@/contracts/case';
 import { CaseSnapshotSchema } from '@/contracts/case';
 import { act, actSaid, dumpCase, loadCase, startCase } from './engine';
 import { understand } from './understand';
+import { PREPARED } from './ishga-tiklash';
 
 let n = 0;
 type Input = CaseActRequest extends infer T ? (T extends { clientActionId: string } ? Omit<T, 'clientActionId'> : never) : never;
@@ -17,11 +18,7 @@ function run(owner: string) {
   return { get: () => s, step, choose: (optionId: string) => step({ type: 'choose', optionId }) };
 }
 
-const goodDraft: ClaimDraft = {
-  court: 'district', representative: true, respondent: 'company', demand: 'reinstate',
-  facts: ['dismissal', 'explanation', 'sick', 'notified', 'refused', 'witness', 'employer'], evidence: ['order', 'contract', 'sickleave', 'warrant'],
-  pretrial: false, email: true, attachments: ['order', 'contract', 'sickleave', 'warrant', 'receipt'], copies: 1, signed: true,
-};
+const goodDraft: ClaimDraft = PREPARED.draft;
 
 describe('Ish yoʻli engine', () => {
   it('never shows more than four replies', () => {
@@ -86,7 +83,7 @@ describe('Ish yoʻli engine', () => {
     const s = r.get();
     expect(s.rulings.at(-1)?.kind).toBe('returned');
     expect(s.stages.find((x) => x.id === 'filing')?.status).toBe('returned');
-    expect(s.draft?.facts).not.toContain('witness');
+    expect(s.draft?.circumstances).toBe(goodDraft.circumstances);
   });
 
   it('runs the theft report (JPK): duty desk → investigator → complaint', () => {

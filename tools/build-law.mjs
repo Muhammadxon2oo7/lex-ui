@@ -46,3 +46,29 @@ writeFileSync(
   JSON.stringify({ id: jpk.id, title: jpk.title, url: jpk.lexUrl, edition: jpk.editionSelected, retrievedAt: jpk.retrievedAt, articles: jpkArticles }, null, 2),
 );
 console.log(`jpk-case.json: ${jpkArticles.length} articles, edition ${jpk.editionSelected}, retrieved ${jpk.retrievedAt}`);
+
+// ── The registry behind /manbalar and the citation test: every document of the pack, its edition,
+//    and the number, title and link of each article taken. Titles only — texts stay in the pack.
+const REGISTRY = ['FPK', 'JPK', 'IPK', 'MK', 'JK', 'DAVLATBOJI', 'ADVOKATURA', 'ADVKAFOLAT', 'ORDER', 'SUDLAR', 'PROKURATURA',
+  'PENSIYA', 'VMQ592', 'VMQ612', 'MUROJAAT', 'MTT', 'KORRUPSIYA', 'DFX', 'VMQ595', 'PLENUM-2018-14', 'PLENUM-2023-26'];
+const docs = REGISTRY.map((id) => {
+  const p = JSON.parse(readFileSync(join(ROOT, '..', 'legal', 'sources', `${id}.json`), 'utf8'));
+  if (!p.lexUrl || !p.articles?.length) throw new Error(`${id}: no url or articles in the pack`);
+  return {
+    id,
+    title: p.title,
+    kind: p.kind,
+    adopted: p.adopted ?? null,
+    acceptingBody: p.acceptingBody ?? null,
+    actForm: p.actForm ?? null,
+    registration: p.registration ?? null,
+    edition: p.editionSelected ?? null,
+    inForceFrom: p.inForceFrom ?? null,
+    retrievedAt: p.retrievedAt,
+    url: p.lexUrl,
+    total: p.totalArticlesInDocument ?? null,
+    articles: p.articles.map((a) => ({ number: a.number, title: a.title, url: a.url })),
+  };
+});
+writeFileSync(join(ROOT, 'src', 'data', 'sources.json'), JSON.stringify({ builtAt: new Date().toISOString().slice(0, 10), docs }, null, 1));
+console.log(`sources.json: ${docs.length} documents, ${docs.reduce((n, d) => n + d.articles.length, 0)} articles`);

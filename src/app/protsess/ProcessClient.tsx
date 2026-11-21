@@ -104,7 +104,7 @@ export default function ProcessClient() {
               <p className="text-[0.66rem] font-semibold tracking-[0.3em] text-white/45">4-XONA · HUQUQIY KUTUBXONA</p>
               <h1 className="text-[1.2rem] font-semibold tracking-tight">Protsess xaritasi</h1>
             </div>
-            <Link href="/" className="btn btn-quiet !min-h-10 !rounded-xl text-[0.86rem]">Yoʻlakka qaytish</Link>
+            <Link href="/kampus" className="btn btn-quiet !min-h-10 !rounded-xl text-[0.86rem]">Yoʻlakka qaytish</Link>
           </div>
         </header>
 

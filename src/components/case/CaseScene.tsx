@@ -107,7 +107,7 @@ function Office({ m, p }: { m: Materials; p: SceneProps }) {
   );
 }
 
-/* ───────────────────────── 2 · Hujjatlar xonasi ───────────────────────── */
+/* ───────────────────────── 2 · Hujjatlar ───────────────────────── */
 
 const DRAFT_EYE: V3 = [0, 1.14, -0.5];
 
@@ -185,7 +185,7 @@ function DraftRoom({ m, paper, avatar }: { m: Materials; paper?: PaperModel | nu
       <Box m={m.darkPlastic} size={[0.42, 0.22, 0.36]} position={[1.25, 0.86, 0.2]} />
       <Box m={m.whiteLaminate} size={[0.6, 0.75, 0.45]} position={[1.25, 0.375, 0.2]} />
       <Bookcase m={m} position={[-1.4, 0, againstWall(2.7)]} rotation={Math.PI} width={1.2} seed={5} />
-      <WallSign position={[0.6, 2.25, 2.78]} rotation={Math.PI} size={[1.5, 0.4]} title="HUJJATLAR XONASI" subtitle="Ariza va ilovalar" />
+      <WallSign position={[0.6, 2.25, 2.78]} rotation={Math.PI} size={[1.5, 0.4]} title="HUJJATLAR" subtitle="Ariza va ilovalar" />
       <Prop model="desk_lamp_arm_01" position={[0.66, 0.76, 0.4]} rotation={-2.4} scale={0.5} />
       <Prop model="potted_plant_02" position={[1.9, 0, 2.4]} />
     </>
@@ -375,7 +375,7 @@ const LABEL: Record<StageId, string> = {
   interview: '3D tergovchi kabineti',
   complaint: '3D tergov boʻlinmasi boshligʻi kabineti',
   consult: '3D advokatlik byurosi: mijoz roʻparangizda oʻtiribdi',
-  draft: '3D hujjatlar xonasi: ish stoli va kompyuter',
+  draft: '3D «Hujjatlar» xonasi: ish stoli va kompyuter',
   filing: '3D sud devonxonasi: qabul darchasi',
   chamber: '3D sudya kabineti',
   hearing: '3D sud majlisi zali',

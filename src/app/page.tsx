@@ -1,9 +1,6 @@
-import CampusClient from '@/components/campus/CampusClient';
+import Landing from '@/components/landing/Landing';
 
-/**
- * The whole entry experience is the 3D campus (title → character → building).
- * `/hub` remains as the accessible 2D route for devices without WebGL2.
- */
+/** The front door: one card per line of practice. The 3D campus is at /kampus, the 2D route at /hub. */
 export default function Home() {
-  return <CampusClient />;
+  return <Landing />;
 }

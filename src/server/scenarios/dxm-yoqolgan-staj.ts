@@ -53,11 +53,12 @@ export interface ScenarioDefinition {
   nextScenario: { id: string; title: string };
 }
 
-const unverified = (title: string): Source => ({
-  title,
-  officialUrl: 'https://lex.uz/',
-  verifiedAt: null,
-});
+/**
+ * An act checked against lex.uz: the link goes to the document, `effectiveAt` is the edition shown
+ * there and `verifiedAt` the day its text was taken into the research pack (legal/sources). Which
+ * article answers this exact situation is still for a mentor to confirm (reviewStatus 'needs-mentor').
+ */
+const lex = (title: string, url: string, edition: string): Source => ({ title, officialUrl: url, effectiveAt: edition, verifiedAt: '2026-11-20' });
 
 export const dxmYoqolganStaj: ScenarioDefinition = {
   public: {
@@ -184,10 +185,10 @@ export const dxmYoqolganStaj: ScenarioDefinition = {
     { id: 'tracking', step: 'Natijani qanday kuzatish mumkinligini aytish' },
   ],
   sources: {
-    procedure: unverified('“Maʼmuriy tartib-taomillar toʻgʻrisida”gi Qonun'),
-    appeals: unverified('“Jismoniy va yuridik shaxslarning murojaatlari toʻgʻrisida”gi Qonun'),
-    pension: unverified('“Fuqarolarning davlat pensiya taʼminoti toʻgʻrisida”gi Qonun'),
-    anticorruption: unverified('“Korrupsiyaga qarshi kurashish toʻgʻrisida”gi Qonun'),
+    procedure: lex('“Maʼmuriy tartib-taomillar toʻgʻrisida”gi Qonun', 'https://lex.uz/docs/-3492199', '25.07.2026'),
+    appeals: lex('“Jismoniy va yuridik shaxslarning murojaatlari toʻgʻrisida”gi Qonun', 'https://lex.uz/docs/-3336169', '15.10.2026'),
+    pension: lex('“Fuqarolarning davlat pensiya taʼminoti toʻgʻrisida”gi Qonun', 'https://lex.uz/docs/-112314', '20.05.2025'),
+    anticorruption: lex('“Korrupsiyaga qarshi kurashish toʻgʻrisida”gi Qonun', 'https://lex.uz/docs/-3088008', '23.06.2026'),
   },
   nextScenario: { id: 'dxm-arxiv-rus-tilida', title: 'Rus tilidagi arxiv hujjati' },
 };

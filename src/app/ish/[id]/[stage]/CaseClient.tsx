@@ -78,7 +78,7 @@ export default function CaseClient() {
         <div>
           <h1 className="text-2xl font-semibold">Xonaga kirib boʻlmadi</h1>
           <p className="mt-2 max-w-md text-white/65">{error ?? 'Bunday xona yoʻq.'}</p>
-          <Link href="/" className="btn btn-primary mt-6">Terminalga qaytish</Link>
+          <Link href="/kampus" className="btn btn-primary mt-6">Terminalga qaytish</Link>
         </div>
       </main>
     );
@@ -253,7 +253,7 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
   const leave = () => {
     stopSpeaking();
     void act({ type: 'leave' });
-    router.push('/');
+    router.push('/kampus');
   };
 
   const onKey = useEffectEvent((e: KeyboardEvent) => {

@@ -8,6 +8,7 @@
 import { z } from 'zod';
 import { ArticleSchema } from './hearing';
 import { EmotionSchema, InputModeSchema, LevelSchema } from './index';
+import { COURT_TYPE_IDS } from '@/lib/labourCase';
 
 export const CASE_KINDS = ['labour', 'theft'] as const;
 export const CaseKindSchema = z.enum(CASE_KINDS);
@@ -72,21 +73,83 @@ export const StageViewSchema = z.object({
 });
 export type StageView = z.infer<typeof StageViewSchema>;
 
-/** Picked from the case file in the drafting room; validated on the server against FPK 189–191. */
-export const ClaimDraftSchema = z.object({
-  court: z.enum(['district', 'regional', 'economic']),
-  representative: z.boolean(),
-  respondent: z.enum(['company', 'director']),
-  demand: z.enum(['reinstate', 'punish', 'apology']),
-  facts: z.array(z.string().max(32)).max(12),
+const text = (max: number) => z.string().max(max).catch('');
+/** The advocate's order (Adliya vazirining 2023-yil 31-yanvardagi 1-mh-son buyrugʻi, ilova: 12 band). */
+export const OrderDraftSchema = z.object({
+  number: text(40),
+  firm: text(160),
+  firmAddress: text(200),
+  advocate: text(120),
+  license: text(160),
+  specialty: z.enum(['', 'civil-economic', 'admin-criminal']).catch(''),
+  basis: z.enum(['', 'contract', 'ruling']).catch(''),
+  basisDate: text(40),
+  client: text(160),
+  caseType: z.enum(['', 'civil', 'economic', 'admin-offence', 'administrative', 'criminal', 'other']).catch(''),
+  issued: text(40),
+  signed: z.boolean().catch(false),
+});
+export type OrderDraft = z.infer<typeof OrderDraftSchema>;
+
+const ClaimDraftV2 = z.object({
+  /** Chosen from the court system (Law «Sudlar toʻgʻrisida», art. 2) and the place. */
+  court: z.object({ type: z.enum(['', ...COURT_TYPE_IDS]).catch(''), district: text(40) }),
+  /** Typed by the student from the papers in the folder (FPK 189, parts 1–3). */
+  claimant: z.object({ name: text(160), address: text(200) }),
+  representative: z.object({ name: text(160), address: text(200) }),
+  respondent: z.object({ name: text(200), address: text(200) }),
+  /** Written: the claim (189 p.4) and the circumstances with their evidence (189 p.6). */
+  demand: text(2000),
+  circumstances: text(6000),
   evidence: z.array(z.string().max(32)).max(12),
-  pretrial: z.boolean(),
-  email: z.boolean(),
+  /** 189 p.7: 'none' — the law sets no compulsory pre-trial route; 'done' — the employer was asked first. */
+  pretrial: z.enum(['', 'none', 'done']).catch(''),
+  email: text(120),
   attachments: z.array(z.string().max(32)).max(16),
   copies: z.number().int().min(0).max(5),
+  date: text(40),
   signed: z.boolean(),
+  order: OrderDraftSchema.nullable().catch(null),
 });
-export type ClaimDraft = z.infer<typeof ClaimDraftSchema>;
+
+/** Drafts kept from before the drafting room asked students to write (picked options): read as text. */
+function fromPicked(v: Record<string, unknown>): unknown {
+  const facts = Array.isArray(v.facts) ? (v.facts as string[]) : [];
+  return {
+    court: { type: v.court === 'economic' ? 'economic' : v.court === 'regional' ? 'regional' : 'civil', district: 'Namuna' },
+    claimant: { name: 'Nurmatov Sardor Akmal oʻgʻli', address: 'Namuna tumani, Bogʻbon mahallasi, 12-uy' },
+    representative: v.representative ? { name: 'Advokat', address: 'Namuna tumani, Mustaqillik koʻchasi, 3-uy' } : { name: '', address: '' },
+    respondent: v.respondent === 'director' ? { name: 'Karimov Anvar, direktor', address: '' } : { name: '«Namuna Savdo» MChJ', address: 'Namuna tumani, Ipak yoʻli koʻchasi, 5-uy' },
+    demand: v.demand === 'reinstate' ? 'Daʼvogarni avvalgi lavozimiga tiklashni va majburiy progul vaqti uchun oʻrtacha ish haqini undirishni soʻrayman.' : v.demand === 'punish' ? 'Direktorni javobgarlikka tortishni soʻrayman.' : 'Javobgardan rasmiy uzr soʻrashni talab qilaman.',
+    circumstances: facts.map((f) => LEGACY_FACT[f] ?? '').filter(Boolean).join(' '),
+    evidence: v.evidence ?? [],
+    pretrial: v.pretrial ? 'done' : 'none',
+    email: v.email ? 'advokat@namuna-byuro.uz' : '',
+    attachments: v.attachments ?? [],
+    copies: v.copies ?? 0,
+    date: '2026-11-20',
+    signed: Boolean(v.signed),
+    order: null,
+  };
+}
+const LEGACY_FACT: Record<string, string> = {
+  dismissal: '2026-yil 14-oktabrdagi 47-k-sonli buyruq bilan 9 va 10-oktabr kunlari uzrsiz ishda boʻlmagan deb mehnat shartnomasi bekor qilingan.',
+  sick: 'Daʼvogar oʻsha kunlari kasal boʻlgan, kasallik varaqasi berilgan.',
+  notified: '9-oktabr kuni boʻlim boshligʻiga telefon orqali xabar bergan.',
+  refused: '13-oktabr kuni kasallik varaqasi kadrlar boʻlimida qabul qilinmagan.',
+  witness: 'Buni guvoh Bahodir R. tasdiqlaydi.',
+  explanation: 'Intizomiy jazodan oldin yozma tushuntirish talab qilinmagan.',
+  served: 'Buyruq nusxasi 14-oktabrda berilgan, uch oylik muddat oʻtmagan.',
+  employer: 'Daʼvogar «Namuna Savdo» MChJda omborchi boʻlib ishlagan.',
+  authority: 'Manfaatlarni advokat shartnoma asosida ifodalaydi.',
+};
+
+/** The statement of claim as the student drafted it; checked on the server against FPK 189–191 and 195. */
+export const ClaimDraftSchema = z.preprocess(
+  (v) => (v && typeof v === 'object' && typeof (v as { court?: unknown }).court === 'string' ? fromPicked(v as Record<string, unknown>) : v),
+  ClaimDraftV2,
+);
+export type ClaimDraft = z.infer<typeof ClaimDraftV2>;
 
 export const CaseItemSchema = z.object({ id: z.string(), label: z.string(), detail: z.string() });
 export type CaseItem = z.infer<typeof CaseItemSchema>;

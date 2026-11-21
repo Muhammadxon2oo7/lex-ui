@@ -151,10 +151,12 @@ describe('scenario engine', () => {
     expect(report.outcome.id).toBe('excellent');
     expect(report.scoreTotal).toBeGreaterThanOrEqual(90);
     expect(report.criteria.reduce((n, c) => n + c.max, 0)).toBe(100);
-    // "Manba boʻlmasa, modda yoʻq": nothing is presented as verified.
+    // "Manba boʻlmasa, modda yoʻq": acts link to their lex.uz document and edition; no article is claimed
+    // until a mentor confirms which one answers the situation.
     for (const f of report.feedback) for (const src of f.sources) {
       expect(src.articleNumber).toBeUndefined();
-      expect(src.verifiedAt).toBeNull();
+      expect(src.officialUrl).toMatch(/^https:\/\/lex\.uz\/docs\/-\d+$/);
+      expect(src.effectiveAt).toBeTruthy();
     }
   });
 });

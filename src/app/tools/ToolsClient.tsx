@@ -109,7 +109,7 @@ export default function ToolsClient() {
           <h1 className="text-lg leading-tight font-semibold">Ish qurollari xonasi</h1>
           <p className="mt-1 text-[0.84rem] leading-snug text-white/70">Stol ustidagi buyumni bosing — qoʻlingizga olib, aylantirib, ishlatib koʻring. Sudrab — xonaga qarash.</p>
         </header>
-        <Link href="/" className="glass btn absolute top-4 right-4 !min-h-10 !px-4 text-[0.86rem]">Yoʻlakka chiqish</Link>
+        <Link href="/kampus" className="glass btn absolute top-4 right-4 !min-h-10 !px-4 text-[0.86rem]">Yoʻlakka chiqish</Link>
 
         {/* the same objects as a list: keyboard and screen-reader path */}
         <nav aria-label="Buyumlar" className="absolute inset-x-0 bottom-4 flex justify-center px-4">

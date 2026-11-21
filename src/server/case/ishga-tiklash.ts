@@ -11,6 +11,7 @@
  * Each stage is a handful of decisions, not a questionnaire: 3–4 moments,
  * at most four replies on screen at once.
  */
+import { norm, PEOPLE } from '@/lib/labourCase';
 import type { Emotion } from '@/contracts';
 import type { CaseSnapshot, CaseSpeaker, ClaimDraft, StageId } from '@/contracts/case';
 
@@ -117,7 +118,7 @@ export const EVIDENCE: Record<string, { label: string; detail: string; requires:
   order: { label: 'Boʻshatish buyrugʻi nusxasi', detail: '14-oktabrdagi buyruq.', requires: 'order' },
   contract: { label: 'Mehnat shartnomasi', detail: 'Omborchi lavozimi.', requires: 'contract' },
   sickleave: { label: 'Kasallik varaqasi', detail: '9–10-oktabr kunlari uchun.', requires: 'sickleave' },
-  warrant: { label: 'Advokat orderi', detail: 'Advokat vakolatini tasdiqlovchi hujjat (FPK 68).', requires: 'authority' },
+  warrant: { label: 'Advokat orderi', detail: 'Advokatning vakolati order bilan tasdiqlanadi (FPK 68; «Advokatlik faoliyatining kafolatlari…» Qonun, 4-modda).', requires: 'authority' },
 };
 
 export const ATTACHMENTS: Record<string, { label: string; requires?: string; trap?: string }> = {
@@ -125,9 +126,9 @@ export const ATTACHMENTS: Record<string, { label: string; requires?: string; tra
   contract: { label: 'Mehnat shartnomasi nusxasi', requires: 'contract' },
   sickleave: { label: 'Kasallik varaqasi nusxasi', requires: 'sickleave' },
   warrant: { label: 'Advokat orderi (vakolat hujjati)', requires: 'authority' },
-  // a worker suing over the employment relation pays no state duty (Law «Davlat boji toʻgʻrisida», art. 8(1)(1)); postage is still paid (FPK 191)
+  // a worker suing over the employment relation pays no state duty (Law «Davlat boji toʻgʻrisida», art. 8, item 1); postage is still paid (FPK 191)
   receipt: { label: 'Pochta xarajatlari toʻlanganligi kvitansiyasi' },
-  duty: { label: 'Davlat boji toʻlanganligi kvitansiyasi', trap: 'Xodim mehnat munosabatlaridan kelib chiqadigan talab boʻyicha davlat bojidan ozod («Davlat boji toʻgʻrisida»gi Qonun, 8-modda 1-qism 1-band) — kvitansiya kerak emas.' },
+  duty: { label: 'Davlat boji toʻlanganligi kvitansiyasi', trap: 'Xodim mehnat munosabatlaridan kelib chiqadigan talab boʻyicha davlat bojidan ozod («Davlat boji toʻgʻrisida»gi Qonun, 8-modda 1-band) — kvitansiya kerak emas.' },
   passport: { label: 'Daʼvogar pasportining asli', trap: 'Asl shaxsiy hujjat ilova qilinmaydi — FPK 191-moddada sanalgan hujjatlarga kirmaydi.' },
   tax: { label: 'Korxonaning soliq hisobotlari', trap: 'Ishga aloqasi yoʻq hujjat (FPK 72).' },
 };
@@ -136,9 +137,15 @@ export const ATTACHMENTS: Record<string, { label: string; requires?: string; tra
 export const PREPARED = {
   known: ['dismissal', 'sick', 'notified', 'refused', 'witness', 'employer', 'authority', 'explanation', 'served', 'order', 'contract', 'sickleave'],
   draft: {
-    court: 'district', representative: true, respondent: 'company', demand: 'reinstate',
-    facts: ['employer', 'dismissal', 'explanation', 'sick', 'notified', 'refused', 'witness'], evidence: ['order', 'contract', 'sickleave', 'warrant'],
-    pretrial: false, email: true, attachments: ['order', 'contract', 'sickleave', 'warrant', 'receipt'], copies: 1, signed: true,
+    court: { type: 'civil', district: 'Namuna' },
+    claimant: { name: PEOPLE.claimant.name, address: PEOPLE.claimant.address },
+    representative: { name: 'Advokat (siz)', address: `${PEOPLE.firm.name}, ${PEOPLE.firm.address}` },
+    respondent: { name: PEOPLE.employer.short, address: PEOPLE.employer.address },
+    demand: '1) daʼvogarni avvalgi lavozimiga — omborchi lavozimiga tiklashni; 2) majburiy progul vaqti uchun oʻrtacha ish haqini javobgardan undirishni soʻrayman.',
+    circumstances: 'Daʼvogar javobgar tashkilotda besh yil omborchi boʻlib ishlagan. 2026-yil 14-oktabrdagi 47-k-sonli buyruq bilan 9 va 10-oktabr kunlari uzrsiz ishda boʻlmagan deb mehnat shartnomasi bekor qilingan. Mehnat kodeksining 313-moddasiga zid ravishda undan yozma tushuntirish talab qilinmagan. Biroq daʼvogar oʻsha kunlari kasal boʻlgan, unga mehnatga layoqatsizlik varaqasi berilgan. 9-oktabr ertalab u boʻlim boshligʻiga telefon orqali xabar bergan, buni guvoh Bahodir R. tasdiqlaydi. 13-oktabr kuni varaqa kadrlar boʻlimida qabul qilinmagan.',
+    evidence: ['order', 'contract', 'sickleave', 'warrant'],
+    pretrial: 'none', email: 'advokat@namuna-byuro.uz', attachments: ['order', 'contract', 'sickleave', 'warrant', 'receipt'], copies: 1, date: '2026-11-20', signed: true,
+    order: { number: '1', firm: PEOPLE.firm.name, firmAddress: `${PEOPLE.firm.address}, tel. ${PEOPLE.firm.phone}`, advocate: 'Advokat (siz)', license: `${PEOPLE.license.number}, ${PEOPLE.license.issued}, ${PEOPLE.license.by}`, specialty: 'civil-economic', basis: 'contract', basisDate: PEOPLE.agreement.date, client: PEOPLE.claimant.name, caseType: 'civil', issued: '2026-yil 20-noyabr', signed: true },
   } satisfies ClaimDraft,
 };
 
@@ -194,7 +201,7 @@ const draft: StageDef = {
   id: 'draft',
   number: 2,
   title: 'Daʼvo arizasini tuzish',
-  place: 'Hujjatlar xonasi',
+  place: 'Hujjatlar',
   goal: 'FPK 189–191 boʻyicha arizani tuzing va imzolang.',
   reflect: 'Arizangizdagi eng kuchli holat va dalil qaysi? Javobgar unga qanday eʼtiroz bildirishi mumkin?',
   start: 'd-form',
@@ -441,7 +448,8 @@ const hearing: StageDef = {
   ],
 };
 
-export const won = (c: CaseView) => Boolean(c.draft?.demand === 'reinstate' && c.draft.attachments.includes('sickleave') && c.strength >= 2);
+/** The court can reinstate only if reinstatement was asked for (FPK 189 p.4) and the sick note is in the file. */
+export const won = (c: CaseView) => Boolean(c.draft && /tikla/.test(norm(c.draft.demand)) && c.draft.attachments.includes('sickleave') && c.strength >= 2);
 
 export function verdictLine(c: CaseView): string {
   return won(c)

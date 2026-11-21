@@ -21,7 +21,7 @@ export function ErrorScreen({ error, retry }: { error: unknown; retry: () => voi
         </p>
         <div className="mt-6 flex flex-wrap gap-2">
           <button type="button" className="btn btn-primary" onClick={() => retry()} autoFocus>Qayta urinish</button>
-          <Link href="/" className="btn btn-quiet">Terminal</Link>
+          <Link href="/kampus" className="btn btn-quiet">Terminal</Link>
         </div>
       </section>
     </main>

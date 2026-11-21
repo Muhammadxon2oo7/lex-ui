@@ -159,7 +159,7 @@ function finishStage(c: CaseState) {
     if (ruling.kind === 'returned') {
       c.status.filing = 'returned';
       score -= 30;
-      notes.push('−30 · Ariza qaytarildi (FPK 195) — hujjatlar xonasida tuzatib, qayta topshiring');
+      notes.push('−30 · Ariza qaytarildi (FPK 195) — «Hujjatlar» xonasida tuzatib, qayta topshiring');
       verdict = 'Ariza qaytarildi';
     } else {
       c.good.push('Ariza ish yuritishga qabul qilindi (FPK 193)');
@@ -605,13 +605,12 @@ function stand(c: CaseState, up: boolean) {
 }
 
 function submitDraft(c: CaseState, d: ClaimDraft) {
-  if (c.stage !== 'draft' || nodeOf(c)?.await !== 'draft') throw new HttpError(409, 'not_drafting', 'Ariza hujjatlar xonasida tuziladi');
+  if (c.stage !== 'draft' || nodeOf(c)?.await !== 'draft') throw new HttpError(409, 'not_drafting', 'Ariza «Hujjatlar» xonasida tuziladi');
   const known = (id: string) => c.known.has(id);
-  const { FACTS, EVIDENCE } = book(c);
+  const { EVIDENCE } = book(c);
   const allowed = new Set(attachmentsFor(known).map(([id]) => id));
   c.draft = {
     ...d,
-    facts: [...new Set(d.facts)].filter((f) => f in FACTS && known(f)),
     evidence: [...new Set(d.evidence)].filter((e) => e in EVIDENCE && known(EVIDENCE[e].requires)),
     attachments: [...new Set(d.attachments)].filter((a) => allowed.has(a)),
   };

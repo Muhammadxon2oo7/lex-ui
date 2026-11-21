@@ -33,6 +33,12 @@ Eski javoblar va topshiriqlar `arxiv/` papkasida turadi, ular endi kerak emas.
 
 ---
 
+### Yangi (21-noyabr, mentorlar eʼtirozi boʻyicha)
+
+- **Landing — yoʻnalish kartalari** (`/`): Advokat, Jabrlanuvchi vakili, Sudya, Iqtisodiy sud, DXM xodimi, Bahs. Har kartada 3D xonaning oʻzidan kadr va «Normativ asos». Karta → familiya, ism, jins, maqom → toʻgʻridan-toʻgʻri jarayonga. 3D kampus endi `/kampus`.
+- **«Hujjatlar»** (avval «Hujjatlar xonasi»): tayyor variantlarni bosish oʻrniga — sud «Sudlar toʻgʻrisida»gi Qonun 2-moddasidagi sud tizimidan va hududdan **tanlanadi**, taraflar, manzillar, talab va holatlar **yoziladi**; advokat orderi rasmiy shakl (12 band) boʻyicha toʻldiriladi. Sud yozilganini ish papkasidagi hujjatlar bilan solishtiradi (FPK 189–191, 195). Sinov: `node tools/qa/draft.mjs`.
+- **Normativ manbalar** (`/manbalar`): har yoʻnalish qaysi hujjat va moddalarga tayanadi — tahrir sanasi, lex.uz havolasi bilan. 8 ta yangi hujjat lex.uz dan yuklandi (`legal/README.md`, uchinchi bosqich). Koddagi har bir modda havolasi test bilan tekshiriladi.
+
 ### Yangi: «Bahs» — jamoaviy sud (21-noyabr)
 
 - Ishlaydi (lokal server): `/bahs` — xona ochish/qoʻshilish, lobbi (A/B yoki qurʼa, 1×1–3×3), ish papkasi va maxfiy faktlar, 3D zalda navbatli majlis (14 qadam, taymer, ovoz yoki matn, jamoa chati, bayonnoma), qaror va yuklab olish.

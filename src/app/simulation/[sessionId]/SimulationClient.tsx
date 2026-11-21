@@ -179,7 +179,7 @@ export default function SimulationClient() {
   if (failure) {
     return (
       <Notice title="Sessiya ochilmadi" body={failure.message}>
-        <Link href="/" className="btn btn-primary">Yoʻlakka qaytish</Link>
+        <Link href="/kampus" className="btn btn-primary">Yoʻlakka qaytish</Link>
       </Notice>
     );
   }

@@ -1,0 +1,5371 @@
+{
+ "builtAt": "2026-11-21",
+ "docs": [
+  {
+   "id": "FPK",
+   "title": "Oʻzbekiston Respublikasining Fuqarolik protsessual kodeksi",
+   "kind": "code",
+   "adopted": "22.01.2018.",
+   "acceptingBody": null,
+   "actForm": null,
+   "registration": null,
+   "edition": "12.09.2026 02",
+   "inForceFrom": "01.04.2018",
+   "retrievedAt": "2026-11-20",
+   "url": "https://lex.uz/docs/-3517337",
+   "total": 513,
+   "articles": [
+    {
+     "number": "10-modda",
+     "title": "Taraflar tortishuvi va teng huquqliligi",
+     "url": "https://lex.uz/docs/-3517337#-3517971"
+    },
+    {
+     "number": "11-modda",
+     "title": "Sud ishlari yuritiladigan til",
+     "url": "https://lex.uz/docs/-3517337#-3517976"
+    },
+    {
+     "number": "12-modda",
+     "title": "Sud muhokamasining oshkoraligi",
+     "url": "https://lex.uz/docs/-3517337#-3517985"
+    },
+    {
+     "number": "13-modda",
+     "title": "Sud muhokamasining bevositaligi va ogʻzakiligi",
+     "url": "https://lex.uz/docs/-3517337#-3518005"
+    },
+    {
+     "number": "17-modda",
+     "title": "Fuqarolik ishining yakka tartibda va hayʼatda koʻrilishi",
+     "url": "https://lex.uz/docs/-3517337#-3518049"
+    },
+    {
+     "number": "21-modda",
+     "title": "Sudyani rad qilish asoslari",
+     "url": "https://lex.uz/docs/-3517337#-3518136"
+    },
+    {
+     "number": "22-modda",
+     "title": "Prokuror, ekspert, mutaxassis, tarjimon va sud majlisi kotibini rad qilish asoslari",
+     "url": "https://lex.uz/docs/-3517337#-3518155"
+    },
+    {
+     "number": "23-modda",
+     "title": "Rad qilish haqida ariza berish",
+     "url": "https://lex.uz/docs/-3517337#-3518178"
+    },
+    {
+     "number": "24-modda",
+     "title": "Rad qilish toʻgʻrisidagi arzni hal etish tartibi",
+     "url": "https://lex.uz/docs/-3517337#-3518197"
+    },
+    {
+     "number": "25-modda",
+     "title": "Rad qilish toʻgʻrisidagi arizani qanoatlantirish oqibatlari",
+     "url": "https://lex.uz/docs/-3517337#-3518222"
+    },
+    {
+     "number": "39-modda",
+     "title": "Ishda ishtirok etuvchi shaxslar",
+     "url": "https://lex.uz/docs/-3517337#-3518466"
+    },
+    {
+     "number": "40-modda",
+     "title": "Ishda ishtirok etuvchi shaxslarning huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-3517337#-3518474"
+    },
+    {
+     "number": "43-modda",
+     "title": "Taraflar",
+     "url": "https://lex.uz/docs/-3517337#-3518521"
+    },
+    {
+     "number": "44-modda",
+     "title": "Taraflarning protsessual huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-3517337#-3518539"
+    },
+    {
+     "number": "50-modda",
+     "title": "Ishda prokurorning ishtiroki",
+     "url": "https://lex.uz/docs/-3517337#-6715857"
+    },
+    {
+     "number": "51-modda",
+     "title": "Prokurorning protsessual huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-3517337#-3518965"
+    },
+    {
+     "number": "54-modda",
+     "title": "Odil sudlovni amalga oshirishga koʻmaklashuvchi shaxslar",
+     "url": "https://lex.uz/docs/-3517337#-3518978"
+    },
+    {
+     "number": "55-modda",
+     "title": "Sud majlisi kotibi",
+     "url": "https://lex.uz/docs/-3517337#-3518981"
+    },
+    {
+     "number": "56-modda",
+     "title": "Guvoh",
+     "url": "https://lex.uz/docs/-3517337#-3518987"
+    },
+    {
+     "number": "57-modda",
+     "title": "Guvohning majburiyatlari va javobgarligi",
+     "url": "https://lex.uz/docs/-3517337#-3519093"
+    },
+    {
+     "number": "58-modda",
+     "title": "Ekspert",
+     "url": "https://lex.uz/docs/-3517337#-3519104"
+    },
+    {
+     "number": "59-modda",
+     "title": "Ekspertning huquqlari",
+     "url": "https://lex.uz/docs/-3517337#-3519108"
+    },
+    {
+     "number": "60-modda",
+     "title": "Ekspertning majburiyatlari va javobgarligi",
+     "url": "https://lex.uz/docs/-3517337#-3519112"
+    },
+    {
+     "number": "61-modda",
+     "title": "Mutaxassis",
+     "url": "https://lex.uz/docs/-3517337#-3519117"
+    },
+    {
+     "number": "62-modda",
+     "title": "Mutaxassisning huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-3517337#-3519123"
+    },
+    {
+     "number": "63-modda",
+     "title": "Tarjimon",
+     "url": "https://lex.uz/docs/-3517337#-3519131"
+    },
+    {
+     "number": "64-modda",
+     "title": "Tarjimonning huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-3517337#-3519134"
+    },
+    {
+     "number": "65-modda",
+     "title": "Vakillar orqali ish yuritish",
+     "url": "https://lex.uz/docs/-3517337#-3519141"
+    },
+    {
+     "number": "67-modda",
+     "title": "Shartnoma boʻyicha (ixtiyoriy) vakillik",
+     "url": "https://lex.uz/docs/-3517337#-3519188"
+    },
+    {
+     "number": "68-modda",
+     "title": "Vakilning vakolatlarini rasmiylashtirish",
+     "url": "https://lex.uz/docs/-3517337#-3519213"
+    },
+    {
+     "number": "69-modda",
+     "title": "Vakilning vakolatlari",
+     "url": "https://lex.uz/docs/-3517337#-3519227"
+    },
+    {
+     "number": "71-modda",
+     "title": "Isbotlash vositalari",
+     "url": "https://lex.uz/docs/-3517337#-3519250"
+    },
+    {
+     "number": "72-modda",
+     "title": "Isbotlash va dalillarni taqdim etish majburiyati",
+     "url": "https://lex.uz/docs/-3517337#-3519259"
+    },
+    {
+     "number": "73-modda",
+     "title": "Dalillarning aloqadorligi",
+     "url": "https://lex.uz/docs/-3517337#-3519269"
+    },
+    {
+     "number": "74-modda",
+     "title": "Dalillarning maqbulligi",
+     "url": "https://lex.uz/docs/-3517337#-3519278"
+    },
+    {
+     "number": "75-modda",
+     "title": "Isbotlashdan ozod qilish asoslari",
+     "url": "https://lex.uz/docs/-3517337#-3519286"
+    },
+    {
+     "number": "80-modda",
+     "title": "Dalillarga baho berish",
+     "url": "https://lex.uz/docs/-3517337#-3519330"
+    },
+    {
+     "number": "81-modda",
+     "title": "Taraflar va uchinchi shaxslarning tushuntirishlari",
+     "url": "https://lex.uz/docs/-3517337#-3519350"
+    },
+    {
+     "number": "82-modda",
+     "title": "Guvohni chaqirish toʻgʻrisidagi iltimosnoma",
+     "url": "https://lex.uz/docs/-3517337#-3519359"
+    },
+    {
+     "number": "83-modda",
+     "title": "Guvohlarni ularning yashash joylarida soʻroq qilish",
+     "url": "https://lex.uz/docs/-3517337#-3519362"
+    },
+    {
+     "number": "84-modda",
+     "title": "Yozma dalillar",
+     "url": "https://lex.uz/docs/-3517337#-3519366"
+    },
+    {
+     "number": "85-modda",
+     "title": "Yozma dalillarni taqdim etish va talab qilib olish",
+     "url": "https://lex.uz/docs/-3517337#-3519371"
+    },
+    {
+     "number": "87-modda",
+     "title": "Yozma dalillarning aslini taqdim etish",
+     "url": "https://lex.uz/docs/-3517337#-3519453"
+    },
+    {
+     "number": "90-modda",
+     "title": "Ashyoviy dalillar",
+     "url": "https://lex.uz/docs/-3517337#-3519480"
+    },
+    {
+     "number": "95-modda",
+     "title": "Ekspertiza",
+     "url": "https://lex.uz/docs/-3517337#-3519583"
+    },
+    {
+     "number": "98-modda",
+     "title": "Ekspertning (ekspertlar komissiyasining) xulosasi",
+     "url": "https://lex.uz/docs/-3517337#-3519623"
+    },
+    {
+     "number": "143-modda",
+     "title": "Protsessual majburlov choralarining turlari",
+     "url": "https://lex.uz/docs/-3517337#-3521221"
+    },
+    {
+     "number": "145-modda",
+     "title": "Ogohlantirish va sud majlisi zalidan chiqarib yuborish",
+     "url": "https://lex.uz/docs/-3517337#-3521316"
+    },
+    {
+     "number": "146-modda",
+     "title": "Sud jarimalarini solish tartibi",
+     "url": "https://lex.uz/docs/-3517337#-3521321"
+    },
+    {
+     "number": "150-modda",
+     "title": "Maʼmuriy javobgarlikka tortish",
+     "url": "https://lex.uz/docs/-3517337#-3521332"
+    },
+    {
+     "number": "188-modda",
+     "title": "Ariza berish",
+     "url": "https://lex.uz/docs/-3517337#-3522138"
+    },
+    {
+     "number": "189-modda",
+     "title": "Arizaning mazmuni",
+     "url": "https://lex.uz/docs/-3517337#-3522142"
+    },
+    {
+     "number": "190-modda",
+     "title": "Arizaning va unga ilova qilingan hujjatlarning koʻchirma nusxalari",
+     "url": "https://lex.uz/docs/-3517337#-3522207"
+    },
+    {
+     "number": "191-modda",
+     "title": "Arizaga ilova qilinadigan hujjatlar",
+     "url": "https://lex.uz/docs/-3517337#-3522213"
+    },
+    {
+     "number": "192-modda",
+     "title": "Arizani ish yuritishga qabul qilish toʻgʻrisidagi masalani hal etish",
+     "url": "https://lex.uz/docs/-3517337#-3522242"
+    },
+    {
+     "number": "193-modda",
+     "title": "Arizani ish yuritishga qabul qilish va ish qoʻzgʻatish",
+     "url": "https://lex.uz/docs/-3517337#-3522247"
+    },
+    {
+     "number": "194-modda",
+     "title": "Arizani ish yuritishga qabul qilishni rad etish",
+     "url": "https://lex.uz/docs/-3517337#-3522256"
+    },
+    {
+     "number": "195-modda",
+     "title": "Arizani qaytarish",
+     "url": "https://lex.uz/docs/-3517337#-3522281"
+    },
+    {
+     "number": "201-modda",
+     "title": "Ishlarni sud muhokamasiga tayyorlash vazifalari",
+     "url": "https://lex.uz/docs/-3517337#-3522420"
+    },
+    {
+     "number": "204-modda",
+     "title": "Sudyaning ishni sud muhokamasiga tayyorlash boʻyicha harakatlari",
+     "url": "https://lex.uz/docs/-3517337#-3522508"
+    },
+    {
+     "number": "205-modda",
+     "title": "Ishni sud muhokamasiga tayinlash",
+     "url": "https://lex.uz/docs/-3517337#-3522558"
+    },
+    {
+     "number": "206-modda",
+     "title": "Sudya yordamchisining (katta yordamchisining) ishni sud muhokamasiga tayyorlash boʻyicha harakatlari",
+     "url": "https://lex.uz/docs/-3517337#-3522562"
+    },
+    {
+     "number": "207-modda",
+     "title": "Fuqarolik ishlarini koʻrish va hal qilish muddatlari",
+     "url": "https://lex.uz/docs/-3517337#-3522602"
+    },
+    {
+     "number": "208-modda",
+     "title": "Sud majlisi",
+     "url": "https://lex.uz/docs/-3517337#-3522640"
+    },
+    {
+     "number": "209-modda",
+     "title": "Videokonferensaloqa rejimidagi sud majlisida ishtirok etish",
+     "url": "https://lex.uz/docs/-3517337#-3522661"
+    },
+    {
+     "number": "210-modda",
+     "title": "Sud majlisini ochish",
+     "url": "https://lex.uz/docs/-3517337#-3522675"
+    },
+    {
+     "number": "211-modda",
+     "title": "Sud majlisida raislik qiluvchi",
+     "url": "https://lex.uz/docs/-3517337#-3522683"
+    },
+    {
+     "number": "212-modda",
+     "title": "Sud majlisi zalidagi tartib",
+     "url": "https://lex.uz/docs/-3517337#-3522700"
+    },
+    {
+     "number": "213-modda",
+     "title": "Sud protsessi ishtirokchilarining kelgan-kelmaganligini tekshirish",
+     "url": "https://lex.uz/docs/-3517337#-3522716"
+    },
+    {
+     "number": "214-modda",
+     "title": "Tarjimonga uning vazifalarini tushuntirish",
+     "url": "https://lex.uz/docs/-3517337#-3522726"
+    },
+    {
+     "number": "215-modda",
+     "title": "Guvohlarni sud majlisi zalidan chiqarib yuborish",
+     "url": "https://lex.uz/docs/-3517337#-3522732"
+    },
+    {
+     "number": "216-modda",
+     "title": "Sud tarkibini eʼlon qilish va rad qilish huquqini tushuntirish",
+     "url": "https://lex.uz/docs/-3517337#-3522738"
+    },
+    {
+     "number": "217-modda",
+     "title": "Ishda ishtirok etuvchi shaxslarga ularning huquqlari va majburiyatlarini tushuntirish",
+     "url": "https://lex.uz/docs/-3517337#-3522748"
+    },
+    {
+     "number": "218-modda",
+     "title": "Ekspert hamda mutaxassisga ularning huquq va majburiyatlarini tushuntirish",
+     "url": "https://lex.uz/docs/-3517337#-3522752"
+    },
+    {
+     "number": "219-modda",
+     "title": "Sudning ishda ishtirok etuvchi shaxslarning iltimosnomalarini hal qilishi",
+     "url": "https://lex.uz/docs/-3517337#-3522755"
+    },
+    {
+     "number": "220-modda",
+     "title": "Ishda ishtirok etuvchi shaxslarning sud majlisiga kelmaganligi oqibatlari",
+     "url": "https://lex.uz/docs/-3517337#-3522757"
+    },
+    {
+     "number": "221-modda",
+     "title": "Taraflar sud majlisiga uzrsiz sabablarga koʻra kelmaganligining oqibatlari",
+     "url": "https://lex.uz/docs/-3517337#-3522767"
+    },
+    {
+     "number": "222-modda",
+     "title": "Guvoh, ekspert, mutaxassis, tarjimonning sud majlisiga kelmaganligi oqibatlari",
+     "url": "https://lex.uz/docs/-3517337#-3522906"
+    },
+    {
+     "number": "223-modda",
+     "title": "Ish muhokamasini keyinga qoldirish",
+     "url": "https://lex.uz/docs/-3517337#-3522909"
+    },
+    {
+     "number": "224-modda",
+     "title": "Ish muhokamasi keyinga qoldirilganida guvohlarni soʻroq qilish",
+     "url": "https://lex.uz/docs/-3517337#-3522940"
+    },
+    {
+     "number": "225-modda",
+     "title": "Ishni mazmunan koʻrishning boshlanishi",
+     "url": "https://lex.uz/docs/-3517337#-3522943"
+    },
+    {
+     "number": "226-modda",
+     "title": "Daʼvogarning arz qilgan talablaridan voz kechishi, javobgarning daʼvogar talablarini tan olishi, taraflarning kelishuv bitimi yoki mediativ kelishuvi",
+     "url": "https://lex.uz/docs/-3517337#-4267506"
+    },
+    {
+     "number": "227-modda",
+     "title": "Ishda ishtirok etuvchi shaxslarning tushuntirishlari",
+     "url": "https://lex.uz/docs/-3517337#-3522954"
+    },
+    {
+     "number": "228-modda",
+     "title": "Dalillarni tekshirish tartibini belgilash",
+     "url": "https://lex.uz/docs/-3517337#-3522984"
+    },
+    {
+     "number": "229-modda",
+     "title": "Guvohni soʻroq qilish tartibi",
+     "url": "https://lex.uz/docs/-3517337#-3522986"
+    },
+    {
+     "number": "230-modda",
+     "title": "Guvohning yozma xotiralardan foydalanish huquqi",
+     "url": "https://lex.uz/docs/-3517337#-3523094"
+    },
+    {
+     "number": "231-modda",
+     "title": "Oʻn olti yoshga toʻlmagan guvohni soʻroq qilish tartibi",
+     "url": "https://lex.uz/docs/-3517337#-3523099"
+    },
+    {
+     "number": "232-modda",
+     "title": "Guvohlarning koʻrsatuvlarini oʻqib eshittirish",
+     "url": "https://lex.uz/docs/-3517337#-3523118"
+    },
+    {
+     "number": "233-modda",
+     "title": "Yozma dalillarni tekshirish",
+     "url": "https://lex.uz/docs/-3517337#-3523143"
+    },
+    {
+     "number": "233¹-modda",
+     "title": "Raqamli dalillarni tekshirish",
+     "url": "https://lex.uz/docs/-3517337#-7239627"
+    },
+    {
+     "number": "234-modda",
+     "title": "Fuqarolarning shaxsiy yozishmalarini, telegraf xabarlari va boshqa xabarlarni oʻqib eshittirish",
+     "url": "https://lex.uz/docs/-3517337#-3523167"
+    },
+    {
+     "number": "235-modda",
+     "title": "Hujjatning qalbakiligi toʻgʻrisida arz qilish",
+     "url": "https://lex.uz/docs/-3517337#-3523172"
+    },
+    {
+     "number": "236-modda",
+     "title": "Hujjatning qalbakiligi toʻgʻrisidagi arizani tekshirish",
+     "url": "https://lex.uz/docs/-3517337#-3523184"
+    },
+    {
+     "number": "237-modda",
+     "title": "Ashyoviy dalillarni tekshirish",
+     "url": "https://lex.uz/docs/-3517337#-3523193"
+    },
+    {
+     "number": "238-modda",
+     "title": "Audio yoki videoyozuvni qayta namoyish qilish va ularni tekshirish",
+     "url": "https://lex.uz/docs/-3517337#-3523215"
+    },
+    {
+     "number": "239-modda",
+     "title": "Dalillarni joyida koʻzdan kechirish",
+     "url": "https://lex.uz/docs/-3517337#-3523252"
+    },
+    {
+     "number": "240-modda",
+     "title": "Ekspertni soʻroq qilish",
+     "url": "https://lex.uz/docs/-3517337#-3523262"
+    },
+    {
+     "number": "241-modda",
+     "title": "Mutaxassisni soʻroq qilish",
+     "url": "https://lex.uz/docs/-3517337#-3523276"
+    },
+    {
+     "number": "242-modda",
+     "title": "Davlat boshqaruvi organlarining xulosalari",
+     "url": "https://lex.uz/docs/-3517337#-3523282"
+    },
+    {
+     "number": "243-modda",
+     "title": "Ishni mazmunan muhokama qilishni tamomlash",
+     "url": "https://lex.uz/docs/-3517337#-3523285"
+    },
+    {
+     "number": "244-modda",
+     "title": "Sud muzokaralari",
+     "url": "https://lex.uz/docs/-3517337#-3523287"
+    },
+    {
+     "number": "245-modda",
+     "title": "Prokuror fikri",
+     "url": "https://lex.uz/docs/-3517337#-3523337"
+    },
+    {
+     "number": "246-modda",
+     "title": "Ishni mazmunan muhokama qilishni tiklash",
+     "url": "https://lex.uz/docs/-3517337#-3523340"
+    },
+    {
+     "number": "247-modda",
+     "title": "Hal qiluv qarorini qabul qilish uchun sudning alohida xonaga (maslahatxonaga) kirishi",
+     "url": "https://lex.uz/docs/-3517337#-3523342"
+    },
+    {
+     "number": "248-modda",
+     "title": "Sudning hal qiluv qarorini oʻqib eshittirish",
+     "url": "https://lex.uz/docs/-3517337#-3523346"
+    },
+    {
+     "number": "249-modda",
+     "title": "Hal qiluv qarorini qabul qilish",
+     "url": "https://lex.uz/docs/-3517337#-3523549"
+    },
+    {
+     "number": "250-modda",
+     "title": "Hal qiluv qarori qabul qilinishining sir tutilishi",
+     "url": "https://lex.uz/docs/-3517337#-3523559"
+    },
+    {
+     "number": "251-modda",
+     "title": "Hal qiluv qarorini qabul qilishda yechiladigan masalalar",
+     "url": "https://lex.uz/docs/-3517337#-3523564"
+    },
+    {
+     "number": "252-modda",
+     "title": "Hal qiluv qarorini bayon qilish",
+     "url": "https://lex.uz/docs/-3517337#-3523572"
+    },
+    {
+     "number": "253-modda",
+     "title": "Hal qiluv qarorining mazmuni",
+     "url": "https://lex.uz/docs/-3517337#-3523580"
+    },
+    {
+     "number": "254-modda",
+     "title": "Sudning arz qilingan talablar doirasidan chetga chiqish huquqi",
+     "url": "https://lex.uz/docs/-3517337#-3523598"
+    },
+    {
+     "number": "264-modda",
+     "title": "Hal qiluv qarorining qonuniy kuchga kirishi",
+     "url": "https://lex.uz/docs/-3517337#-3523906"
+    },
+    {
+     "number": "270-modda",
+     "title": "Sud hujjatlarining koʻchirma nusxalarini taraflarga va ishda ishtirok etuvchi boshqa shaxslarga yuborish",
+     "url": "https://lex.uz/docs/-3517337#-3523960"
+    },
+    {
+     "number": "271-modda",
+     "title": "Sud ajrimini chiqarish",
+     "url": "https://lex.uz/docs/-3517337#-3523967"
+    },
+    {
+     "number": "272-modda",
+     "title": "Ajrimning mazmuni",
+     "url": "https://lex.uz/docs/-3517337#-3524093"
+    },
+    {
+     "number": "276-modda",
+     "title": "Bayonnoma yuritish shartligi",
+     "url": "https://lex.uz/docs/-3517337#-3524158"
+    },
+    {
+     "number": "277-modda",
+     "title": "Bayonnoma mazmuni",
+     "url": "https://lex.uz/docs/-3517337#-3524164"
+    },
+    {
+     "number": "278-modda",
+     "title": "Bayonnoma tuzish",
+     "url": "https://lex.uz/docs/-3517337#-3524266"
+    },
+    {
+     "number": "279-modda",
+     "title": "Bayonnoma yuzasidan fikr-mulohaza bildirish",
+     "url": "https://lex.uz/docs/-3517337#-3524275"
+    },
+    {
+     "number": "383-modda",
+     "title": "Apellyatsiya shikoyati (protesti) berish huquqi",
+     "url": "https://lex.uz/docs/-3517337#-6716371"
+    },
+    {
+     "number": "385-modda",
+     "title": "Apellyatsiya shikoyatini (protestini) berish tartibi",
+     "url": "https://lex.uz/docs/-3517337#-6716404"
+    },
+    {
+     "number": "385¹-modda",
+     "title": "Apellyatsiya shikoyatini (protestini) berish muddati",
+     "url": "https://lex.uz/docs/-3517337#-6716442"
+    },
+    {
+     "number": "3-modda",
+     "title": "Sud orqali himoyalanish huquqi",
+     "url": "https://lex.uz/docs/-3517337#-3517860"
+    },
+    {
+     "number": "4-modda",
+     "title": "Sudga murojaat qilish shakli",
+     "url": "https://lex.uz/docs/-3517337#-3517864"
+    },
+    {
+     "number": "26-modda",
+     "title": "Ishlarning sudga taalluqliligi",
+     "url": "https://lex.uz/docs/-3517337#-3518228"
+    },
+    {
+     "number": "28-modda",
+     "title": "Fuqarolik ishlari boʻyicha tumanlararo, tuman (shahar) sudining sudloviga tegishli ishlar",
+     "url": "https://lex.uz/docs/-3517337#-3518244"
+    },
+    {
+     "number": "33-modda",
+     "title": "Sudlovga tegishlilikning umumiy qoidalari",
+     "url": "https://lex.uz/docs/-3517337#-3518358"
+    },
+    {
+     "number": "105-modda",
+     "title": "Daʼvoni taʼminlash asoslari",
+     "url": "https://lex.uz/docs/-3517337#-3520519"
+    },
+    {
+     "number": "106-modda",
+     "title": "Daʼvoni taʼminlash choralari",
+     "url": "https://lex.uz/docs/-3517337#-3520529"
+    },
+    {
+     "number": "107-modda",
+     "title": "Daʼvoni taʼminlash toʻgʻrisidagi arizani koʻrib chiqish",
+     "url": "https://lex.uz/docs/-3517337#-3520547"
+    },
+    {
+     "number": "116-modda",
+     "title": "Sudning ish yuritishni toʻxtatib turish majburiyati",
+     "url": "https://lex.uz/docs/-3517337#-3520618"
+    },
+    {
+     "number": "117-modda",
+     "title": "Sudning ish yuritishni toʻxtatib turish huquqi",
+     "url": "https://lex.uz/docs/-3517337#-3520628"
+    },
+    {
+     "number": "122-modda",
+     "title": "Arizani koʻrmasdan qoldirish asoslari",
+     "url": "https://lex.uz/docs/-3517337#-3520722"
+    },
+    {
+     "number": "123-modda",
+     "title": "Arizani koʻrmasdan qoldirish tartibi va oqibatlari",
+     "url": "https://lex.uz/docs/-3517337#-3521049"
+    },
+    {
+     "number": "124-modda",
+     "title": "Ish yuritishni tugatish asoslari",
+     "url": "https://lex.uz/docs/-3517337#-3521087"
+    },
+    {
+     "number": "125-modda",
+     "title": "Ish yuritishni tugatish tartibi",
+     "url": "https://lex.uz/docs/-3517337#-3521103"
+    },
+    {
+     "number": "127-modda",
+     "title": "Sud xarajatlarining turlari",
+     "url": "https://lex.uz/docs/-3517337#-3521108"
+    },
+    {
+     "number": "128-modda",
+     "title": "Davlat boji",
+     "url": "https://lex.uz/docs/-3517337#-3521112"
+    },
+    {
+     "number": "129-modda",
+     "title": "Daʼvoning bahosi",
+     "url": "https://lex.uz/docs/-3517337#-3521114"
+    },
+    {
+     "number": "132-modda",
+     "title": "Ishni koʻrish bilan bogʻliq boʻlgan chiqimlar",
+     "url": "https://lex.uz/docs/-3517337#-3521134"
+    },
+    {
+     "number": "138-modda",
+     "title": "Sud xarajatlarini taraflar oʻrtasida taqsimlash",
+     "url": "https://lex.uz/docs/-3517337#-3521186"
+    },
+    {
+     "number": "170-modda",
+     "title": "Sud buyrugʻiga oid umumiy qoidalar",
+     "url": "https://lex.uz/docs/-3517337#-3521775"
+    },
+    {
+     "number": "171-modda",
+     "title": "Sud buyrugʻini berish boʻyicha talablar",
+     "url": "https://lex.uz/docs/-3517337#-3521785"
+    },
+    {
+     "number": "172-modda",
+     "title": "Sud buyrugʻini berish toʻgʻrisidagi arizaning shakli va mazmuni",
+     "url": "https://lex.uz/docs/-3517337#-3521818"
+    },
+    {
+     "number": "173-modda",
+     "title": "Sud buyrugʻini berish toʻgʻrisidagi arizaga ilova qilinadigan hujjatlar",
+     "url": "https://lex.uz/docs/-3517337#-3521853"
+    },
+    {
+     "number": "174-modda",
+     "title": "Davlat boji",
+     "url": "https://lex.uz/docs/-3517337#-3521882"
+    },
+    {
+     "number": "175-modda",
+     "title": "Sud buyrugʻini berish toʻgʻrisidagi arizani qabul qilishni rad etish asoslari",
+     "url": "https://lex.uz/docs/-3517337#-3521892"
+    },
+    {
+     "number": "176-modda",
+     "title": "Sud buyrugʻini berish toʻgʻrisidagi arizani qaytarish",
+     "url": "https://lex.uz/docs/-3517337#-3521932"
+    },
+    {
+     "number": "177-modda",
+     "title": "Sud buyrugʻini berish tartibi va muddati",
+     "url": "https://lex.uz/docs/-3517337#-3521982"
+    },
+    {
+     "number": "178-modda",
+     "title": "Sud buyrugʻining mazmuni",
+     "url": "https://lex.uz/docs/-3517337#-3521992"
+    },
+    {
+     "number": "179-modda",
+     "title": "Qarzdorga sud buyrugʻining koʻchirma nusxasini yuborish",
+     "url": "https://lex.uz/docs/-3517337#-3522037"
+    },
+    {
+     "number": "180-modda",
+     "title": "Sud buyrugʻining qonuniy kuchga kirishi",
+     "url": "https://lex.uz/docs/-3517337#-3522044"
+    },
+    {
+     "number": "181-modda",
+     "title": "Sud buyrugʻini bekor qilish",
+     "url": "https://lex.uz/docs/-3517337#-3522053"
+    },
+    {
+     "number": "196-modda",
+     "title": "Bir nechta talabni birlashtirish",
+     "url": "https://lex.uz/docs/-3517337#-3522326"
+    },
+    {
+     "number": "197-modda",
+     "title": "Sudyaning bir turdagi ishlarni birlashtirish huquqi",
+     "url": "https://lex.uz/docs/-3517337#-3522331"
+    },
+    {
+     "number": "198-modda",
+     "title": "Bir nechta talabni alohida ish yuritishga ajratish",
+     "url": "https://lex.uz/docs/-3517337#-3522346"
+    },
+    {
+     "number": "199-modda",
+     "title": "Qarshi daʼvo taqdim etish",
+     "url": "https://lex.uz/docs/-3517337#-3522399"
+    },
+    {
+     "number": "200-modda",
+     "title": "Qarshi daʼvoni qabul qilish shartlari",
+     "url": "https://lex.uz/docs/-3517337#-3522405"
+    },
+    {
+     "number": "202-modda",
+     "title": "Ishni sud muhokamasiga tayyorlash muddatlari",
+     "url": "https://lex.uz/docs/-3517337#-3522454"
+    },
+    {
+     "number": "203-modda",
+     "title": "Ishni tayyorlash tartibida taraflarni soʻroq qilish",
+     "url": "https://lex.uz/docs/-3517337#-3522462"
+    },
+    {
+     "number": "255-modda",
+     "title": "Hal qiluv qarorini ijro etish tartibi va muddatini belgilash, hal qiluv qarorining ijrosini taʼminlash",
+     "url": "https://lex.uz/docs/-3517337#-3523825"
+    },
+    {
+     "number": "261-modda",
+     "title": "Hal qiluv qarori yozuvidagi xatolarni va aniq koʻrinib turgan arifmetik xatolarni tuzatish",
+     "url": "https://lex.uz/docs/-3517337#-3523858"
+    },
+    {
+     "number": "262-modda",
+     "title": "Qoʻshimcha hal qiluv qarori",
+     "url": "https://lex.uz/docs/-3517337#-3523875"
+    },
+    {
+     "number": "263-modda",
+     "title": "Hal qiluv qarorini tushuntirish",
+     "url": "https://lex.uz/docs/-3517337#-3523893"
+    },
+    {
+     "number": "265-modda",
+     "title": "Hal qiluv qarorini ijro etish",
+     "url": "https://lex.uz/docs/-3517337#-3523913"
+    },
+    {
+     "number": "266-modda",
+     "title": "Darhol ijro etilishi lozim boʻlgan hal qiluv qarorlari",
+     "url": "https://lex.uz/docs/-3517337#-3523916"
+    },
+    {
+     "number": "280-modda",
+     "title": "Sirtdan ish yuritish asoslari",
+     "url": "https://lex.uz/docs/-3517337#-3524293"
+    },
+    {
+     "number": "282-modda",
+     "title": "Sirtdan ish yuritish tartibi",
+     "url": "https://lex.uz/docs/-3517337#-3524314"
+    },
+    {
+     "number": "285-modda",
+     "title": "Sirtdan qabul qilingan hal qiluv qarorini qayta koʻrib chiqish toʻgʻrisidagi ariza",
+     "url": "https://lex.uz/docs/-3517337#-5220904"
+    },
+    {
+     "number": "372¹-modda",
+     "title": "Sud hujjatining qonuniyligi, asosliligi va adolatliligi yuzasidan tekshiruv qoʻzgʻatish",
+     "url": "https://lex.uz/docs/-3517337#-6716143"
+    },
+    {
+     "number": "372²-modda",
+     "title": "Sud hujjatini bekor qilish yoki oʻzgartirish asoslari",
+     "url": "https://lex.uz/docs/-3517337#-6716166"
+    },
+    {
+     "number": "384-modda",
+     "title": "Apellyatsiya shikoyatlarini (protestlarini) koʻrib chiqadigan sudlar",
+     "url": "https://lex.uz/docs/-3517337#-6716383"
+    },
+    {
+     "number": "386-modda",
+     "title": "Apellyatsiya shikoyatining (protestining) mazmuni",
+     "url": "https://lex.uz/docs/-3517337#-5221057"
+    },
+    {
+     "number": "387-modda",
+     "title": "Apellyatsiya shikoyatiga (protestiga) ilova qilinadigan hujjatlar",
+     "url": "https://lex.uz/docs/-3517337#-6716471"
+    },
+    {
+     "number": "388-modda",
+     "title": "Apellyatsiya shikoyatini (protestini) ish yuritishga qabul qilish toʻgʻrisidagi masalani hal etish tartibi va muddati",
+     "url": "https://lex.uz/docs/-3517337#-6716488"
+    },
+    {
+     "number": "389-modda",
+     "title": "Apellyatsiya shikoyatini (protestini) qaytarish",
+     "url": "https://lex.uz/docs/-3517337#-6716509"
+    },
+    {
+     "number": "389¹-modda",
+     "title": "Apellyatsiya shikoyatini (protestini) ish yuritishga qabul qilishni rad etish",
+     "url": "https://lex.uz/docs/-3517337#-6716535"
+    },
+    {
+     "number": "389²-modda",
+     "title": "Apellyatsiya shikoyatini (protestini) ish yuritishga qabul qilish",
+     "url": "https://lex.uz/docs/-3517337#-6716558"
+    },
+    {
+     "number": "395-modda",
+     "title": "Apellyatsiya shikoyatini (protestini) koʻrish muddati",
+     "url": "https://lex.uz/docs/-3517337#-5221318"
+    },
+    {
+     "number": "396-modda",
+     "title": "Apellyatsiya instansiyasi sudining ishni koʻrish doirasi",
+     "url": "https://lex.uz/docs/-3517337#-5221323"
+    },
+    {
+     "number": "397-modda",
+     "title": "Apellyatsiya instansiyasi sudida ishlarni koʻrish tartibi",
+     "url": "https://lex.uz/docs/-3517337#-5221326"
+    },
+    {
+     "number": "399-modda",
+     "title": "Apellyatsiya instansiyasi sudining vakolatlari",
+     "url": "https://lex.uz/docs/-3517337#-6716655"
+    },
+    {
+     "number": "400-modda",
+     "title": "Birinchi instansiya sudining ajrimi ustidan xususiy shikoyat (protest) berish huquqi",
+     "url": "https://lex.uz/docs/-3517337#-5221428"
+    },
+    {
+     "number": "401-modda",
+     "title": "Xususiy shikoyatlar (protestlar) berish va ularni koʻrib chiqish tartibi",
+     "url": "https://lex.uz/docs/-3517337#-5221434"
+    },
+    {
+     "number": "403-modda",
+     "title": "Kassatsiya shikoyati (protesti) berish huquqi",
+     "url": "https://lex.uz/docs/-3517337#-6716787"
+    },
+    {
+     "number": "405-modda",
+     "title": "Kassatsiya shikoyatini (protestini) berish tartibi",
+     "url": "https://lex.uz/docs/-3517337#-6716814"
+    },
+    {
+     "number": "405¹-modda",
+     "title": "Kassatsiya shikoyati (protesti) berish muddati",
+     "url": "https://lex.uz/docs/-3517337#-6716828"
+    },
+    {
+     "number": "406-modda",
+     "title": "Kassatsiya shikoyatining (protestining) mazmuni",
+     "url": "https://lex.uz/docs/-3517337#-3525926"
+    },
+    {
+     "number": "415-modda",
+     "title": "Kassatsiya shikoyatini (protestini) koʻrish muddati",
+     "url": "https://lex.uz/docs/-3517337#-5221631"
+    },
+    {
+     "number": "417-modda",
+     "title": "Kassatsiya instansiyasi sudida ishni koʻrish tartibi",
+     "url": "https://lex.uz/docs/-3517337#-6717127"
+    },
+    {
+     "number": "419-modda",
+     "title": "Kassatsiya instansiyasi sudining vakolatlari",
+     "url": "https://lex.uz/docs/-3517337#-6717138"
+    },
+    {
+     "number": "419⁴-modda",
+     "title": "Taftish tartibida shikoyat qilish (protest keltirish) huquqi",
+     "url": "https://lex.uz/docs/-3517337#-6717188"
+    },
+    {
+     "number": "419⁶-modda",
+     "title": "Taftish tartibida shikoyat (protest) berish tartibi va muddati",
+     "url": "https://lex.uz/docs/-3517337#-6717320"
+    },
+    {
+     "number": "419²⁸-modda",
+     "title": "Shikoyatni (protestni) taftish tartibida koʻradigan sudning vakolatlari",
+     "url": "https://lex.uz/docs/-3517337#-6717498"
+    },
+    {
+     "number": "437-modda",
+     "title": "Yangi ochilgan holatlar boʻyicha sud hujjatlarini qayta koʻrish asoslari",
+     "url": "https://lex.uz/docs/-3517337#-3526513"
+    },
+    {
+     "number": "439-modda",
+     "title": "Sud hujjatlarini qayta koʻrish toʻgʻrisida ariza berish",
+     "url": "https://lex.uz/docs/-3517337#-3526531"
+    },
+    {
+     "number": "446-modda",
+     "title": "Sud hujjatlarini ijroga qaratish",
+     "url": "https://lex.uz/docs/-3517337#-3526671"
+    },
+    {
+     "number": "447-modda",
+     "title": "Ijro varaqasi",
+     "url": "https://lex.uz/docs/-3517337#-3526674"
+    },
+    {
+     "number": "448-modda",
+     "title": "Ijro varaqasi berish",
+     "url": "https://lex.uz/docs/-3517337#-3526680"
+    },
+    {
+     "number": "449-modda",
+     "title": "Sud tomonidan ijro varaqasini yuborish",
+     "url": "https://lex.uz/docs/-3517337#-3526690"
+    },
+    {
+     "number": "451-modda",
+     "title": "Ijro varaqasini ijroga taqdim etish muddati",
+     "url": "https://lex.uz/docs/-3517337#-3526712"
+    },
+    {
+     "number": "454-modda",
+     "title": "Hal qiluv qarorining ijrosini kechiktirish yoki uning boʻlib-boʻlib ijro etilishi, uni ijro etish usuli va tartibini oʻzgartirish",
+     "url": "https://lex.uz/docs/-3517337#-3526747"
+    }
+   ]
+  },
+  {
+   "id": "JPK",
+   "title": "OʻZBEKISTON RESPUBLIKASINING JINOYAT-PROTSESSUAL KODEKSI",
+   "kind": "code",
+   "adopted": "22.09.1994.",
+   "acceptingBody": null,
+   "actForm": null,
+   "registration": null,
+   "edition": "15.10.2026 01",
+   "inForceFrom": "01.04.1995",
+   "retrievedAt": "2026-11-20",
+   "url": "https://lex.uz/docs/-111460",
+   "total": 773,
+   "articles": [
+    {
+     "number": "19-modda",
+     "title": "Sudda jinoyat ishlarining oshkora koʻrilishi",
+     "url": "https://lex.uz/docs/-111460#-3695554"
+    },
+    {
+     "number": "20-modda",
+     "title": "Jinoyat ishlari yuritiladigan til",
+     "url": "https://lex.uz/docs/-111460#-252876"
+    },
+    {
+     "number": "23-modda",
+     "title": "Aybsizlik prezumpsiyasi",
+     "url": "https://lex.uz/docs/-111460#-252892"
+    },
+    {
+     "number": "25-modda",
+     "title": "Sudda ishlarni yuritishda tortishuv",
+     "url": "https://lex.uz/docs/-111460#-252902"
+    },
+    {
+     "number": "26-modda",
+     "title": "Dalillarni bevosita va ogʻzaki usulda tekshirish",
+     "url": "https://lex.uz/docs/-111460#-252907"
+    },
+    {
+     "number": "32-modda",
+     "title": "Sud majlisi kotibi",
+     "url": "https://lex.uz/docs/-111460#-253521"
+    },
+    {
+     "number": "33-modda",
+     "title": "Prokuror",
+     "url": "https://lex.uz/docs/-111460#-253524"
+    },
+    {
+     "number": "34-modda",
+     "title": "Prokurorning vakolatlari",
+     "url": "https://lex.uz/docs/-111460#-253528"
+    },
+    {
+     "number": "45-modda",
+     "title": "Ayblanuvchi",
+     "url": "https://lex.uz/docs/-111460#-253577"
+    },
+    {
+     "number": "46-modda",
+     "title": "Ayblanuvchining huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-111460#-253580"
+    },
+    {
+     "number": "49-modda",
+     "title": "Himoyachi",
+     "url": "https://lex.uz/docs/-111460#-1393287"
+    },
+    {
+     "number": "53-modda",
+     "title": "Himoyachining huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-111460#-253617"
+    },
+    {
+     "number": "54-modda",
+     "title": "Jabrlanuvchi",
+     "url": "https://lex.uz/docs/-111460#-253624"
+    },
+    {
+     "number": "55-modda",
+     "title": "Jabrlanuvchining huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-111460#-253627"
+    },
+    {
+     "number": "64-modda",
+     "title": "Protsess ishtirokchilarining huquqlarini tushuntirib berish va bu huquqlarni amalga oshirishni taʼminlash majburiyati",
+     "url": "https://lex.uz/docs/-111460#-253662"
+    },
+    {
+     "number": "65-modda",
+     "title": "Guvoh",
+     "url": "https://lex.uz/docs/-111460#-253665"
+    },
+    {
+     "number": "66-modda",
+     "title": "Guvohning huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-111460#-253667"
+    },
+    {
+     "number": "67-modda",
+     "title": "Ekspert",
+     "url": "https://lex.uz/docs/-111460#-253672"
+    },
+    {
+     "number": "68-modda",
+     "title": "Ekspertning huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-111460#-1634650"
+    },
+    {
+     "number": "71-modda",
+     "title": "Tarjimon",
+     "url": "https://lex.uz/docs/-111460#-253687"
+    },
+    {
+     "number": "72-modda",
+     "title": "Tarjimonning huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-111460#-253692"
+    },
+    {
+     "number": "76-modda",
+     "title": "Sudyaning, prokurorning, tergovchining, surishtiruvchining, tergovga qadar tekshiruvni amalga oshiruvchi organ mansabdor shaxsining va sud majlisi kotibining ishda ishtirok etishiga monelik qiladigan holatlar",
+     "url": "https://lex.uz/docs/-111460#-3348068"
+    },
+    {
+     "number": "80-modda",
+     "title": "Rad qilish va oʻzini oʻzi rad etish hamda ularni hal qilish tartibi",
+     "url": "https://lex.uz/docs/-111460#-253730"
+    },
+    {
+     "number": "90-modda",
+     "title": "Dalillarni bayonnomada qayd etish",
+     "url": "https://lex.uz/docs/-111460#-253813"
+    },
+    {
+     "number": "91-modda",
+     "title": "Dalillarni qayd etishda yordamchi usullar. Bayonnomaga ilovalar",
+     "url": "https://lex.uz/docs/-111460#-253817"
+    },
+    {
+     "number": "91¹-modda",
+     "title": "Tergov harakatlarini videokonferensaloqa rejimida oʻtkazish",
+     "url": "https://lex.uz/docs/-111460#-4354421"
+    },
+    {
+     "number": "91²-modda",
+     "title": "Tergov harakatlarini videokonferensaloqa rejimida oʻtkazish asoslari",
+     "url": "https://lex.uz/docs/-111460#-4354436"
+    },
+    {
+     "number": "91³-modda",
+     "title": "Tergov harakatlarini videokonferensaloqa rejimida oʻtkazish shartlari va tartibi",
+     "url": "https://lex.uz/docs/-111460#-4354445"
+    },
+    {
+     "number": "91⁴-modda",
+     "title": "Videokonferensaloqa rejimida oʻtkazilgan tergov harakati jarayoni va natijalarini qayd qilish",
+     "url": "https://lex.uz/docs/-111460#-4354450"
+    },
+    {
+     "number": "92-modda",
+     "title": "Dalillarni qayd etishning toʻgʻriligini tasdiqlash",
+     "url": "https://lex.uz/docs/-111460#-253821"
+    },
+    {
+     "number": "100-modda",
+     "title": "Huquq va majburiyatlarni tushuntirish",
+     "url": "https://lex.uz/docs/-111460#-253857"
+    },
+    {
+     "number": "101-modda",
+     "title": "Ishning holatlari toʻgʻrisida erkin soʻzlab berish",
+     "url": "https://lex.uz/docs/-111460#-253860"
+    },
+    {
+     "number": "102-modda",
+     "title": "Ishora qiluvchi savollar berishga yoʻl qoʻyilmasligi",
+     "url": "https://lex.uz/docs/-111460#-253863"
+    },
+    {
+     "number": "114-modda",
+     "title": "Guvoh va jabrlanuvchini soʻroq qilish tartibi",
+     "url": "https://lex.uz/docs/-111460#-253953"
+    },
+    {
+     "number": "117-modda",
+     "title": "Guvoh va jabrlanuvchini protsessual majburiyatlarni buzganlik uchun javobgarlik toʻgʻrisida ogohlantirish",
+     "url": "https://lex.uz/docs/-111460#-253967"
+    },
+    {
+     "number": "272-modda",
+     "title": "Sud majlisida tartibni buzganlik uchun javobgarlik",
+     "url": "https://lex.uz/docs/-111460#-254974"
+    },
+    {
+     "number": "406-modda",
+     "title": "Jinoyat ishini muhokama qilish chogʻida sud tarkibining oʻzgarmasligi",
+     "url": "https://lex.uz/docs/-111460#-256257"
+    },
+    {
+     "number": "408-modda",
+     "title": "Sud majlisida raislik qiluvchi",
+     "url": "https://lex.uz/docs/-111460#-256262"
+    },
+    {
+     "number": "409-modda",
+     "title": "Sud muhokamasida prokurorning ishtiroki",
+     "url": "https://lex.uz/docs/-111460#-256270"
+    },
+    {
+     "number": "410-modda",
+     "title": "Sud muhokamasida sudlanuvchining ishtiroki",
+     "url": "https://lex.uz/docs/-111460#-256279"
+    },
+    {
+     "number": "411-modda",
+     "title": "Jabrlanuvchining sud majlisiga kelmasligi oqibatlari",
+     "url": "https://lex.uz/docs/-111460#-256285"
+    },
+    {
+     "number": "412-modda",
+     "title": "Prokurorning, himoyachining, jamoat ayblovchisining, jamoat himoyachisining sud majlisiga kelmasligi oqibatlari",
+     "url": "https://lex.uz/docs/-111460#-256289"
+    },
+    {
+     "number": "413-modda",
+     "title": "Fuqaroviy daʼvogar yoki fuqaroviy javobgarning sud majlisiga kelmasligi oqibatlari",
+     "url": "https://lex.uz/docs/-111460#-256298"
+    },
+    {
+     "number": "418-modda",
+     "title": "Jinoyat ishining muhokamasini keyinga qoldirish",
+     "url": "https://lex.uz/docs/-111460#-256335"
+    },
+    {
+     "number": "423-modda",
+     "title": "Sud majlisida ajrim chiqarish tartibi",
+     "url": "https://lex.uz/docs/-111460#-256356"
+    },
+    {
+     "number": "424-modda",
+     "title": "Sud majlisining tartibi",
+     "url": "https://lex.uz/docs/-111460#-256361"
+    },
+    {
+     "number": "425-modda",
+     "title": "Sud majlisida tartibni buzuvchilarga nisbatan qoʻllaniladigan choralar",
+     "url": "https://lex.uz/docs/-111460#-256368"
+    },
+    {
+     "number": "426-modda",
+     "title": "Sud majlisining bayonnomasi",
+     "url": "https://lex.uz/docs/-111460#-3696578"
+    },
+    {
+     "number": "427-modda",
+     "title": "Sud majlisining bayonnomasi yuzasidan mulohazalar berish va ularni koʻrib chiqish tartibi",
+     "url": "https://lex.uz/docs/-111460#-256386"
+    },
+    {
+     "number": "428-modda",
+     "title": "Sud majlisini ochish",
+     "url": "https://lex.uz/docs/-111460#-256390"
+    },
+    {
+     "number": "429-modda",
+     "title": "Protsess ishtirokchilarining sudga kelgan- kelmaganligini tekshirish",
+     "url": "https://lex.uz/docs/-111460#-256392"
+    },
+    {
+     "number": "430-modda",
+     "title": "Tarjimonga uning huquqlarini, majburiyatlarini va javobgarligini tushuntirish",
+     "url": "https://lex.uz/docs/-111460#-256395"
+    },
+    {
+     "number": "431-modda",
+     "title": "Sud tarkibini, taraflarni eʼlon qilish va rad qilish huquqini tushuntirish",
+     "url": "https://lex.uz/docs/-111460#-256397"
+    },
+    {
+     "number": "432-modda",
+     "title": "Guvohlarni sud majlisi zalidan chiqarib turish",
+     "url": "https://lex.uz/docs/-111460#-256402"
+    },
+    {
+     "number": "433-modda",
+     "title": "Protsess ishtirokchilaridan birortasi kelmaganda jinoyat ishini koʻrish mumkinligi yoki mumkin emasligi masalasini hal qilish",
+     "url": "https://lex.uz/docs/-111460#-256404"
+    },
+    {
+     "number": "434-modda",
+     "title": "Sudlanuvchining shaxsini va unga protsessual hujjatlarning nusxalari topshirilgan vaqtni aniqlash",
+     "url": "https://lex.uz/docs/-111460#-256407"
+    },
+    {
+     "number": "435-modda",
+     "title": "Sudlanuvchiga uning huquqlarini tushuntirish",
+     "url": "https://lex.uz/docs/-111460#-256410"
+    },
+    {
+     "number": "436-modda",
+     "title": "Taraflarga ularning huquqlari va majburiyatlarini tushuntirish",
+     "url": "https://lex.uz/docs/-111460#-256412"
+    },
+    {
+     "number": "437-modda",
+     "title": "Ekspertga va mutaxassisga ularning huquqlari va majburiyatlarini tushuntirish",
+     "url": "https://lex.uz/docs/-111460#-256414"
+    },
+    {
+     "number": "438-modda",
+     "title": "Iltimoslar qilish va ularni hal etish",
+     "url": "https://lex.uz/docs/-111460#-256416"
+    },
+    {
+     "number": "439-modda",
+     "title": "Sud tergovining boshlanishi",
+     "url": "https://lex.uz/docs/-111460#-256424"
+    },
+    {
+     "number": "440-modda",
+     "title": "Dalillarni tekshirish navbatini belgilash",
+     "url": "https://lex.uz/docs/-111460#-256426"
+    },
+    {
+     "number": "441-modda",
+     "title": "Guvohning qasamyodi va uni javobgarlik toʻgʻrisida ogohlantirish",
+     "url": "https://lex.uz/docs/-111460#-256430"
+    },
+    {
+     "number": "442-modda",
+     "title": "Sudda soʻroq qilish tartibi",
+     "url": "https://lex.uz/docs/-111460#-256434"
+    },
+    {
+     "number": "443-modda",
+     "title": "Yozma dalillarni, ekspertlarning xulosalarini va tergov harakatlari bayonnomalarini tekshirish",
+     "url": "https://lex.uz/docs/-111460#-256448"
+    },
+    {
+     "number": "444-modda",
+     "title": "Koʻzdan kechirish",
+     "url": "https://lex.uz/docs/-111460#-256451"
+    },
+    {
+     "number": "445-modda",
+     "title": "Guvohlantirish",
+     "url": "https://lex.uz/docs/-111460#-256455"
+    },
+    {
+     "number": "446-modda",
+     "title": "Ekspertiza",
+     "url": "https://lex.uz/docs/-111460#-256458"
+    },
+    {
+     "number": "447-modda",
+     "title": "Tanib olish uchun koʻrsatish, eksperiment oʻtkazish, ekspert tekshiruvi uchun namunalar olish",
+     "url": "https://lex.uz/docs/-111460#-256470"
+    },
+    {
+     "number": "448-modda",
+     "title": "Sud tergovining tamomlanishi",
+     "url": "https://lex.uz/docs/-111460#-256476"
+    },
+    {
+     "number": "449-modda",
+     "title": "Taraflar muzokarasining mazmuni va tartibi",
+     "url": "https://lex.uz/docs/-111460#-256480"
+    },
+    {
+     "number": "450-modda",
+     "title": "Taraflarning ayblovning mohiyati yuzasidan takliflari",
+     "url": "https://lex.uz/docs/-111460#-256492"
+    },
+    {
+     "number": "451-modda",
+     "title": "Sudlanuvchining oxirgi soʻzi",
+     "url": "https://lex.uz/docs/-111460#-256494"
+    },
+    {
+     "number": "452-modda",
+     "title": "Sud tergovini yangidan boshlash",
+     "url": "https://lex.uz/docs/-111460#-256497"
+    },
+    {
+     "number": "453-modda",
+     "title": "Sudning qaror qabul qilish uchun alohida xonaga (maslahatxonaga) kirishi",
+     "url": "https://lex.uz/docs/-111460#-256499"
+    },
+    {
+     "number": "454-modda",
+     "title": "Hukm chiqarish",
+     "url": "https://lex.uz/docs/-111460#-256502"
+    },
+    {
+     "number": "455-modda",
+     "title": "Hukmning qonuniy, asosli va adolatli boʻlishi",
+     "url": "https://lex.uz/docs/-111460#-256504"
+    },
+    {
+     "number": "456-modda",
+     "title": "Sudyalar maslahatlashuvining sir tutilishi",
+     "url": "https://lex.uz/docs/-111460#-256511"
+    },
+    {
+     "number": "457-modda",
+     "title": "Hukm chiqarish vaqtida sud hal qiladigan masalalar",
+     "url": "https://lex.uz/docs/-111460#-256514"
+    },
+    {
+     "number": "460-modda",
+     "title": "Sudyalarning maslahatlashuv tartibi",
+     "url": "https://lex.uz/docs/-111460#-256542"
+    },
+    {
+     "number": "462-modda",
+     "title": "Hukm turlari",
+     "url": "https://lex.uz/docs/-111460#-256549"
+    },
+    {
+     "number": "465-modda",
+     "title": "Hukmni tuzish",
+     "url": "https://lex.uz/docs/-111460#-256573"
+    },
+    {
+     "number": "472-modda",
+     "title": "Hukmning imzolanishi va sudyaning alohida fikri",
+     "url": "https://lex.uz/docs/-111460#-256633"
+    },
+    {
+     "number": "473-modda",
+     "title": "Hukmni eʼlon qilish",
+     "url": "https://lex.uz/docs/-111460#-256636"
+    },
+    {
+     "number": "475-modda",
+     "title": "Hukmning nusxasini mahkumga va oqlangan shaxsga berish",
+     "url": "https://lex.uz/docs/-111460#-256643"
+    },
+    {
+     "number": "497²-modda",
+     "title": "Hukm ustidan apellyatsiya tartibida shikoyat berish va protest bildirish huquqiga ega boʻlgan shaxslar",
+     "url": "https://lex.uz/docs/-111460#-5232475"
+    },
+    {
+     "number": "497³-modda",
+     "title": "Hukmlar ustidan apellyatsiya tartibida shikoyat berish va protest bildirish tartibi",
+     "url": "https://lex.uz/docs/-111460#-5232483"
+    },
+    {
+     "number": "497⁴-modda",
+     "title": "Hukm ustidan apellyatsiya shikoyatlarini (protestlarini) berish muddatlari",
+     "url": "https://lex.uz/docs/-111460#-6626944"
+    },
+    {
+     "number": "24-modda",
+     "title": "Gumon qilinuvchi, ayblanuvchi va sudlanuvchini himoyalanish huquqi bilan taʼminlash",
+     "url": "https://lex.uz/docs/-111460#-252899"
+    },
+    {
+     "number": "35-modda",
+     "title": "Tergovchi",
+     "url": "https://lex.uz/docs/-111460#-253531"
+    },
+    {
+     "number": "36-modda",
+     "title": "Tergovchining vakolatlari",
+     "url": "https://lex.uz/docs/-111460#-253533"
+    },
+    {
+     "number": "38-modda",
+     "title": "Surishtiruv",
+     "url": "https://lex.uz/docs/-111460#-3347035"
+    },
+    {
+     "number": "38¹-modda",
+     "title": "Surishtiruvchining vakolatlari",
+     "url": "https://lex.uz/docs/-111460#-3347057"
+    },
+    {
+     "number": "47-modda",
+     "title": "Gumon qilinuvchi",
+     "url": "https://lex.uz/docs/-111460#-253585"
+    },
+    {
+     "number": "48-modda",
+     "title": "Gumon qilinuvchining huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-111460#-253587"
+    },
+    {
+     "number": "50-modda",
+     "title": "Himoyachini taklif etish",
+     "url": "https://lex.uz/docs/-111460#-253596"
+    },
+    {
+     "number": "51-modda",
+     "title": "Himoyachi ishtirok etishi shart boʻlgan hollar",
+     "url": "https://lex.uz/docs/-111460#-253601"
+    },
+    {
+     "number": "52-modda",
+     "title": "Himoyachidan voz kechish",
+     "url": "https://lex.uz/docs/-111460#-253613"
+    },
+    {
+     "number": "96-modda",
+     "title": "Soʻroq qilish joyi",
+     "url": "https://lex.uz/docs/-111460#-253839"
+    },
+    {
+     "number": "97-modda",
+     "title": "Soʻroq qilish uchun chaqiruv",
+     "url": "https://lex.uz/docs/-111460#-253843"
+    },
+    {
+     "number": "98-modda",
+     "title": "Soʻroq qilinuvchining shaxsini aniqlash",
+     "url": "https://lex.uz/docs/-111460#-253851"
+    },
+    {
+     "number": "99-modda",
+     "title": "Soʻroq qilinuvchining qaysi tilda koʻrsatuv bera olishini aniqlash",
+     "url": "https://lex.uz/docs/-111460#-253854"
+    },
+    {
+     "number": "106-modda",
+     "title": "Soʻroq jarayoni va natijalarini qayd qilish",
+     "url": "https://lex.uz/docs/-111460#-253884"
+    },
+    {
+     "number": "107-modda",
+     "title": "Soʻroqning davom etish vaqti",
+     "url": "https://lex.uz/docs/-111460#-253901"
+    },
+    {
+     "number": "109-modda",
+     "title": "Gumon qilinuvchini va ayblanuvchini soʻroq qilish tartibi",
+     "url": "https://lex.uz/docs/-111460#-253921"
+    },
+    {
+     "number": "110-modda",
+     "title": "Soʻroq qilish muddatlari",
+     "url": "https://lex.uz/docs/-111460#-253924"
+    },
+    {
+     "number": "111-modda",
+     "title": "Gumon qilinuvchi yoki ayblanuvchini birinchi marta soʻroq qilishdan oldingi harakatlar",
+     "url": "https://lex.uz/docs/-111460#-253929"
+    },
+    {
+     "number": "157-modda",
+     "title": "Olib qoʻyish uchun asoslar",
+     "url": "https://lex.uz/docs/-111460#-254190"
+    },
+    {
+     "number": "158-modda",
+     "title": "Tintuv oʻtkazish uchun asoslar",
+     "url": "https://lex.uz/docs/-111460#-254192"
+    },
+    {
+     "number": "158¹-modda",
+     "title": "Tintuv oʻtkazish toʻgʻrisida iltimosnoma qoʻzgʻatish",
+     "url": "https://lex.uz/docs/-111460#-7355017"
+    },
+    {
+     "number": "158²-modda",
+     "title": "Tintuv oʻtkazish toʻgʻrisidagi iltimosnomani koʻrib chiqish",
+     "url": "https://lex.uz/docs/-111460#-7355090"
+    },
+    {
+     "number": "158³-modda",
+     "title": "Sud ajrimi",
+     "url": "https://lex.uz/docs/-111460#-7355104"
+    },
+    {
+     "number": "159-modda",
+     "title": "Olib qoʻyishni oʻtkazish toʻgʻrisidagi qaror yoki ajrim",
+     "url": "https://lex.uz/docs/-111460#-7355146"
+    },
+    {
+     "number": "160-modda",
+     "title": "Olib qoʻyish yoki tintuv oʻtkazish vaqtida hozir boʻladigan shaxslar",
+     "url": "https://lex.uz/docs/-111460#-254198"
+    },
+    {
+     "number": "161-modda",
+     "title": "Olib qoʻyish va tintuv oʻtkazish tartibi",
+     "url": "https://lex.uz/docs/-111460#-254203"
+    },
+    {
+     "number": "220-modda",
+     "title": "Ushlab turish maqsadi",
+     "url": "https://lex.uz/docs/-111460#-254606"
+    },
+    {
+     "number": "221-modda",
+     "title": "Ushlab turish asoslari",
+     "url": "https://lex.uz/docs/-111460#-254609"
+    },
+    {
+     "number": "224-modda",
+     "title": "Jinoyat ishi qoʻzgʻatilgunga qadar ushlab turish tartibi",
+     "url": "https://lex.uz/docs/-111460#-4817016"
+    },
+    {
+     "number": "225-modda",
+     "title": "Ushlab turish bayonnomasini tuzish va ushlab turishning asosliligini tekshirish",
+     "url": "https://lex.uz/docs/-111460#-254630"
+    },
+    {
+     "number": "226-modda",
+     "title": "Ushlab turish muddati",
+     "url": "https://lex.uz/docs/-111460#-254639"
+    },
+    {
+     "number": "234-modda",
+     "title": "Ushlab turilganni ozod qilish asoslari va tartibi",
+     "url": "https://lex.uz/docs/-111460#-1325080"
+    },
+    {
+     "number": "236-modda",
+     "title": "Ehtiyot choralari qoʻllanilishining maqsad va asoslari",
+     "url": "https://lex.uz/docs/-111460#-254712"
+    },
+    {
+     "number": "237-modda",
+     "title": "Ehtiyot choralarining turlari",
+     "url": "https://lex.uz/docs/-111460#-254719"
+    },
+    {
+     "number": "238-modda",
+     "title": "Ehtiyot chorasini tanlashda eʼtiborga olinadigan holatlar",
+     "url": "https://lex.uz/docs/-111460#-254725"
+    },
+    {
+     "number": "240-modda",
+     "title": "Ehtiyot chorasini qoʻllash, bekor qilish, oʻzgartirish toʻgʻrisidagi qaror yoki ajrim",
+     "url": "https://lex.uz/docs/-111460#-254740"
+    },
+    {
+     "number": "241-modda",
+     "title": "Ehtiyot chorasini qoʻllash toʻgʻrisidagi qaror ustidan shikoyat berish va protest bildirish",
+     "url": "https://lex.uz/docs/-111460#-1325153"
+    },
+    {
+     "number": "242-modda",
+     "title": "Qamoqqa olish",
+     "url": "https://lex.uz/docs/-111460#-1325157"
+    },
+    {
+     "number": "242¹-modda",
+     "title": "Uy qamogʻi",
+     "url": "https://lex.uz/docs/-111460#-2461137"
+    },
+    {
+     "number": "243-modda",
+     "title": "Qamoqqa olish yoki uy qamogʻi tarzidagi ehtiyot chorasini qoʻllash tartibi",
+     "url": "https://lex.uz/docs/-111460#-2461171"
+    },
+    {
+     "number": "245-modda",
+     "title": "Qamoqda va uy qamogʻida saqlab turish muddati",
+     "url": "https://lex.uz/docs/-111460#-2461197"
+    },
+    {
+     "number": "249-modda",
+     "title": "Garov",
+     "url": "https://lex.uz/docs/-111460#-3696129"
+    },
+    {
+     "number": "250-modda",
+     "title": "Munosib xulq-atvorda boʻlish haqidagi tilxat",
+     "url": "https://lex.uz/docs/-111460#-254795"
+    },
+    {
+     "number": "320¹-modda",
+     "title": "Ishni sudga qadar yuritishning shakllari",
+     "url": "https://lex.uz/docs/-111460#-3350910"
+    },
+    {
+     "number": "320²-modda",
+     "title": "Tergovga qadar tekshiruv",
+     "url": "https://lex.uz/docs/-111460#-3350912"
+    },
+    {
+     "number": "320³-modda",
+     "title": "Jinoyat ishini tergov qilish",
+     "url": "https://lex.uz/docs/-111460#-3350921"
+    },
+    {
+     "number": "321-modda",
+     "title": "Jinoyat ishini qoʻzgʻatish majburiyati",
+     "url": "https://lex.uz/docs/-111460#-255306"
+    },
+    {
+     "number": "322-modda",
+     "title": "Jinoyat ishini qoʻzgʻatish sabablari va asoslari",
+     "url": "https://lex.uz/docs/-111460#-255364"
+    },
+    {
+     "number": "323-modda",
+     "title": "Jinoyat ishini anonim xabarlarga asosan qoʻzgʻatishga yoʻl qoʻyilmasligi",
+     "url": "https://lex.uz/docs/-111460#-255384"
+    },
+    {
+     "number": "324-modda",
+     "title": "Shaxslarning arizalari",
+     "url": "https://lex.uz/docs/-111460#-255389"
+    },
+    {
+     "number": "325-modda",
+     "title": "Jabrlanuvchining shikoyatiga asosan jinoyat ishi qoʻzgʻatish",
+     "url": "https://lex.uz/docs/-111460#-255401"
+    },
+    {
+     "number": "326-modda",
+     "title": "Korxonalar, muassasalar, tashkilotlar, jamoat birlashmalari va mansabdor shaxslar bergan xabarlar",
+     "url": "https://lex.uz/docs/-111460#-255405"
+    },
+    {
+     "number": "327-modda",
+     "title": "Ommaviy axborot vositalari bergan xabarlar",
+     "url": "https://lex.uz/docs/-111460#-255410"
+    },
+    {
+     "number": "328-modda",
+     "title": "Jinoyat ishini qoʻzgʻatish vakolatiga ega boʻlgan organlar yoki mansabdor shaxs tomonidan jinoyatga oid maʼlumotlarning bevosita aniqlanishi",
+     "url": "https://lex.uz/docs/-111460#-255416"
+    },
+    {
+     "number": "329-modda",
+     "title": "Jinoyatga oid arizalar, xabarlar va boshqa maʼlumotlarni koʻrib chiqish tartibi",
+     "url": "https://lex.uz/docs/-111460#-1562985"
+    },
+    {
+     "number": "330-modda",
+     "title": "Jinoyatga oid maʼlumotlarni koʻrib chiqish natijasida qabul qilinadigan qarorlar",
+     "url": "https://lex.uz/docs/-111460#-255449"
+    },
+    {
+     "number": "331-modda",
+     "title": "Jinoyat ishini qoʻzgʻatish tartibi",
+     "url": "https://lex.uz/docs/-111460#-255464"
+    },
+    {
+     "number": "333-modda",
+     "title": "Jinoyat ishini qoʻzgʻatishni rad qilish",
+     "url": "https://lex.uz/docs/-111460#-255478"
+    },
+    {
+     "number": "334-modda",
+     "title": "Maʼmuriy, intizomiy va boshqa huquqbuzarliklar toʻgʻrisidagi xabarlar boʻyicha koʻriladigan choralar",
+     "url": "https://lex.uz/docs/-111460#-255481"
+    },
+    {
+     "number": "335-modda",
+     "title": "Jinoyat toʻgʻrisidagi arizani (xabarni) tergovga tegishliligiga qarab yuborish",
+     "url": "https://lex.uz/docs/-111460#-255486"
+    },
+    {
+     "number": "336-modda",
+     "title": "Jinoyat ishini ish qoʻzgʻatilganidan keyin yuborish",
+     "url": "https://lex.uz/docs/-111460#-255488"
+    },
+    {
+     "number": "337-modda",
+     "title": "Jinoyat ishini qoʻzgʻatishning qonuniyligi ustidan prokuror nazorati",
+     "url": "https://lex.uz/docs/-111460#-255496"
+    },
+    {
+     "number": "338-modda",
+     "title": "Jinoyat ishi qoʻzgʻatish toʻgʻrisidagi qaror ustidan shikoyat qilish",
+     "url": "https://lex.uz/docs/-111460#-255502"
+    },
+    {
+     "number": "344-modda",
+     "title": "Dastlabki tergovni olib borishga vakolatli mansabdor shaxslar",
+     "url": "https://lex.uz/docs/-111460#-255548"
+    },
+    {
+     "number": "345-modda",
+     "title": "Jinoyat ishining tergovga tegishliligi",
+     "url": "https://lex.uz/docs/-111460#-3351334"
+    },
+    {
+     "number": "350-modda",
+     "title": "Dastlabki tergovning boshlanishi",
+     "url": "https://lex.uz/docs/-111460#-255589"
+    },
+    {
+     "number": "351-modda",
+     "title": "Dastlabki tergov muddatlari",
+     "url": "https://lex.uz/docs/-111460#-255592"
+    },
+    {
+     "number": "358-modda",
+     "title": "Tergovchining va prokurorning harakatlari hamda qarorlari ustidan shikoyat berish",
+     "url": "https://lex.uz/docs/-111460#-255645"
+    },
+    {
+     "number": "359-modda",
+     "title": "Shaxsni jinoyat ishida gumon qilinuvchi tariqasida ishtirok etishga jalb qilish asoslari",
+     "url": "https://lex.uz/docs/-111460#-255649"
+    },
+    {
+     "number": "360-modda",
+     "title": "Jinoyat ishida gumon qilinuvchi tariqasida ishtirok etishga jalb qilish toʻgʻrisidagi qaror",
+     "url": "https://lex.uz/docs/-111460#-255651"
+    },
+    {
+     "number": "361-modda",
+     "title": "Jinoyat ishida ayblanuvchi tariqasida ishtirok etishga jalb qilish toʻgʻrisidagi qaror",
+     "url": "https://lex.uz/docs/-111460#-255658"
+    },
+    {
+     "number": "362-modda",
+     "title": "Ayblovni oʻzgartirish, tugatish va toʻldirish",
+     "url": "https://lex.uz/docs/-111460#-255668"
+    },
+    {
+     "number": "364-modda",
+     "title": "Dastlabki tergovni toʻxtatish asoslari va tartibi",
+     "url": "https://lex.uz/docs/-111460#-255679"
+    },
+    {
+     "number": "372-modda",
+     "title": "Dastlabki tergovni tamomlash turlari",
+     "url": "https://lex.uz/docs/-111460#-255730"
+    },
+    {
+     "number": "373-modda",
+     "title": "Jinoyat ishini tugatish",
+     "url": "https://lex.uz/docs/-111460#-255732"
+    },
+    {
+     "number": "374-modda",
+     "title": "Jinoyat ishini tugatish toʻgʻrisidagi qaror",
+     "url": "https://lex.uz/docs/-111460#-255734"
+    },
+    {
+     "number": "375-modda",
+     "title": "Jinoyat ishi tamomlangandan keyin undagi materiallar bilan tanishib chiqish huquqini taʼminlash",
+     "url": "https://lex.uz/docs/-111460#-255751"
+    },
+    {
+     "number": "376-modda",
+     "title": "Jinoyat ishidagi materiallar bilan tanishib chiqish tartibi",
+     "url": "https://lex.uz/docs/-111460#-255766"
+    },
+    {
+     "number": "377-modda",
+     "title": "Iltimoslar qilish va ularni koʻrib chiqish tartibi",
+     "url": "https://lex.uz/docs/-111460#-255772"
+    },
+    {
+     "number": "378-modda",
+     "title": "Iltimos qondirilgandan keyin jinoyat ishi bilan qayta tanishtirish",
+     "url": "https://lex.uz/docs/-111460#-255776"
+    },
+    {
+     "number": "379-modda",
+     "title": "Ayblov xulosasi",
+     "url": "https://lex.uz/docs/-111460#-255778"
+    },
+    {
+     "number": "380-modda",
+     "title": "Ayblov xulosasiga ilovalar",
+     "url": "https://lex.uz/docs/-111460#-255783"
+    },
+    {
+     "number": "381-modda",
+     "title": "Jinoyat ishining prokurorga yuborilishi",
+     "url": "https://lex.uz/docs/-111460#-255787"
+    },
+    {
+     "number": "381¹-modda",
+     "title": "Surishtiruvni amalga oshirishga vakolatli boʻlgan mansabdor shaxslar",
+     "url": "https://lex.uz/docs/-111460#-3351738"
+    },
+    {
+     "number": "381²-modda",
+     "title": "Jinoyat ishining tergovga tegishliligi",
+     "url": "https://lex.uz/docs/-111460#-3351743"
+    },
+    {
+     "number": "381³-modda",
+     "title": "Surishtiruvni amalga oshirishda jinoyat-protsessual qonunchilik normalarining qoʻllanilishi",
+     "url": "https://lex.uz/docs/-111460#-5459947"
+    },
+    {
+     "number": "381⁶-modda",
+     "title": "Surishtiruvning boshlanishi",
+     "url": "https://lex.uz/docs/-111460#-3351781"
+    },
+    {
+     "number": "381⁷-modda",
+     "title": "Surishtiruv yuritish muddati",
+     "url": "https://lex.uz/docs/-111460#-3351783"
+    },
+    {
+     "number": "381⁹-modda",
+     "title": "Surishtiruvni toʻxtatish",
+     "url": "https://lex.uz/docs/-111460#-3351810"
+    },
+    {
+     "number": "381¹⁰-modda",
+     "title": "Surishtiruvni tamomlash turlari",
+     "url": "https://lex.uz/docs/-111460#-3351815"
+    },
+    {
+     "number": "381¹¹-modda",
+     "title": "Jinoyat ishini tugatish",
+     "url": "https://lex.uz/docs/-111460#-3351818"
+    },
+    {
+     "number": "381¹²-modda",
+     "title": "Ayblov dalolatnomasi",
+     "url": "https://lex.uz/docs/-111460#-3351828"
+    },
+    {
+     "number": "381¹³-modda",
+     "title": "Jinoyat ishi tamomlanganidan keyin undagi materiallar bilan tanishib chiqish huquqini taʼminlash",
+     "url": "https://lex.uz/docs/-111460#-3351835"
+    },
+    {
+     "number": "381¹⁴-modda",
+     "title": "Iltimoslar qilish va ularni koʻrib chiqish tartibi",
+     "url": "https://lex.uz/docs/-111460#-3351844"
+    },
+    {
+     "number": "381¹⁶-modda",
+     "title": "Jinoyat ishining prokurorga yuborilishi",
+     "url": "https://lex.uz/docs/-111460#-3351852"
+    },
+    {
+     "number": "382-modda",
+     "title": "Prokurorning vakolatlari",
+     "url": "https://lex.uz/docs/-111460#-255790"
+    },
+    {
+     "number": "384-modda",
+     "title": "Ayblov xulosasi yoki ayblov dalolatnomasi bilan kelgan jinoyat ishi yuzasidan prokuror hal etishi lozim boʻlgan masalalar",
+     "url": "https://lex.uz/docs/-111460#-3352060"
+    },
+    {
+     "number": "385-modda",
+     "title": "Ayblov xulosasi yoki ayblov dalolatnomasi bilan kelgan jinoyat ishi yuzasidan prokurorning qarori",
+     "url": "https://lex.uz/docs/-111460#-3352089"
+    },
+    {
+     "number": "386-modda",
+     "title": "Ehtiyot chorasi toʻgʻrisida qaror",
+     "url": "https://lex.uz/docs/-111460#-255829"
+    },
+    {
+     "number": "388-modda",
+     "title": "Jinoyat ishini sudga yuborish",
+     "url": "https://lex.uz/docs/-111460#-255834"
+    },
+    {
+     "number": "389-modda",
+     "title": "Jinoyat ishlarining sudlovga tegishliligi",
+     "url": "https://lex.uz/docs/-111460#-256157"
+    },
+    {
+     "number": "391-modda",
+     "title": "Jinoyat ishining hududiy jihatdan sudlovga tegishliligi",
+     "url": "https://lex.uz/docs/-111460#-256172"
+    },
+    {
+     "number": "395-modda",
+     "title": "Kelib tushgan jinoyat ishi boʻyicha sudyaning harakatlari",
+     "url": "https://lex.uz/docs/-111460#-5305445"
+    },
+    {
+     "number": "396-modda",
+     "title": "Sudga kelib tushgan jinoyat ishi boʻyicha aniqlanishi lozim boʻlgan holatlar",
+     "url": "https://lex.uz/docs/-111460#-5305466"
+    },
+    {
+     "number": "397-modda",
+     "title": "Jinoyat ishini sudda koʻrish uchun tayinlash toʻgʻrisidagi ajrim",
+     "url": "https://lex.uz/docs/-111460#-5305493"
+    },
+    {
+     "number": "402-modda",
+     "title": "Protsess ishtirokchilarini jinoyat ishi materiallari bilan tanishtirish",
+     "url": "https://lex.uz/docs/-111460#-256244"
+    },
+    {
+     "number": "403-modda",
+     "title": "Sud majlisiga chaqirish",
+     "url": "https://lex.uz/docs/-111460#-5305620"
+    },
+    {
+     "number": "405-modda",
+     "title": "Sud majlisida jinoyat ishini muhokama qilish muddati",
+     "url": "https://lex.uz/docs/-111460#-260418"
+    },
+    {
+     "number": "405¹-modda",
+     "title": "Ayblov dalolatnomasi bilan kelgan jinoyat ishini sudda muhokama qilish muddatlari",
+     "url": "https://lex.uz/docs/-111460#-3352277"
+    },
+    {
+     "number": "405²-modda",
+     "title": "Jinoyat ishi boʻyicha dastlabki eshituvni oʻtkazish",
+     "url": "https://lex.uz/docs/-111460#-5305766"
+    },
+    {
+     "number": "405³-modda",
+     "title": "Jinoyat ishi boʻyicha dastlabki eshituvni oʻtkazish uchun asoslar",
+     "url": "https://lex.uz/docs/-111460#-5305771"
+    },
+    {
+     "number": "405⁴-modda",
+     "title": "Jinoyat ishi boʻyicha dastlabki eshituv oʻtkazish toʻgʻrisidagi ajrim",
+     "url": "https://lex.uz/docs/-111460#-5305789"
+    },
+    {
+     "number": "405⁵-modda",
+     "title": "Jinoyat ishi boʻyicha dastlabki eshituvni oʻtkazish muddatlari",
+     "url": "https://lex.uz/docs/-111460#-5305865"
+    },
+    {
+     "number": "405⁶-modda",
+     "title": "Jinoyat ishi boʻyicha dastlabki eshituvni oʻtkazish tartibi",
+     "url": "https://lex.uz/docs/-111460#-5305869"
+    },
+    {
+     "number": "405¹⁰-modda",
+     "title": "Jinoyat ishini tugatish",
+     "url": "https://lex.uz/docs/-111460#-5305914"
+    },
+    {
+     "number": "405¹⁴-modda",
+     "title": "Sud ajrimi",
+     "url": "https://lex.uz/docs/-111460#-5305947"
+    },
+    {
+     "number": "405¹⁵-modda",
+     "title": "Sud ajrimi ustidan shikoyat berish va protest keltirish",
+     "url": "https://lex.uz/docs/-111460#-5305955"
+    },
+    {
+     "number": "463-modda",
+     "title": "Ayblov hukmi chiqarish asoslari",
+     "url": "https://lex.uz/docs/-111460#-256551"
+    },
+    {
+     "number": "464-modda",
+     "title": "Oqlov hukmini chiqarish asoslari",
+     "url": "https://lex.uz/docs/-111460#-256562"
+    },
+    {
+     "number": "466-modda",
+     "title": "Hukmning kirish qismi",
+     "url": "https://lex.uz/docs/-111460#-256577"
+    },
+    {
+     "number": "467-modda",
+     "title": "Ayblov hukmining tavsif qismi",
+     "url": "https://lex.uz/docs/-111460#-256584"
+    },
+    {
+     "number": "468-modda",
+     "title": "Ayblov hukmining qaror qismi",
+     "url": "https://lex.uz/docs/-111460#-256593"
+    },
+    {
+     "number": "469-modda",
+     "title": "Oqlov hukmining tavsif qismi",
+     "url": "https://lex.uz/docs/-111460#-256613"
+    },
+    {
+     "number": "470-modda",
+     "title": "Oqlov hukmining qaror qismi",
+     "url": "https://lex.uz/docs/-111460#-256617"
+    },
+    {
+     "number": "471-modda",
+     "title": "Hukmning qaror qismida hal qilinishi lozim boʻlgan boshqa masalalar",
+     "url": "https://lex.uz/docs/-111460#-256627"
+    },
+    {
+     "number": "478-modda",
+     "title": "Sud qarorlarining qonuniyligi, asosliligi va adolatliligini tekshirish turlari",
+     "url": "https://lex.uz/docs/-111460#-6626168"
+    },
+    {
+     "number": "479-modda",
+     "title": "Sud qarorlari ustidan shikoyat berish va protest bildirish huquqi hamda uning taʼminlanishi",
+     "url": "https://lex.uz/docs/-111460#-6626267"
+    },
+    {
+     "number": "480-modda",
+     "title": "Apellyatsiya, kassatsiya shikoyati va protestining mazmuniga qoʻyiladigan talablar",
+     "url": "https://lex.uz/docs/-111460#-6626288"
+    },
+    {
+     "number": "482-modda",
+     "title": "Yuqori instansiya sudi muhokamasining predmeti",
+     "url": "https://lex.uz/docs/-111460#-6626335"
+    },
+    {
+     "number": "483-modda",
+     "title": "Jinoyat ishini apellyatsiya, kassatsiya, taftish tartibida koʻrish doirasi",
+     "url": "https://lex.uz/docs/-111460#-6626349"
+    },
+    {
+     "number": "484-modda",
+     "title": "Jinoyat ishini yuqori sud tomonidan koʻrish muddatlari",
+     "url": "https://lex.uz/docs/-111460#-6626369"
+    },
+    {
+     "number": "485-modda",
+     "title": "Hukmni, ajrimni bekor qilish yoki oʻzgartirish asoslari",
+     "url": "https://lex.uz/docs/-111460#-6626378"
+    },
+    {
+     "number": "497¹-modda",
+     "title": "Apellyatsiya tartibida shikoyat beriladigan va protest bildiriladigan qarorlar",
+     "url": "https://lex.uz/docs/-111460#-5232468"
+    },
+    {
+     "number": "497⁵-modda",
+     "title": "Apellyatsiya shikoyati yoki protesti berish muddatini tiklash tartibi",
+     "url": "https://lex.uz/docs/-111460#-5232520"
+    },
+    {
+     "number": "497⁶-modda",
+     "title": "Apellyatsiya shikoyati, protesti berilganligi toʻgʻrisida xabar berish",
+     "url": "https://lex.uz/docs/-111460#-5232535"
+    },
+    {
+     "number": "497⁷-modda",
+     "title": "Hukm ustidan apellyatsiya shikoyati yoki protesti berish oqibatlari",
+     "url": "https://lex.uz/docs/-111460#-5232603"
+    },
+    {
+     "number": "497¹⁵-modda",
+     "title": "Apellyatsiya instansiyasi sudi majlisini tayinlash va tayyorlash",
+     "url": "https://lex.uz/docs/-111460#-5232728"
+    },
+    {
+     "number": "497¹⁶-modda",
+     "title": "Taraflarning apellyatsiya instansiyasi sudi majlisida ishtirok etishi",
+     "url": "https://lex.uz/docs/-111460#-5232750"
+    },
+    {
+     "number": "497¹⁷-modda",
+     "title": "Apellyatsiya instansiyasi sudida jinoyat ishini koʻrish tartibi",
+     "url": "https://lex.uz/docs/-111460#-5232777"
+    },
+    {
+     "number": "497¹⁸-modda",
+     "title": "Taraflarning muzokaralari va sudlanuvchining oxirgi soʻzi",
+     "url": "https://lex.uz/docs/-111460#-5232861"
+    },
+    {
+     "number": "497²⁶-modda",
+     "title": "Apellyatsiya instansiyasi sudining vakolatlari",
+     "url": "https://lex.uz/docs/-111460#-5233143"
+    },
+    {
+     "number": "497³¹-modda",
+     "title": "Apellyatsiya instansiyasi sudining hukmi va ajrimi",
+     "url": "https://lex.uz/docs/-111460#-5233436"
+    },
+    {
+     "number": "498-modda",
+     "title": "Kassatsiya tartibida qayta koʻrilishi mumkin boʻlgan sud hukmlari, ajrimlari",
+     "url": "https://lex.uz/docs/-111460#-6627243"
+    },
+    {
+     "number": "499-modda",
+     "title": "Birinchi instansiya sudining hukmi, ajrimi ustidan kassatsiya tartibida shikoyat berishga (protest bildirishga) boʻlgan huquq",
+     "url": "https://lex.uz/docs/-111460#-6627270"
+    },
+    {
+     "number": "500-modda",
+     "title": "Kassatsiya shikoyatini (protestini) berish tartibi",
+     "url": "https://lex.uz/docs/-111460#-6627282"
+    },
+    {
+     "number": "501-modda",
+     "title": "Sud hukmlari, ajrimlarini kassatsiya tartibida qayta koʻrishga yoʻl qoʻyiladigan muddat",
+     "url": "https://lex.uz/docs/-111460#-6627298"
+    },
+    {
+     "number": "510-modda",
+     "title": "Taftish tartibida qayta koʻrilishi mumkin boʻlgan sud hukmlari, ajrimlari",
+     "url": "https://lex.uz/docs/-111460#-6627473"
+    },
+    {
+     "number": "511-modda",
+     "title": "Hukm va ajrim ustidan taftish tartibida shikoyat berish huquqiga ega boʻlgan shaxslar",
+     "url": "https://lex.uz/docs/-111460#-6627479"
+    },
+    {
+     "number": "514-modda",
+     "title": "Sud hukmlari, ajrimlarini taftish tartibida qayta koʻrib chiqishga yoʻl qoʻyiladigan muddat",
+     "url": "https://lex.uz/docs/-111460#-6627495"
+    },
+    {
+     "number": "528-modda",
+     "title": "Hukmning qonuniy kuchga kirishi va uni ijro ettirish",
+     "url": "https://lex.uz/docs/-111460#-5234582"
+    },
+    {
+     "number": "530-modda",
+     "title": "Sud ajrimining qonuniy kuchga kirishi va uni ijro etish",
+     "url": "https://lex.uz/docs/-111460#-5234590"
+    },
+    {
+     "number": "531-modda",
+     "title": "Hukmni, ajrimni ijro ettirish tartibi",
+     "url": "https://lex.uz/docs/-111460#-5234624"
+    }
+   ]
+  },
+  {
+   "id": "IPK",
+   "title": "Oʻzbekiston Respublikasining Iqtisodiy protsessual kodeksi",
+   "kind": "code",
+   "adopted": "24.01.2018.",
+   "acceptingBody": null,
+   "actForm": null,
+   "registration": null,
+   "edition": "18.11.2026",
+   "inForceFrom": "01.04.2018",
+   "retrievedAt": "2026-11-20",
+   "url": "https://lex.uz/docs/-3523891",
+   "total": 390,
+   "articles": [
+    {
+     "number": "16-modda",
+     "title": "Ishlarning yakka tartibda va hayʼatda koʻrilishi",
+     "url": "https://lex.uz/docs/-3523891#-3527161"
+    },
+    {
+     "number": "20-modda",
+     "title": "Sudyani rad qilish",
+     "url": "https://lex.uz/docs/-3523891#-3527419"
+    },
+    {
+     "number": "21-modda",
+     "title": "Prokurorni, ekspertni, mutaxassisni, sud majlisi kotibini va tarjimonni rad qilish",
+     "url": "https://lex.uz/docs/-3523891#-3527434"
+    },
+    {
+     "number": "22-modda",
+     "title": "Rad qilish haqidagi arizalar",
+     "url": "https://lex.uz/docs/-3523891#-3527442"
+    },
+    {
+     "number": "23-modda",
+     "title": "Rad qilish toʻgʻrisidagi arizani hal etish tartibi",
+     "url": "https://lex.uz/docs/-3523891#-3527447"
+    },
+    {
+     "number": "24-modda",
+     "title": "Rad qilish toʻgʻrisidagi arizani qanoatlantirish oqibatlari",
+     "url": "https://lex.uz/docs/-3523891#-3527459"
+    },
+    {
+     "number": "41-modda",
+     "title": "Ishda ishtirok etuvchi shaxslar",
+     "url": "https://lex.uz/docs/-3523891#-3528113"
+    },
+    {
+     "number": "42-modda",
+     "title": "Ishda ishtirok etuvchi shaxslarning huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-3523891#-3528119"
+    },
+    {
+     "number": "43-modda",
+     "title": "Taraflar",
+     "url": "https://lex.uz/docs/-3523891#-3528126"
+    },
+    {
+     "number": "49-modda",
+     "title": "Ishda prokurorning ishtiroki",
+     "url": "https://lex.uz/docs/-3523891#-5231843"
+    },
+    {
+     "number": "50-modda",
+     "title": "Ishda davlat organlari va boshqa shaxslarning ishtiroki",
+     "url": "https://lex.uz/docs/-3523891#-3528258"
+    },
+    {
+     "number": "51-modda",
+     "title": "Odil sudlovni amalga oshirishga koʻmaklashuvchi shaxslar",
+     "url": "https://lex.uz/docs/-3523891#-3528264"
+    },
+    {
+     "number": "52-modda",
+     "title": "Sud majlisining kotibi",
+     "url": "https://lex.uz/docs/-3523891#-3528266"
+    },
+    {
+     "number": "53-modda",
+     "title": "Guvoh",
+     "url": "https://lex.uz/docs/-3523891#-3528269"
+    },
+    {
+     "number": "54-modda",
+     "title": "Guvohning huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-3523891#-3528274"
+    },
+    {
+     "number": "55-modda",
+     "title": "Ekspert",
+     "url": "https://lex.uz/docs/-3523891#-3528282"
+    },
+    {
+     "number": "56-modda",
+     "title": "Ekspertning huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-3523891#-3528291"
+    },
+    {
+     "number": "57-modda",
+     "title": "Mutaxassis",
+     "url": "https://lex.uz/docs/-3523891#-3528300"
+    },
+    {
+     "number": "58-modda",
+     "title": "Mutaxassisning huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-3523891#-3528309"
+    },
+    {
+     "number": "59-modda",
+     "title": "Tarjimon",
+     "url": "https://lex.uz/docs/-3523891#-3528318"
+    },
+    {
+     "number": "60-modda",
+     "title": "Tarjimonning huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-3523891#-3528322"
+    },
+    {
+     "number": "61-modda",
+     "title": "Vakillar orqali ish yuritish",
+     "url": "https://lex.uz/docs/-3523891#-3528331"
+    },
+    {
+     "number": "62-modda",
+     "title": "Vakilning vakolatlarini rasmiylashtirish",
+     "url": "https://lex.uz/docs/-3523891#-3528352"
+    },
+    {
+     "number": "63-modda",
+     "title": "Vakilning vakolatlari",
+     "url": "https://lex.uz/docs/-3523891#-3528360"
+    },
+    {
+     "number": "64-modda",
+     "title": "Ishda ishtirok etuvchi shaxslarning va ular vakillarining vakolatlarini tekshirish",
+     "url": "https://lex.uz/docs/-3523891#-3528363"
+    },
+    {
+     "number": "66-modda",
+     "title": "Dalillar tushunchasi va ularning turlari",
+     "url": "https://lex.uz/docs/-3523891#-3528371"
+    },
+    {
+     "number": "67-modda",
+     "title": "Isbotlash",
+     "url": "https://lex.uz/docs/-3523891#-3528540"
+    },
+    {
+     "number": "68-modda",
+     "title": "Isbotlash majburiyati",
+     "url": "https://lex.uz/docs/-3523891#-3528542"
+    },
+    {
+     "number": "71-modda",
+     "title": "Dalillarning aloqadorligi",
+     "url": "https://lex.uz/docs/-3523891#-3528569"
+    },
+    {
+     "number": "72-modda",
+     "title": "Dalillarning maqbulligi",
+     "url": "https://lex.uz/docs/-3523891#-3528572"
+    },
+    {
+     "number": "73-modda",
+     "title": "Isbotlashdan ozod qilish asoslari",
+     "url": "https://lex.uz/docs/-3523891#-3528574"
+    },
+    {
+     "number": "74-modda",
+     "title": "Dalillarga baho berish",
+     "url": "https://lex.uz/docs/-3523891#-3528641"
+    },
+    {
+     "number": "75-modda",
+     "title": "Yozma dalillar",
+     "url": "https://lex.uz/docs/-3523891#-3528652"
+    },
+    {
+     "number": "80-modda",
+     "title": "Ekspertiza",
+     "url": "https://lex.uz/docs/-3523891#-3528683"
+    },
+    {
+     "number": "86-modda",
+     "title": "Ekspertning yoki ekspertlar komissiyasining xulosasi",
+     "url": "https://lex.uz/docs/-3523891#-3528733"
+    },
+    {
+     "number": "87-modda",
+     "title": "Mutaxassisning maslahati (tushuntirishi)",
+     "url": "https://lex.uz/docs/-3523891#-3528745"
+    },
+    {
+     "number": "88-modda",
+     "title": "Guvohning koʻrsatuvlari",
+     "url": "https://lex.uz/docs/-3523891#-3528753"
+    },
+    {
+     "number": "89-modda",
+     "title": "Ishda ishtirok etuvchi shaxslarning tushuntirishlari",
+     "url": "https://lex.uz/docs/-3523891#-3528765"
+    },
+    {
+     "number": "125-modda",
+     "title": "Sud jarimalarini solish",
+     "url": "https://lex.uz/docs/-3523891#-3529800"
+    },
+    {
+     "number": "126-modda",
+     "title": "Sud jarimasi solish toʻgʻrisidagi masalani koʻrib chiqish tartibi",
+     "url": "https://lex.uz/docs/-3523891#-3529809"
+    },
+    {
+     "number": "148-modda",
+     "title": "Ish qoʻzgʻatish asoslari",
+     "url": "https://lex.uz/docs/-3523891#-3530439"
+    },
+    {
+     "number": "149-modda",
+     "title": "Daʼvo arizasining shakli va mazmuni",
+     "url": "https://lex.uz/docs/-3523891#-3530462"
+    },
+    {
+     "number": "150-modda",
+     "title": "Daʼvo arizasining va unga ilova qilinadigan hujjatlarning koʻchirma nusxalarini yuborish",
+     "url": "https://lex.uz/docs/-3523891#-3530487"
+    },
+    {
+     "number": "151-modda",
+     "title": "Daʼvo arizasiga ilova qilinadigan hujjatlar",
+     "url": "https://lex.uz/docs/-3523891#-3530490"
+    },
+    {
+     "number": "152-modda",
+     "title": "Daʼvo arizasini ish yuritishga qabul qilish toʻgʻrisidagi masalani hal etish",
+     "url": "https://lex.uz/docs/-3523891#-3530510"
+    },
+    {
+     "number": "153-modda",
+     "title": "Daʼvo arizasini ish yuritishga qabul qilish va ish qoʻzgʻatish",
+     "url": "https://lex.uz/docs/-3523891#-3530513"
+    },
+    {
+     "number": "154-modda",
+     "title": "Daʼvo arizasini ish yuritishga qabul qilishni rad etish",
+     "url": "https://lex.uz/docs/-3523891#-3530519"
+    },
+    {
+     "number": "155-modda",
+     "title": "Daʼvo arizasini qaytarish",
+     "url": "https://lex.uz/docs/-3523891#-3530548"
+    },
+    {
+     "number": "156-modda",
+     "title": "Daʼvo arizasi yuzasidan yozma fikr",
+     "url": "https://lex.uz/docs/-3523891#-3530595"
+    },
+    {
+     "number": "157-modda",
+     "title": "Daʼvoning asosini yoki predmetini, daʼvo talablari miqdorini oʻzgartirish, daʼvodan voz kechish",
+     "url": "https://lex.uz/docs/-3523891#-3530606"
+    },
+    {
+     "number": "162-modda",
+     "title": "Ishni sud muhokamasiga tayyorlash toʻgʻrisidagi ajrim",
+     "url": "https://lex.uz/docs/-3523891#-3530670"
+    },
+    {
+     "number": "163-modda",
+     "title": "Sudyaning ishni sud muhokamasiga tayyorlash boʻyicha harakatlari",
+     "url": "https://lex.uz/docs/-3523891#-3530677"
+    },
+    {
+     "number": "163¹-modda",
+     "title": "Sudgacha majlis",
+     "url": "https://lex.uz/docs/-3523891#-4352199"
+    },
+    {
+     "number": "164-modda",
+     "title": "Sud muhokamasining muddati",
+     "url": "https://lex.uz/docs/-3523891#-3530710"
+    },
+    {
+     "number": "165-modda",
+     "title": "Sud majlisi",
+     "url": "https://lex.uz/docs/-3523891#-3530741"
+    },
+    {
+     "number": "166-modda",
+     "title": "Videokonferensaloqa rejimidagi sud majlisida ishtirok etish",
+     "url": "https://lex.uz/docs/-3523891#-3530777"
+    },
+    {
+     "number": "167-modda",
+     "title": "Sud majlisidagi tartib",
+     "url": "https://lex.uz/docs/-3523891#-3530972"
+    },
+    {
+     "number": "168-modda",
+     "title": "Dalillarni tekshirish",
+     "url": "https://lex.uz/docs/-3523891#-3530983"
+    },
+    {
+     "number": "169-modda",
+     "title": "Sudning ishda ishtirok etuvchi shaxslarning arizalari va iltimosnomalarini hal qilishi",
+     "url": "https://lex.uz/docs/-3523891#-3530988"
+    },
+    {
+     "number": "170-modda",
+     "title": "Daʼvo arizasi yuzasidan yozma fikr, qoʻshimcha dalillar taqdim etilmaganda, shuningdek ishda ishtirok etuvchi shaxslar kelmaganida nizoni hal qilish",
+     "url": "https://lex.uz/docs/-3523891#-3530996"
+    },
+    {
+     "number": "171-modda",
+     "title": "Sud muhokamasini keyinga qoldirish",
+     "url": "https://lex.uz/docs/-3523891#-4352266"
+    },
+    {
+     "number": "172-modda",
+     "title": "Sud majlisida tanaffus",
+     "url": "https://lex.uz/docs/-3523891#-3531058"
+    },
+    {
+     "number": "173-modda",
+     "title": "Sud muzokaralari",
+     "url": "https://lex.uz/docs/-3523891#-3531064"
+    },
+    {
+     "number": "174-modda",
+     "title": "Dalillarni tekshirishni tiklash",
+     "url": "https://lex.uz/docs/-3523891#-3531076"
+    },
+    {
+     "number": "175-modda",
+     "title": "Sud hujjatini qabul qilish uchun sudning alohida xonaga (maslahatxonaga) kirishi",
+     "url": "https://lex.uz/docs/-3523891#-3531082"
+    },
+    {
+     "number": "176-modda",
+     "title": "Hal qiluv qarorini qabul qilish",
+     "url": "https://lex.uz/docs/-3523891#-3531091"
+    },
+    {
+     "number": "177-modda",
+     "title": "Hal qiluv qarorini qabul qilish chogʻida hal etiladigan masalalar",
+     "url": "https://lex.uz/docs/-3523891#-3531113"
+    },
+    {
+     "number": "178-modda",
+     "title": "Hal qiluv qarorini tuzish",
+     "url": "https://lex.uz/docs/-3523891#-3531139"
+    },
+    {
+     "number": "179-modda",
+     "title": "Hal qiluv qarorining mazmuni",
+     "url": "https://lex.uz/docs/-3523891#-3531153"
+    },
+    {
+     "number": "186-modda",
+     "title": "Hal qiluv qarorini eʼlon qilish",
+     "url": "https://lex.uz/docs/-3523891#-3531290"
+    },
+    {
+     "number": "188-modda",
+     "title": "Hal qiluv qarorining koʻchirma nusxalarini yuborish",
+     "url": "https://lex.uz/docs/-3523891#-3531305"
+    },
+    {
+     "number": "192-modda",
+     "title": "Hal qiluv qarorining qonuniy kuchga kirishi",
+     "url": "https://lex.uz/docs/-3523891#-3531379"
+    },
+    {
+     "number": "195-modda",
+     "title": "Ajrim chiqarish",
+     "url": "https://lex.uz/docs/-3523891#-3531408"
+    },
+    {
+     "number": "196-modda",
+     "title": "Ajrimning mazmuni",
+     "url": "https://lex.uz/docs/-3523891#-3531418"
+    },
+    {
+     "number": "201-modda",
+     "title": "Bayonnoma",
+     "url": "https://lex.uz/docs/-3523891#-3531511"
+    },
+    {
+     "number": "202-modda",
+     "title": "Bayonnoma yuritish",
+     "url": "https://lex.uz/docs/-3523891#-3531700"
+    },
+    {
+     "number": "203-modda",
+     "title": "Bayonnoma yuzasidan fikr-mulohazalar",
+     "url": "https://lex.uz/docs/-3523891#-3531710"
+    },
+    {
+     "number": "259-modda",
+     "title": "Apellyatsiya shikoyati berish (protest keltirish) huquqi",
+     "url": "https://lex.uz/docs/-3523891#-3533719"
+    },
+    {
+     "number": "261-modda",
+     "title": "Apellyatsiya shikoyatini (protestini) berish tartibi",
+     "url": "https://lex.uz/docs/-3523891#-3533733"
+    },
+    {
+     "number": "262-modda",
+     "title": "Apellyatsiya shikoyatini (protestini) berish muddati",
+     "url": "https://lex.uz/docs/-3523891#-3533756"
+    },
+    {
+     "number": "3-modda",
+     "title": "Iqtisodiy sudga murojaat qilish huquqi va murojaatning shakli",
+     "url": "https://lex.uz/docs/-3523891#-3527062"
+    },
+    {
+     "number": "25-modda",
+     "title": "Ishlarning sudga taalluqliligi",
+     "url": "https://lex.uz/docs/-3523891#-3527466"
+    },
+    {
+     "number": "33-modda",
+     "title": "Sudlovga tegishlilikning umumiy qoidalari",
+     "url": "https://lex.uz/docs/-3523891#-3527710"
+    },
+    {
+     "number": "93-modda",
+     "title": "Daʼvoni taʼminlash asoslari",
+     "url": "https://lex.uz/docs/-3523891#-3528791"
+    },
+    {
+     "number": "94-modda",
+     "title": "Daʼvoni taʼminlash choralari",
+     "url": "https://lex.uz/docs/-3523891#-3529034"
+    },
+    {
+     "number": "95-modda",
+     "title": "Daʼvoni taʼminlash toʻgʻrisidagi ariza",
+     "url": "https://lex.uz/docs/-3523891#-3529058"
+    },
+    {
+     "number": "107-modda",
+     "title": "Daʼvo arizasini koʻrmasdan qoldirish asoslari",
+     "url": "https://lex.uz/docs/-3523891#-3529349"
+    },
+    {
+     "number": "110-modda",
+     "title": "Ish yuritishni tugatish asoslari",
+     "url": "https://lex.uz/docs/-3523891#-3529499"
+    },
+    {
+     "number": "112-modda",
+     "title": "Sud xarajatlarining turlari",
+     "url": "https://lex.uz/docs/-3523891#-3529612"
+    },
+    {
+     "number": "113-modda",
+     "title": "Davlat boji",
+     "url": "https://lex.uz/docs/-3523891#-3529614"
+    },
+    {
+     "number": "114-modda",
+     "title": "Daʼvoning bahosi",
+     "url": "https://lex.uz/docs/-3523891#-3529616"
+    },
+    {
+     "number": "118-modda",
+     "title": "Sud xarajatlarining taqsimlanishi",
+     "url": "https://lex.uz/docs/-3523891#-3529639"
+    },
+    {
+     "number": "135-modda",
+     "title": "Sud buyrugʻi berish boʻyicha talablar",
+     "url": "https://lex.uz/docs/-3523891#-3529951"
+    },
+    {
+     "number": "136-modda",
+     "title": "Sud buyrugʻini berish toʻgʻrisidagi arizaning shakli va mazmuni",
+     "url": "https://lex.uz/docs/-3523891#-3530224"
+    },
+    {
+     "number": "137-modda",
+     "title": "Sud buyrugʻini berish toʻgʻrisidagi arizaning koʻchirma nusxalarini qarzdorga topshirish",
+     "url": "https://lex.uz/docs/-3523891#-3530258"
+    },
+    {
+     "number": "138-modda",
+     "title": "Sud buyrugʻini berish toʻgʻrisidagi arizaga ilova qilinadigan hujjatlar",
+     "url": "https://lex.uz/docs/-3523891#-3530264"
+    },
+    {
+     "number": "139-modda",
+     "title": "Davlat boji",
+     "url": "https://lex.uz/docs/-3523891#-3530289"
+    },
+    {
+     "number": "140-modda",
+     "title": "Sud buyrugʻini berish toʻgʻrisidagi arizani qabul qilishni rad etish",
+     "url": "https://lex.uz/docs/-3523891#-3530306"
+    },
+    {
+     "number": "141-modda",
+     "title": "Sud buyrugʻini berish toʻgʻrisidagi arizani qaytarish",
+     "url": "https://lex.uz/docs/-3523891#-3530331"
+    },
+    {
+     "number": "142-modda",
+     "title": "Sud buyrugʻini berish toʻgʻrisidagi arizaga eʼtiroz",
+     "url": "https://lex.uz/docs/-3523891#-3530365"
+    },
+    {
+     "number": "143-modda",
+     "title": "Sud buyrugʻini berish tartibi va muddati",
+     "url": "https://lex.uz/docs/-3523891#-3530378"
+    },
+    {
+     "number": "144-modda",
+     "title": "Sud buyrugʻi berishni rad etish",
+     "url": "https://lex.uz/docs/-3523891#-3530386"
+    },
+    {
+     "number": "145-modda",
+     "title": "Sud buyrugʻining mazmuni",
+     "url": "https://lex.uz/docs/-3523891#-3530402"
+    },
+    {
+     "number": "146-modda",
+     "title": "Sud buyrugʻining qonuniy kuchga kirishi",
+     "url": "https://lex.uz/docs/-3523891#-3530418"
+    },
+    {
+     "number": "147-modda",
+     "title": "Sud buyrugʻini bekor qilish",
+     "url": "https://lex.uz/docs/-3523891#-3530426"
+    },
+    {
+     "number": "158-modda",
+     "title": "Ishlarni bitta ish yuritishga birlashtirish",
+     "url": "https://lex.uz/docs/-3523891#-3530621"
+    },
+    {
+     "number": "159-modda",
+     "title": "Talablarning bir qismini alohida ish yuritishga ajratish",
+     "url": "https://lex.uz/docs/-3523891#-3530634"
+    },
+    {
+     "number": "160-modda",
+     "title": "Qarshi daʼvoni taqdim etish huquqi",
+     "url": "https://lex.uz/docs/-3523891#-3530643"
+    },
+    {
+     "number": "161-modda",
+     "title": "Qarshi daʼvoni taqdim etish va ish yuritishga qabul qilish",
+     "url": "https://lex.uz/docs/-3523891#-3530661"
+    },
+    {
+     "number": "187-modda",
+     "title": "Hal qiluv qarorining oʻzgarmasligi",
+     "url": "https://lex.uz/docs/-3523891#-3531298"
+    },
+    {
+     "number": "189-modda",
+     "title": "Qoʻshimcha hal qiluv qarori",
+     "url": "https://lex.uz/docs/-3523891#-3531311"
+    },
+    {
+     "number": "190-modda",
+     "title": "Hal qiluv qarorini tushuntirish",
+     "url": "https://lex.uz/docs/-3523891#-3531338"
+    },
+    {
+     "number": "191-modda",
+     "title": "Yozuvdagi xatolarni, harfiy xatolarni va hisob-kitobdagi yanglishishlarni tuzatish",
+     "url": "https://lex.uz/docs/-3523891#-3531351"
+    },
+    {
+     "number": "193-modda",
+     "title": "Hal qiluv qarorining ijrosini taʼminlash",
+     "url": "https://lex.uz/docs/-3523891#-3531383"
+    },
+    {
+     "number": "194-modda",
+     "title": "Hal qiluv qarorini ijroga qaratish",
+     "url": "https://lex.uz/docs/-3523891#-3531400"
+    },
+    {
+     "number": "260-modda",
+     "title": "Apellyatsiya shikoyatlarini (protestlarini) koʻradigan sudlar",
+     "url": "https://lex.uz/docs/-3523891#-6722114"
+    },
+    {
+     "number": "263-modda",
+     "title": "Apellyatsiya shikoyatining (protestining) mazmuni",
+     "url": "https://lex.uz/docs/-3523891#-3533769"
+    },
+    {
+     "number": "265-modda",
+     "title": "Apellyatsiya shikoyatiga (protestiga) ilova qilinadigan hujjatlar",
+     "url": "https://lex.uz/docs/-3523891#-3533793"
+    },
+    {
+     "number": "266-modda",
+     "title": "Apellyatsiya shikoyatini (protestini) ish yuritishga qabul qilish toʻgʻrisidagi masalani hal etish tartibi va muddati",
+     "url": "https://lex.uz/docs/-3523891#-3533806"
+    },
+    {
+     "number": "267-modda",
+     "title": "Apellyatsiya shikoyatini (protestini) ish yuritishga qabul qilish",
+     "url": "https://lex.uz/docs/-3523891#-3533828"
+    },
+    {
+     "number": "268-modda",
+     "title": "Apellyatsiya shikoyatini (protestini) ish yuritishga qabul qilishni rad etish",
+     "url": "https://lex.uz/docs/-3523891#-3533833"
+    },
+    {
+     "number": "269-modda",
+     "title": "Apellyatsiya shikoyatini (protestini) qaytarish",
+     "url": "https://lex.uz/docs/-3523891#-3533850"
+    },
+    {
+     "number": "274-modda",
+     "title": "Apellyatsiya instansiyasi sudi tomonidan ishni koʻrish tartibi",
+     "url": "https://lex.uz/docs/-3523891#-3533951"
+    },
+    {
+     "number": "276-modda",
+     "title": "Apellyatsiya instansiyasi sudida ishni koʻrish chegaralari",
+     "url": "https://lex.uz/docs/-3523891#-3533973"
+    },
+    {
+     "number": "277-modda",
+     "title": "Apellyatsiya shikoyatini (protestini) koʻrish muddati",
+     "url": "https://lex.uz/docs/-3523891#-3533981"
+    },
+    {
+     "number": "278-modda",
+     "title": "Apellyatsiya instansiyasi sudining vakolatlari",
+     "url": "https://lex.uz/docs/-3523891#-3533993"
+    },
+    {
+     "number": "279-modda",
+     "title": "Birinchi instansiya sudining hal qiluv qarorini oʻzgartirish yoki bekor qilish asoslari",
+     "url": "https://lex.uz/docs/-3523891#-3534013"
+    },
+    {
+     "number": "280-modda",
+     "title": "Apellyatsiya instansiyasi sudining qarori",
+     "url": "https://lex.uz/docs/-3523891#-3534075"
+    },
+    {
+     "number": "282-modda",
+     "title": "Kassatsiya shikoyati berish (protesti keltirish) huquqi",
+     "url": "https://lex.uz/docs/-3523891#-5232129"
+    },
+    {
+     "number": "284-modda",
+     "title": "Kassatsiya shikoyatini (protestini) berish tartibi",
+     "url": "https://lex.uz/docs/-3523891#-3534160"
+    },
+    {
+     "number": "285-modda",
+     "title": "Kassatsiya shikoyatini (protestini) berish muddati",
+     "url": "https://lex.uz/docs/-3523891#-3534170"
+    },
+    {
+     "number": "286-modda",
+     "title": "Kassatsiya shikoyatining (protestining) mazmuni",
+     "url": "https://lex.uz/docs/-3523891#-3534180"
+    },
+    {
+     "number": "297-modda",
+     "title": "Kassatsiya instansiyasi sudi tomonidan ishni koʻrish tartibi",
+     "url": "https://lex.uz/docs/-3523891#-5232323"
+    },
+    {
+     "number": "300-modda",
+     "title": "Kassatsiya shikoyatini (protestini) koʻrish muddati",
+     "url": "https://lex.uz/docs/-3523891#-3534455"
+    },
+    {
+     "number": "301-modda",
+     "title": "Kassatsiya instansiyasi sudining vakolatlari",
+     "url": "https://lex.uz/docs/-3523891#-3534462"
+    },
+    {
+     "number": "307-modda",
+     "title": "Taftish tartibida shikoyat qilish (protest keltirish) huquqi",
+     "url": "https://lex.uz/docs/-3523891#-6723437"
+    },
+    {
+     "number": "309-modda",
+     "title": "Taftish tartibida shikoyat (protest) berish tartibi",
+     "url": "https://lex.uz/docs/-3523891#-6723467"
+    },
+    {
+     "number": "310-modda",
+     "title": "Taftish tartibida shikoyat (protest) berish muddati",
+     "url": "https://lex.uz/docs/-3523891#-6723485"
+    },
+    {
+     "number": "324⁷-modda",
+     "title": "Ishni taftish tartibida koʻradigan sudning vakolatlari",
+     "url": "https://lex.uz/docs/-3523891#-6723966"
+    },
+    {
+     "number": "327-modda",
+     "title": "Qonuniy kuchga kirgan sud hujjatlarini yangi ochilgan holatlar boʻyicha qayta koʻrish asoslari",
+     "url": "https://lex.uz/docs/-3523891#-3535199"
+    },
+    {
+     "number": "328-modda",
+     "title": "Qonuniy kuchga kirgan sud hujjatini yangi ochilgan holatlar boʻyicha qayta koʻrish toʻgʻrisidagi arizani berish tartibi va muddati",
+     "url": "https://lex.uz/docs/-3523891#-3535206"
+    },
+    {
+     "number": "334-modda",
+     "title": "Sud hujjatlarini ijroga qaratish",
+     "url": "https://lex.uz/docs/-3523891#-3535249"
+    },
+    {
+     "number": "335-modda",
+     "title": "Ijro varaqasi",
+     "url": "https://lex.uz/docs/-3523891#-3535253"
+    },
+    {
+     "number": "336-modda",
+     "title": "Ijro varaqasini berish",
+     "url": "https://lex.uz/docs/-3523891#-3535255"
+    },
+    {
+     "number": "337-modda",
+     "title": "Ijro varaqasining mazmuni",
+     "url": "https://lex.uz/docs/-3523891#-3535264"
+    },
+    {
+     "number": "338-modda",
+     "title": "Ijro varaqasini ijroga taqdim etish muddati",
+     "url": "https://lex.uz/docs/-3523891#-3535281"
+    },
+    {
+     "number": "342-modda",
+     "title": "Sud hujjatining ijrosini kechiktirish yoki uni boʻlib-boʻlib ijro etish, ijro etish usulini va tartibini oʻzgartirish",
+     "url": "https://lex.uz/docs/-3523891#-3535308"
+    }
+   ]
+  },
+  {
+   "id": "MK",
+   "title": "Oʻzbekiston Respublikasining Mehnat kodeksi",
+   "kind": "code",
+   "adopted": "28.10.2022.",
+   "acceptingBody": null,
+   "actForm": null,
+   "registration": null,
+   "edition": "13.11.2026",
+   "inForceFrom": "30.04.2023",
+   "retrievedAt": "2026-11-21",
+   "url": "https://lex.uz/docs/-6257288",
+   "total": 594,
+   "articles": [
+    {
+     "number": "161-modda",
+     "title": "Mehnat shartnomasini ish beruvchining tashabbusiga koʻra bekor qilish",
+     "url": "https://lex.uz/docs/-6257288#-6261562"
+    },
+    {
+     "number": "163-modda",
+     "title": "Mehnat shartnomasini ish beruvchining tashabbusiga koʻra bekor qilishni taqiqlash",
+     "url": "https://lex.uz/docs/-6257288#-6261580"
+    },
+    {
+     "number": "170-modda",
+     "title": "Mehnat shartnomasini bekor qilishni rasmiylashtirish",
+     "url": "https://lex.uz/docs/-6257288#-6261706"
+    },
+    {
+     "number": "171-modda",
+     "title": "Mehnat daftarchasini va mehnat shartnomasini bekor qilish toʻgʻrisidagi buyruqning koʻchirma nusxasini berish",
+     "url": "https://lex.uz/docs/-6257288#-6261717"
+    },
+    {
+     "number": "174-modda",
+     "title": "Mehnat shartnomasini qonunga xilof ravishda bekor qilishning huquqiy oqibatlari",
+     "url": "https://lex.uz/docs/-6257288#-6261768"
+    },
+    {
+     "number": "300-modda",
+     "title": "Xodimning intizomiy javobgarligi",
+     "url": "https://lex.uz/docs/-6257288#-6264616"
+    },
+    {
+     "number": "301-modda",
+     "title": "Xodimni intizomiy javobgarlikka tortish asosi",
+     "url": "https://lex.uz/docs/-6257288#-6264627"
+    },
+    {
+     "number": "312-modda",
+     "title": "Intizomiy jazo choralari",
+     "url": "https://lex.uz/docs/-6257288#-6264926"
+    },
+    {
+     "number": "313-modda",
+     "title": "Intizomiy jazo choralarini qoʻllash tartibi",
+     "url": "https://lex.uz/docs/-6257288#-6265024"
+    },
+    {
+     "number": "314-modda",
+     "title": "Intizomiy jazoni qoʻllash muddatlari",
+     "url": "https://lex.uz/docs/-6257288#-6265032"
+    },
+    {
+     "number": "560-modda",
+     "title": "Yakka tartibdagi mehnat nizosining koʻrib chiqilishi uchun sudga murojaat qilish muddatlari",
+     "url": "https://lex.uz/docs/-6257288#-6269139"
+    }
+   ]
+  },
+  {
+   "id": "JK",
+   "title": "OʻZBEKISTON RESPUBLIKASINING JINOYAT KODEKSI",
+   "kind": "code",
+   "adopted": "22.09.1994.",
+   "acceptingBody": null,
+   "actForm": null,
+   "registration": null,
+   "edition": "03.11.2026",
+   "inForceFrom": "01.04.1995",
+   "retrievedAt": "2026-11-20",
+   "url": "https://lex.uz/docs/-111453",
+   "total": 408,
+   "articles": [
+    {
+     "number": "210-modda",
+     "title": "Pora olish",
+     "url": "https://lex.uz/docs/-111453#-266382"
+    },
+    {
+     "number": "211-modda",
+     "title": "Pora berish",
+     "url": "https://lex.uz/docs/-111453#-266420"
+    },
+    {
+     "number": "212-modda",
+     "title": "Pora olish-berishda vositachilik qilish",
+     "url": "https://lex.uz/docs/-111453#-266471"
+    },
+    {
+     "number": "213-modda",
+     "title": "Davlat organining, davlat ishtirokidagi tashkilotning yoki fuqarolar oʻzini oʻzi boshqarish organining xizmatchisini pora evaziga ogʻdirib olish",
+     "url": "https://lex.uz/docs/-111453#-2734852"
+    },
+    {
+     "number": "214-modda",
+     "title": "Davlat organi, davlat ishtirokidagi tashkilot yoki fuqarolarning oʻzini oʻzi boshqarish organi xizmatchisining qonunga xilof ravishda moddiy qimmatliklar olishi yoki mulkiy manfaatdor boʻlishi",
+     "url": "https://lex.uz/docs/-111453#-2734874"
+    },
+    {
+     "number": "238-modda",
+     "title": "Yolgʻon guvohlik berish",
+     "url": "https://lex.uz/docs/-111453#-3643003"
+    }
+   ]
+  },
+  {
+   "id": "DAVLATBOJI",
+   "title": "Davlat boji toʻgʻrisida",
+   "kind": "law",
+   "adopted": "O‘RQ-600-сон 06.01.2020.",
+   "acceptingBody": null,
+   "actForm": "Oʻzbekiston Respublikasining Qonuni",
+   "registration": null,
+   "edition": "14.11.2026",
+   "inForceFrom": "07.01.2020",
+   "retrievedAt": "2026-11-21",
+   "url": "https://lex.uz/docs/-4680944",
+   "total": 33,
+   "articles": [
+    {
+     "number": "8-modda",
+     "title": "Fuqarolik ishlari boʻyicha sudlarda davlat bojini toʻlashdan ozod qilish",
+     "url": "https://lex.uz/docs/-4680944#-4682417"
+    }
+   ]
+  },
+  {
+   "id": "ADVOKATURA",
+   "title": "ADVOKATURA TOʻGʻRISIDA",
+   "kind": "law",
+   "adopted": "349-I-сон 27.12.1996.",
+   "acceptingBody": null,
+   "actForm": "Oʻzbekiston Respublikasining qonuni",
+   "registration": null,
+   "edition": "08.05.2025",
+   "inForceFrom": "09.01.1997",
+   "retrievedAt": "2026-11-21",
+   "url": "https://lex.uz/docs/-54503",
+   "total": 30,
+   "articles": [
+    {
+     "number": "1-modda",
+     "title": "Advokatura va uning vazifalari",
+     "url": "https://lex.uz/docs/-54503#-55619"
+    },
+    {
+     "number": "2-modda",
+     "title": "Oʻzbekiston Respublikasining advokatura toʻgʻrisidagi qonunchilik",
+     "url": "https://lex.uz/docs/-54503#-5502258"
+    },
+    {
+     "number": "3-modda",
+     "title": "Advokat",
+     "url": "https://lex.uz/docs/-54503#-1425830"
+    },
+    {
+     "number": "3¹-modda",
+     "title": "Advokat maqomiga ega boʻlish",
+     "url": "https://lex.uz/docs/-54503#-1425839"
+    },
+    {
+     "number": "4-modda",
+     "title": "Advokatura faoliyatining prinsiplari va tashkiliy shakllari",
+     "url": "https://lex.uz/docs/-54503#-1425851"
+    },
+    {
+     "number": "4¹-modda",
+     "title": "Advokatlik byurosi",
+     "url": "https://lex.uz/docs/-54503#-1425897"
+    },
+    {
+     "number": "4²-modda",
+     "title": "Advokatlik firmasi",
+     "url": "https://lex.uz/docs/-54503#-1425996"
+    },
+    {
+     "number": "4³-modda",
+     "title": "Advokatlar hayʼati",
+     "url": "https://lex.uz/docs/-54503#-1426026"
+    },
+    {
+     "number": "4⁴-modda",
+     "title": "Yuridik maslahatxona",
+     "url": "https://lex.uz/docs/-54503#-1426035"
+    },
+    {
+     "number": "5-modda",
+     "title": "Advokatlik faoliyatining turlari",
+     "url": "https://lex.uz/docs/-54503#-55641"
+    },
+    {
+     "number": "6-modda",
+     "title": "Advokatning huquqlari",
+     "url": "https://lex.uz/docs/-54503#-55655"
+    },
+    {
+     "number": "7-modda",
+     "title": "Advokatning vazifalari",
+     "url": "https://lex.uz/docs/-54503#-1426214"
+    },
+    {
+     "number": "7¹-modda",
+     "title": "Advokat soʻrovi",
+     "url": "https://lex.uz/docs/-54503#-4013524"
+    },
+    {
+     "number": "8-modda",
+     "title": "Advokatning yordamchisi",
+     "url": "https://lex.uz/docs/-54503#-55815"
+    },
+    {
+     "number": "8¹-modda",
+     "title": "Advokatning stajyori",
+     "url": "https://lex.uz/docs/-54503#-1426288"
+    },
+    {
+     "number": "9-modda",
+     "title": "Advokatlik siri",
+     "url": "https://lex.uz/docs/-54503#-1426342"
+    },
+    {
+     "number": "9¹-modda",
+     "title": "Yuridik yordam koʻrsatish toʻgʻrisidagi bitim (shartnoma)",
+     "url": "https://lex.uz/docs/-54503#-1426389"
+    },
+    {
+     "number": "10-modda",
+     "title": "Advokatlik faoliyatining kafolatlari",
+     "url": "https://lex.uz/docs/-54503#-55833"
+    },
+    {
+     "number": "11-modda",
+     "title": "Advokatlar mehnatiga haq toʻlash",
+     "url": "https://lex.uz/docs/-54503#-55841"
+    },
+    {
+     "number": "12-modda",
+     "title": "Advokatning ijtimoiy huquqlari",
+     "url": "https://lex.uz/docs/-54503#-55845"
+    },
+    {
+     "number": "12¹-modda",
+     "title": "Advokatlar palatasi",
+     "url": "https://lex.uz/docs/-54503#-1426491"
+    },
+    {
+     "number": "12²-modda",
+     "title": "Advokatlar palatasining asosiy vazifalari",
+     "url": "https://lex.uz/docs/-54503#-1426506"
+    },
+    {
+     "number": "12³-modda",
+     "title": "Advokatlar palatasining organlari va mansabdor shaxslari",
+     "url": "https://lex.uz/docs/-54503#-1426534"
+    },
+    {
+     "number": "12⁴-modda",
+     "title": "Advokatlar palatasining hududiy boshqarmalari",
+     "url": "https://lex.uz/docs/-54503#-1426551"
+    },
+    {
+     "number": "13-modda",
+     "title": "Malaka komissiyalari",
+     "url": "https://lex.uz/docs/-54503#-1426559"
+    },
+    {
+     "number": "13¹-modda",
+     "title": "Advokat maqomini toʻxtatib turish",
+     "url": "https://lex.uz/docs/-54503#-1426576"
+    },
+    {
+     "number": "14-modda",
+     "title": "Advokatning intizomiy javobgarligi",
+     "url": "https://lex.uz/docs/-54503#-1426768"
+    },
+    {
+     "number": "15-modda",
+     "title": "Litsenziyaning amal qilishini toʻxtatib turish",
+     "url": "https://lex.uz/docs/-54503#-4013863"
+    },
+    {
+     "number": "16-modda",
+     "title": "Litsenziyaning amal qilishini tugatish",
+     "url": "https://lex.uz/docs/-54503#-4013973"
+    },
+    {
+     "number": "17-modda",
+     "title": "Advokatura va Oʻzbekiston Respublikasi Adliya vazirligi",
+     "url": "https://lex.uz/docs/-54503#-1426831"
+    }
+   ]
+  },
+  {
+   "id": "ADVKAFOLAT",
+   "title": "ADVOKATLIK FAOLIYATINING KAFOLATLARI VA ADVOKATLARNING IJTIMOIY HIMOYASI TOʻGʻRISIDA",
+   "kind": "law",
+   "adopted": "721-I-сон 25.12.1998.",
+   "acceptingBody": null,
+   "actForm": "Oʻzbekiston Respublikasining qonuni",
+   "registration": null,
+   "edition": "21.09.2024",
+   "inForceFrom": "19.01.1999",
+   "retrievedAt": "2026-11-21",
+   "url": "https://lex.uz/docs/-29626",
+   "total": 12,
+   "articles": [
+    {
+     "number": "1-modda",
+     "title": "Advokatlik faoliyati bilan shugʻullanish huquqi",
+     "url": "https://lex.uz/docs/-29626#-29639"
+    },
+    {
+     "number": "2-modda",
+     "title": "Advokatlik faoliyatining asosiy prinsiplari",
+     "url": "https://lex.uz/docs/-29626#-29663"
+    },
+    {
+     "number": "3-modda",
+     "title": "Advokat qasamyodi",
+     "url": "https://lex.uz/docs/-29626#-29671"
+    },
+    {
+     "number": "4-modda",
+     "title": "Advokatning vakolatlari",
+     "url": "https://lex.uz/docs/-29626#-29677"
+    },
+    {
+     "number": "5-modda",
+     "title": "Advokatning mustaqilligini taʼminlash",
+     "url": "https://lex.uz/docs/-29626#-29707"
+    },
+    {
+     "number": "6-modda",
+     "title": "Advokatning daxlsizligi",
+     "url": "https://lex.uz/docs/-29626#-29719"
+    },
+    {
+     "number": "7-modda",
+     "title": "Advokatlik faoliyatiga aralashishga yoʻl qoʻyilmasligi",
+     "url": "https://lex.uz/docs/-29626#-29727"
+    },
+    {
+     "number": "8-modda",
+     "title": "Advokatlik faoliyati himoyalanishini taʼminlash",
+     "url": "https://lex.uz/docs/-29626#-29733"
+    },
+    {
+     "number": "9-modda",
+     "title": "Yuridik yordamni taʼminlash kafolatlari",
+     "url": "https://lex.uz/docs/-29626#-29748"
+    },
+    {
+     "number": "10-modda",
+     "title": "Advokatning hayotini va sogʻligʻini muhofaza qilish",
+     "url": "https://lex.uz/docs/-29626#-1425807"
+    },
+    {
+     "number": "11-modda",
+     "title": "Advokaturaning mablagʻlari",
+     "url": "https://lex.uz/docs/-29626#-29765"
+    },
+    {
+     "number": "12-modda",
+     "title": "Davlat bilan advokatura oʻrtasidagi oʻzaro munosabatlar",
+     "url": "https://lex.uz/docs/-29626#-29770"
+    }
+   ]
+  },
+  {
+   "id": "ORDER",
+   "title": "Advokat tomonidan ishni olib borishga order shaklini tasdiqlash toʻgʻrisida",
+   "kind": "regulation",
+   "adopted": "3417-сон 31.01.2023.",
+   "acceptingBody": "Oʻzbekiston Respublikasi Adliya vazirining",
+   "actForm": "buyrugʻi",
+   "registration": "[Oʻzbekiston Respublikasi Adliya vazirligi tomonidan 2023-yil 31-yanvarda roʻyxatdan oʻtkazildi, roʻyxat raqami 3417]",
+   "edition": null,
+   "inForceFrom": "01.02.2023",
+   "retrievedAt": "2026-11-21",
+   "url": "https://lex.uz/docs/-6374846",
+   "total": null,
+   "articles": [
+    {
+     "number": "1-band",
+     "title": "Order raqami",
+     "url": "https://lex.uz/docs/-6374846"
+    },
+    {
+     "number": "2-band",
+     "title": "Advokatlik tuzilmasining nomi",
+     "url": "https://lex.uz/docs/-6374846"
+    },
+    {
+     "number": "3-band",
+     "title": "Advokatlik tuzilmasining manzili va telefon raqami",
+     "url": "https://lex.uz/docs/-6374846"
+    },
+    {
+     "number": "4-band",
+     "title": "Advokatning familiyasi, ismi va otasining ismi",
+     "url": "https://lex.uz/docs/-6374846"
+    },
+    {
+     "number": "5-band",
+     "title": "Advokatlik guvohnomasining rekvizitlari",
+     "url": "https://lex.uz/docs/-6374846"
+    },
+    {
+     "number": "6-band",
+     "title": "Advokatning litsenziya boʻyicha ixtisosligi",
+     "url": "https://lex.uz/docs/-6374846"
+    },
+    {
+     "number": "7-band",
+     "title": "Order berishga asos",
+     "url": "https://lex.uz/docs/-6374846"
+    },
+    {
+     "number": "8-band",
+     "title": "Order berishga asos boʻlgan hujjat rasmiylashtirilgan sana",
+     "url": "https://lex.uz/docs/-6374846"
+    },
+    {
+     "number": "9-band",
+     "title": "Ishonch bildiruvchi (himoya ostidagi) shaxsning familiyasi, ismi va otasining ismi yoki yuridik shaxs nomi",
+     "url": "https://lex.uz/docs/-6374846"
+    },
+    {
+     "number": "10-band",
+     "title": "Yuridik yordam koʻrsatiladigan ish turi",
+     "url": "https://lex.uz/docs/-6374846"
+    },
+    {
+     "number": "11-band",
+     "title": "Order berilgan sana",
+     "url": "https://lex.uz/docs/-6374846"
+    },
+    {
+     "number": "12-band",
+     "title": "Elektron order uchun QR-kod yoki qogʻoz shakldagi order uchun advokatning imzosi va advokatlik tuzilmasining muhri",
+     "url": "https://lex.uz/docs/-6374846"
+    },
+    {
+     "number": "izoh",
+     "title": "Order shakliga izoh",
+     "url": "https://lex.uz/docs/-6374846"
+    }
+   ]
+  },
+  {
+   "id": "SUDLAR",
+   "title": "Sudlar toʻgʻrisida",
+   "kind": "law",
+   "adopted": "O‘RQ-703-сон 28.07.2021.",
+   "acceptingBody": "Oʻzbekiston Respublikasining Qonuni",
+   "actForm": "NIZOM",
+   "registration": null,
+   "edition": "15.10.2026",
+   "inForceFrom": "29.07.2021",
+   "retrievedAt": "2026-11-21",
+   "url": "https://lex.uz/docs/-5534923",
+   "total": 101,
+   "articles": [
+    {
+     "number": "1-modda",
+     "title": "Sud hokimiyati",
+     "url": "https://lex.uz/docs/-5534923#-5536741"
+    },
+    {
+     "number": "2-modda",
+     "title": "Sud tizimi",
+     "url": "https://lex.uz/docs/-5534923#-5536744"
+    },
+    {
+     "number": "8-modda",
+     "title": "Qonuniylik",
+     "url": "https://lex.uz/docs/-5534923#-5536802"
+    },
+    {
+     "number": "9-modda",
+     "title": "Sudyalarning mustaqilligi",
+     "url": "https://lex.uz/docs/-5534923#-5536807"
+    },
+    {
+     "number": "10-modda",
+     "title": "Sud hujjatlarining majburiyligi",
+     "url": "https://lex.uz/docs/-5534923#-5536811"
+    },
+    {
+     "number": "11-modda",
+     "title": "Qonun va sud oldidagi tenglik",
+     "url": "https://lex.uz/docs/-5534923#-5536820"
+    },
+    {
+     "number": "12-modda",
+     "title": "Sud ishlarini yuritishning oshkoraligi",
+     "url": "https://lex.uz/docs/-5534923#-5536827"
+    },
+    {
+     "number": "13-modda",
+     "title": "Sud ishlari yuritiladigan til",
+     "url": "https://lex.uz/docs/-5534923#-5536835"
+    },
+    {
+     "number": "14-modda",
+     "title": "Sud himoyasida boʻlish huquqi",
+     "url": "https://lex.uz/docs/-5534923#-5536843"
+    },
+    {
+     "number": "15-modda",
+     "title": "Odil sudlovni amalga oshirishda malakali yuridik yordam",
+     "url": "https://lex.uz/docs/-5534923#-7569287"
+    },
+    {
+     "number": "16-modda",
+     "title": "Aybsizlik prezumpsiyasi",
+     "url": "https://lex.uz/docs/-5534923#-5536858"
+    },
+    {
+     "number": "17-modda",
+     "title": "Sud hujjati ustidan shikoyat qilish huquqi",
+     "url": "https://lex.uz/docs/-5534923#-5536864"
+    },
+    {
+     "number": "39-modda",
+     "title": "Fuqarolik ishlari boʻyicha tumanlararo, tuman, shahar sudining, jinoyat ishlari boʻyicha tuman, shahar sudining, tumanlararo iqtisodiy sudning tarkibi",
+     "url": "https://lex.uz/docs/-5534923#-8413525"
+    },
+    {
+     "number": "40-modda",
+     "title": "Fuqarolik ishlari boʻyicha tumanlararo, tuman, shahar sudining, jinoyat ishlari boʻyicha tuman, shahar sudining, tumanlararo iqtisodiy sudning vakolatlari",
+     "url": "https://lex.uz/docs/-5534923#-8413532"
+    }
+   ]
+  },
+  {
+   "id": "PROKURATURA",
+   "title": "“PROKURATURA TOʻGʻRISIDA”GI OʻZBEKISTON RESPUBLIKASI QONUNIGA OʻZGARTISHLAR VA QOʻSHIMCHALAR KIRITISH HAQIDA",
+   "kind": "law",
+   "adopted": "257-II-сон 29.08.2001.",
+   "acceptingBody": null,
+   "actForm": "Oʻzbekiston Respublikasining qonuni",
+   "registration": null,
+   "edition": "15.08.2025",
+   "inForceFrom": "07.11.2001",
+   "retrievedAt": "2026-11-21",
+   "url": "https://lex.uz/docs/-106197",
+   "total": 58,
+   "articles": [
+    {
+     "number": "1-modda",
+     "title": "Oʻzbekiston Respublikasi prokuraturasi",
+     "url": "https://lex.uz/docs/-106197#-106222"
+    },
+    {
+     "number": "2-modda",
+     "title": "Oʻzbekiston Respublikasi prokuratura organlarining asosiy vazifalari",
+     "url": "https://lex.uz/docs/-106197#-106228"
+    },
+    {
+     "number": "3-modda",
+     "title": "Prokuratura organlari faoliyatining huquqiy asoslari",
+     "url": "https://lex.uz/docs/-106197#-106230"
+    },
+    {
+     "number": "4-modda",
+     "title": "Prokuratura organlari faoliyatining asosiy yoʻnalishlari",
+     "url": "https://lex.uz/docs/-106197#-106232"
+    }
+   ]
+  },
+  {
+   "id": "PENSIYA",
+   "title": "Fuqarolarning davlat pensiya taʼminoti toʻgʻrisida",
+   "kind": "law",
+   "adopted": "938-XII-сон 03.09.1993.",
+   "acceptingBody": null,
+   "actForm": "Oʻzbekiston Respublikasining qonuni",
+   "registration": null,
+   "edition": "20.05.2025",
+   "inForceFrom": "01.07.1994",
+   "retrievedAt": "2026-11-20",
+   "url": "https://lex.uz/docs/-112314",
+   "total": 68,
+   "articles": [
+    {
+     "number": "1-modda",
+     "title": "Fuqarolarning davlat pensiya taʼminotiga taalluqli huquqlari",
+     "url": "https://lex.uz/docs/-112314#-126997"
+    },
+    {
+     "number": "2-modda",
+     "title": "Davlat pensiyalarining turlari",
+     "url": "https://lex.uz/docs/-112314#-127004"
+    },
+    {
+     "number": "3-modda",
+     "title": "Pensiya tayinlashni soʻrab murojaat etish",
+     "url": "https://lex.uz/docs/-112314#-127009"
+    },
+    {
+     "number": "7-modda",
+     "title": "Yoshga doir pensiya olish huquqi",
+     "url": "https://lex.uz/docs/-112314#-127020"
+    },
+    {
+     "number": "8-modda",
+     "title": "Ish staji toʻliq boʻlmagan chogʻdagi pensiya",
+     "url": "https://lex.uz/docs/-112314#-127024"
+    },
+    {
+     "number": "37-modda",
+     "title": "Ish stajiga qoʻshib hisoblanadigan mehnat faoliyati turlari",
+     "url": "https://lex.uz/docs/-112314#-127690"
+    },
+    {
+     "number": "38-modda",
+     "title": "Ish stajiga imtiyozli tarzda qoʻshib hisoblanadigan faoliyat davrlari",
+     "url": "https://lex.uz/docs/-112314#-127759"
+    },
+    {
+     "number": "39-modda",
+     "title": "Ayrim toifadagi fuqarolar stajini hisoblab chiqarishning oʻziga xos xususiyatlari",
+     "url": "https://lex.uz/docs/-112314#-127782"
+    },
+    {
+     "number": "40-modda",
+     "title": "Chet elda ishlash vaqtini stajga qoʻshish shartlari",
+     "url": "https://lex.uz/docs/-112314#-127792"
+    },
+    {
+     "number": "41-modda",
+     "title": "Imtiyozli shartlarda pensiya tayinlashda ish stajini oʻzaro hisobga olish xususiyatlari",
+     "url": "https://lex.uz/docs/-112314#-127821"
+    },
+    {
+     "number": "42-modda",
+     "title": "Ish stajini tasdiqlash tartibi",
+     "url": "https://lex.uz/docs/-112314#-127828"
+    },
+    {
+     "number": "43-modda",
+     "title": "Pensiya tayinlashni soʻrab murojaat etish tartibi",
+     "url": "https://lex.uz/docs/-112314#-6847344"
+    },
+    {
+     "number": "45-modda",
+     "title": "Pensiya tayinlash toʻgʻrisidagi hujjatlarni va maʼlumotlarni koʻrib chiqish muddatlari",
+     "url": "https://lex.uz/docs/-112314#-7548172"
+    },
+    {
+     "number": "46-modda",
+     "title": "Pensiya tayinlashni soʻrab murojaat etilgan kun",
+     "url": "https://lex.uz/docs/-112314#-6847406"
+    },
+    {
+     "number": "48-modda",
+     "title": "Pensiya tayinlash toʻgʻrisidagi qaror ustidan shikoyat qilish",
+     "url": "https://lex.uz/docs/-112314#-127937"
+    },
+    {
+     "number": "49-modda",
+     "title": "Pensiyalarni qayta hisoblash shartlari",
+     "url": "https://lex.uz/docs/-112314#-127952"
+    }
+   ]
+  },
+  {
+   "id": "VMQ592",
+   "title": "Davlat pensiyalarini tayinlash va toʻlash tartibi toʻgʻrisidagi nizomni tasdiqlash haqida",
+   "kind": "regulation",
+   "adopted": "592-сон 13.10.2022.",
+   "acceptingBody": "Oʻzbekiston Respublikasi Vazirlar Mahkamasining",
+   "actForm": "qarori",
+   "registration": null,
+   "edition": "19.10.2026",
+   "inForceFrom": "14.10.2022",
+   "retrievedAt": "2026-11-20",
+   "url": "https://lex.uz/docs/-6236060",
+   "total": null,
+   "articles": [
+    {
+     "number": "5-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6615226"
+    },
+    {
+     "number": "6-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-7195020"
+    },
+    {
+     "number": "7-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6654837"
+    },
+    {
+     "number": "8-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-7703416"
+    },
+    {
+     "number": "9-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238433"
+    },
+    {
+     "number": "10-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6655012"
+    },
+    {
+     "number": "11-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-7195249"
+    },
+    {
+     "number": "12-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238450"
+    },
+    {
+     "number": "13-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238466"
+    },
+    {
+     "number": "14-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238471"
+    },
+    {
+     "number": "15-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238484"
+    },
+    {
+     "number": "16-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238497"
+    },
+    {
+     "number": "17-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-7195652"
+    },
+    {
+     "number": "18-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238507"
+    },
+    {
+     "number": "19-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238512"
+    },
+    {
+     "number": "20-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-7703502"
+    },
+    {
+     "number": "21-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6655045"
+    },
+    {
+     "number": "22-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-8559392"
+    },
+    {
+     "number": "23-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6615245"
+    },
+    {
+     "number": "24-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238520"
+    },
+    {
+     "number": "25-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238521"
+    },
+    {
+     "number": "26-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238524"
+    },
+    {
+     "number": "27-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238528"
+    },
+    {
+     "number": "28-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-7195785"
+    },
+    {
+     "number": "29-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-7195874"
+    },
+    {
+     "number": "30-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238570"
+    },
+    {
+     "number": "31-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238579"
+    },
+    {
+     "number": "32-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238585"
+    },
+    {
+     "number": "33-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238599"
+    },
+    {
+     "number": "34-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238601"
+    },
+    {
+     "number": "35-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238602"
+    },
+    {
+     "number": "36-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238603"
+    },
+    {
+     "number": "37-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238615"
+    },
+    {
+     "number": "38-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238622"
+    },
+    {
+     "number": "39-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238625"
+    },
+    {
+     "number": "40-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238631"
+    },
+    {
+     "number": "41-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238634"
+    },
+    {
+     "number": "42-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238653"
+    },
+    {
+     "number": "43-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238658"
+    },
+    {
+     "number": "44-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238663"
+    },
+    {
+     "number": "45-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-8206667"
+    },
+    {
+     "number": "46-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238675"
+    },
+    {
+     "number": "47-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-8206729"
+    },
+    {
+     "number": "48-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238683"
+    },
+    {
+     "number": "49-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238685"
+    },
+    {
+     "number": "50-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238687"
+    },
+    {
+     "number": "51-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238692"
+    },
+    {
+     "number": "52-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238694"
+    },
+    {
+     "number": "53-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238699"
+    },
+    {
+     "number": "54-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238703"
+    },
+    {
+     "number": "55-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-7950029"
+    },
+    {
+     "number": "56-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-8560285"
+    },
+    {
+     "number": "57-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238725"
+    },
+    {
+     "number": "58-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238745"
+    },
+    {
+     "number": "59-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-7703518"
+    },
+    {
+     "number": "60-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238757"
+    },
+    {
+     "number": "61-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-8560325"
+    },
+    {
+     "number": "62-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238779"
+    },
+    {
+     "number": "63-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238795"
+    },
+    {
+     "number": "64-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238796"
+    },
+    {
+     "number": "65-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238798"
+    },
+    {
+     "number": "66-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238799"
+    },
+    {
+     "number": "67-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238800"
+    },
+    {
+     "number": "68-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238803"
+    },
+    {
+     "number": "69-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238805"
+    },
+    {
+     "number": "70-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238808"
+    },
+    {
+     "number": "71-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238811"
+    },
+    {
+     "number": "72-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238819"
+    },
+    {
+     "number": "73-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-7196087"
+    },
+    {
+     "number": "74-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236060#-6238822"
+    }
+   ]
+  },
+  {
+   "id": "VMQ612",
+   "title": "Davlat xizmatlarini koʻrsatishni tartibga soluvchi normativ-huquqiy hujjatlarni tizimlashtirish chora-tadbirlari toʻgʻrisida",
+   "kind": "regulation",
+   "adopted": "612-сон 20.11.2023.",
+   "acceptingBody": "Oʻzbekiston Respublikasi Vazirlar Mahkamasining",
+   "actForm": "qarori",
+   "registration": null,
+   "edition": "02.10.2026",
+   "inForceFrom": "22.11.2023",
+   "retrievedAt": "2026-11-20",
+   "url": "https://lex.uz/docs/-6671844",
+   "total": null,
+   "articles": [
+    {
+     "number": "1-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-6672802"
+    },
+    {
+     "number": "2-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-6672806"
+    },
+    {
+     "number": "3-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-6672807"
+    },
+    {
+     "number": "4-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-6672810"
+    },
+    {
+     "number": "5-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-6672813"
+    },
+    {
+     "number": "6-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-6672814"
+    },
+    {
+     "number": "7-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-6672815"
+    },
+    {
+     "number": "8-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-7995319"
+    },
+    {
+     "number": "9-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-7995324"
+    },
+    {
+     "number": "9¹-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-8158789"
+    },
+    {
+     "number": "10-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-7999127"
+    },
+    {
+     "number": "11-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-6672827"
+    },
+    {
+     "number": "12-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-6672829"
+    },
+    {
+     "number": "13-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-6672830"
+    },
+    {
+     "number": "14-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-6672835"
+    },
+    {
+     "number": "15-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-6672837"
+    },
+    {
+     "number": "16-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-6672840"
+    },
+    {
+     "number": "17-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-6672844"
+    },
+    {
+     "number": "18-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-6672845"
+    },
+    {
+     "number": "19-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6671844#-6672847"
+    },
+    {
+     "number": "18-ilova",
+     "title": "Ish haqi va ish stajini tasdiqlash haqida arxiv maʼlumotnomasini berish PASPORTI",
+     "url": "https://lex.uz/docs/-6671844#-6673301"
+    },
+    {
+     "number": "55-ilova",
+     "title": "Yaroqsiz holatga kelgan yoki yoʻqotilgan mehnat daftarchasidagi yozuvlarni tasdiqlash PASPORTI",
+     "url": "https://lex.uz/docs/-6671844#-8356500"
+    }
+   ]
+  },
+  {
+   "id": "MUROJAAT",
+   "title": "Jismoniy va yuridik shaxslarning murojaatlari toʻgʻrisida",
+   "kind": "law",
+   "adopted": "O‘RQ-445-сон 11.09.2017.",
+   "acceptingBody": null,
+   "actForm": "Oʻzbekiston Respublikasining Qonuni",
+   "registration": null,
+   "edition": "15.10.2026 01",
+   "inForceFrom": "12.09.2017",
+   "retrievedAt": "2026-11-20",
+   "url": "https://lex.uz/docs/-3336169",
+   "total": 39,
+   "articles": [
+    {
+     "number": "1-modda",
+     "title": "Ushbu Qonunning maqsadi va qoʻllanilish sohasi",
+     "url": "https://lex.uz/docs/-3336169#-3336361"
+    },
+    {
+     "number": "3-modda",
+     "title": "Asosiy tushunchalar",
+     "url": "https://lex.uz/docs/-3336169#-3336369"
+    },
+    {
+     "number": "4-modda",
+     "title": "Murojaatlarni koʻrib chiqishning asosiy prinsiplari",
+     "url": "https://lex.uz/docs/-3336169#-3336381"
+    },
+    {
+     "number": "5-modda",
+     "title": "Murojaatlarning shakllari va turlari",
+     "url": "https://lex.uz/docs/-3336169#-3336389"
+    },
+    {
+     "number": "6-modda",
+     "title": "Murojaatlarga qoʻyiladigan talablar",
+     "url": "https://lex.uz/docs/-3336169#-3336393"
+    },
+    {
+     "number": "8-modda",
+     "title": "Jismoniy shaxslarni va yuridik shaxslarning vakillarini qabul qilish",
+     "url": "https://lex.uz/docs/-3336169#-3336404"
+    },
+    {
+     "number": "9-modda",
+     "title": "Jismoniy shaxslarni va yuridik shaxslarning vakillarini qabul qilish tartibi",
+     "url": "https://lex.uz/docs/-3336169#-3336408"
+    },
+    {
+     "number": "15-modda",
+     "title": "Murojaat etish huquqini amalga oshirish kafolatlari",
+     "url": "https://lex.uz/docs/-3336169#-3336466"
+    },
+    {
+     "number": "16-modda",
+     "title": "Murojaat etish huquqidan foydalanilayotganda kamsitishga yoʻl qoʻyilmasligi",
+     "url": "https://lex.uz/docs/-3336169#-3336471"
+    },
+    {
+     "number": "17-modda",
+     "title": "Murojaat etilganda huquqlar, erkinliklar va qonuniy manfaatlarga rioya etilishining kafolatlari",
+     "url": "https://lex.uz/docs/-3336169#-3336473"
+    },
+    {
+     "number": "18-modda",
+     "title": "Murojaatlarni qabul qilish va koʻrib chiqish kafolatlari",
+     "url": "https://lex.uz/docs/-3336169#-3336475"
+    },
+    {
+     "number": "21-modda",
+     "title": "Murojaatlarni berish tartibi",
+     "url": "https://lex.uz/docs/-3336169#-3336486"
+    },
+    {
+     "number": "22-modda",
+     "title": "Murojaatlarni berish muddatlari",
+     "url": "https://lex.uz/docs/-3336169#-3336492"
+    },
+    {
+     "number": "23-modda",
+     "title": "Murojaatlar boʻyicha ish yuritish",
+     "url": "https://lex.uz/docs/-3336169#-3336496"
+    },
+    {
+     "number": "24-modda",
+     "title": "Murojaatlarni koʻrib chiqish tartibi",
+     "url": "https://lex.uz/docs/-3336169#-3336504"
+    },
+    {
+     "number": "24¹-modda",
+     "title": "Voyaga yetmagan shaxslarning murojaatlarini koʻrib chiqishning oʻziga xos xususiyatlari",
+     "url": "https://lex.uz/docs/-3336169#-4765675"
+    },
+    {
+     "number": "25-modda",
+     "title": "Ayrim murojaatlarni koʻrib chiqish tartibi",
+     "url": "https://lex.uz/docs/-3336169#-3336517"
+    },
+    {
+     "number": "26-modda",
+     "title": "Murojaat etuvchini eshitish",
+     "url": "https://lex.uz/docs/-3336169#-3336527"
+    },
+    {
+     "number": "27-modda",
+     "title": "Murojaatlarga javoblar",
+     "url": "https://lex.uz/docs/-3336169#-3336530"
+    },
+    {
+     "number": "28-modda",
+     "title": "Murojaatlarni koʻrib chiqish muddatlari",
+     "url": "https://lex.uz/docs/-3336169#-3336537"
+    },
+    {
+     "number": "29-modda",
+     "title": "Murojaatlarni koʻrmay qoldirish",
+     "url": "https://lex.uz/docs/-3336169#-3336541"
+    },
+    {
+     "number": "30-modda",
+     "title": "Murojaatlarni koʻrib chiqishni tugatish",
+     "url": "https://lex.uz/docs/-3336169#-3336548"
+    },
+    {
+     "number": "31-modda",
+     "title": "Murojaatga javobni tushuntirish va uni tuzatish",
+     "url": "https://lex.uz/docs/-3336169#-3336559"
+    },
+    {
+     "number": "32-modda",
+     "title": "Murojaatlarni koʻrib chiqishda jismoniy va yuridik shaxslarning huquqlari",
+     "url": "https://lex.uz/docs/-3336169#-3336563"
+    },
+    {
+     "number": "33-modda",
+     "title": "Murojaatlarni koʻrib chiqishda davlat organining, tashkilotning va ular mansabdor shaxslarining huquqlari va majburiyatlari",
+     "url": "https://lex.uz/docs/-3336169#-3336575"
+    }
+   ]
+  },
+  {
+   "id": "MTT",
+   "title": "Maʼmuriy tartib-taomillar toʻgʻrisida",
+   "kind": "law",
+   "adopted": "O‘RQ-457-сон 08.01.2018.",
+   "acceptingBody": null,
+   "actForm": "Oʻzbekiston Respublikasining Qonuni",
+   "registration": null,
+   "edition": "25.07.2026",
+   "inForceFrom": "10.01.2019",
+   "retrievedAt": "2026-11-20",
+   "url": "https://lex.uz/docs/-3492199",
+   "total": 88,
+   "articles": [
+    {
+     "number": "1-modda",
+     "title": "Ushbu Qonunning maqsadi va asosiy vazifalari",
+     "url": "https://lex.uz/docs/-3492199#-3492528"
+    },
+    {
+     "number": "3-modda",
+     "title": "Ushbu Qonunning qoʻllanilish sohasi",
+     "url": "https://lex.uz/docs/-3492199#-3492540"
+    },
+    {
+     "number": "4-modda",
+     "title": "Asosiy tushunchalar",
+     "url": "https://lex.uz/docs/-3492199#-3492545"
+    },
+    {
+     "number": "5-modda",
+     "title": "Maʼmuriy tartib-taomillarning asosiy prinsiplari",
+     "url": "https://lex.uz/docs/-3492199#-3492566"
+    },
+    {
+     "number": "6-modda",
+     "title": "Qonuniylik prinsipi",
+     "url": "https://lex.uz/docs/-3492199#-3492601"
+    },
+    {
+     "number": "7-modda",
+     "title": "Mutanosiblik prinsipi",
+     "url": "https://lex.uz/docs/-3492199#-3492605"
+    },
+    {
+     "number": "8-modda",
+     "title": "Ishonchlilik prinsipi",
+     "url": "https://lex.uz/docs/-3492199#-3492610"
+    },
+    {
+     "number": "9-modda",
+     "title": "Tinglanish imkoniyatining mavjudligi prinsipi",
+     "url": "https://lex.uz/docs/-3492199#-3492651"
+    },
+    {
+     "number": "10-modda",
+     "title": "Maʼmuriy tartib-taomillarning ochiqligi, shaffofligi va tushunarliligi prinsipi",
+     "url": "https://lex.uz/docs/-3492199#-3492654"
+    },
+    {
+     "number": "11-modda",
+     "title": "Manfaatdor shaxslar huquqlarining ustunligi prinsipi",
+     "url": "https://lex.uz/docs/-3492199#-3492658"
+    },
+    {
+     "number": "12-modda",
+     "title": "Byurokratik rasmiyatchilikka yoʻl qoʻyilmasligi prinsipi",
+     "url": "https://lex.uz/docs/-3492199#-3492663"
+    },
+    {
+     "number": "13-modda",
+     "title": "Mazmunan qamrab olish prinsipi",
+     "url": "https://lex.uz/docs/-3492199#-3492666"
+    },
+    {
+     "number": "14-modda",
+     "title": "Maʼmuriy ish yuritishning “bir darcha” orqali amalga oshirilishi prinsipi",
+     "url": "https://lex.uz/docs/-3492199#-3492670"
+    },
+    {
+     "number": "15-modda",
+     "title": "Teng huquqlilik prinsipi",
+     "url": "https://lex.uz/docs/-3492199#-3492672"
+    },
+    {
+     "number": "16-modda",
+     "title": "Ishonchning himoya qilinishi prinsipi",
+     "url": "https://lex.uz/docs/-3492199#-3492681"
+    },
+    {
+     "number": "17-modda",
+     "title": "Maʼmuriy ixtiyoriylikning (diskretsion vakolatning) qonuniyligi prinsipi",
+     "url": "https://lex.uz/docs/-3492199#-3492684"
+    },
+    {
+     "number": "18-modda",
+     "title": "Tekshirish prinsipi",
+     "url": "https://lex.uz/docs/-3492199#-3492687"
+    },
+    {
+     "number": "19-modda",
+     "title": "Maʼmuriy tartib-taomillar prinsiplarining qoʻllanilishi",
+     "url": "https://lex.uz/docs/-3492199#-3492692"
+    },
+    {
+     "number": "22-modda",
+     "title": "Maʼmuriy ish yuritish ishtirokchilari",
+     "url": "https://lex.uz/docs/-3492199#-3492715"
+    },
+    {
+     "number": "24-modda",
+     "title": "Manfaatdor shaxslarning huquq va majburiyatlari",
+     "url": "https://lex.uz/docs/-3492199#-3492726"
+    },
+    {
+     "number": "36-modda",
+     "title": "Maʼmuriy ish yuritish muddatlari",
+     "url": "https://lex.uz/docs/-3492199#-3492879"
+    },
+    {
+     "number": "41-modda",
+     "title": "Maʼmuriy ish yuritishni boshlash uchun asoslar",
+     "url": "https://lex.uz/docs/-3492199#-3492935"
+    },
+    {
+     "number": "42-modda",
+     "title": "Arizaning mazmuni va unga qoʻyiladigan talablar",
+     "url": "https://lex.uz/docs/-3492199#-3492939"
+    },
+    {
+     "number": "43-modda",
+     "title": "Arizani roʻyxatdan oʻtkazish",
+     "url": "https://lex.uz/docs/-3492199#-3492953"
+    },
+    {
+     "number": "44-modda",
+     "title": "Maʼmuriy organga ariza berish uchun zarur axborotni taqdim etish",
+     "url": "https://lex.uz/docs/-3492199#-3492956"
+    },
+    {
+     "number": "45-modda",
+     "title": "Arizachi tomonidan xatolarni bartaraf etish va yetishmayotgan hujjatlarni taqdim etish",
+     "url": "https://lex.uz/docs/-3492199#-3492968"
+    },
+    {
+     "number": "46-modda",
+     "title": "Manfaatdor shaxsning arizasini taalluqliligi boʻyicha vakolatli maʼmuriy organga yuborish",
+     "url": "https://lex.uz/docs/-3492199#-3492973"
+    },
+    {
+     "number": "52-modda",
+     "title": "Maʼmuriy hujjatning shakli",
+     "url": "https://lex.uz/docs/-3492199#-3493017"
+    },
+    {
+     "number": "53-modda",
+     "title": "Maʼmuriy hujjatning mazmuni",
+     "url": "https://lex.uz/docs/-3492199#-3493021"
+    },
+    {
+     "number": "54-modda",
+     "title": "Maʼmuriy hujjatning asosliligi",
+     "url": "https://lex.uz/docs/-3492199#-3493040"
+    },
+    {
+     "number": "57-modda",
+     "title": "Tegishli hujjatni va uning dublikatini berish",
+     "url": "https://lex.uz/docs/-3492199#-3493152"
+    },
+    {
+     "number": "62-modda",
+     "title": "Maʼmuriy shikoyat predmeti",
+     "url": "https://lex.uz/docs/-3492199#-3493237"
+    },
+    {
+     "number": "63-modda",
+     "title": "Maʼmuriy shikoyat qilish tartibi",
+     "url": "https://lex.uz/docs/-3492199#-3493247"
+    },
+    {
+     "number": "64-modda",
+     "title": "Maʼmuriy shikoyatni berish muddati",
+     "url": "https://lex.uz/docs/-3492199#-3493252"
+    },
+    {
+     "number": "84-modda",
+     "title": "Maʼmuriy reglamentlar",
+     "url": "https://lex.uz/docs/-3492199#-3493398"
+    }
+   ]
+  },
+  {
+   "id": "KORRUPSIYA",
+   "title": "Korrupsiyaga qarshi kurashish toʻgʻrisida",
+   "kind": "law",
+   "adopted": "O‘RQ-419-сон 03.01.2017.",
+   "acceptingBody": null,
+   "actForm": "Oʻzbekiston Respublikasining Qonuni",
+   "registration": null,
+   "edition": "23.06.2026",
+   "inForceFrom": "04.01.2017",
+   "retrievedAt": "2026-11-20",
+   "url": "https://lex.uz/docs/-3088008",
+   "total": 41,
+   "articles": [
+    {
+     "number": "1-modda",
+     "title": "Ushbu Qonunning maqsadi",
+     "url": "https://lex.uz/docs/-3088008#-3088038"
+    },
+    {
+     "number": "3-modda",
+     "title": "Asosiy tushunchalar",
+     "url": "https://lex.uz/docs/-3088008#-3088044"
+    },
+    {
+     "number": "4-modda",
+     "title": "Korrupsiyaga qarshi kurashishning asosiy prinsiplari",
+     "url": "https://lex.uz/docs/-3088008#-3088051"
+    },
+    {
+     "number": "19-modda",
+     "title": "Davlat boshqaruvi sohasida korrupsiyaning oldini olishga doir chora-tadbirlar",
+     "url": "https://lex.uz/docs/-3088008#-3088244"
+    },
+    {
+     "number": "21-modda",
+     "title": "Manfaatlar toʻqnashuvining oldini olish va uni bartaraf etishga doir chora-tadbirlar",
+     "url": "https://lex.uz/docs/-3088008#-3088277"
+    },
+    {
+     "number": "22-modda",
+     "title": "Maʼmuriy tartib-taomillar sohasida korrupsiyaning oldini olishga doir chora-tadbirlar",
+     "url": "https://lex.uz/docs/-3088008#-3088282"
+    },
+    {
+     "number": "25-modda",
+     "title": "Korrupsiyaga oid huquqbuzarliklarni oʻz vaqtida aniqlash va ularga chek qoʻyishga, korrupsiyaga oid huquqbuzarliklarni sodir etganlik uchun javobgarlikning muqarrarligi prinsipini taʼminlashga doir chora-tadbirlar",
+     "url": "https://lex.uz/docs/-3088008#-3088306"
+    },
+    {
+     "number": "26-modda",
+     "title": "Davlat organlari xodimlarining korrupsiyaga oid huquqbuzarliklar faktlari toʻgʻrisida xabar qilish majburiyati",
+     "url": "https://lex.uz/docs/-3088008#-3088317"
+    },
+    {
+     "number": "27-modda",
+     "title": "Korrupsiyaga oid huquqbuzarliklar uchun javobgarlik",
+     "url": "https://lex.uz/docs/-3088008#-3088320"
+    },
+    {
+     "number": "27¹-modda",
+     "title": "Korrupsiyaga oid jinoyatlarni sodir etishda aybdor deb topilgan shaxslarning elektron reyestri",
+     "url": "https://lex.uz/docs/-3088008#-8286319"
+    },
+    {
+     "number": "28-modda",
+     "title": "Korrupsiyaga oid huquqbuzarliklar toʻgʻrisidagi axborotni xabar qiluvchi shaxslarni va ularning yaqin qarindoshlarini himoya qilish",
+     "url": "https://lex.uz/docs/-3088008#-5736842"
+    }
+   ]
+  },
+  {
+   "id": "DFX",
+   "title": "Davlat fuqarolik xizmati toʻgʻrisida",
+   "kind": "law",
+   "adopted": "O‘RQ-788-сон 08.08.2022.",
+   "acceptingBody": null,
+   "actForm": "Oʻzbekiston Respublikasining Qonuni",
+   "registration": null,
+   "edition": "21.09.2024",
+   "inForceFrom": "10.11.2022",
+   "retrievedAt": "2026-11-20",
+   "url": "https://lex.uz/docs/-6145972",
+   "total": 64,
+   "articles": [
+    {
+     "number": "5-modda",
+     "title": "Davlat fuqarolik xizmatining asosiy prinsiplari",
+     "url": "https://lex.uz/docs/-6145972#-6146468"
+    },
+    {
+     "number": "12-modda",
+     "title": "Davlat fuqarolik xizmatchisining majburiyatlari",
+     "url": "https://lex.uz/docs/-6145972#-6146749"
+    },
+    {
+     "number": "13-modda",
+     "title": "Davlat fuqarolik xizmatini oʻtash bilan bogʻliq cheklovlar",
+     "url": "https://lex.uz/docs/-6145972#-6146763"
+    },
+    {
+     "number": "14-modda",
+     "title": "Davlat fuqarolik xizmatchisining javobgarligi",
+     "url": "https://lex.uz/docs/-6145972#-6146787"
+    },
+    {
+     "number": "15-modda",
+     "title": "Davlat fuqarolik xizmati sohasida korrupsiyaning oldini olishga doir chora-tadbirlar",
+     "url": "https://lex.uz/docs/-6145972#-6146798"
+    },
+    {
+     "number": "16-modda",
+     "title": "Davlat fuqarolik xizmatchisining korrupsiyaga nisbatan murosasiz munosabati",
+     "url": "https://lex.uz/docs/-6145972#-6146821"
+    },
+    {
+     "number": "17-modda",
+     "title": "Davlat fuqarolik xizmatchilarining odob-axloq qoidalari",
+     "url": "https://lex.uz/docs/-6145972#-6146832"
+    },
+    {
+     "number": "18-modda",
+     "title": "Davlat fuqarolik xizmatida sovgʻalarga nisbatan munosabatda boʻlish shartlari",
+     "url": "https://lex.uz/docs/-6145972#-6146844"
+    },
+    {
+     "number": "19-modda",
+     "title": "Manfaatlar toʻqnashuvi",
+     "url": "https://lex.uz/docs/-6145972#-6146893"
+    }
+   ]
+  },
+  {
+   "id": "VMQ595",
+   "title": "Davlat fuqarolik xizmatchilari tomonidan odob-axloq qoidalariga rioya etilishini taʼminlash boʻyicha qoʻshimcha chora-tadbirlar toʻgʻrisida",
+   "kind": "regulation",
+   "adopted": "595-сон 14.10.2022.",
+   "acceptingBody": "Oʻzbekiston Respublikasi Vazirlar Mahkamasining",
+   "actForm": "qarori",
+   "registration": null,
+   "edition": "22.10.2025",
+   "inForceFrom": "15.10.2022",
+   "retrievedAt": "2026-11-20",
+   "url": "https://lex.uz/docs/-6236838",
+   "total": null,
+   "articles": [
+    {
+     "number": "1-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241529"
+    },
+    {
+     "number": "2-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241533"
+    },
+    {
+     "number": "3-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241547"
+    },
+    {
+     "number": "4-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241556"
+    },
+    {
+     "number": "5-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241558"
+    },
+    {
+     "number": "6-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241559"
+    },
+    {
+     "number": "7-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241581"
+    },
+    {
+     "number": "8-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241621"
+    },
+    {
+     "number": "9-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241631"
+    },
+    {
+     "number": "10-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241753"
+    },
+    {
+     "number": "11-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241772"
+    },
+    {
+     "number": "12-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241775"
+    },
+    {
+     "number": "13-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241777"
+    },
+    {
+     "number": "14-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241804"
+    },
+    {
+     "number": "15-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241805"
+    },
+    {
+     "number": "16-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241806"
+    },
+    {
+     "number": "17-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241815"
+    },
+    {
+     "number": "18-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241816"
+    },
+    {
+     "number": "19-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241821"
+    },
+    {
+     "number": "20-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241823"
+    },
+    {
+     "number": "21-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241827"
+    },
+    {
+     "number": "22-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241835"
+    },
+    {
+     "number": "23-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-7804132"
+    },
+    {
+     "number": "23¹-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-7804142"
+    },
+    {
+     "number": "24-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241850"
+    },
+    {
+     "number": "25-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241853"
+    },
+    {
+     "number": "26-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241858"
+    },
+    {
+     "number": "27-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241860"
+    },
+    {
+     "number": "28-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241863"
+    },
+    {
+     "number": "29-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241874"
+    },
+    {
+     "number": "30-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241876"
+    },
+    {
+     "number": "31-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241891"
+    },
+    {
+     "number": "32-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241898"
+    },
+    {
+     "number": "33-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6236838#-6241910"
+    }
+   ]
+  },
+  {
+   "id": "PLENUM-2018-14",
+   "title": "Birinchi instansiya sudi tomonidan fuqarolik protsessual qonun normalarini qoʻllashning ayrim masalalari toʻgʻrisida",
+   "kind": "plenum",
+   "adopted": "14-сон 19.05.2018.",
+   "acceptingBody": "Oʻzbekiston Respublikasi Oliy sudi Plenumining",
+   "actForm": "QarorI",
+   "registration": null,
+   "edition": "16.12.2024",
+   "inForceFrom": "19.05.2018",
+   "retrievedAt": "2026-11-20",
+   "url": "https://lex.uz/docs/-3761338",
+   "total": null,
+   "articles": [
+    {
+     "number": "kirish",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3761865"
+    },
+    {
+     "number": "1-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3761872"
+    },
+    {
+     "number": "2-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3761876"
+    },
+    {
+     "number": "3-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-6698101"
+    },
+    {
+     "number": "4-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-6698197"
+    },
+    {
+     "number": "5-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3761903"
+    },
+    {
+     "number": "6-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3761942"
+    },
+    {
+     "number": "7-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3761950"
+    },
+    {
+     "number": "8-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3761966"
+    },
+    {
+     "number": "9-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3761972"
+    },
+    {
+     "number": "10-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3761986"
+    },
+    {
+     "number": "11-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3762001"
+    },
+    {
+     "number": "12-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3762005"
+    },
+    {
+     "number": "13-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-7326547"
+    },
+    {
+     "number": "14-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3762022"
+    },
+    {
+     "number": "15-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3762025"
+    },
+    {
+     "number": "16-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3762033"
+    },
+    {
+     "number": "17-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3762041"
+    },
+    {
+     "number": "18-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3762049"
+    },
+    {
+     "number": "19-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3762051"
+    },
+    {
+     "number": "20-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3762055"
+    },
+    {
+     "number": "21-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3762062"
+    },
+    {
+     "number": "22-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-7326559"
+    },
+    {
+     "number": "23-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3762068"
+    },
+    {
+     "number": "24-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3762075"
+    },
+    {
+     "number": "25-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3762078"
+    },
+    {
+     "number": "26-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3762088"
+    },
+    {
+     "number": "27-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-3761338#-3762089"
+    }
+   ]
+  },
+  {
+   "id": "PLENUM-2023-26",
+   "title": "Sudlar tomonidan mehnat shartnomasini bekor qilishni tartibga soluvchi qonunchilikni qoʻllash amaliyoti toʻgʻrisida",
+   "kind": "plenum",
+   "adopted": "26-сон 20.11.2023.",
+   "acceptingBody": "Oʻzbekiston Respublikasi Oliy sudi plenumining",
+   "actForm": "Qarori",
+   "registration": null,
+   "edition": null,
+   "inForceFrom": "20.11.2023",
+   "retrievedAt": "2026-11-20",
+   "url": "https://lex.uz/docs/-6684613",
+   "total": null,
+   "articles": [
+    {
+     "number": "kirish",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684744"
+    },
+    {
+     "number": "1-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684745"
+    },
+    {
+     "number": "2-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684747"
+    },
+    {
+     "number": "3-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684749"
+    },
+    {
+     "number": "4-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684757"
+    },
+    {
+     "number": "5-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684763"
+    },
+    {
+     "number": "6-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684764"
+    },
+    {
+     "number": "7-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684773"
+    },
+    {
+     "number": "8-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684782"
+    },
+    {
+     "number": "9-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684791"
+    },
+    {
+     "number": "10-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684792"
+    },
+    {
+     "number": "11-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684794"
+    },
+    {
+     "number": "12-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684943"
+    },
+    {
+     "number": "13-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684951"
+    },
+    {
+     "number": "14-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684952"
+    },
+    {
+     "number": "15-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684955"
+    },
+    {
+     "number": "16-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684964"
+    },
+    {
+     "number": "17-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684967"
+    },
+    {
+     "number": "18-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684975"
+    },
+    {
+     "number": "19-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684977"
+    },
+    {
+     "number": "20-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6684996"
+    },
+    {
+     "number": "21-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685091"
+    },
+    {
+     "number": "22-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685102"
+    },
+    {
+     "number": "23-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685111"
+    },
+    {
+     "number": "24-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685142"
+    },
+    {
+     "number": "25-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685148"
+    },
+    {
+     "number": "26-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685163"
+    },
+    {
+     "number": "27-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685170"
+    },
+    {
+     "number": "28-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685187"
+    },
+    {
+     "number": "29-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685210"
+    },
+    {
+     "number": "30-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685230"
+    },
+    {
+     "number": "31-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685234"
+    },
+    {
+     "number": "32-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685245"
+    },
+    {
+     "number": "33-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685256"
+    },
+    {
+     "number": "34-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685262"
+    },
+    {
+     "number": "35-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685277"
+    },
+    {
+     "number": "36-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685285"
+    },
+    {
+     "number": "37-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685299"
+    },
+    {
+     "number": "38-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685303"
+    },
+    {
+     "number": "39-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685310"
+    },
+    {
+     "number": "40-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685314"
+    },
+    {
+     "number": "41-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685316"
+    },
+    {
+     "number": "42-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685320"
+    },
+    {
+     "number": "43-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685347"
+    },
+    {
+     "number": "44-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685351"
+    },
+    {
+     "number": "45-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685357"
+    },
+    {
+     "number": "46-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685365"
+    },
+    {
+     "number": "47-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685381"
+    },
+    {
+     "number": "48-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685391"
+    },
+    {
+     "number": "49-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685394"
+    },
+    {
+     "number": "50-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685404"
+    },
+    {
+     "number": "51-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685442"
+    },
+    {
+     "number": "52-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685450"
+    },
+    {
+     "number": "53-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685459"
+    },
+    {
+     "number": "54-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685472"
+    },
+    {
+     "number": "55-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685477"
+    },
+    {
+     "number": "56-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685478"
+    },
+    {
+     "number": "57-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685480"
+    },
+    {
+     "number": "58-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685481"
+    },
+    {
+     "number": "59-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685483"
+    },
+    {
+     "number": "60-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685492"
+    },
+    {
+     "number": "61-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685495"
+    },
+    {
+     "number": "62-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685503"
+    },
+    {
+     "number": "63-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685531"
+    },
+    {
+     "number": "64-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685549"
+    },
+    {
+     "number": "65-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685552"
+    },
+    {
+     "number": "66-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6705381"
+    },
+    {
+     "number": "67-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685586"
+    },
+    {
+     "number": "68-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6705436"
+    },
+    {
+     "number": "69-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685593"
+    },
+    {
+     "number": "70-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685602"
+    },
+    {
+     "number": "71-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685606"
+    },
+    {
+     "number": "72-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685609"
+    },
+    {
+     "number": "73-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685614"
+    },
+    {
+     "number": "74-band",
+     "title": null,
+     "url": "https://lex.uz/docs/-6684613#-6685616"
+    }
+   ]
+  }
+ ]
+}

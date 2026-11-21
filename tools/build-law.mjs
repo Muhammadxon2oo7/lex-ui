@@ -35,7 +35,9 @@ write('fpk-case.json', pick([
 
 // "Ish yo‘li 2": a theft report followed from the duty desk to a complaint about the investigator.
 const jpk = JSON.parse(readFileSync(join(ROOT, '..', 'legal', 'sources', 'JPK.json'), 'utf8'));
-const JPK_WANT = ['54', '55', '64', '96', '100', '106', '114', '117', '321', '322', '323', '324', '329', '331', '333', '338', '358', '375'];
+const JPK_WANT = ['54', '55', '64', '96', '100', '102', '106', '114', '117', '321', '322', '323', '324', '329', '331', '333', '338', '358', '375',
+  // the trial (JPK 424-473)
+  '424', '428', '429', '431', '436', '438', '439', '440', '441', '442', '448', '449', '450', '451', '453', '462', '463', '473'];
 const jpkArticles = JPK_WANT.map((n) => {
   const a = jpk.articles.find((x) => x.number === `${n}-modda`);
   if (!a || !a.text?.trim() || !a.url) throw new Error(`JPK ${n}-modda is not in the research pack`);

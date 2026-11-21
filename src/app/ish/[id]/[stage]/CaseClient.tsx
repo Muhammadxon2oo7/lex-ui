@@ -188,7 +188,7 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
   const party = (role: CaseSpeaker) => snap.parties.find((p) => p.role === role);
   const pendingRuling = idle && snap.rulings.length > seenRulings ? snap.rulings[snap.rulings.length - 1] : null;
   const ruling = openRuling ?? pendingRuling;
-  const courtroom = stage === 'hearing';
+  const courtroom = stage === 'hearing' || stage === 'trial';
   const drafting = snap.await === 'draft' && idle;
   const finished = snap.stageDone && idle && !ruling;
   // the room waits for an answer - options may be hidden at higher levels, own words are always welcome
@@ -533,6 +533,8 @@ function ResultSheet({ snap, stage, next, onReplay, onLeave, onArticle }: { snap
   const returned = stage.id === 'filing' && snap.stages.find((s) => s.id === 'filing')?.status === 'returned';
   const tone = r.score >= 85 ? 'text-emerald-600' : r.score >= 60 ? 'text-amber-600' : 'text-red-600';
   const mistakes = r.log.filter((d) => d.tone === 'bad').length;
+  const [reflection, setReflection] = useState<Record<string, string>>(() => (typeof window === 'undefined' ? {} : readReflection(`${snap.caseId}:${stage.id}`)));
+  const reflected = REFLECT_PROMPTS.every(([k]) => (reflection[k] ?? '').trim().length >= 15);
   return (
     <Sheet label={`${stage.title}: natija`} wide>
       <section className="max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-[28px] bg-[#f7f6f2] p-6 text-[#14171f] shadow-[0_40px_120px_rgba(0,0,0,0.5)] select-text">
@@ -543,6 +545,25 @@ function ResultSheet({ snap, stage, next, onReplay, onLeave, onArticle }: { snap
         </div>
         {r.verdict && <p className="mt-2 text-[0.95rem] font-medium">{r.verdict}</p>}
         <p className="mt-2 text-[0.8rem] text-black/55 tabular-nums">{r.log.length} ta qaror · {mistakes} ta xato · {r.hints} ta maslahat</p>
+
+        {/* learning outcomes, judged from the decisions (the rubric of the room) */}
+        {r.outcomes.length > 0 && (
+          <div className="mt-4">
+            <h3 className="text-[0.72rem] font-semibold tracking-[0.12em] text-black/45 uppercase">Oʻquv natijalari</h3>
+            <ul className="mt-2 space-y-2">
+              {r.outcomes.map((o) => (
+                <li key={o.text} className={`rounded-2xl px-3.5 py-2.5 text-[0.88rem] leading-snug ${o.met === false ? 'bg-red-600/[0.07]' : o.met ? 'bg-emerald-600/[0.08]' : 'bg-black/[0.035]'}`}>
+                  <p className="flex gap-2 font-medium">
+                    <span aria-hidden className={o.met === false ? 'text-red-600' : o.met ? 'text-emerald-600' : 'text-black/40'}>{o.met === false ? '✗' : o.met ? '✓' : '–'}</span>
+                    <span><span className="sr-only">{o.met === false ? 'Erishilmadi: ' : o.met ? 'Erishildi: ' : 'Tekshirilmadi: '}</span>{o.text}</span>
+                  </p>
+                  {o.met === null && <p className="mt-1 pl-5 text-[0.8rem] text-black/50">Bu safar tegishli qaror boʻlmadi - qayta oʻynab sinab koʻring.</p>}
+                  {o.evidence.length > 0 && <ul className="mt-1 space-y-0.5 pl-5 text-[0.8rem] text-black/60">{o.evidence.map((e) => <li key={e}>{e}</li>)}</ul>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* the debrief: every decision, what it cost, what would have been better */}
         {r.log.length > 0 && (
@@ -578,15 +599,17 @@ function ResultSheet({ snap, stage, next, onReplay, onLeave, onArticle }: { snap
             {r.good.slice(0, 3).map((g) => <li key={g} className="flex gap-2"><span className="text-emerald-600">✓</span><span>{g}</span></li>)}
           </ul>
         )}
-        {r.reflect && <Reflection id={`${snap.caseId}:${stage.id}`} question={r.reflect} />}
+        <Reflection id={`${snap.caseId}:${stage.id}`} question={r.reflect} text={reflection} onChange={setReflection} />
         <div className="mt-5">
-          <RoomRecord snap={snap} stage={stage} />
+          <RoomRecord snap={snap} stage={stage} reflection={reflection} />
         </div>
         <div className="mt-6 flex flex-wrap gap-2">
           {returned ? (
             <Link href={`/ish/${snap.caseId}/draft`} className="btn btn-primary">Arizani tuzatish →</Link>
           ) : next ? (
-            <Link href={`/ish/${snap.caseId}/${next.id}`} className="btn btn-primary">{next.number}. {next.place} →</Link>
+            reflected
+              ? <Link href={`/ish/${snap.caseId}/${next.id}`} className="btn btn-primary">{next.number}. {next.place} →</Link>
+              : <button type="button" disabled className="btn btn-primary" title="Avval mulohazani yozing">{next.number}. {next.place} →</button>
           ) : null}
           <button type="button" className="btn btn-quiet" onClick={onReplay}>Qayta oʻynash</button>
           <button type="button" className="btn btn-quiet" onClick={onLeave}>Terminal</button>
@@ -625,6 +648,15 @@ function Prebrief({ id, role, stage, courtroom, level }: { id: string; role: str
         </div>
         <button type="button" onClick={close} aria-label="Yopish" className="-mt-1 -mr-1 grid size-9 shrink-0 place-items-center rounded-full text-white/60 hover:bg-white/10 hover:text-white">✕</button>
       </div>
+      {stage.outcomes.length > 0 && (
+        <div className="mt-3">
+          <p className="text-[0.66rem] font-semibold tracking-[0.14em] text-white/50 uppercase">Bu xonada nimani oʻrganasiz</p>
+          <ol className="mt-1 space-y-1 text-white/85">
+            {stage.outcomes.map((o, i) => <li key={o.text} className="flex gap-2"><span className="shrink-0 text-emerald-300 tabular-nums">{i + 1}.</span><span>{o.text}</span></li>)}
+          </ol>
+          <p className="mt-1 text-[0.74rem] text-white/50">Oxirida har biri qarorlaringiz boʻyicha baholanadi.</p>
+        </div>
+      )}
       <ul className="mt-3 hidden space-y-1 text-white/70 sm:block">
         <li>• {level === 'advanced' ? 'Professional: faqat oʻz soʻzingiz bilan (yozing yoki T bilan ayting), maslahatsiz; izohlar - oxirgi tahlilda.' : level === 'intermediate' ? 'Oʻrta: oʻz soʻzingiz bilan javob bering; kerak boʻlsa variantlarni oching (−10).' : 'Variantni tanlang yoki oʻz soʻzingiz bilan yozing/ayting (T).'}</li>
         <li>• Har bir qaror baholanadi; xatoning sababi va moddasi yakuniy tahlilda koʻrsatiladi.</li>
@@ -636,28 +668,49 @@ function Prebrief({ id, role, stage, courtroom, level }: { id: string; role: str
 }
 
 /** One question to think over; the answer stays in this browser only. */
-function Reflection({ id, question }: { id: string; question: string }) {
-  const key = `lexsim.reflect.${id}`;
-  const [text, setText] = useState(() => {
-    try {
-      return typeof window === 'undefined' ? '' : (localStorage.getItem(key) ?? '');
-    } catch {
-      return '';
-    }
-  });
+/**
+ * Structured reflection (Kolb's cycle, "What? So what? Now what?"): what happened, why - the norm behind
+ * it, and what you will do next time. Required before the next room; kept in this browser and written
+ * into the practice record.
+ */
+export const REFLECT_PROMPTS = [
+  ['what', 'Nima boʻldi?', 'Eng muhim qaroringiz va uning natijasi'],
+  ['why', 'Nega?', 'Bu qaror qaysi normaga tayandi yoki qaysi qoidani buzdi'],
+  ['next', 'Endi nima?', 'Keyingi xonada yoki qayta oʻynaganda nimani boshqacha qilasiz'],
+] as const;
+export function readReflection(id: string): Record<string, string> {
+  try {
+    return JSON.parse(localStorage.getItem(`lexsim.reflect.v2.${id}`) ?? '{}') as Record<string, string>;
+  } catch {
+    return {};
+  }
+}
+function Reflection({ id, question, text, onChange: setText }: { id: string; question: string | null; text: Record<string, string>; onChange: (t: Record<string, string>) => void }) {
+  const done = REFLECT_PROMPTS.every(([k]) => (text[k] ?? '').trim().length >= 15);
   return (
-    <label className="mt-5 block">
-      <span className="text-[0.72rem] font-semibold tracking-[0.12em] text-black/45 uppercase">Mulohaza</span>
-      <span className="mt-1 block text-[0.9rem] font-medium">{question}</span>
-      <textarea value={text} rows={3} placeholder="Ikki-uch jumla - faqat shu brauzerda saqlanadi"
-        onChange={(e) => {
-          setText(e.target.value);
-          try {
-            localStorage.setItem(key, e.target.value);
-          } catch {}
-        }}
-        className="mt-2 w-full resize-y rounded-2xl bg-black/[0.045] px-3.5 py-2.5 text-[0.95rem] outline-none focus-visible:ring-2 focus-visible:ring-emerald-500" />
-    </label>
+    <section className="mt-5" aria-labelledby={`reflect-${id}`}>
+      <h3 id={`reflect-${id}`} className="text-[0.72rem] font-semibold tracking-[0.12em] text-black/45 uppercase">Mulohaza</h3>
+      {question && <p className="mt-1 text-[0.9rem] font-medium">{question}</p>}
+      <div className="mt-2 space-y-2.5">
+        {REFLECT_PROMPTS.map(([k, label, hint]) => (
+          <label key={k} className="block">
+            <span className="text-[0.84rem] font-semibold">{label} <span className="font-normal text-black/50">{hint}</span></span>
+            <textarea value={text[k] ?? ''} rows={2}
+              onChange={(e) => {
+                const next = { ...text, [k]: e.target.value };
+                setText(next);
+                try {
+                  localStorage.setItem(`lexsim.reflect.v2.${id}`, JSON.stringify(next));
+                } catch {}
+              }}
+              className="mt-1 w-full resize-y rounded-2xl bg-black/[0.045] px-3.5 py-2.5 text-[0.95rem] outline-none focus-visible:ring-2 focus-visible:ring-emerald-500" />
+          </label>
+        ))}
+      </div>
+      <p className={`mt-1.5 text-[0.78rem] ${done ? 'text-emerald-700' : 'text-black/50'}`} role="status">
+        {done ? 'Mulohaza saqlandi va bayonnomaga qoʻshiladi.' : 'Keyingi xonaga oʻtish uchun uchala savolga qisqacha javob yozing (kamida bir jumla).'}
+      </p>
+    </section>
   );
 }
 
@@ -666,7 +719,7 @@ function Reflection({ id, question }: { id: string; question: string }) {
  * voices), the debrief, and the downloads. The LMS statements (xAPI, anonymous actor) stay
  * available for teachers.
  */
-function RoomRecord({ snap, stage }: { snap: CaseSnapshot; stage: CaseSnapshot['stages'][number] }) {
+function RoomRecord({ snap, stage, reflection }: { snap: CaseSnapshot; stage: CaseSnapshot['stages'][number]; reflection: Record<string, string> }) {
   const r = snap.result!;
   const data = useMemo(() => {
     const student = getProfile()?.name?.trim() || 'Talaba';
@@ -687,13 +740,14 @@ function RoomRecord({ snap, stage }: { snap: CaseSnapshot; stage: CaseSnapshot['
       outcome: r.verdict,
       slug: `${snap.kind}-${stage.id}`,
     };
-    return { lines, meta, analysis: { decisions: r.log, strengths: r.good, errors: r.notes } };
-  }, [snap, stage, r]);
+    const mine = reflection;
+    return { lines, meta, analysis: { decisions: r.log, strengths: r.good, errors: r.notes, outcomes: r.outcomes.map((o) => ({ text: o.text, met: o.met })), reflection: REFLECT_PROMPTS.map(([k, label]) => ({ label, text: mine[k] ?? '' })) } };
+  }, [snap, stage, r, reflection]);
   const xapi = () => ({
     case: snap.title,
     stage: stage.id,
     code: { title: snap.code.title, edition: snap.code.edition },
-    statements: statementsFor({ actor: 'anonymous', kind: snap.kind, stage: stage.id, stageTitle: stage.title, score: r.score, hints: r.hints, log: r.log, seconds: r.log.at(-1)?.at }),
+    statements: statementsFor({ actor: 'anonymous', kind: snap.kind, stage: stage.id, stageTitle: stage.title, score: r.score, hints: r.hints, log: r.log, seconds: r.log.at(-1)?.at, outcomes: r.outcomes.map((o) => ({ text: o.text, met: o.met })), reflection: REFLECT_PROMPTS.map(([k, label]) => ({ label, text: reflection[k] ?? '' })) }),
   });
   return <PracticeRecord meta={data.meta} lines={data.lines} analysis={data.analysis} scope={`${snap.caseId}:${stage.id}`} xapi={xapi} />;
 }

@@ -59,9 +59,9 @@ const DIRECTIONS: Direction[] = [
     image: '/landing/advokat.webp', tone: '#1f8a5b', needs3d: true, start: caseRoom('labour'),
   },
   {
-    id: 'tergov', role: 'Jabrlanuvchi vakili', title: 'Telefon oʻgʻirligi: arizadan shikoyatgacha',
-    body: 'IIB navbatchi qismida arizani roʻyxatdan oʻtkazasiz, tergovchi soʻrogʻida jabrlanuvchi huquqlarini himoya qilasiz, kerak boʻlsa shikoyat berasiz.',
-    meta: 'Jinoyat-protsessual ish · 3 xona · 15-20 daqiqa',
+    id: 'tergov', role: 'Jabrlanuvchi vakili', title: 'Telefon oʻgʻirligi: arizadan hukmgacha',
+    body: 'IIB navbatchi qismida arizani roʻyxatdan oʻtkazasiz, tergovchi soʻrogʻida jabrlanuvchi huquqlarini himoya qilasiz, shikoyat berasiz va sud majlisida davlat ayblovchisi, himoyachi va sudlanuvchi ishtirokida ayblovni quvvatlaysiz.',
+    meta: 'Jinoyat-protsessual ish · 4 xona · 25-35 daqiqa',
     basis: ['Jinoyat-protsessual kodeksi', '«Advokatura toʻgʻrisida»gi Qonun', '«Advokatlik faoliyatining kafolatlari…» Qonun'],
     image: '/landing/tergov.webp', tone: '#2f5aa8', needs3d: true, start: caseRoom('theft'),
   },

@@ -12,7 +12,7 @@ import { ensureCase } from '@/game/rooms';
 const ROLES = [
   { id: 'dxm', role: 'DXM xodimi', scenario: 'Yoʻqolgan staj', meta: 'Davlat xizmati · 12-18 daqiqa', body: 'Nafaqasi kam chiqqan fuqaro. Shikoyat ortida nima turganini aniqlang.' },
   { id: 'labour', role: 'Advokat', scenario: 'Ishga tiklash nizosi', meta: 'Fuqarolik ishi · 5 xona', body: 'Ishdan boʻshatilgan mijoz: maslahatdan daʼvo arizasi va sud majlisidagi hal qiluv qarorigacha.' },
-  { id: 'theft', role: 'Jabrlanuvchi vakili', scenario: 'Telefon oʻgʻirligi', meta: 'Jinoyat-protsessual ish · 3 xona', body: 'Arizani roʻyxatdan oʻtkazishdan tergovchi ustidan shikoyatgacha.' },
+  { id: 'theft', role: 'Jabrlanuvchi vakili', scenario: 'Telefon oʻgʻirligi', meta: 'Jinoyat-protsessual ish · 4 xona', body: 'Arizani roʻyxatdan oʻtkazishdan sud majlisi va hukmgacha: davlat ayblovchisi, himoyachi, sudlanuvchi ishtirokida.' },
 ] as const;
 
 /** Real feature detection (not user-agent guessing), read once on the client. */

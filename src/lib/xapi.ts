@@ -21,6 +21,10 @@ export interface RoomRecord {
   /** Seconds the room took. */
   seconds?: number;
   cohort?: string;
+  /** Learning outcomes judged in the room. */
+  outcomes?: { text: string; met: boolean | null }[];
+  /** The structured reflection (What? So what? Now what?). */
+  reflection?: { label: string; text: string }[];
 }
 
 export function statementsFor(r: RoomRecord) {
@@ -53,5 +57,22 @@ export function statementsFor(r: RoomRecord) {
       },
       ...(context ? { context } : {}),
     },
+    // each learning outcome as its own result, so a teacher sees which outcomes a group misses
+    ...(r.outcomes ?? []).filter((o) => o.met !== null).map((o, i) => ({
+      actor,
+      verb: o.met ? { id: 'http://adlnet.gov/expapi/verbs/mastered', display: { uz: 'erishdi' } } : { id: 'http://adlnet.gov/expapi/verbs/failed', display: { uz: 'erisha olmadi' } },
+      object: object(`outcome-${i + 1}`, o.text),
+      result: { success: Boolean(o.met) },
+      ...(context ? { context } : {}),
+    })),
+    ...(r.reflection?.some((x) => x.text.trim())
+      ? [{
+          actor,
+          verb: { id: EXT('reflected'), display: { uz: 'mulohaza yozdi' } },
+          object: object('reflection', `${r.stageTitle}: mulohaza`),
+          result: { response: r.reflection.filter((x) => x.text.trim()).map((x) => `${x.label} ${x.text.trim()}`).join('\n') },
+          ...(context ? { context } : {}),
+        }]
+      : []),
   ];
 }

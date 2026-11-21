@@ -86,11 +86,11 @@ describe('Ish yoʻli engine', () => {
     expect(s.draft?.circumstances).toBe(goodDraft.circumstances);
   });
 
-  it('runs the theft report (JPK): duty desk → investigator → complaint', () => {
+  it('runs the theft report (JPK): duty desk → investigator → complaint → trial', () => {
     let s = startCase('owner-theft', true, 'theft');
     const step = (input: Input) => (s = act(s.caseId, 'owner-theft', { ...input, clientActionId: `test-action-${++n}` } as CaseActRequest));
     expect(s.kind).toBe('theft');
-    expect(s.stages.map((x) => x.id)).toEqual(['report', 'interview', 'complaint']);
+    expect(s.stages.map((x) => x.id)).toEqual(['report', 'interview', 'complaint', 'trial']);
     step({ type: 'enter', stage: 'report' });
     for (const o of ['purpose', 'written', 'sign-warning', 'imei']) step({ type: 'choose', optionId: o });
     expect(s.result?.score).toBe(100);
@@ -100,8 +100,45 @@ describe('Ish yoʻli engine', () => {
     expect(s.result?.score).toBe(80);
     step({ type: 'enter', stage: 'complaint' });
     step({ type: 'choose', optionId: 'precise' });
-    expect(s.result?.verdict).toMatch(/Shikoyat qabul qilindi/);
+    expect(s.result?.outcomes[0]).toMatchObject({ met: true });
     expect(s.code.articles.some((a) => a.number === '358-modda')).toBe(true);
+  });
+
+  /** The criminal trial (JPK 424-473) played as the victim's representative. */
+  const trial = (owner: string, picks: string[]) => {
+    let s = startCase(owner, true, 'theft');
+    const step = (input: Input) => (s = act(s.caseId, owner, { ...input, clientActionId: `test-action-${++n}` } as CaseActRequest));
+    step({ type: 'enter', stage: 'trial' });
+    const rise = () => {
+      // the room asks you to stand or sit (JPK 424, 473): follow it until a choice is offered or the room ends
+      for (let i = 0; i < 8 && !s.result && s.options.length === 0; i++) step({ type: 'stand', up: s.await === 'stand' });
+    };
+    rise();
+    for (const o of picks) {
+      if (s.options.find((x) => x.id === o)?.kind !== 'act') step({ type: 'stand', up: true });
+      step({ type: 'choose', optionId: o });
+      rise();
+    }
+    return s;
+  };
+  const STRONG = ['no-recusal', 'understood', 'motion-precise', 'order', 'ask-sim', 'object', 'witness-open', 'no-more', 'speech-evidence', 'listen'];
+
+  it('the trial: the prosecution side proves the charge, the verdict is read standing, outcomes are judged', () => {
+    const s = trial('owner-trial', STRONG);
+    expect(s.result?.score).toBe(100);
+    expect(s.result?.verdict).toMatch(/Ayblov hukmi/);
+    expect(s.rulings.at(-1)).toMatchObject({ kind: 'judgment', title: 'HUKM' });
+    expect(s.result?.outcomes.every((o) => o.met === true)).toBe(true);
+    for (const a of ['102-modda', '424-modda', '438-modda', '449-modda', '451-modda', '473-modda']) expect(s.code.articles.some((x) => x.number === a)).toBe(true);
+    for (const r of ['prosecutor', 'defender', 'defendant', 'judge', 'secretary', 'witness']) expect(s.parties.some((p) => p.role === r)).toBe(true);
+  });
+
+  it('the trial: weak work leaves the charge unproven - the presumption of innocence decides (JPK 462-463)', () => {
+    const s = trial('owner-trial-weak', ['no-recusal', 'understood', 'motion-vague', 'order-any', 'ask-leading', 'silent', 'witness-leading', 'save-for-speech', 'speech-new', 'interrupt']);
+    expect(s.result?.verdict).toMatch(/Oqlov hukmi/);
+    expect(s.rulings.at(-1)?.body.join(' ')).toMatch(/aybsizlik prezumpsiyasi/);
+    expect(s.result?.outcomes.some((o) => o.met === false)).toBe(true);
+    expect(s.result?.log.find((d) => d.chose.includes('Ha deng'))?.article).toBe('102-modda');
   });
 
   it('keeps the two cases apart', () => {

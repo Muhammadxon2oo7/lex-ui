@@ -51,7 +51,7 @@ export const DOORS: DoorDef[] = [
 ];
 
 /** Door of each stage, so leaving a room puts you in front of the next one. */
-export const STAGE_DOOR: Record<CaseStage, string> = { consult: 'r1', draft: 'r2', filing: 'r3', chamber: 'r4', hearing: 'r5', report: 'r7', interview: 'r8', complaint: 'r9' };
+export const STAGE_DOOR: Record<CaseStage, string> = { consult: 'r1', draft: 'r2', filing: 'r3', chamber: 'r4', hearing: 'r5', report: 'r7', interview: 'r8', complaint: 'r9', trial: 'r5' };
 
 export const DOOR_WIDTH = 1.05;
 export const DOOR_HEIGHT = 2.15;

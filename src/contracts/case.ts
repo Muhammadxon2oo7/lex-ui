@@ -17,7 +17,7 @@ export type CaseKind = z.infer<typeof CaseKindSchema>;
 /** Stages of each case, in procedural order. */
 export const CASE_STAGES = {
   labour: ['consult', 'draft', 'filing', 'chamber', 'hearing'],
-  theft: ['report', 'interview', 'complaint'],
+  theft: ['report', 'interview', 'complaint', 'trial'],
 } as const satisfies Record<CaseKind, readonly string[]>;
 export const STAGE_IDS = [...CASE_STAGES.labour, ...CASE_STAGES.theft] as const;
 export const StageIdSchema = z.enum(STAGE_IDS);
@@ -27,7 +27,7 @@ export const kindOfStage = (stage: StageId): CaseKind => ((CASE_STAGES.theft as 
 /** Voice of a party (server TTS voices). */
 export const VoiceIdSchema = z.enum(['elder_m', 'male', 'female', 'female_alt']);
 
-export const CaseSpeakerSchema = z.enum(['client', 'clerk', 'judge', 'secretary', 'respondent', 'witness', 'officer', 'investigator', 'chief', 'you', 'system']);
+export const CaseSpeakerSchema = z.enum(['client', 'clerk', 'judge', 'secretary', 'respondent', 'witness', 'officer', 'investigator', 'chief', 'prosecutor', 'defender', 'defendant', 'you', 'system']);
 export type CaseSpeaker = z.infer<typeof CaseSpeakerSchema>;
 
 /** The physical state of the room: who is in it, who is on their feet. */
@@ -67,6 +67,8 @@ export const StageViewSchema = z.object({
   title: z.string(),
   place: z.string(),
   goal: z.string(),
+  /** Learning outcomes of the room, stated before it starts (scenario-based experiential learning). */
+  outcomes: z.array(z.object({ text: z.string(), articles: z.array(z.string()) })).catch([]),
   status: z.enum(['open', 'active', 'done', 'returned']),
   /** Last result in this room (0–100), null if not played yet. */
   score: z.number().int().nullable(),
@@ -226,6 +228,8 @@ export const CaseSnapshotSchema = z.object({
       hints: z.number().int(),
       /** One question to think over after the room. */
       reflect: z.string().nullable(),
+      /** Each learning outcome judged from the decisions: met, not met, or not reached in this run (null). */
+      outcomes: z.array(z.object({ text: z.string(), articles: z.array(z.string()), met: z.boolean().nullable(), evidence: z.array(z.string()) })).catch([]),
     })
     .nullable(),
 });

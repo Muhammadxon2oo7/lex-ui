@@ -42,6 +42,10 @@ export interface RecordAnalysis {
   decisions?: { prompt: string | null; chose: string; tone: 'good' | 'bad' | 'info' | null; why: string | null; better: string | null; article: string | null }[];
   strengths?: string[];
   errors?: string[];
+  /** Learning outcomes of the room and whether the decisions met them (null: not reached in this run). */
+  outcomes?: { text: string; met: boolean | null }[];
+  /** The student's structured reflection (What? So what? Now what?). */
+  reflection?: { label: string; text: string }[];
 }
 
 const norm = (t: string) => t.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
@@ -79,6 +83,12 @@ export function recordHtml(meta: RecordMeta, lines: RecordLine[], spoken: boolea
             `<li class="${d.tone ?? 'info'}">${d.prompt ? `<div class="q">«${esc(d.prompt)}»</div>` : ''}<div><b>${d.tone === 'bad' ? '✗' : d.tone === 'good' ? '✓' : '•'}</b> ${esc(d.chose)}</div>${d.why ? `<div class="why">${esc(d.why)}</div>` : ''}${d.better ? `<div class="better"><b>Yaxshiroq:</b> ${esc(d.better)}</div>` : ''}${d.article ? `<div class="art">${esc(d.article)}</div>` : ''}</li>`,
         )
         .join('')}</ol>`
+    : '';
+  const outcomes = analysis.outcomes?.length
+    ? `<h2>Oʻquv natijalari</h2><ul class="dec">${analysis.outcomes.map((o) => `<li class="${o.met === false ? 'bad' : o.met ? 'good' : 'info'}"><b>${o.met === false ? '✗' : o.met ? '✓' : '–'}</b> ${esc(o.text)}${o.met === null ? ' <span class="why">(bu safar tekshirilmadi)</span>' : ''}</li>`).join('')}</ul>`
+    : '';
+  const reflection = analysis.reflection?.some((r) => r.text.trim())
+    ? `<h2>Mulohaza</h2>${analysis.reflection.filter((r) => r.text.trim()).map((r) => `<p><b>${esc(r.label)}</b> ${esc(r.text)}</p>`).join('')}`
     : '';
   const notes = [
     analysis.strengths?.length ? `<h2>Kuchli tomonlar</h2><ul>${analysis.strengths.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>` : '',
@@ -121,8 +131,8 @@ ${meta.score !== null ? `<tr><td>Natija</td><td><span class="score">${meta.score
 ${criteria}
 <h2>Majlis yozuvi</h2>
 <table class="tr">${rows}</table>
-${decisions}
-${notes}
+${outcomes}${decisions}
+${notes}${reflection}
 <p class="foot">Oʻquv simulyatsiyasi, yuridik maslahat emas. Ish holatlari toʻqilgan; moddalar lex.uz saytidagi matnga bogʻlangan. Avtomatik baho - mentor tasdigʻi talab etilishi mumkin.</p>
 </body></html>`;
 }

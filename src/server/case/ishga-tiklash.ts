@@ -12,6 +12,7 @@
  * at most four replies on screen at once.
  */
 import { norm, PEOPLE } from '@/lib/labourCase';
+import type { Ruling } from '@/contracts/case';
 import type { Emotion } from '@/contracts';
 import type { CaseSnapshot, CaseSpeaker, ClaimDraft, StageId } from '@/contracts/case';
 
@@ -72,6 +73,12 @@ export interface StageDef {
   nodes: Node[];
   /** The question to think over in the debrief. */
   reflect?: string;
+  /**
+   * Learning outcomes, stated before the room and judged after it: by the decisions that rest on
+   * `articles` (all good = met), by what the student established (`facts`), and in the drafting room
+   * by the defects of the claim tied to those articles.
+   */
+  outcomes?: { text: string; articles?: string[]; facts?: string[] }[];
 }
 
 /** Everything the engine needs to run one case. */
@@ -84,6 +91,10 @@ export interface CaseBookShape {
   STAGES: StageDef[];
   STAGE_ARTICLES: Partial<Record<StageId, string[]>>;
   won: (c: CaseView) => boolean;
+  /** In the courtroom one speaks standing: the article that says so and how the judge addresses you. */
+  standing: { rule: string; address: string };
+  /** A court document closing the last courtroom room (the criminal verdict). */
+  judgment?: (c: CaseView) => Ruling;
   /** The outcome line shown in the last room's result (null = none). */
   verdict: (c: CaseView) => string | null;
 }
@@ -156,6 +167,12 @@ const consult: StageDef = {
   place: 'Advokatlik byurosi',
   goal: 'Holatlar va dalillarni aniqlang, vakolatni rasmiylashtiring.',
   reflect: 'Qaysi savolingiz ishning taqdirini hal qildi? Qaysi holatni bilmay qolsangiz, sudda nima boʻlardi?',
+  outcomes: [
+    { text: 'Mijozdan ish uchun muhim holatlarni ochiq savollar bilan aniqlash: boʻshatish, kasallik, xabar berilgani, guvoh', facts: ['dismissal', 'sick', 'notified', 'refused', 'witness'] },
+    { text: 'Daʼvoni isbotlaydigan hujjatlarni aniqlash: buyruq, mehnat shartnomasi, kasallik varaqasi', facts: ['order', 'contract', 'sickleave'] },
+    { text: 'Moddiy huquq boʻyicha muhim holatlarni baholash: yozma tushuntirish (MK 313) va murojaat muddati (MK 560)', facts: ['explanation', 'served'] },
+    { text: 'Vakillik vakolatini qonuniy rasmiylashtirish (FPK 67, 68)', articles: ['67-modda'], facts: ['authority'] },
+  ],
   start: 'c-hub',
   nodes: [
     {
@@ -204,6 +221,11 @@ const draft: StageDef = {
   place: 'Hujjatlar',
   goal: 'FPK 189-191 boʻyicha arizani tuzing va imzolang.',
   reflect: 'Arizangizdagi eng kuchli holat va dalil qaysi? Javobgar unga qanday eʼtiroz bildirishi mumkin?',
+  outcomes: [
+    { text: 'Arizani sudlovga tegishli sudga yoʻllash (FPK 26, 28, 33)', articles: ['26-modda', '28-modda', '33-modda'] },
+    { text: 'FPK 189 talab qilgan rekvizitlar, talab va holatlarni toʻliq yozish', articles: ['189-modda'] },
+    { text: 'Ilovalar, vakolat hujjati (order) va nusxalarni toʻgʻri tayyorlash (FPK 190, 191)', articles: ['190-modda', '191-modda'] },
+  ],
   start: 'd-form',
   nodes: [
     { id: 'd-form', await: 'draft', then: 'd-end' },
@@ -218,6 +240,10 @@ const filing: StageDef = {
   place: 'Sud devonxonasi',
   goal: 'Arizani roʻyxatdan oʻtkazing va sudya ajrimini oling.',
   reflect: 'Qaysi kamchilik arizani qaytarishga asos boʻlardi (FPK 195), qaysi biri esa faqat ishni zaiflashtiradi?',
+  outcomes: [
+    { text: 'Arizani belgilangan tartibda topshirish va qabul qilinishini taʼminlash (FPK 192)', articles: ['192-modda'] },
+    { text: 'Javobgarlar soniga mos nusxalarni taqdim etish (FPK 190)', articles: ['190-modda'] },
+  ],
   start: 'f-hello',
   nodes: [
     {
@@ -257,6 +283,11 @@ const chamber: StageDef = {
   place: 'Sudya kabineti',
   goal: 'Talabni bayon qiling, dalil soʻrang, kelishuv masalasini hal qiling.',
   reflect: 'Guvohni chaqirtirish qaroringiz sud majlisidagi kuchlar nisbatini qanday oʻzgartirdi?',
+  outcomes: [
+    { text: 'Ishni tayyorlashda talab mohiyatini aniq bayon qilish (FPK 203)', articles: ['203-modda'] },
+    { text: 'Guvohni chaqirish va dalil toʻplash iltimosini asoslash (FPK 204, 56)', articles: ['204-modda', '56-modda'] },
+    { text: 'Isbotlash majburiyati va taraf huquqlarini toʻgʻri qoʻllash (FPK 72, 44)', articles: ['72-modda', '44-modda'] },
+  ],
   start: 'k-start',
   nodes: [
     {
@@ -306,6 +337,11 @@ const hearing: StageDef = {
   place: 'Sud majlisi zali',
   goal: 'Tik turib, «Hurmatli sud!» deb gapiring.',
   reflect: 'Qaysi dalil qarorga eng koʻp taʼsir qildi? Javobgar oʻrnida boʻlsangiz, nimaga tayangan boʻlardingiz?',
+  outcomes: [
+    { text: 'Sud majlisi tartibi: tik turib murojaat, rad qilish huquqidan toʻgʻri foydalanish (FPK 212, 216, 22)', articles: ['212-modda', '216-modda', '22-modda'] },
+    { text: 'Tushuntirish berish va dalillarni tekshirish: yozma dalillar, guvohni ochiq savol bilan soʻroq qilish (FPK 227, 229, 233)', articles: ['227-modda', '229-modda', '233-modda'] },
+    { text: 'Sud muzokaralarida faqat tekshirilgan dalillarga tayanish (FPK 244, 249)', articles: ['244-modda', '249-modda'] },
+  ],
   start: 'h-rise',
   nodes: [
     {
@@ -468,6 +504,8 @@ export const STAGE_ARTICLES: Partial<Record<StageId, string[]>> = {
 };
 
 export const BOOK: CaseBookShape = {
+  // FPK 212: in court one speaks standing
+  standing: { rule: '212-modda', address: 'Daʼvogar vakili' },
   kind: 'labour',
   CASE,
   FACTS,

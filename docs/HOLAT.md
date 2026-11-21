@@ -33,6 +33,12 @@ Eski javoblar va topshiriqlar `arxiv/` papkasida turadi, ular endi kerak emas.
 
 ---
 
+### Metodika va jinoyat ishi sudi (21-noyabr)
+
+- **Metodika:** «Scenario-Based Experiential Legal Learning» 15 komponenti bilan solishtirildi (`LexSim_Metodika.md`). Qo'shildi: har xonada oldindan aytiladigan o'quv natijalari va ular bo'yicha baho; majburiy uch qismli refleksiya («Nima bo'ldi? Nega? Endi nima?»); ikkalasi bayonnoma va xAPI'da.
+- **Jinoyat ishi endi hukmgacha:** 4-xona - jinoyat ishlari bo'yicha sud majlisi (JPK 424-473): sudya, kotib, davlat ayblovchisi, himoyachi, sudlanuvchi, jabrlanuvchi va vakili, guvoh. Talabaning ishi hukmni (ayblov yoki oqlov) belgilaydi.
+- **Tuzatish:** ishora qiluvchi savol uchun JPK 114 emas, JPK 102. Fuqarolik ishida prokuror yo'qligi FPK 50 ga mos.
+
 ### Yangi (21-noyabr, mentorlar eʼtirozi boʻyicha)
 
 - **Landing — yoʻnalish kartalari** (`/`): Advokat, Jabrlanuvchi vakili, Sudya, Iqtisodiy sud, DXM xodimi, Bahs. Har kartada 3D xonaning oʻzidan kadr va «Normativ asos». Karta → familiya, ism, jins, maqom → toʻgʻridan-toʻgʻri jarayonga. 3D kampus endi `/kampus`.

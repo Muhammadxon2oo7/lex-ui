@@ -16,6 +16,9 @@ import { ATTACHMENTS, BOOK as LABOUR, type CaseBookShape, type CaseView, type Ef
 import { BOOK as THEFT } from './ogirlik';
 import { situationLine, type Situation } from '@/server/situation';
 
+/** Rooms that are courtrooms: answers standing, the judge enters, a judgment closes the room. */
+const COURT = new Set<StageId>(['hearing', 'trial']);
+
 const BOOKS: Record<CaseKind, CaseBookShape> = { labour: LABOUR, theft: THEFT };
 const LAW: Record<CaseKind, typeof fpk> = { labour: fpk, theft: jpk };
 /** Short code name used when citing articles in results. */
@@ -129,6 +132,26 @@ function go(c: CaseState, id: string) {
   }
 }
 
+/** Learning outcomes judged from what happened in the room (the rubric is the outcomes themselves). */
+function judgeOutcomes(c: CaseState, stage: StageId) {
+  const { FACTS } = book(c);
+  const defects = stage === 'draft' && c.draft ? checkClaim(c.draft, (id) => c.known.has(id)) : [];
+  return (stageDef(c, stage).outcomes ?? []).map((o) => {
+    const arts = new Set(o.articles ?? []);
+    const decisions = c.log.filter((d) => d.article && arts.has(d.article) && d.tone !== 'info');
+    const missed = (o.facts ?? []).filter((f) => !c.known.has(f));
+    const faults = defects.filter((d) => arts.has(d.article));
+    const evidence = [
+      ...decisions.map((d) => `${d.tone === 'bad' ? '✗' : '✓'} ${d.chose}`),
+      ...missed.map((f) => `✗ Aniqlanmadi: ${(FACTS[f]?.label ?? f).toLowerCase()}`),
+      ...faults.map((d) => `✗ ${d.message}`),
+    ];
+    const touched = decisions.length > 0 || (o.facts?.length ?? 0) > 0 || (stage === 'draft' && arts.size > 0 && c.draft !== null);
+    const met = !touched ? null : !decisions.some((d) => d.tone === 'bad') && missed.length === 0 && faults.length === 0;
+    return { text: o.text, articles: o.articles ?? [], met, evidence: evidence.slice(0, 6) };
+  });
+}
+
 function finishStage(c: CaseState) {
   const stage = c.stage!;
   c.stageDone = true;
@@ -176,6 +199,7 @@ function finishStage(c: CaseState) {
   }
   const last = book(c).STAGES.at(-1)!.id === stage;
   if (last && stage !== 'hearing') verdict = book(c).verdict(view(c));
+  if (stage === 'trial' && !verdict) verdict = book(c).verdict(view(c));
   if (stage === 'hearing') {
     const v = view(c);
     const won = book(c).won;
@@ -200,9 +224,10 @@ function finishStage(c: CaseState) {
       articles: ['248-modda', '249-modda', '253-modda', '264-modda', '266-modda', '385¹-modda'],
     });
   }
+  if (stage === 'trial' && book(c).judgment) c.rulings.push(book(c).judgment!(view(c)));
   score = Math.max(0, Math.min(100, Math.round(score)));
   c.scores[stage] = score;
-  c.result = { score, verdict, good: c.good, notes, log: c.log, hints: c.hints, reflect: stageDef(c, stage).reflect ?? null };
+  c.result = { score, verdict, good: c.good, notes, log: c.log, hints: c.hints, reflect: stageDef(c, stage).reflect ?? null, outcomes: judgeOutcomes(c, stage) };
 }
 
 function visible(c: CaseState, o: Opt, stage: StageId) {
@@ -256,6 +281,7 @@ function snapshot(c: CaseState): CaseSnapshot {
     title: s.title,
     place: s.place,
     goal: s.goal,
+    outcomes: (s.outcomes ?? []).map((o) => ({ text: o.text, articles: o.articles ?? [] })),
     status: c.stage === s.id && !c.stageDone ? 'active' : (c.status[s.id] ?? 'open'),
     score: c.scores[s.id] ?? null,
   }));
@@ -426,9 +452,9 @@ function enter(c: CaseState, stage: StageId) {
   c.hints = 0;
   c.stageStart = Date.now();
   c.scolded.clear();
-  if (stage === 'hearing') c.strength = 0;
+  if (COURT.has(stage)) c.strength = 0;
   for (const key of [...c.used]) if (key.startsWith(`${stage}:`)) c.used.delete(key);
-  c.scene = { witnessIn: false, judgeIn: stage !== 'hearing', judgeEntries: stage === 'hearing' ? 0 : 1, clientPresent: stage !== 'draft' && stage !== 'filing', everyoneStands: false, clientMood: stage === 'consult' ? 'upset' : 'calm' };
+  c.scene = { witnessIn: false, judgeIn: !COURT.has(stage), judgeEntries: COURT.has(stage) ? 0 : 1, clientPresent: stage !== 'draft' && stage !== 'filing', everyoneStands: false, clientMood: stage === 'consult' ? 'upset' : 'calm' };
   if (c.status[stage] === 'done') c.status[stage] = 'open';
   go(c, stageDef(c, stage).start);
 }
@@ -441,15 +467,16 @@ function choose(c: CaseState, optionId: string, via: InputMode = 'option') {
   const option = (via === 'option' ? optionsOf(c) : allVisible(c)).find((o) => o.id === optionId);
   if (!option) throw new HttpError(422, 'option_unavailable', 'Bu javob hozir mavjud emas');
 
-  // FPK 212: in the courtroom, answers are given standing.
-  if (stage === 'hearing' && (option.kind ?? 'say') === 'say' && !c.standing) {
+  // In the courtroom answers are given standing: FPK 212 (civil), JPK 424 (criminal).
+  if (COURT.has(stage) && (option.kind ?? 'say') === 'say' && !c.standing) {
+    const { rule, address } = book(c).standing;
     if (!c.scolded.has(node.id)) {
       c.penalties.push({ points: 10, note: 'Sudga oʻtirgan holda javob berishga urindingiz' });
-      record(c, option.text, 'bad', 10, 'Sudga tik turib murojaat qilinadi (oʻtirgan holda javob berishga urindingiz).', null, '212-modda');
+      record(c, option.text, 'bad', 10, 'Sudga tik turib murojaat qilinadi (oʻtirgan holda javob berishga urindingiz).', null, rule);
     }
     c.scolded.add(node.id);
-    say(c, [['judge', 'Daʼvogar vakili, oʻrningizdan turib gapiring.']]);
-    c.feedback = { tone: 'bad', message: 'Sudga tik turib murojaat qilinadi. G - turing, soʻng javob bering.', article: '212-modda' };
+    say(c, [['judge', `${address}, oʻrningizdan turib gapiring.`]]);
+    c.feedback = { tone: 'bad', message: 'Sudga tik turib murojaat qilinadi. G - turing, soʻng javob bering.', article: rule };
     return;
   }
 
@@ -463,7 +490,7 @@ function choose(c: CaseState, optionId: string, via: InputMode = 'option') {
   apply(c, option.effect);
   if (option.tone === 'good' && option.article) {
     const title = LAW[c.kind].articles.find((x) => x.number === option.article)?.title;
-    const note = `${CODE[c.kind]} ${option.article}${title ? ` — ${title.toLowerCase()}` : ''}`;
+    const note = `${CODE[c.kind]} ${option.article}${title ? ` - ${title.toLowerCase()}` : ''}`;
     if (!c.good.includes(note)) c.good.push(note);
   }
   if (option.reply) say(c, typeof option.reply === 'function' ? option.reply(view(c)) : option.reply);
@@ -475,7 +502,7 @@ function choose(c: CaseState, optionId: string, via: InputMode = 'option') {
   // immediate notes follow the level: beginner all, intermediate only serious errors, advanced none (the debrief has everything)
   if (c.level === 'advanced') c.feedback = null;
   else if (c.level === 'intermediate' && !(option.tone === 'bad' && (option.effect?.penalty?.[0] ?? 0) >= 15)) c.feedback = null;
-  if (stage === 'hearing' && option.next) c.standing = false;
+  if (COURT.has(stage) && option.next) c.standing = false;
   if (option.next) go(c, option.next);
 }
 

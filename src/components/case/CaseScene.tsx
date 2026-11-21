@@ -379,9 +379,41 @@ const LABEL: Record<StageId, string> = {
   filing: '3D sud devonxonasi: qabul darchasi',
   chamber: '3D sudya kabineti',
   hearing: '3D sud majlisi zali',
+  trial: '3D jinoyat ishlari boʻyicha sud majlisi zali',
 };
 
 export default function CaseScene(props: SceneProps) {
+  if (props.stage === 'trial') {
+    // JPK: the prosecution side (state prosecutor, the victim and you, her representative) on the left,
+    // the defence (counsel and the defendant) on the right, the witness at the lectern
+    const map: Partial<Record<CaseSpeaker, 'judge' | 'secretary' | 'claimant' | 'respondent' | 'witness'>> = { judge: 'judge', secretary: 'secretary', client: 'claimant', defender: 'respondent', witness: 'witness' };
+    const speaker = props.speaker ? (map[props.speaker] ?? null) : null;
+    const standing = props.scene.everyoneStands ? (['secretary', 'claimant', 'respondent', 'witness'] as const) : speaker === 'respondent' ? (['respondent'] as const) : [];
+    return (
+      <CourtRoom
+        view="advocate"
+        speaker={speaker}
+        witnessPresent={props.scene.witnessIn}
+        witnessCalled={props.scene.witnessIn}
+        standing={[...standing]}
+        judgePresent={props.scene.judgeIn}
+        judgeEntries={props.scene.judgeEntries}
+        advocateStanding={props.standing}
+        advocateSpeaking={props.speaker === 'you'}
+        avatar={props.avatar}
+        labels={{ left: 'AYBLOV', right: 'HIMOYA' }}
+        cast={{ principal: 'woman', opponent: 'lawyer', witness: 'worker' }}
+        companions={[
+          { id: 'prosecutor', model: 'man', side: 'left', talking: props.speaker === 'prosecutor' },
+          { id: 'defendant', model: 'client', side: 'right', talking: props.speaker === 'defendant' },
+        ]}
+        screen={['Jinoyat ishlari boʻyicha Namuna tuman sudi', 'Jinoyat ishi · sud majlisi', 'Ochiq sud majlisi']}
+        extra={<Desk3D {...props} />}
+        moods={props.line?.emotion ? { [speaker ?? 'system']: props.line.emotion } : undefined}
+        cue={props.line && speaker ? { speaker, cue: gestureFor(props.line) } : undefined}
+      />
+    );
+  }
   if (props.stage === 'hearing') {
     const map: Partial<Record<CaseSpeaker, 'judge' | 'secretary' | 'claimant' | 'respondent' | 'witness'>> = { judge: 'judge', secretary: 'secretary', client: 'claimant', respondent: 'respondent', witness: 'witness' };
     const speaker = props.speaker ? (map[props.speaker] ?? null) : null;

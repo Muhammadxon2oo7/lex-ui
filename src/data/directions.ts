@@ -44,13 +44,13 @@ export const DIRECTION_SOURCES: DirectionSources[] = [
     ],
   },
   {
-    id: 'tergov', role: 'Jabrlanuvchi vakili', title: 'Telefon oʻgʻirligi: arizadan shikoyatgacha',
-    note: 'Ish holatlari toʻqilgan. Arizani qabul qilish, jabrlanuvchini soʻroq qilish va tergovchi ustidan shikoyat - JPK matni boʻyicha. Jinoyatni kvalifikatsiya qilish bu mashqda baholanmaydi.',
+    id: 'tergov', role: 'Jabrlanuvchi vakili', title: 'Telefon oʻgʻirligi: arizadan hukmgacha',
+    note: 'Ish holatlari toʻqilgan. Arizani qabul qilish, jabrlanuvchini soʻroq qilish, tergovchi ustidan shikoyat va sud majlisi (davlat ayblovchisi, himoyachi, sudlanuvchi, guvoh) - JPK matni boʻyicha. Jinoyatni kvalifikatsiya qilish va jazo miqdori bu mashqda baholanmaydi.',
     uses: [
-      { doc: 'JPK', why: 'Jabrlanuvchining huquqlari, soʻroq tartibi va bayonnoma, jinoyat toʻgʻrisidagi arizalar, ish qoʻzgʻatish, shikoyat', articles: nums(jpkCase) },
+      { doc: 'JPK', why: 'Jabrlanuvchining huquqlari, soʻroq tartibi va bayonnoma, ishora qiluvchi savol taqiqi, jinoyat toʻgʻrisidagi arizalar, ish qoʻzgʻatish, shikoyat; sud majlisi: tartib, tayyorlov qismi, sud tergovi, muzokara, oxirgi soʻz, hukm', articles: nums(jpkCase) },
       { doc: 'ADVOKATURA', why: 'Jabrlanuvchining vakili - advokat: kasbning asosiy qonuni (umumiy asos)', articles: [] },
       { doc: 'ADVKAFOLAT', why: 'Advokatning vakolati order bilan tasdiqlanadi', articles: ['4-modda'] },
-      { doc: 'PROKURATURA', why: 'Tergov ustidan nazorat qiluvchi organ (maʼlumot uchun)', articles: [] },
+      { doc: 'PROKURATURA', why: 'Tergov ustidan nazorat va sudda davlat ayblovini quvvatlovchi organ (maʼlumot uchun)', articles: [] },
     ],
   },
   {

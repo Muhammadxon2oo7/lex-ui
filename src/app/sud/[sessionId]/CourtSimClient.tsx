@@ -26,7 +26,7 @@ import { ApiError, api, newId } from '@/game/api';
 import { audio } from '@/game/audio';
 import { useProfile } from '@/game/profile';
 import { useGame } from '@/game/store';
-import { lipTrack, speak, stopSpeaking, voiceStatus, type VoiceId } from '@/game/voice';
+import { lipTrack, prefetchLine, speak, stopSpeaking, voiceStatus, type VoiceId } from '@/game/voice';
 import { Talk } from '@/components/hud/Talk';
 import { useDismiss } from '@/lib/useDismiss';
 
@@ -68,6 +68,8 @@ function usePresenter(turns: Turn[]) {
     const walksIn = turn.scene?.judgeIn === true && !foldScene(turns.slice(0, at)).judgeIn && at > 0;
     const reading = Math.max(words, walksIn ? 5600 : 0);
     const voice = turn.speaker === 'npc' && turn.role ? VOICE[turn.role] : null;
+    // the next lines of the same answer are fetched while this one plays: no pause between speakers
+    for (const next of turns.slice(at + 1, at + 4)) if (next.speaker === 'npc' && next.role) void prefetchLine(next.text, VOICE[next.role]);
     void (voice ? speak(turn.text, voice) : Promise.resolve(false)).then((spoken) => {
       if (!alive) return;
       if (!spoken && voice) lipTrack(turn.text, reading - 500);

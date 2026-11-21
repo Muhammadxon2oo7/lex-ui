@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const jiti = createJiti(import.meta.url, { alias: { '@': `${root}src` } });
+const { spokenText } = await jiti.import(`${root}src/lib/spoken.ts`);
 const books = [(await jiti.import(`${root}src/server/case/ishga-tiklash.ts`)).BOOK, (await jiti.import(`${root}src/server/case/ogirlik.ts`)).BOOK];
 const OUT = process.argv[2] ?? `${root}tools/voice/lines.json`;
 
@@ -22,8 +23,9 @@ for (const book of books) {
   const voice = Object.fromEntries(book.CASE.parties.filter((p) => p.voice).map((p) => [p.role, p.voice]));
   for (const stage of book.STAGES)
     for (const node of stage.nodes)
-      for (const [speaker, text] of [...linesOf(node.enter), ...(node.options ?? []).flatMap((o) => linesOf(o.reply))]) {
-        if (!voice[speaker] || !text?.trim()) continue; // the student and system notes are not voiced
+      for (const [speaker, line] of [...linesOf(node.enter), ...(node.options ?? []).flatMap((o) => linesOf(o.reply))]) {
+        const text = line ? spokenText(line) : ''; // exactly what the player sends to /voice/tts
+        if (!voice[speaker] || !text) continue; // the student and system notes are not voiced
         const key = `${voice[speaker]}|${text}`;
         if (!seen.has(key)) seen.set(key, { voice: voice[speaker], text, speaker, case: book.kind, stage: stage.id });
       }

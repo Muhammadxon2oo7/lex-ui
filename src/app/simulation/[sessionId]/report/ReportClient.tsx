@@ -39,9 +39,15 @@ export default function ReportClient() {
   const [error, setError] = useState<string | null>(null);
   const [reason, setReason] = useState('');
   const [sending, setSending] = useState(false);
+  // whose report: the economic court (court server) or the DXM office — from the session itself
+  const [title, setTitle] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
+    api.getSession(sessionId).then(
+      (s) => !cancelled && setTitle(`${sessionId.startsWith('rmt_') ? 'Iqtisodiy sud' : 'DXM xodimi'} · ${s.scenario.title}`),
+      () => {},
+    );
     api.report(sessionId).then(
       (r) => !cancelled && setReport(r),
       (e: unknown) => !cancelled && setError(e instanceof ApiError ? e.message : 'Hisobotni yuklab boʻlmadi'),
@@ -84,7 +90,7 @@ export default function ReportClient() {
 
   return (
     <main className="mx-auto w-full max-w-4xl flex-1 px-5 py-10 sm:py-14">
-      <p className="text-[0.78rem] font-semibold uppercase tracking-wider text-accent-ink">Hisobot · DXM xodimi · Yoʻqolgan staj</p>
+      <p className="text-[0.78rem] font-semibold uppercase tracking-wider text-accent-ink">Hisobot{title ? ` · ${title}` : ''}</p>
       <div className="mt-3 flex flex-wrap items-end gap-x-8 gap-y-3">
         <p className={`display text-[clamp(4rem,14vw,7rem)] font-semibold tabular-nums ${tone}`} aria-label={`Umumiy ball: 100 dan ${report.scoreTotal}`}>
           {report.scoreTotal}

@@ -12,10 +12,10 @@ export type VoiceId = 'elder_m' | 'male' | 'female' | 'female_alt';
 const REMOTE = process.env.LEXSIM_REMOTE_URL?.replace(/\/+$/, '') || null;
 
 /** How we are let in: the server key (any student) or, without it, the student's court-session cookie. */
-function authFor(owner?: string): Record<string, string> | null {
+async function authFor(owner?: string): Promise<Record<string, string> | null> {
   if (!REMOTE) return null;
   if (remoteKeyed()) return keyHeaders(owner);
-  const cookie = owner ? remoteCookie(owner) : null;
+  const cookie = owner ? await remoteCookie(owner) : null;
   return cookie ? { Cookie: `lexsim_owner=${cookie}` } : null;
 }
 
@@ -35,7 +35,7 @@ async function remoteVoiceStatus() {
 
 /** Per student: with the server key everyone gets the court server's voice; without it, only those with a court session there. */
 export async function voiceStatus(owner?: string) {
-  const r = authFor(owner) ? await remoteVoiceStatus() : { tts: false, stt: false };
+  const r = (await authFor(owner)) ? await remoteVoiceStatus() : { tts: false, stt: false };
   return { tts: r.tts ? 'server' : null, stt: r.stt ? 'server' : null } as const;
 }
 
@@ -48,7 +48,7 @@ export async function synthesize(text: string, voice: VoiceId, owner?: string): 
   const id = createHash('sha256').update(`${voice}\n${text}`).digest('hex');
   const hit = cache.get(id);
   if (hit) return hit;
-  const auth = authFor(owner);
+  const auth = await authFor(owner);
   if (!auth || !(await remoteVoiceStatus()).tts) return null;
   const res = await fetch(`${REMOTE}/voice/tts`, { method: 'POST', headers: { 'Content-Type': 'application/json', ...auth }, body: JSON.stringify({ text, voice }), signal: AbortSignal.timeout(20_000) });
   if (!res.ok) throw new Error(`tts ${res.status}`);
@@ -60,7 +60,7 @@ export async function synthesize(text: string, voice: VoiceId, owner?: string): 
 
 /** 16 kHz mono PCM WAV in, recognised Uzbek text out (Latin with ʻ/ʼ; the audio is not kept). */
 export async function transcribe(wav: ArrayBuffer, owner?: string): Promise<string | null> {
-  const auth = authFor(owner);
+  const auth = await authFor(owner);
   if (!auth || !(await remoteVoiceStatus()).stt) return null;
   // GPU ~1–2 s; when the GPU is off the backend falls back to CPU (up to ~37 s)
   const res = await fetch(`${REMOTE}/voice/stt`, { method: 'POST', headers: { 'Content-Type': 'audio/wav', ...auth }, body: wav, signal: AbortSignal.timeout(45_000) });

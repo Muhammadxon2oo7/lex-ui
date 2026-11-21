@@ -87,6 +87,28 @@ export default function HubClient() {
     }
   };
 
+  // a random case, never one of the last three played (the pool grows to ~10 on the court server)
+  const RECENT = 'lexsim.recentScenarios.v1';
+  const startRandom = () => {
+    const pool = remote?.scenarios.map((s) => s.id) ?? [];
+    if (!pool.length) return;
+    let recent: string[] = [];
+    try {
+      recent = JSON.parse(localStorage.getItem(RECENT) ?? '[]') as string[];
+    } catch {
+      /* private mode: any case will do */
+    }
+    const fresh = pool.filter((id) => !recent.includes(id));
+    const from = fresh.length ? fresh : pool;
+    const id = from[Math.floor(Math.random() * from.length)];
+    try {
+      localStorage.setItem(RECENT, JSON.stringify([id, ...recent.filter((r) => r !== id)].slice(0, Math.min(3, pool.length - 1))));
+    } catch {
+      /* not remembered: fine */
+    }
+    void startEconomic(id);
+  };
+
   const startCourt = async () => {
     if (busy) return;
     setBusy(true);
@@ -171,7 +193,15 @@ export default function HubClient() {
       </section>
       {remote?.ok && remote.scenarios.length > 0 && (
         <section className="mt-10" aria-labelledby="economic-title">
-          <h2 id="economic-title" className="display text-2xl font-semibold">Iqtisodiy sud</h2>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 id="economic-title" className="display text-2xl font-semibold">Iqtisodiy sud</h2>
+            {remote.scenarios.length > 1 && (
+              <button type="button" className="btn btn-primary max-sm:w-full" disabled={busy || !roomsOk} onClick={startRandom}
+                title="Oldingi uchta ishingiz takrorlanmaydi">
+                {!roomsOk ? 'WebGL2 kerak' : `Tasodifiy ish · ${remote.scenarios.length} tadan`}
+              </button>
+            )}
+          </div>
           <p className="mt-1 text-[0.88rem] text-ink-2">
             Sud majlisida tomon vakili boʻlasiz: javobni oʻzingiz yozasiz yoki aytasiz{remote.llm ? ', raqib tomon esa sizga til modeli orqali javob qaytaradi' : ''}. Har bir qadam Iqtisodiy protsessual kodeksi moddasiga bogʻlangan.
           </p>

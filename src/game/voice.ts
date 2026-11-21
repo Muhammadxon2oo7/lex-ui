@@ -15,6 +15,7 @@
  *   3. otherwise unavailable — replies can still be chosen on screen.
  */
 import { visemeTrack, type Segment } from '@/lib/visemes';
+import { spokenText } from '@/lib/spoken';
 import { audio } from './audio';
 
 export type VoiceId = 'elder_m' | 'male' | 'female' | 'female_alt';
@@ -63,21 +64,48 @@ function uzbekSystemVoice(): SpeechSynthesisVoice | null {
   return speechSynthesis.getVoices().find((v) => v.lang.toLowerCase().startsWith('uz')) ?? null;
 }
 
+/** Server audio, asked for once per line: lines that come next are fetched while the current one plays. */
+const fetched = new Map<string, Promise<ArrayBuffer | null>>();
+function serverAudio(text: string, voice: VoiceId): Promise<ArrayBuffer | null> {
+  const key = `${voice}\n${text}`;
+  let p = fetched.get(key);
+  if (!p) {
+    p = fetch('/api/v1/voice/tts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voice }), signal: AbortSignal.timeout(10_000) })
+      .then((r) => (r.ok ? r.arrayBuffer() : null))
+      .catch(() => null);
+    fetched.set(key, p);
+    p.then((a) => !a && fetched.delete(key)); // a failure may succeed next time
+    if (fetched.size > 40) fetched.delete(fetched.keys().next().value!);
+  }
+  return p;
+}
+
+/** Start fetching a line that will be spoken soon (no sound; ignored when the server has no voice). */
+export async function prefetchLine(line: string, voice: VoiceId) {
+  const text = spokenText(line);
+  if (muted || !text || !(await voiceStatus()).tts) return;
+  void serverAudio(text, voice);
+}
+
 /**
  * Speaks a line. Resolves when it has finished (or immediately when no
  * suitable voice exists). Returns whether anything was actually heard.
  */
-export async function speak(text: string, voice: VoiceId): Promise<boolean> {
+export async function speak(line: string, voice: VoiceId): Promise<boolean> {
   stopSpeaking();
-  if (muted || !text.trim()) return false;
+  const text = spokenText(line); // «(sekin)» stays in the subtitle, never read aloud
+  if (muted || !text) return false;
   const status = await voiceStatus();
 
   if (status.tts) {
-    try {
-      const res = await fetch('/api/v1/voice/tts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voice }), signal: AbortSignal.timeout(10_000) });
-      if (res.ok) return await playThroughAnalyser(await res.arrayBuffer(), text);
-    } catch {
-      /* fall through to the browser voice */
+    const audio = await serverAudio(text, voice);
+    if (audio) {
+      fetched.delete(`${voice}\n${text}`); // decoded once; the server cache answers a repeat in ~10 ms
+      try {
+        return await playThroughAnalyser(audio, text);
+      } catch {
+        /* fall through to the browser voice */
+      }
     }
   }
 

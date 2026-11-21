@@ -31,6 +31,7 @@ import {
   type RemoteStatus,
   type Snapshot,
 } from '@/contracts';
+import { cookies } from 'next/headers';
 import { HttpError } from '@/server/engine/session';
 
 const BASE = process.env.LEXSIM_REMOTE_URL?.replace(/\/+$/, '') || null;
@@ -38,8 +39,31 @@ const PREFIX = 'rmt_';
 const REMOTE_COOKIE = 'lexsim_owner';
 
 export const remoteEnabled = () => BASE !== null;
-/** The court backend's owner cookie for this student, if they have opened a court session (its voice service needs it). */
-export const remoteCookie = (owner: string) => jars.get(owner) ?? null;
+/**
+ * The court backend's owner cookie for this student, if they have opened a court session (its voice service needs it).
+ * Kept in memory AND in an httpOnly cookie of ours: on a serverless host the next request may land on a fresh
+ * instance, and without it the student would lose the court session mid-hearing.
+ */
+const RC = 'lexsim_rc';
+export async function remoteCookie(owner: string): Promise<string | null> {
+  const hit = jars.get(owner);
+  if (hit) return hit;
+  try {
+    const v = (await cookies()).get(RC)?.value;
+    if (v) jars.set(owner, v);
+    return v ?? null;
+  } catch {
+    return null; // outside a request
+  }
+}
+async function keepRemoteCookie(owner: string, value: string) {
+  jars.set(owner, value);
+  try {
+    (await cookies()).set(RC, value, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production', path: '/', maxAge: 60 * 60 * 24 * 30 });
+  } catch {
+    /* outside a route handler: memory only */
+  }
+}
 export const isRemoteId = (id: string) => id.startsWith(PREFIX);
 const local = (remoteId: string) => `${PREFIX}${remoteId}`;
 const remote = (id: string) => id.slice(PREFIX.length);
@@ -52,7 +76,7 @@ const TIMEOUT = { quick: 20_000, turn: 180_000, finish: 60_000 } as const;
 
 async function request(owner: string, path: string, body: unknown | undefined, timeout: number): Promise<unknown> {
   if (!BASE) throw new HttpError(404, 'remote_disabled', 'Sud serveri ulanmagan');
-  const cookie = jars.get(owner);
+  const cookie = await remoteCookie(owner);
   let res: Response;
   try {
     res = await fetch(`${BASE}${path}`, {
@@ -70,7 +94,7 @@ async function request(owner: string, path: string, body: unknown | undefined, t
   }
   for (const c of res.headers.getSetCookie?.() ?? []) {
     const m = c.match(new RegExp(`^${REMOTE_COOKIE}=([^;]+)`));
-    if (m) jars.set(owner, m[1]);
+    if (m && m[1] !== cookie) await keepRemoteCookie(owner, m[1]);
   }
   const json: unknown = await res.json().catch(() => null);
   if (!res.ok) {
@@ -126,7 +150,9 @@ function normaliseMutation(raw: unknown): MutationResponse {
 
 function normaliseReport(raw: unknown): Assessment {
   const r = (raw as { report: Record<string, unknown> }).report;
-  const parsed = AssessmentSchema.safeParse({ ...r, sessionId: local(String(r.sessionId)), appeal: r.appeal ?? null });
+  // v1.4 live moves (motions, questions, settlement) carry no points: `null` means 0, not a broken report
+  const decisions = Array.isArray(r.decisions) ? r.decisions.map((d: Record<string, unknown>) => ({ ...d, points: typeof d.points === 'number' ? d.points : 0 })) : r.decisions;
+  const parsed = AssessmentSchema.safeParse({ ...r, decisions, sessionId: local(String(r.sessionId)), appeal: r.appeal ?? null });
   if (!parsed.success) throw broken('report', parsed.error.issues);
   return parsed.data;
 }

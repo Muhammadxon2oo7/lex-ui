@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { GlassLayer, GlassToolbar, ToolbarLink } from '@/components/ui/glass';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import type { Level, RemoteStatus, SessionMode } from '@/contracts';
@@ -130,8 +131,13 @@ export default function HubClient() {
   };
 
   return (
-    <main className="mx-auto w-full max-w-5xl flex-1 px-5 py-10 sm:py-16">
-      <Link href="/" className="text-[0.85rem] font-semibold text-accent-ink">← LexSim</Link>
+    <main className="relative isolate w-full flex-1">
+      <GlassLayer />
+      <GlassToolbar back={{ href: '/', label: 'YOʻNALISHLAR' }}>
+        <ToolbarLink href="/sohalar">Sohalar</ToolbarLink>
+        <ToolbarLink href="/manbalar" className="max-sm:hidden">Manbalar</ToolbarLink>
+      </GlassToolbar>
+      <div className="mx-auto w-full max-w-5xl px-5 pt-8 pb-14 sm:pt-12">
       <h1 className="display mt-3 text-[clamp(2rem,5vw,3.2rem)] font-semibold">Bugun kim boʻlib ishlaysiz?</h1>
 
       <div className="mt-6 flex flex-wrap gap-x-8 gap-y-4">
@@ -148,7 +154,7 @@ export default function HubClient() {
         {ROLES.map((r) => {
           const can = r.id === 'dxm' || roomsOk;
           return (
-            <li key={r.id} className="flex flex-col rounded-[24px] border border-line bg-card p-6">
+            <li key={r.id} className="flex flex-col surface rounded-[26px] p-6">
               <p className="text-[0.75rem] font-semibold uppercase tracking-wider text-accent-ink">{r.meta}</p>
               <h2 className="display mt-2 text-2xl font-semibold text-balance">{r.role}</h2>
               <p className="font-medium text-ink-2">{r.scenario}</p>
@@ -162,7 +168,7 @@ export default function HubClient() {
       </ul>
       <section className="mt-10" aria-labelledby="court-title">
         <h2 id="court-title" className="display text-2xl font-semibold">Sud zali</h2>
-        <div className="mt-3 flex flex-wrap items-center gap-5 rounded-[24px] border border-line bg-card p-6">
+        <div className="mt-3 flex flex-wrap items-center gap-5 surface rounded-[26px] p-6">
           <div className="min-w-0 flex-1 basis-80">
             <p className="text-[0.75rem] font-semibold uppercase tracking-wider text-accent-ink">Fuqarolik ishi · 1-instansiya · 10-15 daqiqa</p>
             <h3 className="display mt-1 text-xl font-semibold">Raislik qiluvchi: majlisni tartib boʻyicha olib boring</h3>
@@ -177,7 +183,7 @@ export default function HubClient() {
       </section>
       <section className="mt-10" aria-labelledby="moot-title">
         <h2 id="moot-title" className="display text-2xl font-semibold">Bahs</h2>
-        <div className="mt-3 flex flex-wrap items-center gap-5 rounded-[24px] border border-line bg-card p-6">
+        <div className="mt-3 flex flex-wrap items-center gap-5 surface rounded-[26px] p-6">
           <div className="min-w-0 flex-1 basis-80">
             <p className="text-[0.75rem] font-semibold uppercase tracking-wider text-accent-ink">Jamoaviy · 2-6 kishi · 15-20 daqiqa</p>
             <h3 className="display mt-1 text-xl font-semibold">Kursdoshlaringiz bilan sudda bahslashing</h3>
@@ -210,7 +216,7 @@ export default function HubClient() {
           </div>
           <ul className="mt-3 grid gap-3 md:grid-cols-2">
             {remote.scenarios.map((sc) => (
-              <li key={sc.id} className="flex flex-col rounded-[24px] border border-line bg-card p-6">
+              <li key={sc.id} className="flex flex-col surface rounded-[26px] p-6">
                 <p className="text-[0.75rem] font-semibold uppercase tracking-wider text-accent-ink">Iqtisodiy ish · {sc.durationMinutes} daqiqa</p>
                 <h3 className="display mt-2 text-xl font-semibold text-balance">{/* the role is on the next line: «… - daʼvogar vakili» is not repeated */}
                   {(sc.title || sc.role).split(/\s+[---]\s+/)[0]}</h3>
@@ -225,6 +231,7 @@ export default function HubClient() {
         </section>
       )}
       {error && <p className="mt-4 font-medium text-danger" role="alert">{error}</p>}
+      </div>
     </main>
   );
 }

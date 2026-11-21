@@ -139,7 +139,7 @@ function KioskPanel({ profile: live, onEnter, onWalk }: { profile: Profile | nul
       role="dialog"
       aria-modal="true"
       aria-labelledby="kiosk-title"
-      className={`absolute top-1/2 right-4 z-20 flex max-h-[calc(100dvh-2rem)] w-[min(44rem,calc(100vw-2rem))] ${editing ? '' : 'h-[min(56rem,calc(100dvh-2rem))]'} -translate-y-1/2 flex-col overflow-hidden rounded-[18px] bg-[#0b1322]/95 text-white shadow-[0_40px_120px_rgba(0,0,0,0.6)] ring-1 ring-white/10 select-text sm:right-8`}
+      className={`absolute top-1/2 right-4 z-20 flex max-h-[calc(100dvh-2rem)] w-[min(44rem,calc(100vw-2rem))] ${editing ? '' : 'h-[min(56rem,calc(100dvh-2rem))]'} -translate-y-1/2 flex-col overflow-hidden rounded-[18px] hud hud-strong select-text sm:right-8`}
     >
       <header className="flex items-center gap-4 border-b border-white/10 px-6 py-3.5">
         <span className="h-8 w-1 rounded-full bg-[#1f8a5b]" aria-hidden />

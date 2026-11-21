@@ -141,7 +141,7 @@ export default function CourtSimClient() {
   if (error && !snap) {
     return (
       <main className="grid h-dvh place-items-center bg-[#0c0f14] p-6 text-white">
-        <div role="alert" className="max-w-md rounded-[28px] bg-[#0d121b] p-7 ring-1 ring-white/10">
+        <div role="alert" className="max-w-md rounded-[28px] hud hud-strong p-7">
           <p className="text-[0.7rem] font-semibold tracking-[0.16em] text-amber-200 uppercase">Sud serveri</p>
           <h1 className="mt-2 text-[1.3rem] font-semibold">{error}</h1>
           <div className="mt-5 flex gap-2"><Link href="/hub" className="btn btn-primary">Orqaga</Link></div>

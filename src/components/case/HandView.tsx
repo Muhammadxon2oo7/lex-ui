@@ -185,7 +185,7 @@ export function HandView({ doc, onClose }: { doc: DeskDoc; onClose: () => void }
         </Canvas>
         <p className="pointer-events-none absolute inset-x-0 bottom-4 text-center text-[0.78rem] text-white/55">Sudrang - aylantirish · gʻildirak - yaqinlashtirish · F - agʻdarish{doc.kind === 'folder' ? ' · O - ochish' : ''}{pages > 1 ? ' · ← → - varaqlash' : ''}</p>
       </div>
-      <aside className="flex flex-col gap-3 bg-[#0d121b]/95 p-5 text-white ring-1 ring-white/10 select-text">
+      <aside className="flex flex-col gap-3 hud hud-strong p-5 select-text">
         <p className="text-[0.68rem] font-semibold tracking-[0.16em] text-amber-200 uppercase">Qoʻlingizda</p>
         <h2 className="text-[1.25rem] leading-tight font-semibold">{doc.name}</h2>
         <p className="text-[0.9rem] leading-snug text-white/75">{doc.note}</p>

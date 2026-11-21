@@ -115,7 +115,7 @@ function snapshot(h: Hearing): HearingSnapshot {
   return {
     hearingId: h.id,
     caseTitle: 'Ishga tiklash toʻgʻrisidagi daʼvo',
-    caseNote: 'Ish holatlari va ishtirokchilar oʻquv uchun toʻqilgan. Majlis tartibi va moddalar matni — Fuqarolik protsessual kodeksidan (lex.uz).',
+    caseNote: 'Ish holatlari va ishtirokchilar oʻquv uchun toʻqilgan. Majlis tartibi va moddalar matni - Fuqarolik protsessual kodeksidan (lex.uz).',
     parties: [
       { role: 'judge', label: 'Raislik qiluvchi', name: 'Siz' },
       { role: 'secretary', label: 'Sud majlisi kotibi', name: 'Malika S.' },

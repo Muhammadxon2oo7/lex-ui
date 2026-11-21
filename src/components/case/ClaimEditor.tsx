@@ -292,28 +292,29 @@ export function ClaimEditor({ facts, evidence, advocate, initial, busy, onSubmit
     onPaper?.(paper);
   }, [paper, onPaper]);
 
-  const TABS: [Tab, string][] = [['folder', 'Ish papkasi'], ['order', 'Advokat orderi'], ['claim', 'Daʼvo arizasi']];
+  const TABS: [Tab, string, string][] = [['folder', 'Ish papkasi', 'Papka'], ['order', 'Advokat orderi', 'Order'], ['claim', 'Daʼvo arizasi', 'Ariza']];
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={spring}
-      className="absolute inset-0 z-30 grid grid-cols-1 gap-4 overflow-y-auto bg-[#070a10]/80 p-3 backdrop-blur-sm lg:pointer-events-none lg:grid-cols-[minmax(0,min(38rem,46vw))_1fr] lg:overflow-hidden lg:bg-transparent lg:p-5 lg:pt-[4.6rem] lg:backdrop-blur-none"
+      className="absolute inset-0 z-30 grid grid-cols-1 content-start gap-4 overflow-y-auto overscroll-contain bg-[#070a10]/70 p-3 backdrop-blur-md lg:pointer-events-none lg:grid-cols-[minmax(0,min(38rem,46vw))_1fr] lg:overflow-hidden lg:bg-transparent lg:p-5 lg:pt-[4.6rem] lg:backdrop-blur-none"
       role="dialog" aria-modal="true" aria-labelledby="claim-title">
-      <div className="flex min-h-0 flex-col rounded-[22px] bg-[#0d1320]/95 text-white ring-1 ring-white/10 lg:pointer-events-auto lg:overflow-hidden">
+      <div className="hud hud-strong flex flex-col rounded-[26px] lg:pointer-events-auto lg:min-h-0 lg:overflow-hidden">
         <header className="border-b border-white/10 px-5 pt-3.5">
           <p className="text-[0.66rem] font-semibold tracking-[0.18em] text-amber-200 uppercase">Hujjatlar · 2-bosqich</p>
           <h2 id="claim-title" className="text-[1.15rem] font-semibold">Daʼvo arizasini tuzish</h2>
           <p className="text-[0.8rem] text-white/55">Hujjatlarni oʻqing, orderni toʻldiring, arizani oʻzingiz yozing. Kamchiliklarni sud aniqlaydi - xuddi hayotdagidek.</p>
           <div role="tablist" aria-label="Hujjatlar" className="mt-3 -mb-px flex gap-1">
-            {TABS.map(([id, label]) => (
+            {TABS.map(([id, label, short]) => (
               <button key={id} type="button" role="tab" aria-selected={tab === id} onClick={() => setTab(id)}
-                className={`min-h-10 rounded-t-xl px-3.5 text-[0.86rem] font-semibold transition-colors duration-150 ${tab === id ? 'bg-white/[0.07] text-white shadow-[inset_0_-2px_0_#34d399]' : 'text-white/55 hover:text-white'}`}>
-                {label}
+                className={`relative min-h-10 rounded-t-xl px-3.5 text-[0.86rem] font-semibold transition-colors duration-200 ${tab === id ? 'text-white' : 'text-white/55 hover:text-white'}`}>
+                {tab === id && <motion.span layoutId="claim-tab" transition={ease.droplet} aria-hidden className="absolute inset-x-2 bottom-0 h-0.5 rounded-full bg-emerald-400" />}
+                <span className="max-sm:hidden">{label}</span><span className="sm:hidden">{short}</span>
               </button>
             ))}
           </div>
         </header>
 
-        <div className="scroll-soft flex-1 space-y-3 overflow-y-auto px-4 py-4 select-text" role="tabpanel">
+        <div className="scroll-soft flex-1 space-y-3 px-4 py-4 select-text lg:overflow-y-auto" role="tabpanel">
           {tab === 'folder' && <Folder known={known} />}
           {tab === 'order' && (known.has('authority')
             ? <OrderForm o={o} set={setOrder} onSigned={(v) => setOrder('signed', v)} />
@@ -390,7 +391,7 @@ export function ClaimEditor({ facts, evidence, advocate, initial, busy, onSubmit
             </>
           )}
         </div>
-        <footer className="flex flex-wrap items-center gap-2 border-t border-white/10 px-4 py-3">
+        <footer className="hud hud-strong sticky bottom-0 z-10 flex flex-wrap items-center gap-2 rounded-b-[26px] border-t border-white/[0.07] px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] lg:static lg:shadow-none">
           <button type="button" className="btn btn-quiet !min-h-11 !rounded-xl text-[0.86rem]" onClick={() => onCode('189-modda')}>189-moddani ochish</button>
           {tab !== 'claim' ? (
             <button type="button" onClick={() => setTab(tab === 'folder' ? 'order' : 'claim')} className="btn btn-primary ml-auto !min-h-11 !rounded-xl">

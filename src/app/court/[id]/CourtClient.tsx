@@ -11,7 +11,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
-import { ease, modal } from '@/lib/motion';
+import { ease, modal, note } from '@/lib/motion';
 import { useEffect, useEffectEvent, useState } from 'react';
 import { HearingEnvelopeSchema, type HearingLine, type HearingSnapshot, type Speaker } from '@/contracts/hearing';
 import { newId } from '@/game/api';
@@ -23,7 +23,6 @@ import { CodePanel } from '@/components/hud/CodePanel';
 const VOICE: Partial<Record<Speaker, VoiceId>> = { secretary: 'female', claimant: 'male', respondent: 'female_alt', witness: 'elder_m' };
 
 const CourtRoom = dynamic(() => import('@/components/world/CourtRoom'), { ssr: false });
-const spring = ease.surface;
 
 async function request(path: string, body?: unknown): Promise<HearingSnapshot> {
   const res = await fetch(`/api/v1/hearings${path}`, {
@@ -175,97 +174,108 @@ function Stage({ hearing, busy, error, code, setCode, choose }: { hearing: Heari
       <div className="absolute inset-0">
         <CourtRoom speaker={speaking} witnessPresent={hearing.witnessPresent} witnessCalled={witnessCalled} standing={standing} />
       </div>
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[58dvh] bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[40dvh] bg-gradient-to-t from-black/55 to-transparent lg:inset-x-auto lg:right-0 lg:h-full lg:w-[42vw] lg:bg-gradient-to-l lg:from-black/45" />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/45 to-transparent" />
 
-      {/* case card + order of the hearing so far */}
-      <aside className="glass absolute top-4 left-4 flex max-h-[calc(100dvh-2rem)] w-[min(19rem,calc(100vw-2rem))] flex-col rounded-[20px] px-4 py-3" aria-label="Ish va majlis tartibi">
-        <p className="text-[0.66rem] font-semibold tracking-[0.16em] text-amber-200 uppercase">Fuqarolik ishi · 1-instansiya</p>
-        <h1 className="text-[1.02rem] leading-tight font-semibold">{hearing.caseTitle}</h1>
-        <p className="mt-0.5 text-[0.74rem] leading-snug text-white/55">{hearing.parties.filter((p) => p.role !== 'judge').map((p) => `${p.label}: ${p.name}`).join(' · ')}</p>
-        <div className="mt-2.5 h-1 overflow-hidden rounded-full bg-white/15" role="progressbar" aria-label="Majlis bosqichlari" aria-valuemin={0} aria-valuemax={hearing.total} aria-valuenow={hearing.done.length}>
-          <div className="h-full rounded-full bg-emerald-400 transition-[width] duration-500" style={{ width: `${(hearing.done.length / hearing.total) * 100}%` }} />
+      {/* ── top bar: the case (and, on wide screens, the order of the hearing so far), then actions ── */}
+      <header className="absolute inset-x-0 top-0 z-20 flex items-start gap-2 p-3 sm:p-4">
+        <aside className="hud flex max-h-[calc(100dvh-2rem)] min-w-0 flex-1 flex-col rounded-[22px] px-4 py-3 sm:max-w-[19rem] sm:flex-none sm:basis-[19rem]" aria-label="Ish va majlis tartibi">
+          <p className="text-[0.66rem] font-semibold tracking-[0.16em] text-amber-200 uppercase">Fuqarolik ishi · 1-instansiya</p>
+          <h1 className="truncate text-[0.98rem] leading-tight font-semibold sm:whitespace-normal">{hearing.caseTitle}</h1>
+          <p className="mt-0.5 hidden text-[0.74rem] leading-snug text-white/60 sm:block">{hearing.parties.filter((p) => p.role !== 'judge').map((p) => `${p.label}: ${p.name}`).join(' · ')}</p>
+          <div className="mt-2 flex items-center gap-2">
+            <div className="h-1 flex-1 overflow-hidden rounded-full bg-white/15" role="progressbar" aria-label="Majlis bosqichlari" aria-valuemin={0} aria-valuemax={hearing.total} aria-valuenow={hearing.done.length}>
+              <motion.div className="h-full rounded-full bg-emerald-400" initial={false} animate={{ scaleX: hearing.done.length / hearing.total }} transition={ease.surface} style={{ transformOrigin: '0 50%' }} />
+            </div>
+            <span className="text-[0.7rem] text-white/60 tabular-nums">{hearing.done.length}/{hearing.total}</span>
+          </div>
+          <ol className="scroll-soft mt-2 hidden min-h-0 flex-1 space-y-0.5 overflow-y-auto text-[0.8rem] md:block">
+            {hearing.done.map((d) => (
+              <li key={d.article}>
+                <button type="button" onClick={() => setCode(d.article)} className="hud-row flex w-full items-baseline gap-2 rounded-[10px] px-1.5 py-1 text-left">
+                  <span aria-hidden className={d.attempts === 1 ? 'text-emerald-300' : 'text-amber-300'}>✓</span>
+                  <span className="flex-1 leading-snug text-white/85">{d.label}</span>
+                  <span className="shrink-0 text-[0.7rem] text-white/50 tabular-nums">{d.article.replace('-modda', '')}-m.</span>
+                </button>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-2 hidden text-[0.68rem] leading-snug text-white/45 md:block">{hearing.caseNote}</p>
+        </aside>
+        <div className="glass ml-auto flex shrink-0 items-center gap-1 rounded-full p-1">
+          <button type="button" onClick={() => setCode('')} title="Kodeks (K)" aria-label="Kodeks"
+            className="flex h-9 items-center gap-2 rounded-full px-2.5 text-[0.84rem] font-medium text-white/85 transition-colors duration-150 hover:bg-white/12 hover:text-white">
+            <svg aria-hidden width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 19V5M8 7h7M8 11h7" /></svg>
+            <span className="max-sm:hidden">Kodeks</span>
+          </button>
+          <Link href="/kampus" title="Zaldan chiqish" aria-label="Zaldan chiqish"
+            className="flex h-9 items-center gap-2 rounded-full px-2.5 text-[0.84rem] font-medium text-white/85 transition-colors duration-150 hover:bg-white/12 hover:text-white">
+            <svg aria-hidden width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 16l-4-4 4-4M6 12h10" /></svg>
+            <span className="max-sm:hidden">Chiqish</span>
+          </Link>
         </div>
-        <ol className="scroll-soft mt-2 hidden min-h-0 flex-1 space-y-1 overflow-y-auto text-[0.8rem] md:block">
-          {hearing.done.map((d) => (
-            <li key={d.article}>
-              <button type="button" onClick={() => setCode(d.article)} className="flex w-full items-baseline gap-2 rounded-lg px-1.5 py-1 text-left hover:bg-white/10">
-                <span aria-hidden className={d.attempts === 1 ? 'text-emerald-300' : 'text-amber-300'}>✓</span>
-                <span className="flex-1 leading-snug text-white/85">{d.label}</span>
-                <span className="shrink-0 text-[0.7rem] text-white/50 tabular-nums">{d.article.replace('-modda', '')}-m.</span>
-              </button>
-            </li>
-          ))}
-        </ol>
-        <p className="mt-2 text-[0.68rem] leading-snug text-white/45">{hearing.caseNote}</p>
-      </aside>
+      </header>
 
-      <div className="absolute top-4 right-4 flex gap-2">
-        <button type="button" className="glass btn !min-h-10 !px-4 text-[0.86rem]" onClick={() => setCode('')}><kbd>K</kbd> Kodeks</button>
-        <Link href="/kampus" className="glass btn !min-h-10 !px-4 text-[0.86rem]">Zaldan chiqish</Link>
-      </div>
-
-      <div className="absolute inset-x-0 bottom-0 z-20 mx-auto flex w-full max-w-4xl flex-col gap-3 px-4 pb-5 sm:px-8">
-        <div className="min-h-[4.5rem] text-center select-text" onClick={skip}>
-          {current && (
-            current.speaker === 'system' ? (
-              <p className="mx-auto max-w-[56ch] text-[1rem] leading-snug text-amber-100/95 italic [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">{current.text}</p>
-            ) : (
-              <>
-                <p className={`text-[0.7rem] font-semibold tracking-[0.18em] uppercase ${current.speaker === 'judge' ? 'text-emerald-300' : 'text-amber-200'} [text-shadow:0_1px_6px_rgba(0,0,0,0.9)]`}>{who ? `${who.label} · ${who.name}` : ''}</p>
-                <p className="mx-auto mt-1 max-w-[52ch] text-[clamp(1.02rem,1.8vw,1.3rem)] leading-snug font-medium text-balance [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_2px_18px_rgba(0,0,0,0.85)]">{current.text}</p>
-              </>
-            )
-          )}
-          <p className="sr-only" role="log" aria-live="polite">{current ? `${who?.label ?? 'Vaziyat'}: ${current.text}` : ''}</p>
-          {!idle && <p className="mt-1 text-[0.72rem] text-white/45"><kbd>Space</kbd> davom etish</p>}
-        </div>
-
+      {/* ── one dock: what is said, feedback, your voice, your next procedural step ── */}
+      <section aria-label="Sud majlisi" className="absolute inset-x-0 bottom-0 z-20 mx-auto w-full max-w-3xl px-3 pb-3 sm:px-4 sm:pb-5 lg:inset-x-auto lg:right-5 lg:bottom-5 lg:w-[min(32rem,38vw)] lg:max-w-none lg:p-0">
         <AnimatePresence>
           {hearing.feedback && !hearing.feedback.correct && idle && (
-            <motion.p key={hearing.feedback.message} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={spring} role="alert" className="mx-auto flex max-w-2xl flex-wrap items-center gap-2 rounded-2xl bg-[#5b1f1a]/90 px-4 py-2.5 text-[0.9rem]">
-              {hearing.feedback.message}
-              {hearing.feedback.article && <button type="button" className="rounded-full bg-white/15 px-3 py-1 text-[0.8rem] font-medium" onClick={() => setCode(hearing.feedback!.article)}>Moddani ochish</button>}
+            <motion.p key={hearing.feedback.message} {...note} role="alert" className="hud mx-auto mb-2 flex w-fit max-w-full flex-wrap items-center gap-2 rounded-[18px] py-2 pr-2 pl-3 text-[0.86rem]">
+              <span aria-hidden className="size-2 shrink-0 rounded-full bg-red-400 shadow-[0_0_10px_rgb(248_113_113/0.8)]" />
+              <span className="min-w-0 flex-1">{hearing.feedback.message}</span>
+              {hearing.feedback.article && <button type="button" className="rounded-full bg-white/15 px-3 py-1 text-[0.78rem] font-semibold hover:bg-white/25" onClick={() => setCode(hearing.feedback!.article)}>Moddani ochish</button>}
             </motion.p>
           )}
         </AnimatePresence>
-        {error && <p role="alert" className="mx-auto rounded-full bg-danger px-4 py-2 text-[0.9rem]">{error}</p>}
+        {error && <p role="alert" className="hud mx-auto mb-2 w-fit rounded-full px-4 py-1.5 text-[0.86rem]">{error}</p>}
 
-        {canAct && (
-          <div className="flex flex-wrap items-center gap-3">
-            <Talk
-              enabled={canAct}
-              onHeard={(said) => {
-                const match = matchUtterance(said, hearing.options);
-                setHeard({ said, ok: Boolean(match) });
-                if (match) choose(match.option.id);
-              }}
-              onError={(m) => setHeard({ said: m, ok: false, error: true })}
-            />
-            {heard && (
-              <p className="text-[0.82rem] leading-snug text-white/65" role="status">
-                {heard.error ? heard.said : heard.ok ? <>Eshitildi: «{heard.said}»</> : <>«{heard.said}» - mos protsessual harakat topilmadi. Aniqroq ayting yoki pastdan tanlang.</>}
-              </p>
-            )}
-          </div>
-        )}
-        <div className="min-h-[14rem]">
+        <motion.div layout="size" transition={ease.surface} className="hud hud-strong overflow-hidden rounded-[28px]">
+          <button type="button" onClick={skip} disabled={idle} className="block w-full px-5 pt-4 pb-3 text-left select-text disabled:cursor-default">
+            <span className={`block text-[0.68rem] font-semibold tracking-[0.16em] uppercase ${!current || current.speaker === 'system' ? 'text-white/50' : current.speaker === 'judge' ? 'text-emerald-300' : 'text-amber-200'}`}>
+              {!current || current.speaker === 'system' ? 'Sud majlisi zali' : who ? `${who.label} · ${who.name}` : ''}
+            </span>
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.span key={current ? `${current.speaker}:${current.text}` : 'idle'} initial={{ opacity: 0, y: 6, filter: 'blur(3px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -4 }} transition={ease.surface}
+                className={`mt-1.5 block text-[1.08rem] leading-snug text-pretty ${!current || current.speaker === 'system' ? 'text-white/75 italic' : 'text-white'}`}>
+                {current?.text ?? 'Raislik qiluvchi sifatida keyingi protsessual harakatni tanlang.'}
+              </motion.span>
+            </AnimatePresence>
+            {!idle && <span className="mt-1 block text-right text-[0.7rem] text-white/40">Space - davom</span>}
+          </button>
+          <p className="sr-only" role="log" aria-live="polite">{current ? `${who?.label ?? 'Vaziyat'}: ${current.text}` : ''}</p>
+
           {canAct && (
-            <div role="group" aria-label="Protsessual harakatlar">
-              <p className="mb-1.5 text-[0.72rem] font-semibold tracking-[0.14em] text-white/55 uppercase">Raislik qiluvchi sifatida keyingi harakatingiz - ayting yoki tanlang</p>
-              <ul className="space-y-1.5">
+            <div role="group" aria-label="Protsessual harakatlar" className="border-t border-white/[0.07]">
+              <p className="px-5 pt-3 text-[0.68rem] font-semibold tracking-[0.14em] text-white/50 uppercase">Keyingi harakatingiz - ayting yoki tanlang</p>
+              <ul className="scroll-soft max-h-[28dvh] space-y-0.5 overflow-y-auto overscroll-contain px-2 py-2 sm:max-h-[36dvh] lg:max-h-[46dvh]">
                 {hearing.options.map((o, i) => (
-                  <motion.li key={o.id} initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }} transition={{ ...spring, delay: i * 0.045 }}>
-                    <button type="button" onClick={() => choose(o.id)} className="glass flex min-h-11 w-full items-start gap-3 rounded-2xl px-3 py-2 text-left transition-[background-color,transform] duration-150 hover:bg-white/20 active:scale-[0.985]">
-                      <kbd className="mt-0.5">{i + 1}</kbd>
-                      <span className="text-[0.93rem] leading-snug">{o.text}</span>
+                  <motion.li key={o.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ ...ease.surface, delay: i * 0.035 }}>
+                    <button type="button" onClick={() => choose(o.id)} className="hud-row flex min-h-11 w-full items-start gap-3 rounded-[18px] px-3 py-2.5 text-left">
+                      <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-[6px] bg-white/12 text-[0.7rem] font-semibold tabular-nums text-white/75 shadow-[inset_0_-1px_0_rgb(0_0_0/0.3)]">{i + 1}</span>
+                      <span className="text-[0.92rem] leading-snug text-white/90">{o.text}</span>
                     </button>
                   </motion.li>
                 ))}
               </ul>
             </div>
           )}
-        </div>
-      </div>
+          {canAct && (
+            <div className="flex items-center gap-3 border-t border-white/[0.07] px-3 py-2.5">
+              <Talk compact enabled={canAct}
+                onHeard={(said) => {
+                  const match = matchUtterance(said, hearing.options);
+                  setHeard({ said, ok: Boolean(match) });
+                  if (match) choose(match.option.id);
+                }}
+                onError={(m) => setHeard({ said: m, ok: false, error: true })}
+              />
+              <p className={`min-w-0 flex-1 text-[0.8rem] leading-snug ${heard && !heard.ok ? 'text-amber-200' : 'text-white/60'}`} role="status">
+                {heard ? (heard.error ? heard.said : heard.ok ? <>Eshitildi: «{heard.said}»</> : <>«{heard.said}» - mos harakat topilmadi. Aniqroq ayting yoki tanlang.</>) : <><span className="pointer-coarse:hidden"><kbd className="bg-white/15!">T</kbd> yoki </span>mikrofonni bosib turib ayting</>}
+              </p>
+            </div>
+          )}
+        </motion.div>
+      </section>
 
       {hearing.finished && idle && (
         <div className="absolute inset-0 z-30 grid place-items-center overflow-y-auto bg-black/60 p-4">

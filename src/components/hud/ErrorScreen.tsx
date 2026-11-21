@@ -13,7 +13,7 @@ export function ErrorScreen({ error, retry }: { error: unknown; retry: () => voi
   }, [error]);
   return (
     <main className="grid h-dvh place-items-center bg-[#0c0f14] p-6 text-white">
-      <section role="alert" className="w-full max-w-md rounded-[28px] bg-[#0d121b] p-7 ring-1 ring-white/10">
+      <section role="alert" className="w-full max-w-md rounded-[28px] hud hud-strong p-7">
         <p className="text-[0.7rem] font-semibold tracking-[0.16em] text-amber-200 uppercase">Xona ochilmadi</p>
         <h1 className="mt-2 text-[1.35rem] leading-tight font-semibold">Sahnani yuklashda xatolik yuz berdi</h1>
         <p className="mt-2 text-[0.92rem] leading-relaxed text-white/70">

@@ -224,7 +224,17 @@ export function QualityGovernor() {
   // Frames are judged only once the room has settled: while models decode and shaders compile every
   // machine stutters, and that is not a weak device (a MacBook Pro used to be sent to the light mode
   // within ten seconds of opening a room). So: nothing is loading, then a few quiet seconds, tab visible.
-  const loading = useProgress((s) => s.active);
+  // Loaders report progress while other components render: reading the store through a hook would
+  // set state in the middle of their render. Subscribe instead, and apply the change after it.
+  const [loading, setLoading] = useState(() => useProgress.getState().active);
+  useEffect(() => {
+    let alive = true;
+    const off = useProgress.subscribe((s) => queueMicrotask(() => alive && setLoading(s.active)));
+    return () => {
+      alive = false;
+      off();
+    };
+  }, []);
   const [settled, setSettled] = useState(false);
   useEffect(() => {
     if (loading) return;

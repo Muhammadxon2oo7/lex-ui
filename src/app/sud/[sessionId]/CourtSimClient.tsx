@@ -20,21 +20,22 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
 import { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
-import type { CourtScene, Hint, Snapshot, Turn } from '@/contracts';
+import type { CourtScene, Hint, Snapshot, Turn, Emotion } from '@/contracts';
 import type { Speaker } from '@/contracts/hearing';
 import { ApiError, api, newId } from '@/game/api';
 import { audio } from '@/game/audio';
 import { useProfile } from '@/game/profile';
 import { useGame } from '@/game/store';
-import { lipTrack, prefetchLine, speak, stopSpeaking, voiceStatus, type VoiceId } from '@/game/voice';
+import { lipTrack, prefetchLine, speak, stopSpeaking, voiceStatus, type VoiceId, dropVoice, takeVoice } from '@/game/voice';
 import { Talk } from '@/components/hud/Talk';
+import { courtStageFor } from '@/game/courtStage';
 import { useDismiss } from '@/lib/useDismiss';
+import { saveVoice } from '@/lib/voiceStore';
 
 const CourtRoom = dynamic(() => import('@/components/world/CourtRoom'), { ssr: false });
 
 const spring = { type: 'spring', bounce: 0, duration: 0.4 } as const;
 type Role = NonNullable<Turn['role']>;
-const VOICE: Record<Role, VoiceId> = { judge: 'elder_m', secretary: 'female', opponent: 'female_alt', witness: 'male', expert: 'male' };
 /** Where each speaker sits in our courtroom: the other side's advocate at the right-hand table. */
 const SEAT: Record<Role, Speaker> = { judge: 'judge', secretary: 'secretary', opponent: 'respondent', witness: 'witness', expert: 'witness' };
 const LABEL: Record<Role, string> = { judge: 'Sudya', secretary: 'Sud majlisi kotibi', opponent: 'Raqib tomon vakili', witness: 'Guvoh', expert: 'Ekspert' };
@@ -49,8 +50,16 @@ const MOVES = (other: string) => [
   { id: 'settle', label: 'Kelishuv', start: 'Hurmatli sud, kelishuv bitimi tuzishni taklif qilamiz: ' },
 ];
 
-/** New lines one at a time, each in its speaker's voice; a reload replays only the latest batch. */
-function usePresenter(turns: Turn[]) {
+/** Breath between lines: the same speaker goes on quickly, a new speaker answers after a beat, as people do. */
+const pauseAfter = (turn: Turn, next: Turn | undefined) => (!next || next.speaker === 'user' ? 150 : next.speaker === 'system' ? 380 : next.role === turn.role ? 240 : 560);
+/** The judge walking in from the service door takes this long to reach his chair. */
+const JUDGE_WALK_MS = 4800;
+
+/**
+ * New lines one at a time, each in its speaker's own voice (the cast decides it), never two at
+ * once: a line starts only when the previous one has finished. A reload replays only the latest batch.
+ */
+function usePresenter(turns: Turn[], voices: Record<Role, VoiceId>) {
   const [heard, setHeard] = useState(() => {
     const lastYou = turns.findLastIndex((t) => t.speaker === 'user');
     return lastYou >= 0 ? lastYou + 1 : 0;
@@ -67,14 +76,18 @@ function usePresenter(turns: Turn[]) {
     // the judge walking in from the service door: nobody speaks until he is at his chair
     const walksIn = turn.scene?.judgeIn === true && !foldScene(turns.slice(0, at)).judgeIn && at > 0;
     const reading = Math.max(words, walksIn ? 5600 : 0);
-    const voice = turn.speaker === 'npc' && turn.role ? VOICE[turn.role] : null;
-    // the next lines of the same answer are fetched while this one plays: no pause between speakers
-    for (const next of turns.slice(at + 1, at + 4)) if (next.speaker === 'npc' && next.role) void prefetchLine(next.text, VOICE[next.role]);
-    void (voice ? speak(turn.text, voice) : Promise.resolve(false)).then((spoken) => {
-      if (!alive) return;
-      if (!spoken && voice) lipTrack(turn.text, reading - 500);
-      timer = setTimeout(() => setHeard(at + 1), spoken ? 300 : reading);
-    });
+    const voice = turn.speaker === 'npc' && turn.role ? voices[turn.role] : null;
+    // the next lines of the same answer are fetched while this one plays: no gap waiting for audio
+    for (const next of turns.slice(at + 1, at + 4)) if (next.speaker === 'npc' && next.role) void prefetchLine(next.text, voices[next.role], next.emotion);
+    // a judge who walks in speaks once at his chair, not on the way
+    const start = walksIn && voice ? new Promise<void>((r) => (timer = setTimeout(r, JUDGE_WALK_MS))) : Promise.resolve();
+    void start
+      .then(() => (alive && voice ? speak(turn.text, voice, turn.emotion) : false))
+      .then((spoken) => {
+        if (!alive) return;
+        if (!spoken && voice) lipTrack(turn.text, reading - 500);
+        timer = setTimeout(() => setHeard(at + 1), spoken ? pauseAfter(turn, turns[at + 1]) : reading);
+      });
     return () => {
       alive = false;
       clearTimeout(timer);
@@ -91,6 +104,15 @@ function usePresenter(turns: Turn[]) {
       setHeard(Math.min(at + 1, turns.length));
     },
   };
+}
+
+/** The faces in the room for this line: the speaker's feeling and how the listeners take it. */
+function moodsOf(turn: Turn | undefined, seat: Speaker | null): Partial<Record<Speaker, Emotion>> | undefined {
+  if (!turn) return undefined;
+  const out: Partial<Record<Speaker, Emotion>> = {};
+  for (const r of turn.reactions ?? []) out[r.role === 'principal' ? 'claimant' : SEAT[r.role]] = r.emotion;
+  if (seat && turn.emotion) out[seat] = turn.emotion;
+  return Object.keys(out).length ? out : undefined;
 }
 
 /** The room after these lines: each line may change who is in and who stands. */
@@ -153,10 +175,15 @@ function Room({ initial }: { initial: Snapshot }) {
     return () => void (alive.current = false);
   }, []);
 
-  const { heard, current, idle, skip } = usePresenter(snap.turns);
+  // this case's hall: who sits where, their voices, the papers on each table (server scene, else a preset by kind of case)
+  const stage = useMemo(() => courtStageFor(snap.scenario), [snap.scenario]);
+  const { heard, current, idle, skip } = usePresenter(snap.turns, stage.voices);
   const scene = useMemo(() => foldScene(snap.turns.slice(0, Math.min(heard + 1, snap.turns.length))), [snap.turns, heard]);
   const standing = snap.standing ?? false;
   const respondentSide = snap.scenario.id.includes('javobgar');
+  const mine = respondentSide ? stage.papers.respondent : stage.papers.claimant;
+  const theirs = respondentSide ? stage.papers.claimant : stage.papers.respondent;
+  const screen = useMemo(() => [snap.scenario.briefing.workplace.split(' · ')[0], stage.kind, 'Sud majlisi'], [snap.scenario.briefing.workplace, stage.kind]);
   const tutorial = snap.mode === 'tutorial';
   // the level decides what is open: options (beginner, or revealed in intermediate), hints, immediate notes
   const level = snap.level ?? 'beginner';
@@ -165,6 +192,43 @@ function Room({ initial }: { initial: Snapshot }) {
   const canReveal = level === 'intermediate' && !snap.optionsRevealed && options.length === 0;
   const closed = snap.turns.some((t) => t.speaker === 'npc' && /majlisi yopi|Yakunlash tugmasini/i.test(t.text));
   const canSpeak = idle && !busy && !snap.pending && snap.status === 'in-progress';
+  /*
+   * The room reacts to you before the judge says a word:
+   *   · everyone rose and you stayed seated → after a beat every head turns to you, the judge frowns;
+   *   · you spoke seated in front of the court → the room looks at you; each time the note gets firmer
+   *     (the judge's spoken reprimand, and its escalation, come from the court server);
+   *   · the court waits for your answer and you are silent → the judge looks at you, expecting.
+   */
+  const [riseLate, setRiseLate] = useState(false);
+  const riseNow = scene.everyoneStands && !standing && snap.status === 'in-progress';
+  useEffect(() => {
+    if (!riseNow) return;
+    const t = setTimeout(() => setRiseLate(true), 1500);
+    return () => {
+      clearTimeout(t);
+      setRiseLate(false);
+    };
+  }, [riseNow]);
+  const [seatedSpeech, setSeatedSpeech] = useState(0);
+  const [stared, setStared] = useState(false);
+  useEffect(() => {
+    if (!stared) return;
+    const t = setTimeout(() => setStared(false), 3200);
+    return () => clearTimeout(t);
+  }, [stared]);
+  const [silent, setSilent] = useState(false);
+  const lastLine = snap.turns.at(-1)?.id ?? '';
+  useEffect(() => {
+    if (!canSpeak || draft.trim()) return;
+    const t = setTimeout(() => setSilent(true), Math.max(7000, (snap.silenceSec ?? 0) * 600));
+    return () => {
+      clearTimeout(t);
+      setSilent(false);
+    };
+  }, [canSpeak, draft, lastLine, snap.silenceSec]);
+  const attention: 'rise' | 'waiting' | null = (riseNow && riseLate) || (stared && !standing) ? 'rise' : silent && canSpeak && !draft.trim() ? 'waiting' : null;
+  const riseNote = riseNow && riseLate ? 'Hamma oʻrnidan turdi — siz ham turing' : stared && !standing ? (seatedSpeech >= 3 ? 'Sudya norozi: sudga faqat tik turib murojaat qilinadi' : seatedSpeech === 2 ? 'Yana oʻtirgan holda gapirdingiz — hamma sizga qaradi' : 'Sudga tik turib murojaat qilinadi') : null;
+
   // the note on the last answer stays a few seconds, then gets out of the way of the next question
   const fbMsg = snap.feedback ? `${snap.feedback.optionId ?? ''}:${snap.feedback.message}` : null;
   const [fbGone, setFbGone] = useState<string | null>(null);
@@ -246,6 +310,13 @@ function Room({ initial }: { initial: Snapshot }) {
     if (!said || !canSpeak) return;
     const clientTurnId = newId();
     const inputMode = spoken.current ? 'voice' : 'text';
+    if (!standing && scene.judgeIn) {
+      setSeatedSpeech((n) => n + 1);
+      setStared(true);
+    }
+    // the student's own voice goes into the practice record with what was sent
+    const wav = inputMode === 'voice' ? takeVoice() : (dropVoice(), null);
+    if (wav) void saveVoice(id, said, wav);
     setDraft('');
     setHint(null);
     spoken.current = false;
@@ -262,6 +333,11 @@ function Room({ initial }: { initial: Snapshot }) {
   };
   const choose = (optionId: string) => {
     if (!canSpeak) return;
+    dropVoice();
+    if (!standing && scene.judgeIn) {
+      setSeatedSpeech((n) => n + 1);
+      setStared(true);
+    }
     const clientTurnId = newId();
     setHint(null);
     audio.tick();
@@ -358,9 +434,14 @@ function Room({ initial }: { initial: Snapshot }) {
           judgeEntries={scene.entries}
           advocateStanding={standing}
           advocateSpeaking={!idle && current?.speaker === 'user'}
+          attention={attention}
           avatar={profile?.avatar ?? 'man'}
-          moods={seat && current?.emotion ? { [seat]: current.emotion } : undefined}
+          moods={moodsOf(current, seat)}
+          cue={seat && current?.gesture && current.gesture !== 'none' ? { speaker: seat, cue: { id: current.id, clip: current.gesture } } : undefined}
           labels={respondentSide ? { left: 'JAVOBGAR', right: 'DAʼVOGAR' } : { left: 'DAʼVOGAR', right: 'JAVOBGAR' }}
+          cast={stage.cast}
+          papers={{ left: mine, right: theirs }}
+          screen={screen}
         />
       </div>
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/50 to-transparent" />
@@ -405,6 +486,13 @@ function Room({ initial }: { initial: Snapshot }) {
                 className={`mx-auto mb-2 flex w-fit max-w-full items-center gap-2 rounded-full px-4 py-1.5 text-[0.84rem] ${snap.feedback.tone === 'bad' ? 'bg-[#6b221c]/95' : 'bg-[#163d2f]/95'}`}>
                 <span className="min-w-0">{snap.feedback.message}</span>
                 {snap.feedback.article && <span className="shrink-0 rounded-full bg-white/15 px-2.5 py-0.5 text-[0.76rem] font-semibold">{snap.feedback.article}</span>}
+              </motion.p>
+            )}
+            {riseNote && (
+              <motion.p key="rise" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={spring} role="status"
+                className={`mx-auto mb-2 flex w-fit max-w-full items-center gap-2 rounded-full px-4 py-1.5 text-[0.84rem] ${seatedSpeech >= 3 && !riseNow ? 'bg-[#6b221c]/95' : 'bg-[#5a4313]/95'}`}>
+                <span className="min-w-0">{riseNote}</span>
+                <button type="button" onClick={() => void toggleStand()} className="shrink-0 rounded-full bg-white/15 px-2.5 py-0.5 text-[0.76rem] font-semibold hover:bg-white/25"><kbd className="!bg-white/20">G</kbd> Turish</button>
               </motion.p>
             )}
             {error && (

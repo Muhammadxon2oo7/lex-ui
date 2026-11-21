@@ -22,7 +22,9 @@ import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import type { Emotion, Gesture } from '@/contracts';
 import type { Speaker } from '@/contracts/hearing';
-import { Character } from './Character';
+import { Character, type CharacterModel } from './Character';
+import { DocShape } from '@/components/case/DeskItems';
+import type { DeskDoc } from '@/components/case/documents';
 import { Prop } from './Furniture';
 import { TILE, UI_FONT, canvasTexture, tiledBox, useMaterials, type Materials } from './materials';
 import { Flag, StateEmblem } from './SetDressing';
@@ -256,17 +258,48 @@ function AirConditioner({ position, rotation }: { position: V3; rotation: number
   );
 }
 
-function WallScreen({ position, rotation }: { position: V3; rotation: number }) {
+/** The hall screen: dark, or the case being heard (court, kind of case, «Sud majlisi»). */
+function WallScreen({ position, rotation, lines }: { position: V3; rotation: number; lines?: string[] }) {
   return (
     <group position={position} rotation={[0, rotation, 0]}>
       <mesh material={black} castShadow>
         <boxGeometry args={[1.1, 0.64, 0.05]} />
       </mesh>
-      <mesh position={[0, 0, 0.03]}>
-        <planeGeometry args={[1.04, 0.58]} />
-        <meshStandardMaterial color="#0d1116" roughness={0.15} metalness={0.2} />
-      </mesh>
+      {lines?.length ? <ScreenText key={lines.join('|')} lines={lines} /> : (
+        <mesh position={[0, 0, 0.03]}>
+          <planeGeometry args={[1.04, 0.58]} />
+          <meshStandardMaterial color="#0d1116" roughness={0.15} metalness={0.2} />
+        </mesh>
+      )}
     </group>
+  );
+}
+
+function ScreenText({ lines }: { lines: string[] }) {
+  const t = useText(1024, 576, (ctx, w, h) => {
+    const g = ctx.createLinearGradient(0, 0, 0, h);
+    g.addColorStop(0, '#13233b');
+    g.addColorStop(1, '#0b1626');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = '#c9a45c';
+    ctx.fillRect(72, 96, 8, h - 192);
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.font = `600 34px ${UI_FONT}`;
+    ctx.fillText(lines[0] ?? '', 112, 168);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = `700 64px ${UI_FONT}`;
+    ctx.fillText(lines[1] ?? '', 112, 268, w - 180);
+    ctx.fillStyle = 'rgba(255,255,255,0.75)';
+    ctx.font = `500 40px ${UI_FONT}`;
+    lines.slice(2).forEach((l, i) => ctx.fillText(l, 112, 352 + i * 58, w - 180));
+  });
+  return (
+    <mesh position={[0, 0, 0.03]}>
+      <planeGeometry args={[1.04, 0.58]} />
+      <meshStandardMaterial map={t} emissive="#ffffff" emissiveMap={t} emissiveIntensity={0.55} roughness={0.3} />
+    </mesh>
   );
 }
 
@@ -310,7 +343,7 @@ function Nameplate({ text, position, rotation = 0 }: { text: string; position: V
  * A party's desk in mahogany. Built facing −z (modesty panel and nameplate
  * toward −z); `rotation` turns it to face across the room.
  */
-function Table({ wood, m, position, rotation = 0, width = 1.6, label, decor = true }: { wood: THREE.Material; m: Materials; position: V3; rotation?: number; width?: number; label?: string; decor?: boolean }) {
+function Table({ wood, m, position, rotation = 0, width = 1.6, label, decor = true, docs }: { wood: THREE.Material; m: Materials; position: V3; rotation?: number; width?: number; label?: string; decor?: boolean; docs?: DeskDoc[] }) {
   return (
     <group position={position} rotation={[0, rotation, 0]}>
       <Box m={wood} size={[width, 0.045, 0.72]} position={[0, 0.745, 0]} tile={1.3} />
@@ -318,12 +351,35 @@ function Table({ wood, m, position, rotation = 0, width = 1.6, label, decor = tr
       {[-width / 2 + 0.03, width / 2 - 0.03].map((x) => <Box key={x} m={wood} size={[0.05, 0.72, 0.7]} position={[x, 0.36, 0]} tile={1.3} />)}
       {label && <Nameplate text={label} position={[0, 0.77, -0.27]} rotation={Math.PI} />}
       <Microphone position={[-width / 2 + 0.3, 0.77, -0.18]} rotation={Math.PI} />
-      {decor && (
+      {docs?.length ? <TablePapers docs={docs} width={width} /> : decor && (
         <mesh material={m.paper} position={[0.25, 0.77, 0.05]} rotation={[0, 0.15, 0]}>
           <boxGeometry args={[0.21, 0.004, 0.297]} />
         </mesh>
       )}
     </group>
+  );
+}
+
+/**
+ * The case papers on a party's table: laid out side by side in front of the
+ * sitters (+z), each a little askew like real papers; extra ones stack.
+ */
+function TablePapers({ docs, width }: { docs: DeskDoc[]; width: number }) {
+  const slots = Math.max(1, Math.floor((width - 0.7) / 0.29));
+  return (
+    <>
+      {docs.map((d, i) => {
+        const slot = i % slots;
+        const layer = Math.floor(i / slots);
+        const x = -width / 2 + 0.62 + slot * 0.29 + layer * 0.04;
+        const tilt = ((i * 37) % 9 - 4) * 0.035;
+        return (
+          <group key={d.id + i} position={[x, 0.768 + layer * 0.004, 0.1 + layer * 0.03]} rotation={[0, Math.PI + tilt, 0]}>
+            <DocShape doc={d} />
+          </group>
+        );
+      })}
+    </>
   );
 }
 
@@ -370,6 +426,12 @@ type CourtProps = {
   advocateStanding?: boolean;
   /** The advocate (you) is speaking: the room looks at you. */
   advocateSpeaking?: boolean;
+  /**
+   * The room's attention is on you without you speaking: you stayed seated when everyone rose,
+   * you spoke without rising, or the court waits for your answer. Heads turn to you (when nobody
+   * else speaks) and the judge's face hardens — the room's own way of saying "stand up".
+   */
+  attention?: 'rise' | 'waiting' | null;
   /** Things placed in the room from outside (the papers on your table). */
   extra?: React.ReactNode;
   /** The student's own body at the advocate's seat. */
@@ -380,10 +442,21 @@ type CourtProps = {
   cue?: { speaker: Speaker; cue: { id: string; clip: Gesture } | null };
   /** Table plates: your table (left) and the other side's (right). Default: claimant / respondent. */
   labels?: { left: string; right: string };
+  /** Who sits in the hall for this case (see game/courtStage): your principal, the other side, a witness. */
+  cast?: { principal?: CharacterModel | null; opponent?: CharacterModel; witness?: CharacterModel };
+  /** The papers on your table (left) and the other side's (right). */
+  papers?: { left: DeskDoc[]; right: DeskDoc[] };
+  /** The hall screen: court, kind of case, … (dark when absent). */
+  screen?: string[];
 };
 
-function Scene({ speaker, witnessPresent, witnessCalled, standing, view = 'judge', judgePresent = true, judgeEntries = 1, advocateStanding = false, advocateSpeaking = false, moods, cue, avatar = 'man', extra, labels = { left: 'DAʼVOGAR', right: 'JAVOBGAR' } }: CourtProps) {
-  const feel = (who: Speaker, fallback: Emotion): Emotion => moods?.[who] ?? fallback;
+function Scene({ speaker, witnessPresent, witnessCalled, standing, view = 'judge', judgePresent = true, judgeEntries = 1, advocateStanding = false, advocateSpeaking = false, attention = null, moods, cue, avatar = 'man', extra, labels = { left: 'DAʼVOGAR', right: 'JAVOBGAR' }, cast, papers, screen }: CourtProps) {
+  const principal = cast?.principal === undefined ? 'client' : cast.principal;
+  const opponent = cast?.opponent ?? 'lawyer';
+  const witnessModel = cast?.witness ?? 'worker';
+  // someone not rising for the court: the judge is impatient, the clerk unsure; waiting for an answer: the judge expects it
+  const stare: Partial<Record<Speaker, Emotion>> = attention === 'rise' ? { judge: 'impatient', secretary: 'uncertain', respondent: 'confused' } : attention === 'waiting' ? { judge: 'impatient' } : {};
+  const feel = (who: Speaker, fallback: Emotion): Emotion => moods?.[who] ?? stare[who] ?? fallback;
   const gest = (who: Speaker) => (cue?.speaker === who ? cue.cue : null);
   const advocate = view === 'advocate';
   const judgeAt = useRef(new THREE.Vector3(1e4, 0, 1e4));
@@ -395,7 +468,8 @@ function Scene({ speaker, witnessPresent, witnessCalled, standing, view = 'judge
     witness: SEATS.witness.at,
     advocate: advocateStanding ? ADVOCATE.standing : ADVOCATE.seated,
   };
-  const talker = advocateSpeaking ? 'advocate' : speaker;
+  // whoever speaks holds the room; with nobody speaking, the room's attention may still be on you
+  const talker = advocateSpeaking || (attention && (!speaker || speaker === 'system')) ? 'advocate' : speaker;
   // everyone looks at whoever is speaking — at you only when you speak
   const gaze = (self: Speaker): V3 | undefined => {
     if (!advocate) return EYE;
@@ -432,7 +506,7 @@ function Scene({ speaker, witnessPresent, witnessCalled, standing, view = 'judge
       <directionalLight position={[8, 7, 1]} intensity={1.2} color="#fff0dc" castShadow shadow-mapSize={[2048, 2048]} shadow-camera-left={-8} shadow-camera-right={8} shadow-camera-top={8} shadow-camera-bottom={-8} shadow-bias={-0.0004} shadow-normalBias={0.03} />
       <Shell m={m} />
       <AirConditioner position={[-W / 2 + 0.22, 2.75, -3.2]} rotation={Math.PI / 2} />
-      <WallScreen position={[W / 2 - 0.14, 2.1, -4.2]} rotation={-Math.PI / 2} />
+      <WallScreen position={[W / 2 - 0.14, 2.1, -4.2]} rotation={-Math.PI / 2} lines={screen} />
 
       {/* the podium, with a step, across the back of the hall */}
       <Box m={wood} size={[W - 0.2, PODIUM, 1.95]} position={[0, PODIUM / 2, BACK + 1.07]} tile={1.3} />
@@ -461,16 +535,16 @@ function Scene({ speaker, witnessPresent, witnessCalled, standing, view = 'judge
       {extra}
 
       {/* claimant's table, left wall: you and Sardor */}
-      <Table wood={wood} m={m} position={[-3.6, 0, -1.1]} rotation={-Math.PI / 2} width={2.1} label={labels.left} decor={!advocate} />
+      <Table wood={wood} m={m} position={[-3.6, 0, -1.1]} rotation={-Math.PI / 2} width={2.1} label={labels.left} decor={!advocate} docs={papers?.left} />
       {chair(ME_AT, Math.PI / 2)}
       {chair(CLIENT_AT, Math.PI / 2)}
       {advocate && <Character model={avatar} position={ME_AT} rotation={Math.PI / 2} seatTop={0.46} seed={13} mood="calm" restless={false} firstPerson standing={advocateStanding} />}
-      <Character model="client" {...SEATS.claimant} seatTop={0.46} seed={2} mood="uncertain" restless={false} talking={speaker === 'claimant'} lookAt={advocate ? gaze('claimant') : EYE} standing={advocate ? lagClient : up('claimant')} />
+      {principal && <Character model={principal} {...SEATS.claimant} seatTop={0.46} seed={2} mood="uncertain" restless={false} talking={speaker === 'claimant'} lookAt={advocate ? gaze('claimant') : EYE} standing={advocate ? lagClient : up('claimant')} />}
 
       {/* respondent's table, right wall, facing you */}
-      <Table wood={wood} m={m} position={[3.6, 0, -0.6]} rotation={Math.PI / 2} width={1.9} label={labels.right} />
+      <Table wood={wood} m={m} position={[3.6, 0, -0.6]} rotation={Math.PI / 2} width={1.9} label={labels.right} docs={papers?.right} />
       {chair(SEATS.respondent.position, SEATS.respondent.rotation)}
-      <Character model="lawyer" {...SEATS.respondent} seatTop={0.46} seed={3} mood={feel('respondent', 'neutral')} cue={gest('respondent')} restless={false} upright={0.14} talking={speaker === 'respondent'} lookAt={gaze('respondent')} standing={advocate ? lagRespondent : up('respondent')} />
+      <Character model={opponent} {...SEATS.respondent} seatTop={0.46} seed={3} mood={feel('respondent', 'neutral')} cue={gest('respondent')} restless={false} upright={0.14} talking={speaker === 'respondent'} lookAt={gaze('respondent')} standing={advocate ? lagRespondent : up('respondent')} />
 
       {/* secretary, right, by the podium */}
       <Table wood={wood} m={m} position={[3.6, 0, -2.65]} rotation={Math.PI / 2} width={1.3} label="KOTIB" />
@@ -489,13 +563,13 @@ function Scene({ speaker, witnessPresent, witnessCalled, standing, view = 'judge
           advocate ? (
             // walks in down the aisle and testifies standing at the lectern (FPK 212)
             <Suspense fallback={null}>
-              <Character model="worker" {...SEATS.witness} seatTop={0.46} seed={4} mood={feel('witness', 'uncertain')} cue={gest('witness')} restless={false} talking={speaker === 'witness'} lookAt={gaze('witness') ?? JUDGE_SEAT.at} standing enterPath={WITNESS_ROUTE} />
+              <Character model={witnessModel} {...SEATS.witness} seatTop={0.46} seed={4} mood={feel('witness', 'uncertain')} cue={gest('witness')} restless={false} talking={speaker === 'witness'} lookAt={gaze('witness') ?? JUDGE_SEAT.at} standing enterPath={WITNESS_ROUTE} />
             </Suspense>
           ) : (
-            <Character model="worker" {...SEATS.witness} seatTop={0.46} seed={4} mood="uncertain" talking={speaker === 'witness'} lookAt={EYE} standing={up('witness')} />
+            <Character model={witnessModel} {...SEATS.witness} seatTop={0.46} seed={4} mood="uncertain" talking={speaker === 'witness'} lookAt={EYE} standing={up('witness')} />
           )
         ) : advocate ? null : (
-          <Character model="worker" position={[-1.6, 0, 3.6]} rotation={Math.PI} seatTop={0.46} seed={4} mood="neutral" lookAt={EYE} standing={up('witness')} />
+          <Character model={witnessModel} position={[-1.6, 0, 3.6]} rotation={Math.PI} seatTop={0.46} seed={4} mood="neutral" lookAt={EYE} standing={up('witness')} />
         )
       )}
 

@@ -18,7 +18,8 @@ import { visemeTrack, type Segment } from '@/lib/visemes';
 import { spokenText } from '@/lib/spoken';
 import { audio } from './audio';
 
-export type VoiceId = 'elder_m' | 'male' | 'female' | 'female_alt';
+/** The court server's voices: four built in, more per scenario (`scene.voices`). */
+export type VoiceId = 'elder_m' | 'male' | 'female' | 'female_alt' | (string & {});
 
 /**
  * Read every frame by the characters' faces (never React state).
@@ -66,11 +67,11 @@ function uzbekSystemVoice(): SpeechSynthesisVoice | null {
 
 /** Server audio, asked for once per line: lines that come next are fetched while the current one plays. */
 const fetched = new Map<string, Promise<ArrayBuffer | null>>();
-function serverAudio(text: string, voice: VoiceId): Promise<ArrayBuffer | null> {
-  const key = `${voice}\n${text}`;
+function serverAudio(text: string, voice: VoiceId, emotion?: string): Promise<ArrayBuffer | null> {
+  const key = `${voice}\n${emotion ?? ''}\n${text}`;
   let p = fetched.get(key);
   if (!p) {
-    p = fetch('/api/v1/voice/tts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voice }), signal: AbortSignal.timeout(10_000) })
+    p = fetch('/api/v1/voice/tts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voice, ...(emotion ? { emotion } : {}) }), signal: AbortSignal.timeout(10_000) })
       .then((r) => (r.ok ? r.arrayBuffer() : null))
       .catch(() => null);
     fetched.set(key, p);
@@ -81,26 +82,26 @@ function serverAudio(text: string, voice: VoiceId): Promise<ArrayBuffer | null> 
 }
 
 /** Start fetching a line that will be spoken soon (no sound; ignored when the server has no voice). */
-export async function prefetchLine(line: string, voice: VoiceId) {
+export async function prefetchLine(line: string, voice: VoiceId, emotion?: string) {
   const text = spokenText(line);
   if (muted || !text || !(await voiceStatus()).tts) return;
-  void serverAudio(text, voice);
+  void serverAudio(text, voice, emotion);
 }
 
 /**
  * Speaks a line. Resolves when it has finished (or immediately when no
  * suitable voice exists). Returns whether anything was actually heard.
  */
-export async function speak(line: string, voice: VoiceId): Promise<boolean> {
+export async function speak(line: string, voice: VoiceId, emotion?: string): Promise<boolean> {
   stopSpeaking();
   const text = spokenText(line); // «(sekin)» stays in the subtitle, never read aloud
   if (muted || !text) return false;
   const status = await voiceStatus();
 
   if (status.tts) {
-    const audio = await serverAudio(text, voice);
+    const audio = await serverAudio(text, voice, emotion);
     if (audio) {
-      fetched.delete(`${voice}\n${text}`); // decoded once; the server cache answers a repeat in ~10 ms
+      fetched.delete(`${voice}\n${emotion ?? ''}\n${text}`); // decoded once; the server cache answers a repeat in ~10 ms
       try {
         return await playThroughAnalyser(audio, text);
       } catch {
@@ -226,6 +227,41 @@ export interface Listening {
   cancel: () => void;
 }
 
+/**
+ * The student's own voice, kept for the practice record (never sent anywhere but STT).
+ * Every finished utterance waits here until the answer it belongs to is sent: then the page
+ * takes it (`takeVoice`) and files it with the transcript; a typed or chosen answer drops it.
+ */
+let pendingVoice: ArrayBuffer[] = [];
+export function takeVoice(): ArrayBuffer | null {
+  const all = pendingVoice;
+  pendingVoice = [];
+  return all.length ? joinWav(all) : null;
+}
+export const dropVoice = () => void (pendingVoice = []);
+
+/** Raw PCM from the mic through an inline worklet (both recognition modes keep the student's voice). */
+async function capture(ctx: AudioContext, source: MediaStreamAudioSourceNode) {
+  const chunks: Float32Array[] = [];
+  const worklet = `registerProcessor('cap', class extends AudioWorkletProcessor { process(i) { const c = i[0] && i[0][0]; if (c) this.port.postMessage(c.slice(0)); return true; } });`;
+  const url = URL.createObjectURL(new Blob([worklet], { type: 'application/javascript' }));
+  await ctx.audioWorklet.addModule(url);
+  URL.revokeObjectURL(url);
+  const node = new AudioWorkletNode(ctx, 'cap');
+  node.port.onmessage = (e) => chunks.push(e.data as Float32Array);
+  source.connect(node);
+  const sink = ctx.createGain();
+  sink.gain.value = 0;
+  node.connect(sink).connect(ctx.destination);
+  return {
+    chunks,
+    stop: () => {
+      node.disconnect();
+      sink.disconnect();
+    },
+  };
+}
+
 /** Starts capturing. Throws a user-facing message if the mic is unavailable. */
 export async function startListening(): Promise<Listening> {
   stopSpeaking(); // the student interrupts — the actor stops talking
@@ -263,22 +299,16 @@ export async function startListening(): Promise<Listening> {
     stream.getTracks().forEach((t) => t.stop());
   };
 
+  const cap = await capture(ctx, source);
+  const keep = (said: string) => {
+    if (!said) return;
+    const wav = encodeWav(cap.chunks, ctx.sampleRate, 16000);
+    if (wav.byteLength >= 8000) pendingVoice.push(wav);
+  };
+
   if (support === 'server') {
-    // capture raw PCM with an inline worklet, encode WAV on stop
-    const chunks: Float32Array[] = [];
-    const worklet = `registerProcessor('cap', class extends AudioWorkletProcessor { process(i) { const c = i[0] && i[0][0]; if (c) this.port.postMessage(c.slice(0)); return true; } });`;
-    const url = URL.createObjectURL(new Blob([worklet], { type: 'application/javascript' }));
-    await ctx.audioWorklet.addModule(url);
-    URL.revokeObjectURL(url);
-    const node = new AudioWorkletNode(ctx, 'cap');
-    node.port.onmessage = (e) => chunks.push(e.data as Float32Array);
-    source.connect(node);
-    const sink = ctx.createGain();
-    sink.gain.value = 0;
-    node.connect(sink).connect(ctx.destination);
     const stop = () => {
-      node.disconnect();
-      sink.disconnect();
+      cap.stop();
       release();
     };
     return {
@@ -287,11 +317,13 @@ export async function startListening(): Promise<Listening> {
       cancel: stop,
       finish: async () => {
         stop();
-        const wav = encodeWav(chunks, ctx.sampleRate, 16000);
+        const wav = encodeWav(cap.chunks, ctx.sampleRate, 16000);
         if (wav.byteLength < 8000) return ''; // under ~0.25 s: nothing said
-        const res = await fetch('/api/v1/voice/stt', { method: 'POST', headers: { 'Content-Type': 'audio/wav' }, body: wav, signal: AbortSignal.timeout(20_000) });
+        const res = await fetch('/api/v1/voice/stt', { method: 'POST', headers: { 'Content-Type': 'audio/wav' }, body: wav, signal: AbortSignal.timeout(45_000) });
         if (!res.ok) throw new Error('Nutqni tanib boʻlmadi. Qayta urinib koʻring.');
-        return ((await res.json()) as { text: string }).text;
+        const said = ((await res.json()) as { text: string }).text;
+        if (said) pendingVoice.push(wav);
+        return said;
       },
     };
   }
@@ -337,16 +369,38 @@ export async function startListening(): Promise<Listening> {
     },
     cancel: () => {
       rec.abort();
+      cap.stop();
       release();
     },
     finish: async () => {
       rec.stop();
       await Promise.race([endedP, new Promise((r) => setTimeout(r, 2500))]);
+      cap.stop();
       release();
       if (failure) throw new Error(failure);
-      return (finalText || lastPartial).trim();
+      const said = (finalText || lastPartial).trim();
+      keep(said);
+      return said;
     },
   };
+}
+
+/** Several 16 kHz mono WAVs (as encodeWav makes them) as one, with a short breath between. */
+function joinWav(parts: ArrayBuffer[]): ArrayBuffer {
+  if (parts.length === 1) return parts[0];
+  const gap = 16000 * 0.25 * 2; // 0.25 s of silence, in bytes
+  const data = parts.reduce((n, p) => n + (p.byteLength - 44), 0) + gap * (parts.length - 1);
+  const out = new Uint8Array(44 + data);
+  out.set(new Uint8Array(parts[0], 0, 44));
+  const view = new DataView(out.buffer);
+  view.setUint32(4, 36 + data, true);
+  view.setUint32(40, data, true);
+  let o = 44;
+  parts.forEach((p, i) => {
+    out.set(new Uint8Array(p, 44), o);
+    o += p.byteLength - 44 + (i < parts.length - 1 ? gap : 0);
+  });
+  return out.buffer;
 }
 
 function encodeWav(chunks: Float32Array[], from: number, to: number): ArrayBuffer {

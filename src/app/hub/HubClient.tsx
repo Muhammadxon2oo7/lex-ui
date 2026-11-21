@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import type { Level, RemoteStatus, SessionMode } from '@/contracts';
 import { ApiError, api } from '@/game/api';
+import { pickScenario } from '@/game/randomCase';
 import { ensureCase } from '@/game/rooms';
 
 // the two "Ish yoʻli" cases are the same ones as at the campus kiosk (resumed where the student left off)
@@ -87,26 +88,9 @@ export default function HubClient() {
     }
   };
 
-  // a random case, never one of the last three played (the pool grows to ~10 on the court server)
-  const RECENT = 'lexsim.recentScenarios.v1';
   const startRandom = () => {
-    const pool = remote?.scenarios.map((s) => s.id) ?? [];
-    if (!pool.length) return;
-    let recent: string[] = [];
-    try {
-      recent = JSON.parse(localStorage.getItem(RECENT) ?? '[]') as string[];
-    } catch {
-      /* private mode: any case will do */
-    }
-    const fresh = pool.filter((id) => !recent.includes(id));
-    const from = fresh.length ? fresh : pool;
-    const id = from[Math.floor(Math.random() * from.length)];
-    try {
-      localStorage.setItem(RECENT, JSON.stringify([id, ...recent.filter((r) => r !== id)].slice(0, Math.min(3, pool.length - 1))));
-    } catch {
-      /* not remembered: fine */
-    }
-    void startEconomic(id);
+    const id = pickScenario(remote?.scenarios.map((s) => s.id) ?? []);
+    if (id) void startEconomic(id);
   };
 
   const startCourt = async () => {

@@ -72,6 +72,10 @@ export const TurnSchema = z.object({
   text: z.string(),
   at: z.string(),
   emotion: EmotionSchema.optional(),
+  /** Court sessions: a gesture with the line (nod, shake-head, lean-in…); unknown ones are dropped. */
+  gesture: GestureSchema.optional().catch(undefined),
+  /** Court sessions: how the listeners take this line (the opponent pleased by a refusal, the client worried…). */
+  reactions: z.array(z.object({ role: z.enum(['judge', 'secretary', 'opponent', 'witness', 'expert', 'principal']), emotion: EmotionSchema })).max(5).optional().catch(undefined),
   /** Court sessions only: which NPC speaks (one speaker per turn). */
   role: z.enum(['judge', 'secretary', 'opponent', 'witness', 'expert']).optional(),
   /** Court sessions only: how the room changes as this line begins. */
@@ -157,6 +161,25 @@ export const OutcomeSchema = z.object({
 });
 export type Outcome = z.infer<typeof OutcomeSchema>;
 
+const ScenePageSchema = z.object({ head: z.string().max(120), title: z.string().max(120), lines: z.array(z.string().max(200)).max(14), foot: z.string().max(120).optional(), stamp: z.string().max(60).optional() });
+const SceneDocSchema = z.object({
+  id: z.string(),
+  kind: z.enum(['sheet', 'folder', 'box']),
+  name: z.string().max(80),
+  note: z.string().max(200),
+  pages: z.array(ScenePageSchema).min(1).max(6),
+  color: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
+});
+const CastModelSchema = z.enum(['elder_man', 'woman', 'man', 'worker', 'secretary', 'lawyer', 'client', 'clerk', 'investigator', 'chief']);
+const VoiceNameSchema = z.string().regex(/^[a-z][a-z0-9_]{1,23}$/);
+export const SceneSchema = z.object({
+  kind: z.string().max(40).optional(),
+  /** A voice per speaking role, from the court server's palette (it must match the body: a woman's voice for a woman). */
+  voices: z.object({ judge: VoiceNameSchema, secretary: VoiceNameSchema, opponent: VoiceNameSchema, witness: VoiceNameSchema, expert: VoiceNameSchema }).partial().optional(),
+  cast: z.object({ principal: CastModelSchema.nullable().optional(), opponent: CastModelSchema.optional(), witness: CastModelSchema.optional() }).optional(),
+  papers: z.object({ claimant: z.array(SceneDocSchema).max(6).optional(), respondent: z.array(SceneDocSchema).max(6).optional() }).optional(),
+});
+
 export const ScenarioPublicSchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -172,6 +195,11 @@ export const ScenarioPublicSchema = z.object({
   }),
   npc: z.object({ id: z.string(), name: z.string(), age: z.number().int() }),
   disclaimer: z.string(),
+  /**
+   * Optional, from the court server's scenario pack: who sits in the hall and the papers on each table.
+   * A malformed scene is dropped (the frontend preset is used), never a reason to fail the session.
+   */
+  scene: SceneSchema.optional().catch(undefined),
 });
 export type ScenarioPublic = z.infer<typeof ScenarioPublicSchema>;
 

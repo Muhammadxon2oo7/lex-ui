@@ -143,12 +143,61 @@ Hozirgi `sud-ijara-*` ni shu formatga o'tkazing, qolgan 9 tasini ham shu formatd
 | `keyMoments[]` | KM1… : kutilgan dalil, `articleIds` (normalar bazasidan), namuna javob | Baholash va "Qanday aytish kerak edi" bloki |
 | `outcome` | Qaror funksiyasi: talaba nimani isbotladi → qanday qaror (to'liq, qisman, rad) | Natijani model emas, talabaning ishi belgilaydi |
 | `lines` | Sudyaning kanonik gaplari va har biriga 2–3 variant | Prerender: tez va bir xil ovoz |
+| `scene` | Sahna: zalda kim o'tiradi (`principal`, `opponent`, `witness`) va har bir tomon stolida qaysi hujjatlar yotadi (`papers.claimant`, `papers.respondent`). Batafsil 1a-bandda | Har bir ish o'z sahnasida: ijarada shartnoma va hisob-fakturalar, pudratda dalolatnoma va smeta, sug'urtada polis va baholash hisoboti |
 | `variables` | Tasodifiylashtiriladigan qiymatlar: ismlar, summa, sana, shartnoma raqami. Har biri uchun ruxsat etilgan oraliq beriladi | Bir ish 2-marta o'ynalganda ham yangidek tuyuladi. Sessiya ichida `seed` bilan qat'iy bo'ladi |
 
 **Moddalar:**
 - faqat sizning normalar bazangizdan olinadi (2267 ta norma, `articleId` bilan);
 - har bir moddaga mentor `verifiedAt` qo'yadi;
 - ssenariyda bazada yo'q modda bo'lsa, ssenariy ishga tushmaydi.
+
+### 1a. Sahna (`scene`): aktyorlar va buyumlar
+
+10 ta ish — 10 xil jarayon. Zal bir xil, lekin aktyorlar va stoldagi hujjatlar har ishda o'zgacha.
+
+**Frontendda tayyor:**
+- 10 ta mavzu (7-band) uchun oldindan tuzilgan sahnalar;
+- sahna ssenariy nomidagi kalit so'z bo'yicha tanlanadi;
+- talaba o'z tomonining hujjatlarini o'z stolida ko'radi, raqibnikini qarshi stolda;
+- zal ekranida sud nomi va ish turi yoziladi.
+
+**Frontend sahnalarida summa yoki sana yo'q.** Ular ssenariy faktlariga zid chiqmasligi uchun shunday qilingan. Hujjatning **aniq mazmuni** esa faqat sizda bor. Shuning uchun `GET /scenarios` va `snapshot.scenario` ichida ixtiyoriy `scene` maydonini yuboring:
+- sizniki bo'lsa, u ustun bo'ladi;
+- bo'lmagan maydon uchun frontend sahnasi ishlatiladi;
+- `scene` xato shaklda kelsa, e'tiborga olinmaydi va sessiya buzilmaydi.
+
+```json
+"scene": {
+  "kind": "Ijara qarzi va penya",
+  "cast": { "principal": "client", "opponent": "lawyer", "witness": "clerk" },
+  "papers": {
+    "claimant": [
+      { "id": "lease", "kind": "sheet", "name": "Ijara shartnomasi № 32-P",
+        "note": "Ijara haqi va penya sharti (8.5-band).",
+        "pages": [{ "head": "«A» MChJ va YaTT «B»", "title": "IJARA SHARTNOMASI № 32-P",
+                    "lines": ["Sana: 2022-yil 1-aprel.", "Penya — 8.5-band."],
+                    "foot": "Taraflar imzolari" }] },
+      { "id": "invoices", "kind": "folder", "name": "Hisob-fakturalar (imzolangan)",
+        "note": "Obyektdan foydalanilganini ko'rsatadi.", "color": "#7a5a2f",
+        "pages": [{ "head": "«A» MChJ", "title": "HISOB-FAKTURALAR", "lines": ["Ijarachi imzolagan."] }] }
+    ],
+    "respondent": [ ... ]
+  }
+}
+```
+
+**Maydonlar:**
+- `cast` modellari: `elder_man`, `woman`, `man`, `worker`, `secretary`, `lawyer`, `client`, `clerk`, `investigator`, `chief`. `principal: null` qo'yilsa, talabaning yonida hech kim o'tirmaydi.
+- `kind`: `sheet` (A4 varaq), `folder` (papka), `box` (quti, buyum).
+- Har tomonda ≤ 6 ta hujjat, har hujjatda ≤ 6 sahifa, har sahifada ≤ 14 qator.
+- To'liq sxema: `contracts.schema.json`, `ScenarioPublic.scene`.
+
+**Qoidalar:**
+- Hujjat matni faqat ssenariy `facts` va `evidence` bloklaridan olinsin.
+- Hujjatda **modda yozilmasin**. Hujjat — fakt, modda esa talabaning ishi.
+- `secret` faktlar faqat o'sha tomonning stolida tursin. Masalan, imzolanmagan dalolatnoma raqib stolida turmasin.
+- Har hujjat «O'quv namunasi» belgisi bilan chiqadi. Haqiqiy tashkilot blanki yoki gerbi ishlatilmasin.
+- `validate_scenario` tekshiradi: `scene` dagi har bir hujjat `evidence[]` dagi biror dalilga mos kelsin.
 
 ### 2. Har bir navbatda nima sodir bo'ladi
 
@@ -325,7 +374,7 @@ Model va TTS ishlayotgan vaqtda (1–3 s) zal jim qolmasin:
 7. lizing to'lovlari;
 8. shartnomani bekor qilish va zararni undirish;
 9. kafillik yoki kafolat bo'yicha talab;
-10. ma'muriy hujjat ustidan nizo (soliq yoki hokimiyat qarori).
+10. yuk tashish: yo'qolgan yoki shikastlangan yuk. (Davlat organi qarori ustidan nizo ma'muriy sud ishi bo'lgani uchun bu ro'yxatga kirmaydi. v15, 4.1-bandga qarang.)
 
 Har birida ikkala rol bo'lsin.
 
@@ -434,6 +483,8 @@ Bu robotdek eshitiladi.
 - `voice` rolga qarab yuboriladi: `judge` → `elder_m`, `secretary` → `female`, `opponent` → `female_alt`, `witness`/`expert` → `male`; `system` ovozlashtirilmaydi.
 - Matn o'zgarishsiz yuboriladi, faqat boshidagi sahna izohi (`(sekin)`) olib tashlanadi. Prerender ro'yxati ham aynan shu qoida bilan tuzilgan.
 - Sud zalida «Raqibga savol», «Iltimosnoma», «Eʼtiroz», «Kelishuv» chiplari qo'shildi.
+- Sud zali sahnasi ishga qarab o'zgaradi: aktyorlar, ikki tomon stolidagi hujjatlar va zal ekrani (1a-band). 10 ta mavzu uchun sahnalar tayyor.
+- Yo'naltirish terminali qayta tuzildi: «Ishlar», «Sud majlislari» (tasodifiy ish va barcha ssenariylar) va «Boshqa» bo'limlari.
 - Sud zalida keyingi gaplarning ovozi oldindan yuklanadi (spikerlar orasida pauza yo'q).
 - Hub'da «Tasodifiy ish» tugmasi qo'shildi (oxirgi 3 ta ish takrorlanmaydi), ssenariylar `GET /scenarios` dan dinamik chiqadi.
 - Hisobot sarlavhasi to'g'rilandi: endi haqiqiy ssenariy nomini ko'rsatadi (avval hamma joyda «DXM» chiqardi).

@@ -10,13 +10,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
 import { useEffect, useEffectEvent, useState, useSyncExternalStore } from 'react';
-import { currentCase, ensureCase, roomUrl } from '@/game/rooms';
-import { kindOfStage, type CaseKind, type CaseSnapshot } from '@/contracts/case';
+import { currentCase, roomUrl } from '@/game/rooms';
+import type { CaseSnapshot } from '@/contracts/case';
 import { audio } from '@/game/audio';
-import { DOORS, STAGE_DOOR } from '@/game/campus';
+import { DOORS } from '@/game/campus';
 import { useCampus } from '@/game/campusStore';
 import { getProfile, saveProfile, useProfile, type AvatarModel, type Profile, type Role } from '@/game/profile';
 import { useGame } from '@/game/store';
+import { KioskHome } from './KioskHome';
 import { rig } from './CampusPlayer';
 import { useDismiss } from '@/lib/useDismiss';
 void rig;
@@ -97,77 +98,6 @@ function Segment<T extends string>({ label, value, options, onChange }: { label:
  * rooms — choose one and you are placed inside it. Walking the building is
  * optional ("Binoda yurish").
  */
-/** "Ish yoʻli": the one case the corridor is about, and how far the student has taken it. */
-const CASES: Record<CaseKind, { tag: string; title: string; role: string }> = {
-  labour: { tag: 'Ish 1 · fuqarolik ishi (FPK)', title: 'Sardor N. — «Namuna Savdo» MChJ: ishga tiklash', role: 'Siz — daʼvogarning advokati.' },
-  theft: { tag: 'Ish 2 · jinoyat-protsessual (JPK)', title: 'Nodira K. — telefon oʻgʻirligi', role: 'Siz — jabrlanuvchining advokati.' },
-};
-
-function CaseCard({ kind, snap, setSnap, onEnter }: { kind: CaseKind; snap: CaseSnapshot | null | undefined; setSnap: (c: CaseSnapshot) => void; onEnter: (doorId: string) => void }) {
-  const [busy, setBusy] = useState(false);
-  const info = CASES[kind];
-  const stages = snap?.stages ?? DOORS.filter((d) => d.stage && kindOfStage(d.stage) === kind).map((d, i) => ({ id: d.stage!, number: i + 1, place: d.title, title: d.subtitle, status: 'open' as const, score: null }));
-  return (
-    <section aria-labelledby={`case-${kind}`} className="mx-6 mt-3 rounded-xl bg-white/[0.04] p-4 ring-1 ring-white/10">
-      <div className="flex items-start gap-3">
-        <div className="min-w-0 flex-1">
-          <p className="text-[0.66rem] font-semibold tracking-[0.2em] text-amber-200/90 uppercase">{info.tag}</p>
-          <h3 id={`case-${kind}`} className="mt-0.5 text-[1.05rem] leading-tight font-semibold">{info.title}</h3>
-          <p className="mt-1 text-[0.8rem] leading-snug text-white/55">{info.role} Istalgan bosqichdan boshlang.</p>
-        </div>
-        {snap && (
-          <button type="button" className="btn btn-quiet !min-h-9 !rounded-lg !px-3 text-[0.8rem]" disabled={busy} onClick={async () => {
-            setBusy(true);
-            try {
-              setSnap(await ensureCase(true, kind, snap.level));
-            } finally {
-              setBusy(false);
-            }
-          }}>Yangi ish</button>
-        )}
-      </div>
-      {/* the level: how much help the case gives — changing it starts the case afresh at that level */}
-      <div className="mt-2.5 flex flex-wrap items-center gap-1.5" role="radiogroup" aria-label="Daraja">
-        <span className="mr-1 text-[0.72rem] text-white/50">Daraja:</span>
-        {(['beginner', 'intermediate', 'advanced'] as const).map((lv) => {
-          const on = (snap?.level ?? 'beginner') === lv;
-          return (
-            <button key={lv} type="button" role="radio" aria-checked={on} disabled={busy}
-              title={on ? undefined : 'Ish shu darajada yangidan boshlanadi'}
-              onClick={async () => {
-                if (on) return;
-                setBusy(true);
-                try {
-                  setSnap(await ensureCase(true, kind, lv));
-                } finally {
-                  setBusy(false);
-                }
-              }}
-              className={`min-h-8 rounded-full px-3 text-[0.76rem] font-semibold transition-colors duration-150 ${on ? 'bg-white text-[#0b1322]' : 'bg-white/[0.06] text-white/70 hover:bg-white/[0.12]'}`}>
-              {lv === 'beginner' ? 'Boshlangʻich' : lv === 'intermediate' ? 'Oʻrta' : 'Professional'}
-            </button>
-          );
-        })}
-        <span className="ml-1 text-[0.7rem] text-white/40">{(snap?.level ?? 'beginner') === 'beginner' ? 'variant + oʻz soʻzingiz' : (snap?.level ?? 'beginner') === 'intermediate' ? 'oʻz soʻzingiz, variant −10' : 'faqat oʻz soʻzingiz, maslahatsiz'}</span>
-      </div>
-      <ol className={`mt-3 grid grid-cols-1 gap-1.5 ${stages.length > 3 ? 'sm:grid-cols-5' : 'sm:grid-cols-3'}`} aria-label="Bosqichlar">
-        {stages.map((s) => (
-          <li key={s.id}>
-            <button type="button" onClick={() => onEnter(STAGE_DOOR[s.id])}
-              className="flex h-full w-full items-center gap-2.5 rounded-lg bg-white/[0.05] px-2.5 py-2 text-left ring-1 ring-white/10 transition-colors duration-150 hover:bg-white/[0.1] hover:ring-[#1f8a5b]/60 sm:flex-col sm:items-start sm:gap-1">
-              <span className={`grid size-6 shrink-0 place-items-center rounded-md text-[0.75rem] font-bold ${s.status === 'done' ? 'bg-emerald-500' : s.status === 'returned' ? 'bg-red-500' : 'bg-white/15'}`}>{s.number}</span>
-              <span className="min-w-0">
-                <span className="block text-[0.8rem] leading-tight font-semibold">{s.place}</span>
-                <span className="block text-[0.7rem] leading-tight text-white/50">{s.score !== null ? `${s.score} ball` : s.title}</span>
-              </span>
-            </button>
-          </li>
-        ))}
-      </ol>
-    </section>
-  );
-}
-
 const noSubscribe = () => () => {};
 /** The terminal reads the saved profile, which exists only in the browser: render it there only. */
 function Kiosk(props: { profile: Profile | null; onEnter: (doorId: string) => void; onWalk: () => void }) {
@@ -195,12 +125,6 @@ function KioskPanel({ profile: live, onEnter, onWalk }: { profile: Profile | nul
       alive = false;
     };
   }, []);
-  const doorState = (d: (typeof DOORS)[number]): 'open' | 'done' | 'soon' => {
-    if (!d.action) return 'soon';
-    const snap = d.stage && kindOfStage(d.stage) === 'theft' ? theftSnap : caseSnap;
-    return d.stage && snap?.stages.find((x) => x.id === d.stage)?.status === 'done' ? 'done' : 'open';
-  };
-
   useEffect(() => {
     useCampus.getState().set({ avatar });
   }, [avatar]);
@@ -214,12 +138,12 @@ function KioskPanel({ profile: live, onEnter, onWalk }: { profile: Profile | nul
       role="dialog"
       aria-modal="true"
       aria-labelledby="kiosk-title"
-      className="absolute top-1/2 right-4 z-20 flex max-h-[calc(100dvh-2rem)] w-[min(44rem,calc(100vw-2rem))] -translate-y-1/2 flex-col overflow-hidden rounded-[18px] bg-[#0b1322]/95 text-white shadow-[0_40px_120px_rgba(0,0,0,0.6)] ring-1 ring-white/10 select-text sm:right-8"
+      className={`absolute top-1/2 right-4 z-20 flex max-h-[calc(100dvh-2rem)] w-[min(44rem,calc(100vw-2rem))] ${editing ? '' : 'h-[min(56rem,calc(100dvh-2rem))]'} -translate-y-1/2 flex-col overflow-hidden rounded-[18px] bg-[#0b1322]/95 text-white shadow-[0_40px_120px_rgba(0,0,0,0.6)] ring-1 ring-white/10 select-text sm:right-8`}
     >
       <header className="flex items-center gap-4 border-b border-white/10 px-6 py-3.5">
         <span className="h-8 w-1 rounded-full bg-[#1f8a5b]" aria-hidden />
         <div className="min-w-0 flex-1">
-          <p className="text-[0.68rem] font-semibold tracking-[0.3em] text-white/45">LEXSIM · HUQUQIY AMALIYOT MARKAZI</p>
+          <p className="text-[0.68rem] font-semibold tracking-[0.3em] text-white/45 max-sm:tracking-[0.14em]">LEXSIM · HUQUQIY AMALIYOT MARKAZI</p>
           <h2 id="kiosk-title" className="text-[1.15rem] font-semibold tracking-tight">Yoʻnaltirish terminali</h2>
         </div>
         <p className="hidden text-right text-[0.78rem] text-white/50 sm:block"><Clock /></p>
@@ -261,39 +185,7 @@ function KioskPanel({ profile: live, onEnter, onWalk }: { profile: Profile | nul
             </div>
             <button type="button" className="btn btn-quiet !min-h-10 !rounded-xl text-[0.85rem]" onClick={() => setEditing(true)}>Profil</button>
           </div>
-          <p className="px-6 pt-1 text-[0.9rem] text-white/60">Har bir eshik — ishning bir bosqichi. Ikki ish: fuqarolik va jinoyat-protsessual.</p>
-          <CaseCard kind="labour" snap={caseSnap} setSnap={setCaseSnap} onEnter={onEnter} />
-          <CaseCard kind="theft" snap={theftSnap} setSnap={setTheftSnap} onEnter={onEnter} />
-          {/* the case rooms are already on the case cards above; here only the rest of the building */}
-          <h4 className="px-6 pt-4 text-[0.78rem] font-semibold text-white/55">Boshqa xonalar</h4>
-          <ul className="scroll-soft grid flex-1 gap-2 overflow-y-auto px-6 pt-2 pb-4 sm:grid-cols-2" aria-label="Boshqa xonalar">
-            {DOORS.filter((d) => d.action !== 'case').map((d) => (
-              <li key={d.id}>
-                <button
-                  type="button"
-                  disabled={!d.action}
-                  onClick={() => onEnter(d.id)}
-                  className={`group flex h-full w-full flex-col rounded-xl p-4 text-left ring-1 transition-[background-color,transform] duration-150 active:scale-[0.985] disabled:cursor-not-allowed ${d.action ? 'bg-white/[0.05] ring-white/10 hover:bg-white/[0.1] hover:ring-[#1f8a5b]/60' : 'bg-white/[0.02] ring-white/5 opacity-55'}`}
-                >
-                  <span className="flex items-center gap-3">
-                    <span className={`grid size-9 shrink-0 place-items-center rounded-lg text-[1rem] font-bold ${d.action ? 'bg-[#1f8a5b]' : 'bg-white/10'}`}>{d.number}</span>
-                    <span className="min-w-0">
-                      <span className="block text-[1rem] leading-tight font-semibold">{d.title}</span>
-                      <span className="block text-[0.78rem] text-white/55">{d.subtitle}</span>
-                    </span>
-                  </span>
-                  <span className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[0.74rem] text-white/55">
-                    <span>Rol: <span className="text-white/80">{d.role}</span></span>
-                    {d.action && <span>{d.minutes} daq.</span>}
-                  </span>
-                  <span className="mt-1 text-[0.74rem] leading-snug text-white/45">{d.basis}</span>
-                  <span className={`mt-3 text-[0.8rem] font-semibold ${doorState(d) === 'open' ? 'text-[#5dd6a0]' : doorState(d) === 'done' ? 'text-sky-300' : 'text-white/40'}`}>
-                    {{ open: 'Kirish →', done: '✓ Oʻtilgan — qayta kirish', soon: 'Tayyorlanmoqda' }[doorState(d)]}
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ul>
+          <KioskHome caseSnap={caseSnap} setCaseSnap={setCaseSnap} theftSnap={theftSnap} setTheftSnap={setTheftSnap} onEnter={onEnter} />
           <footer className="flex flex-wrap items-center gap-2 border-t border-white/10 px-6 py-3.5">
             <button type="button" className="btn btn-quiet !min-h-10 !rounded-xl text-[0.86rem]" onClick={onWalk}>Binoda yurish</button>
             <Link href="/hub" className="btn btn-quiet !min-h-10 !rounded-xl text-[0.86rem]">2D rejim</Link>

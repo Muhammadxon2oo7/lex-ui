@@ -14,8 +14,8 @@ import { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import { CaseEnvelopeSchema, StageIdSchema, type CaseActRequest, type CaseLine, type CaseSnapshot, type CaseSpeaker, type ClaimDraft, type Ruling, type StageId } from '@/contracts/case';
 import { newId } from '@/game/api';
 import { audio } from '@/game/audio';
-import { useProfile } from '@/game/profile';
-import { lipTrack, speak, stopSpeaking, type VoiceId } from '@/game/voice';
+import { getProfile, useProfile } from '@/game/profile';
+import { type VoiceId, lipTrack, prefetchLine, speak, stopSpeaking, dropVoice, takeVoice } from '@/game/voice';
 import { matchUtterance } from '@/lib/uz';
 import { CodePanel } from '@/components/hud/CodePanel';
 import { Talk } from '@/components/hud/Talk';
@@ -26,6 +26,9 @@ import { HandView } from '@/components/case/HandView';
 import { useDismiss } from '@/lib/useDismiss';
 import { useGame } from '@/game/store';
 import { statementsFor } from '@/lib/xapi';
+import { clearVoices, saveVoice } from '@/lib/voiceStore';
+import { PracticeRecord } from '@/components/record/PracticeRecord';
+import type { RecordLine, RecordMeta } from '@/game/practiceRecord';
 
 const CaseScene = dynamic(() => import('@/components/case/CaseScene'), { ssr: false });
 const spring = { type: 'spring', bounce: 0, duration: 0.4 } as const;
@@ -121,12 +124,21 @@ function usePresenter(lines: CaseLine[], voices: Partial<Record<CaseSpeaker, Voi
     const judgeWalks = line.scene.judgeIn && prev && !prev.scene.judgeIn;
     const witnessWalks = line.scene.witnessIn && prev && !prev.scene.witnessIn;
     const reading = Math.max(words, judgeWalks ? 5600 : witnessWalks ? 7200 : 0);
-    void (voice ? speak(line.text, voice) : Promise.resolve(false)).then((spoken) => {
-      if (!alive) return;
-      // no audible voice: the mouth still forms the words, over the subtitle's reading time
-      if (!spoken && voice) lipTrack(line.text, reading - 500);
-      timer = setTimeout(() => setHeard((h) => h + 1), spoken ? 300 : reading);
-    });
+    // the lines that follow are fetched while this one plays (no wait between speakers)
+    for (const n of lines.slice(heard + 1, heard + 4)) if (voices[n.speaker]) void prefetchLine(n.text, voices[n.speaker]!, n.emotion);
+    // whoever walks in speaks at their place, not on the way
+    const walk = voice ? (judgeWalks ? 4800 : witnessWalks ? 6400 : 0) : 0;
+    const next = lines[heard + 1];
+    // a breath between lines: the same speaker goes on quickly, a new one answers after a beat
+    const pause = !next || next.speaker === 'you' ? 150 : next.speaker === line.speaker ? 240 : 560;
+    void new Promise<void>((r) => (walk ? (timer = setTimeout(r, walk)) : r()))
+      .then(() => (alive && voice ? speak(line.text, voice, line.emotion) : false))
+      .then((spoken) => {
+        if (!alive) return;
+        // no audible voice: the mouth still forms the words, over the subtitle's reading time
+        if (!spoken && voice) lipTrack(line.text, reading - 500);
+        timer = setTimeout(() => setHeard((h) => h + 1), spoken ? pause : reading);
+      });
     return () => {
       alive = false;
       clearTimeout(timer);
@@ -198,6 +210,9 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
     if (!t) return;
     audio.tick();
     setSaid('');
+    // the student's own voice goes into this room's practice record
+    const wav = inputMode === 'voice' ? takeVoice() : (dropVoice(), null);
+    if (wav) void saveVoice(`${snap.caseId}:${stage}`, t, wav);
     void act({ type: 'say', text: t, inputMode });
   };
   const askHint = () => {
@@ -206,6 +221,7 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
   };
   // a choice made on screen answers with a quiet tap
   const choose = (optionId: string) => {
+    dropVoice();
     audio.tick();
     void act({ type: 'choose', optionId });
   };
@@ -441,7 +457,7 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
             setSeenRulings(snap.rulings.length);
           }} />
         )}
-        {finished && snap.result && <ResultSheet key="result" snap={snap} stage={def} next={nextStage} onReplay={replay} onLeave={leave} onArticle={(a) => setCode(a)} />}
+        {finished && snap.result && <ResultSheet key="result" snap={snap} stage={def} next={nextStage} onReplay={() => { void clearVoices(`${snap.caseId}:${stage}`); replay(); }} onLeave={leave} onArticle={(a) => setCode(a)} />}
         {inHand && <HandView key={inHand.id} doc={inHand} onClose={() => setInHand(null)} />}
         {folder && <CaseFolder key="folder" snap={snap} onClose={() => setFolder(false)} onRuling={(r) => { setFolder(false); setOpenRuling(r); }} />}
         {code !== null && <CodePanel key="code" code={snap.code} open={code || null} onOpen={(n) => setCode(n)} onClose={() => setCode(null)} />}
@@ -545,6 +561,9 @@ function ResultSheet({ snap, stage, next, onReplay, onLeave, onArticle }: { snap
           </ul>
         )}
         {r.reflect && <Reflection id={`${snap.caseId}:${stage.id}`} question={r.reflect} />}
+        <div className="mt-5">
+          <RoomRecord snap={snap} stage={stage} />
+        </div>
         <div className="mt-6 flex flex-wrap gap-2">
           {returned ? (
             <Link href={`/ish/${snap.caseId}/draft`} className="btn btn-primary">Arizani tuzatish →</Link>
@@ -552,7 +571,6 @@ function ResultSheet({ snap, stage, next, onReplay, onLeave, onArticle }: { snap
             <Link href={`/ish/${snap.caseId}/${next.id}`} className="btn btn-primary">{next.number}. {next.place} →</Link>
           ) : null}
           <button type="button" className="btn btn-quiet" onClick={onReplay}>Qayta oʻynash</button>
-          <button type="button" className="btn btn-quiet" onClick={() => downloadReport(snap, stage.id)}>Hisobot (JSON)</button>
           <button type="button" className="btn btn-quiet" onClick={onLeave}>Terminal</button>
         </div>
         <p className="mt-4 text-[0.7rem] leading-snug text-black/40">Oʻquv simulyatsiyasi, yuridik maslahat emas · ish holatlari toʻqilgan · moddalar lex.uz saytidan ({snap.code.retrievedAt})</p>
@@ -626,19 +644,40 @@ function Reflection({ id, question }: { id: string; question: string }) {
 }
 
 /**
- * The room's record as xAPI-shaped statements (actor / verb / object / result),
- * so it can later go to an LMS or a learning record store without a rewrite.
- * The actor is anonymous: no name leaves the browser.
+ * This room's practice record: every line in order (the student by name, the actors in their
+ * voices), the debrief, and the downloads. The LMS statements (xAPI, anonymous actor) stay
+ * available for teachers.
  */
-function downloadReport(snap: CaseSnapshot, stage: StageId) {
+function RoomRecord({ snap, stage }: { snap: CaseSnapshot; stage: CaseSnapshot['stages'][number] }) {
   const r = snap.result!;
-  const statements = statementsFor({ actor: 'anonymous', kind: snap.kind, stage, stageTitle: snap.stages.find((s) => s.id === stage)?.title ?? stage, score: r.score, hints: r.hints, log: r.log, seconds: r.log.at(-1)?.at });
-  const blob = new Blob([JSON.stringify({ case: snap.title, stage, code: { title: snap.code.title, edition: snap.code.edition }, statements }, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `lexsim-${snap.kind}-${stage}.json`;
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  const data = useMemo(() => {
+    const student = getProfile()?.name?.trim() || 'Talaba';
+    const party = (role: CaseSpeaker) => snap.parties.find((p) => p.role === role);
+    const lines: RecordLine[] = snap.lines.map((l) =>
+      l.speaker === 'you'
+        ? { who: student, role: 'student', text: l.text }
+        : l.speaker === 'system'
+          ? { who: '', role: 'system', text: l.text }
+          : { who: party(l.speaker) ? `${party(l.speaker)!.label} · ${party(l.speaker)!.name}` : l.speaker, role: 'npc', text: l.text, voice: party(l.speaker)?.voice, emotion: l.emotion },
+    );
+    const meta: RecordMeta = {
+      title: `${snap.title} — ${stage.number}-bosqich: ${stage.place}`,
+      subtitle: `${stage.title} · ${({ beginner: 'boshlangʻich', intermediate: 'oʻrta', advanced: 'professional' } as const)[snap.level]} daraja`,
+      student,
+      date: new Date(),
+      score: r.score,
+      outcome: r.verdict,
+      slug: `${snap.kind}-${stage.id}`,
+    };
+    return { lines, meta, analysis: { decisions: r.log, strengths: r.good, errors: r.notes } };
+  }, [snap, stage, r]);
+  const xapi = () => ({
+    case: snap.title,
+    stage: stage.id,
+    code: { title: snap.code.title, edition: snap.code.edition },
+    statements: statementsFor({ actor: 'anonymous', kind: snap.kind, stage: stage.id, stageTitle: stage.title, score: r.score, hints: r.hints, log: r.log, seconds: r.log.at(-1)?.at }),
+  });
+  return <PracticeRecord meta={data.meta} lines={data.lines} analysis={data.analysis} scope={`${snap.caseId}:${stage.id}`} xapi={xapi} />;
 }
 
 function CaseFolder({ snap, onClose, onRuling }: { snap: CaseSnapshot; onClose: () => void; onRuling: (r: Ruling) => void }) {

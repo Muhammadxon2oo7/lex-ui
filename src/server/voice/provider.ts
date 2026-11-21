@@ -7,7 +7,7 @@ import { createHash } from 'node:crypto';
 import { remoteCookie } from '@/server/remote/court';
 import { keyHeaders, remoteKeyed } from '@/server/remote/key';
 
-export type VoiceId = 'elder_m' | 'male' | 'female' | 'female_alt';
+export type VoiceId = string;
 
 const REMOTE = process.env.LEXSIM_REMOTE_URL?.replace(/\/+$/, '') || null;
 
@@ -25,8 +25,9 @@ async function remoteVoiceStatus() {
   if (!REMOTE) return { tts: false, stt: false };
   if (remoteVoice && Date.now() - remoteVoice.at < 60_000) return remoteVoice;
   try {
-    const r = (await fetch(`${REMOTE}/voice/status`, { cache: 'no-store', signal: AbortSignal.timeout(3000) }).then((x) => x.json())) as { tts?: string | null; stt?: string | null };
-    remoteVoice = { at: Date.now(), tts: Boolean(r.tts), stt: Boolean(r.stt) };
+    const r = (await fetch(`${REMOTE}/voice/status`, { cache: 'no-store', signal: AbortSignal.timeout(3000) }).then((x) => x.json())) as { tts?: string | null; stt?: string | null; sttEngine?: string | null };
+    // v1.4.1 reports `stt: null` while recognition works (its engine is named in `sttEngine`): trust the engine
+    remoteVoice = { at: Date.now(), tts: Boolean(r.tts), stt: Boolean(r.stt || r.sttEngine) };
   } catch {
     remoteVoice = { at: Date.now(), tts: false, stt: false };
   }
@@ -44,13 +45,19 @@ const cache = new Map<string, Buffer>();
 const CACHE_MAX = 300;
 
 /** The text goes unchanged (the backend's pre-rendered cache is keyed by it). */
-export async function synthesize(text: string, voice: VoiceId, owner?: string): Promise<Buffer | null> {
-  const id = createHash('sha256').update(`${voice}\n${text}`).digest('hex');
+export async function synthesize(text: string, voice: VoiceId, owner?: string, emotion?: string): Promise<Buffer | null> {
+  const id = createHash('sha256').update(`${voice}\n${emotion ?? ''}\n${text}`).digest('hex');
   const hit = cache.get(id);
   if (hit) return hit;
   const auth = await authFor(owner);
   if (!auth || !(await remoteVoiceStatus()).tts) return null;
-  const res = await fetch(`${REMOTE}/voice/tts`, { method: 'POST', headers: { 'Content-Type': 'application/json', ...auth }, body: JSON.stringify({ text, voice }), signal: AbortSignal.timeout(20_000) });
+  const ask = () => fetch(`${REMOTE}/voice/tts`, { method: 'POST', headers: { 'Content-Type': 'application/json', ...auth }, body: JSON.stringify({ text, voice, ...(emotion ? { emotion } : {}) }), signal: AbortSignal.timeout(20_000) });
+  let res = await ask();
+  // the per-student limit (lines fetched ahead): wait as asked, at most 2 s, once
+  if (res.status === 429) {
+    await new Promise((r) => setTimeout(r, 1000 * Math.min(2, Number(res.headers.get('retry-after')) || 1)));
+    res = await ask();
+  }
   if (!res.ok) throw new Error(`tts ${res.status}`);
   const audio = Buffer.from(await res.arrayBuffer());
   cache.set(id, audio);

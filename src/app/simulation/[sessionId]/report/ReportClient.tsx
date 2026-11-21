@@ -6,9 +6,18 @@
  */
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { isOfficialSource, type Assessment, type Source } from '@/contracts';
+import { useEffect, useMemo, useState } from 'react';
+import { isOfficialSource, type Assessment, type Snapshot, type Source } from '@/contracts';
+import { PracticeRecord } from '@/components/record/PracticeRecord';
 import { ApiError, api } from '@/game/api';
+import { courtStageFor } from '@/game/courtStage';
+import type { RecordLine, RecordMeta } from '@/game/practiceRecord';
+import { useProfile } from '@/game/profile';
+
+const COURT_LABEL = { judge: 'Sudya', secretary: 'Sud majlisi kotibi', opponent: 'Raqib tomon vakili', witness: 'Guvoh', expert: 'Ekspert' } as const;
+/** «Title: message» — unless the message already starts with its title. */
+const line = (f: { title: string; message: string }) => (f.message.startsWith(f.title) ? f.message : `${f.title}: ${f.message}`);
+const LEVEL_NAME = { beginner: 'boshlangʻich', intermediate: 'oʻrta', advanced: 'professional' } as const;
 
 function Sources({ sources }: { sources: Source[] }) {
   if (!sources.length) return null;
@@ -40,12 +49,15 @@ export default function ReportClient() {
   const [reason, setReason] = useState('');
   const [sending, setSending] = useState(false);
   // whose report: the economic court (court server) or the DXM office — from the session itself
-  const [title, setTitle] = useState<string | null>(null);
+  const [snap, setSnap] = useState<Snapshot | null>(null);
+  const court = sessionId.startsWith('rmt_');
+  const title = snap ? `${court ? 'Iqtisodiy sud' : 'DXM xodimi'} · ${snap.scenario.title}` : null;
+  const profile = useProfile();
 
   useEffect(() => {
     let cancelled = false;
     api.getSession(sessionId).then(
-      (s) => !cancelled && setTitle(`${sessionId.startsWith('rmt_') ? 'Iqtisodiy sud' : 'DXM xodimi'} · ${s.scenario.title}`),
+      (s) => !cancelled && setSnap(s),
       () => {},
     );
     api.report(sessionId).then(
@@ -56,6 +68,41 @@ export default function ReportClient() {
       cancelled = true;
     };
   }, [sessionId]);
+
+  // the practice record: the whole session in order, the student by name, the actors in their voices
+  const record = useMemo(() => {
+    if (!report) return null;
+    const voices = court && snap ? courtStageFor(snap.scenario).voices : null;
+    const student = profile?.name?.trim() || 'Talaba';
+    const lines: RecordLine[] = report.turns.map((t) =>
+      t.speaker === 'user'
+        ? { who: student, role: 'student', text: t.text }
+        : t.speaker === 'system'
+          ? { who: '', role: 'system', text: t.text }
+          : { who: court ? (t.role ? COURT_LABEL[t.role] : 'Sud') : (snap?.scenario.npc.name ?? 'Fuqaro'), role: 'npc', text: t.text, voice: (t.role && voices?.[t.role]) || 'elder_m', emotion: t.emotion },
+    );
+    const level = snap?.level ? `${LEVEL_NAME[snap.level]} daraja` : null;
+    const meta: RecordMeta = {
+      // «Ijara qarzi va penya — daʼvogar vakili»: the role is in the subtitle already
+      title: snap ? `${court ? 'Iqtisodiy sud' : 'DXM xodimi'} · ${snap.scenario.title.split(/\s+[—–-]\s+/)[0]}` : court ? 'Iqtisodiy sud' : 'DXM xodimi',
+      subtitle: [snap?.scenario.briefing.position, level].filter(Boolean).join(' · '),
+      student,
+      date: new Date(report.evaluatedAt),
+      score: report.zeroedByEthics ? 0 : report.scoreTotal,
+      outcome: report.outcome.title,
+      slug: report.scenarioId,
+    };
+    return {
+      meta,
+      lines,
+      analysis: {
+        criteria: report.criteria.map((c) => ({ label: c.label, score: report.zeroedByEthics ? 0 : c.score, max: c.max, explanation: c.explanation })),
+        decisions: report.decisions,
+        strengths: report.feedback.filter((f) => f.kind === 'strength').map(line),
+        errors: report.feedback.filter((f) => f.kind === 'error').map(line),
+      },
+    };
+  }, [report, snap, court, profile?.name]);
 
   if (error) {
     return (
@@ -130,6 +177,12 @@ export default function ReportClient() {
           ))}
         </ul>
       </section>
+
+      {record && (
+        <div className="mt-4">
+          <PracticeRecord meta={record.meta} lines={record.lines} analysis={record.analysis} scope={sessionId} xapi={() => ({ session: sessionId, scenario: report.scenarioId, score: report.scoreTotal, outcome: report.outcome.id, criteria: report.criteria, decisions: report.decisions ?? [], turns: report.turns.map(({ id, speaker, role, text, at }) => ({ id, speaker, role, text, at })) })} />
+        </div>
+      )}
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         <section className="rounded-[24px] border border-line bg-card p-6" aria-labelledby="strengths">

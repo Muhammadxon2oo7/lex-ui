@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "LexSim API contracts",
-  "generated": "2026-11-20T22:37:52.549Z",
+  "generated": "2026-11-21T02:28:01.728Z",
   "$defs": {
     "AppealRequest": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -312,6 +312,57 @@
                   "calm",
                   "reassured"
                 ]
+              },
+              "gesture": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "nod",
+                  "shake-head",
+                  "sigh",
+                  "lean-in",
+                  "check-watch",
+                  "show-phone",
+                  "offer-envelope",
+                  "withdraw-envelope",
+                  "stand"
+                ]
+              },
+              "reactions": {
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "role": {
+                      "type": "string",
+                      "enum": [
+                        "judge",
+                        "secretary",
+                        "opponent",
+                        "witness",
+                        "expert",
+                        "principal"
+                      ]
+                    },
+                    "emotion": {
+                      "type": "string",
+                      "enum": [
+                        "neutral",
+                        "impatient",
+                        "upset",
+                        "confused",
+                        "uncertain",
+                        "calm",
+                        "reassured"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "role",
+                    "emotion"
+                  ]
+                }
               },
               "role": {
                 "type": "string",
@@ -1004,6 +1055,57 @@
                               "reassured"
                             ]
                           },
+                          "gesture": {
+                            "type": "string",
+                            "enum": [
+                              "none",
+                              "nod",
+                              "shake-head",
+                              "sigh",
+                              "lean-in",
+                              "check-watch",
+                              "show-phone",
+                              "offer-envelope",
+                              "withdraw-envelope",
+                              "stand"
+                            ]
+                          },
+                          "reactions": {
+                            "maxItems": 5,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "role": {
+                                  "type": "string",
+                                  "enum": [
+                                    "judge",
+                                    "secretary",
+                                    "opponent",
+                                    "witness",
+                                    "expert",
+                                    "principal"
+                                  ]
+                                },
+                                "emotion": {
+                                  "type": "string",
+                                  "enum": [
+                                    "neutral",
+                                    "impatient",
+                                    "upset",
+                                    "confused",
+                                    "uncertain",
+                                    "calm",
+                                    "reassured"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "role",
+                                "emotion"
+                              ]
+                            }
+                          },
                           "role": {
                             "type": "string",
                             "enum": [
@@ -1137,6 +1239,57 @@
                               "calm",
                               "reassured"
                             ]
+                          },
+                          "gesture": {
+                            "type": "string",
+                            "enum": [
+                              "none",
+                              "nod",
+                              "shake-head",
+                              "sigh",
+                              "lean-in",
+                              "check-watch",
+                              "show-phone",
+                              "offer-envelope",
+                              "withdraw-envelope",
+                              "stand"
+                            ]
+                          },
+                          "reactions": {
+                            "maxItems": 5,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "role": {
+                                  "type": "string",
+                                  "enum": [
+                                    "judge",
+                                    "secretary",
+                                    "opponent",
+                                    "witness",
+                                    "expert",
+                                    "principal"
+                                  ]
+                                },
+                                "emotion": {
+                                  "type": "string",
+                                  "enum": [
+                                    "neutral",
+                                    "impatient",
+                                    "upset",
+                                    "confused",
+                                    "uncertain",
+                                    "calm",
+                                    "reassured"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "role",
+                                "emotion"
+                              ]
+                            }
                           },
                           "role": {
                             "type": "string",
@@ -1606,6 +1759,258 @@
                 },
                 "disclaimer": {
                   "type": "string"
+                },
+                "scene": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "maxLength": 40
+                    },
+                    "voices": {
+                      "type": "object",
+                      "properties": {
+                        "judge": {
+                          "type": "string",
+                          "pattern": "^[a-z][a-z0-9_]{1,23}$"
+                        },
+                        "secretary": {
+                          "type": "string",
+                          "pattern": "^[a-z][a-z0-9_]{1,23}$"
+                        },
+                        "opponent": {
+                          "type": "string",
+                          "pattern": "^[a-z][a-z0-9_]{1,23}$"
+                        },
+                        "witness": {
+                          "type": "string",
+                          "pattern": "^[a-z][a-z0-9_]{1,23}$"
+                        },
+                        "expert": {
+                          "type": "string",
+                          "pattern": "^[a-z][a-z0-9_]{1,23}$"
+                        }
+                      }
+                    },
+                    "cast": {
+                      "type": "object",
+                      "properties": {
+                        "principal": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "elder_man",
+                                "woman",
+                                "man",
+                                "worker",
+                                "secretary",
+                                "lawyer",
+                                "client",
+                                "clerk",
+                                "investigator",
+                                "chief"
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "opponent": {
+                          "type": "string",
+                          "enum": [
+                            "elder_man",
+                            "woman",
+                            "man",
+                            "worker",
+                            "secretary",
+                            "lawyer",
+                            "client",
+                            "clerk",
+                            "investigator",
+                            "chief"
+                          ]
+                        },
+                        "witness": {
+                          "type": "string",
+                          "enum": [
+                            "elder_man",
+                            "woman",
+                            "man",
+                            "worker",
+                            "secretary",
+                            "lawyer",
+                            "client",
+                            "clerk",
+                            "investigator",
+                            "chief"
+                          ]
+                        }
+                      }
+                    },
+                    "papers": {
+                      "type": "object",
+                      "properties": {
+                        "claimant": {
+                          "maxItems": 6,
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "kind": {
+                                "type": "string",
+                                "enum": [
+                                  "sheet",
+                                  "folder",
+                                  "box"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "maxLength": 80
+                              },
+                              "note": {
+                                "type": "string",
+                                "maxLength": 200
+                              },
+                              "pages": {
+                                "minItems": 1,
+                                "maxItems": 6,
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "head": {
+                                      "type": "string",
+                                      "maxLength": 120
+                                    },
+                                    "title": {
+                                      "type": "string",
+                                      "maxLength": 120
+                                    },
+                                    "lines": {
+                                      "maxItems": 14,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "maxLength": 200
+                                      }
+                                    },
+                                    "foot": {
+                                      "type": "string",
+                                      "maxLength": 120
+                                    },
+                                    "stamp": {
+                                      "type": "string",
+                                      "maxLength": 60
+                                    }
+                                  },
+                                  "required": [
+                                    "head",
+                                    "title",
+                                    "lines"
+                                  ]
+                                }
+                              },
+                              "color": {
+                                "type": "string",
+                                "pattern": "^#[0-9a-fA-F]{6}$"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "kind",
+                              "name",
+                              "note",
+                              "pages"
+                            ]
+                          }
+                        },
+                        "respondent": {
+                          "maxItems": 6,
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "kind": {
+                                "type": "string",
+                                "enum": [
+                                  "sheet",
+                                  "folder",
+                                  "box"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "maxLength": 80
+                              },
+                              "note": {
+                                "type": "string",
+                                "maxLength": 200
+                              },
+                              "pages": {
+                                "minItems": 1,
+                                "maxItems": 6,
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "head": {
+                                      "type": "string",
+                                      "maxLength": 120
+                                    },
+                                    "title": {
+                                      "type": "string",
+                                      "maxLength": 120
+                                    },
+                                    "lines": {
+                                      "maxItems": 14,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "maxLength": 200
+                                      }
+                                    },
+                                    "foot": {
+                                      "type": "string",
+                                      "maxLength": 120
+                                    },
+                                    "stamp": {
+                                      "type": "string",
+                                      "maxLength": 60
+                                    }
+                                  },
+                                  "required": [
+                                    "head",
+                                    "title",
+                                    "lines"
+                                  ]
+                                }
+                              },
+                              "color": {
+                                "type": "string",
+                                "pattern": "^#[0-9a-fA-F]{6}$"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "kind",
+                              "name",
+                              "note",
+                              "pages"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               },
               "required": [
@@ -1707,6 +2112,57 @@
                       "calm",
                       "reassured"
                     ]
+                  },
+                  "gesture": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "nod",
+                      "shake-head",
+                      "sigh",
+                      "lean-in",
+                      "check-watch",
+                      "show-phone",
+                      "offer-envelope",
+                      "withdraw-envelope",
+                      "stand"
+                    ]
+                  },
+                  "reactions": {
+                    "maxItems": 5,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "judge",
+                            "secretary",
+                            "opponent",
+                            "witness",
+                            "expert",
+                            "principal"
+                          ]
+                        },
+                        "emotion": {
+                          "type": "string",
+                          "enum": [
+                            "neutral",
+                            "impatient",
+                            "upset",
+                            "confused",
+                            "uncertain",
+                            "calm",
+                            "reassured"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "role",
+                        "emotion"
+                      ]
+                    }
                   },
                   "role": {
                     "type": "string",
@@ -2181,6 +2637,9 @@
               "role": {
                 "type": "string"
               },
+              "position": {
+                "type": "string"
+              },
               "durationMinutes": {
                 "type": "string"
               },
@@ -2308,6 +2767,258 @@
         },
         "disclaimer": {
           "type": "string"
+        },
+        "scene": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "maxLength": 40
+            },
+            "voices": {
+              "type": "object",
+              "properties": {
+                "judge": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,23}$"
+                },
+                "secretary": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,23}$"
+                },
+                "opponent": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,23}$"
+                },
+                "witness": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,23}$"
+                },
+                "expert": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,23}$"
+                }
+              }
+            },
+            "cast": {
+              "type": "object",
+              "properties": {
+                "principal": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "elder_man",
+                        "woman",
+                        "man",
+                        "worker",
+                        "secretary",
+                        "lawyer",
+                        "client",
+                        "clerk",
+                        "investigator",
+                        "chief"
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "opponent": {
+                  "type": "string",
+                  "enum": [
+                    "elder_man",
+                    "woman",
+                    "man",
+                    "worker",
+                    "secretary",
+                    "lawyer",
+                    "client",
+                    "clerk",
+                    "investigator",
+                    "chief"
+                  ]
+                },
+                "witness": {
+                  "type": "string",
+                  "enum": [
+                    "elder_man",
+                    "woman",
+                    "man",
+                    "worker",
+                    "secretary",
+                    "lawyer",
+                    "client",
+                    "clerk",
+                    "investigator",
+                    "chief"
+                  ]
+                }
+              }
+            },
+            "papers": {
+              "type": "object",
+              "properties": {
+                "claimant": {
+                  "maxItems": 6,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "sheet",
+                          "folder",
+                          "box"
+                        ]
+                      },
+                      "name": {
+                        "type": "string",
+                        "maxLength": 80
+                      },
+                      "note": {
+                        "type": "string",
+                        "maxLength": 200
+                      },
+                      "pages": {
+                        "minItems": 1,
+                        "maxItems": 6,
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "head": {
+                              "type": "string",
+                              "maxLength": 120
+                            },
+                            "title": {
+                              "type": "string",
+                              "maxLength": 120
+                            },
+                            "lines": {
+                              "maxItems": 14,
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "maxLength": 200
+                              }
+                            },
+                            "foot": {
+                              "type": "string",
+                              "maxLength": 120
+                            },
+                            "stamp": {
+                              "type": "string",
+                              "maxLength": 60
+                            }
+                          },
+                          "required": [
+                            "head",
+                            "title",
+                            "lines"
+                          ]
+                        }
+                      },
+                      "color": {
+                        "type": "string",
+                        "pattern": "^#[0-9a-fA-F]{6}$"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "kind",
+                      "name",
+                      "note",
+                      "pages"
+                    ]
+                  }
+                },
+                "respondent": {
+                  "maxItems": 6,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "sheet",
+                          "folder",
+                          "box"
+                        ]
+                      },
+                      "name": {
+                        "type": "string",
+                        "maxLength": 80
+                      },
+                      "note": {
+                        "type": "string",
+                        "maxLength": 200
+                      },
+                      "pages": {
+                        "minItems": 1,
+                        "maxItems": 6,
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "head": {
+                              "type": "string",
+                              "maxLength": 120
+                            },
+                            "title": {
+                              "type": "string",
+                              "maxLength": 120
+                            },
+                            "lines": {
+                              "maxItems": 14,
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "maxLength": 200
+                              }
+                            },
+                            "foot": {
+                              "type": "string",
+                              "maxLength": 120
+                            },
+                            "stamp": {
+                              "type": "string",
+                              "maxLength": 60
+                            }
+                          },
+                          "required": [
+                            "head",
+                            "title",
+                            "lines"
+                          ]
+                        }
+                      },
+                      "color": {
+                        "type": "string",
+                        "pattern": "^#[0-9a-fA-F]{6}$"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "kind",
+                      "name",
+                      "note",
+                      "pages"
+                    ]
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "required": [
@@ -2320,6 +3031,48 @@
         "briefing",
         "npc",
         "disclaimer"
+      ]
+    },
+    "Scene": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "witnessIn": {
+          "type": "boolean"
+        },
+        "judgeIn": {
+          "type": "boolean"
+        },
+        "judgeEntries": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "clientPresent": {
+          "type": "boolean"
+        },
+        "everyoneStands": {
+          "type": "boolean"
+        },
+        "clientMood": {
+          "type": "string",
+          "enum": [
+            "neutral",
+            "uncertain",
+            "upset",
+            "reassured",
+            "calm",
+            "confused"
+          ]
+        }
+      },
+      "required": [
+        "witnessIn",
+        "judgeIn",
+        "judgeEntries",
+        "clientPresent",
+        "everyoneStands",
+        "clientMood"
       ]
     },
     "ServiceId": {
@@ -2417,6 +3170,57 @@
                         "calm",
                         "reassured"
                       ]
+                    },
+                    "gesture": {
+                      "type": "string",
+                      "enum": [
+                        "none",
+                        "nod",
+                        "shake-head",
+                        "sigh",
+                        "lean-in",
+                        "check-watch",
+                        "show-phone",
+                        "offer-envelope",
+                        "withdraw-envelope",
+                        "stand"
+                      ]
+                    },
+                    "reactions": {
+                      "maxItems": 5,
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "role": {
+                            "type": "string",
+                            "enum": [
+                              "judge",
+                              "secretary",
+                              "opponent",
+                              "witness",
+                              "expert",
+                              "principal"
+                            ]
+                          },
+                          "emotion": {
+                            "type": "string",
+                            "enum": [
+                              "neutral",
+                              "impatient",
+                              "upset",
+                              "confused",
+                              "uncertain",
+                              "calm",
+                              "reassured"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "role",
+                          "emotion"
+                        ]
+                      }
                     },
                     "role": {
                       "type": "string",
@@ -2551,6 +3355,57 @@
                         "calm",
                         "reassured"
                       ]
+                    },
+                    "gesture": {
+                      "type": "string",
+                      "enum": [
+                        "none",
+                        "nod",
+                        "shake-head",
+                        "sigh",
+                        "lean-in",
+                        "check-watch",
+                        "show-phone",
+                        "offer-envelope",
+                        "withdraw-envelope",
+                        "stand"
+                      ]
+                    },
+                    "reactions": {
+                      "maxItems": 5,
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "role": {
+                            "type": "string",
+                            "enum": [
+                              "judge",
+                              "secretary",
+                              "opponent",
+                              "witness",
+                              "expert",
+                              "principal"
+                            ]
+                          },
+                          "emotion": {
+                            "type": "string",
+                            "enum": [
+                              "neutral",
+                              "impatient",
+                              "upset",
+                              "confused",
+                              "uncertain",
+                              "calm",
+                              "reassured"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "role",
+                          "emotion"
+                        ]
+                      }
                     },
                     "role": {
                       "type": "string",
@@ -3020,6 +3875,258 @@
             },
             "disclaimer": {
               "type": "string"
+            },
+            "scene": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "maxLength": 40
+                },
+                "voices": {
+                  "type": "object",
+                  "properties": {
+                    "judge": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_]{1,23}$"
+                    },
+                    "secretary": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_]{1,23}$"
+                    },
+                    "opponent": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_]{1,23}$"
+                    },
+                    "witness": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_]{1,23}$"
+                    },
+                    "expert": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_]{1,23}$"
+                    }
+                  }
+                },
+                "cast": {
+                  "type": "object",
+                  "properties": {
+                    "principal": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "elder_man",
+                            "woman",
+                            "man",
+                            "worker",
+                            "secretary",
+                            "lawyer",
+                            "client",
+                            "clerk",
+                            "investigator",
+                            "chief"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "opponent": {
+                      "type": "string",
+                      "enum": [
+                        "elder_man",
+                        "woman",
+                        "man",
+                        "worker",
+                        "secretary",
+                        "lawyer",
+                        "client",
+                        "clerk",
+                        "investigator",
+                        "chief"
+                      ]
+                    },
+                    "witness": {
+                      "type": "string",
+                      "enum": [
+                        "elder_man",
+                        "woman",
+                        "man",
+                        "worker",
+                        "secretary",
+                        "lawyer",
+                        "client",
+                        "clerk",
+                        "investigator",
+                        "chief"
+                      ]
+                    }
+                  }
+                },
+                "papers": {
+                  "type": "object",
+                  "properties": {
+                    "claimant": {
+                      "maxItems": 6,
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "sheet",
+                              "folder",
+                              "box"
+                            ]
+                          },
+                          "name": {
+                            "type": "string",
+                            "maxLength": 80
+                          },
+                          "note": {
+                            "type": "string",
+                            "maxLength": 200
+                          },
+                          "pages": {
+                            "minItems": 1,
+                            "maxItems": 6,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "head": {
+                                  "type": "string",
+                                  "maxLength": 120
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "maxLength": 120
+                                },
+                                "lines": {
+                                  "maxItems": 14,
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 200
+                                  }
+                                },
+                                "foot": {
+                                  "type": "string",
+                                  "maxLength": 120
+                                },
+                                "stamp": {
+                                  "type": "string",
+                                  "maxLength": 60
+                                }
+                              },
+                              "required": [
+                                "head",
+                                "title",
+                                "lines"
+                              ]
+                            }
+                          },
+                          "color": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "kind",
+                          "name",
+                          "note",
+                          "pages"
+                        ]
+                      }
+                    },
+                    "respondent": {
+                      "maxItems": 6,
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "sheet",
+                              "folder",
+                              "box"
+                            ]
+                          },
+                          "name": {
+                            "type": "string",
+                            "maxLength": 80
+                          },
+                          "note": {
+                            "type": "string",
+                            "maxLength": 200
+                          },
+                          "pages": {
+                            "minItems": 1,
+                            "maxItems": 6,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "head": {
+                                  "type": "string",
+                                  "maxLength": 120
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "maxLength": 120
+                                },
+                                "lines": {
+                                  "maxItems": 14,
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 200
+                                  }
+                                },
+                                "foot": {
+                                  "type": "string",
+                                  "maxLength": 120
+                                },
+                                "stamp": {
+                                  "type": "string",
+                                  "maxLength": 60
+                                }
+                              },
+                              "required": [
+                                "head",
+                                "title",
+                                "lines"
+                              ]
+                            }
+                          },
+                          "color": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "kind",
+                          "name",
+                          "note",
+                          "pages"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "required": [
@@ -3121,6 +4228,57 @@
                   "calm",
                   "reassured"
                 ]
+              },
+              "gesture": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "nod",
+                  "shake-head",
+                  "sigh",
+                  "lean-in",
+                  "check-watch",
+                  "show-phone",
+                  "offer-envelope",
+                  "withdraw-envelope",
+                  "stand"
+                ]
+              },
+              "reactions": {
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "role": {
+                      "type": "string",
+                      "enum": [
+                        "judge",
+                        "secretary",
+                        "opponent",
+                        "witness",
+                        "expert",
+                        "principal"
+                      ]
+                    },
+                    "emotion": {
+                      "type": "string",
+                      "enum": [
+                        "neutral",
+                        "impatient",
+                        "upset",
+                        "confused",
+                        "uncertain",
+                        "calm",
+                        "reassured"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "role",
+                    "emotion"
+                  ]
+                }
               },
               "role": {
                 "type": "string",
@@ -3621,6 +4779,57 @@
             "calm",
             "reassured"
           ]
+        },
+        "gesture": {
+          "type": "string",
+          "enum": [
+            "none",
+            "nod",
+            "shake-head",
+            "sigh",
+            "lean-in",
+            "check-watch",
+            "show-phone",
+            "offer-envelope",
+            "withdraw-envelope",
+            "stand"
+          ]
+        },
+        "reactions": {
+          "maxItems": 5,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": {
+                "type": "string",
+                "enum": [
+                  "judge",
+                  "secretary",
+                  "opponent",
+                  "witness",
+                  "expert",
+                  "principal"
+                ]
+              },
+              "emotion": {
+                "type": "string",
+                "enum": [
+                  "neutral",
+                  "impatient",
+                  "upset",
+                  "confused",
+                  "uncertain",
+                  "calm",
+                  "reassured"
+                ]
+              }
+            },
+            "required": [
+              "role",
+              "emotion"
+            ]
+          }
         },
         "role": {
           "type": "string",
@@ -5858,48 +7067,6 @@
         "title",
         "body",
         "articles"
-      ]
-    },
-    "Scene": {
-      "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "type": "object",
-      "properties": {
-        "witnessIn": {
-          "type": "boolean"
-        },
-        "judgeIn": {
-          "type": "boolean"
-        },
-        "judgeEntries": {
-          "type": "integer",
-          "minimum": -9007199254740991,
-          "maximum": 9007199254740991
-        },
-        "clientPresent": {
-          "type": "boolean"
-        },
-        "everyoneStands": {
-          "type": "boolean"
-        },
-        "clientMood": {
-          "type": "string",
-          "enum": [
-            "neutral",
-            "uncertain",
-            "upset",
-            "reassured",
-            "calm",
-            "confused"
-          ]
-        }
-      },
-      "required": [
-        "witnessIn",
-        "judgeIn",
-        "judgeEntries",
-        "clientPresent",
-        "everyoneStands",
-        "clientMood"
       ]
     },
     "StageId": {

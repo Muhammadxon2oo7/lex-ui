@@ -27,7 +27,7 @@ import { audio } from '@/game/audio';
 
 export type CharacterModel = 'elder_man' | 'woman' | 'man' | 'worker' | 'secretary' | 'lawyer' | 'client' | 'clerk' | 'investigator' | 'chief';
 /** Female body type: its own rig proportions, recorded takes and seat travel. */
-const female = (model: CharacterModel) => model === 'woman' || model === 'secretary' || model === 'lawyer' || model === 'clerk';
+export const female = (model: CharacterModel) => model === 'woman' || model === 'secretary' || model === 'lawyer' || model === 'clerk';
 const url = (model: CharacterModel) => `/assets/characters/${model}.glb`;
 /** Motion-captured clips (Rocketbox, MIT), authored on each body type's own rig. */
 /** Fetch a cast ahead of time, so nobody's model loads in the middle of a scene. */

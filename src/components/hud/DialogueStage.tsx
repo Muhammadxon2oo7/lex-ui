@@ -19,10 +19,11 @@ import { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import type { ReplyOption, Turn } from '@/contracts';
 import { availableItems } from '@/game/items';
 import { useGame } from '@/game/store';
-import { speak, stopSpeaking } from '@/game/voice';
+import { speak, stopSpeaking, takeVoice } from '@/game/voice';
 import { matchUtterance } from '@/lib/uz';
 import { Talk } from './Talk';
 import { useDismiss } from '@/lib/useDismiss';
+import { saveVoice } from '@/lib/voiceStore';
 
 const spring = { type: 'spring', bounce: 0, duration: 0.4 } as const;
 const CHARS_PER_TICK = 2;
@@ -310,6 +311,9 @@ export function DialogueStage() {
     if (!canReply) return;
     const match = matchUtterance(said, snapshot.options);
     setHeard({ said, as: match ? match.option.text : null });
+    // the student's own voice, filed under the line the transcript will show
+    const wav = takeVoice();
+    if (wav) void saveVoice(snapshot.sessionId, match ? match.option.text : said, wav);
     if (match) void choose(match.option);
     else void say(said);
   };

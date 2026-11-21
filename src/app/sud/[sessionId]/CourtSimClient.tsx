@@ -489,39 +489,44 @@ function Room({ initial }: { initial: Snapshot }) {
           <AnimatePresence>
             {waitSince && (
               <motion.p key="wait" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={spring} role="status"
-                className="mx-auto mb-2 flex w-fit items-center gap-2 rounded-full bg-[#1d2a44]/95 px-4 py-1.5 text-[0.84rem]">
+                className="hud mx-auto mb-2 flex w-fit items-center gap-2 rounded-full px-4 py-1.5 text-[0.84rem]">
                 <span aria-hidden className="size-2 animate-pulse rounded-full bg-amber-300 motion-reduce:animate-none" />
                 Raqib advokat javob tayyorlamoqda… <span className="text-white/50 tabular-nums">{waited} s</span>
               </motion.p>
             )}
             {snap.feedback && showFeedback && idle && !waitSince && (
               <motion.p key={`fb-${snap.feedback.message}`} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={spring} role={snap.feedback.tone === 'bad' ? 'alert' : 'status'}
-                className={`mx-auto mb-2 flex w-fit max-w-full items-center gap-2 rounded-full px-4 py-1.5 text-[0.84rem] ${snap.feedback.tone === 'bad' ? 'bg-[#6b221c]/95' : 'bg-[#163d2f]/95'}`}>
+                className="hud mx-auto mb-2 flex w-fit max-w-full items-center gap-2 rounded-full py-1.5 pr-2 pl-3 text-[0.84rem]">
+                <span aria-hidden className={`size-2 shrink-0 rounded-full ${snap.feedback.tone === 'bad' ? 'bg-red-400 shadow-[0_0_10px_rgb(248_113_113/0.8)]' : 'bg-emerald-400 shadow-[0_0_10px_rgb(52_211_153/0.8)]'}`} />
                 <span className="min-w-0">{snap.feedback.message}</span>
                 {snap.feedback.article && <span className="shrink-0 rounded-full bg-white/15 px-2.5 py-0.5 text-[0.76rem] font-semibold">{snap.feedback.article}</span>}
               </motion.p>
             )}
             {riseNote && (
               <motion.p key="rise" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={spring} role="status"
-                className={`mx-auto mb-2 flex w-fit max-w-full items-center gap-2 rounded-full px-4 py-1.5 text-[0.84rem] bg-[#5a4313]/95`}>
+                className="hud mx-auto mb-2 flex w-fit max-w-full items-center gap-2 rounded-full py-1.5 pr-1.5 pl-3 text-[0.84rem]">
+                <span aria-hidden className="size-2 shrink-0 rounded-full bg-amber-300 shadow-[0_0_10px_rgb(252_211_77/0.8)]" />
                 <span className="min-w-0">{riseNote}</span>
                 <button type="button" onClick={() => void toggleStand()} className="shrink-0 rounded-full bg-white/15 px-2.5 py-0.5 text-[0.76rem] font-semibold hover:bg-white/25"><kbd className="!bg-white/20">G</kbd> Turish</button>
               </motion.p>
             )}
             {error && (
               <motion.p key="err" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={spring} role="alert"
-                className="mx-auto mb-2 w-fit max-w-full rounded-full bg-[#6b221c]/95 px-4 py-1.5 text-[0.84rem]">{error}</motion.p>
+                className="hud mx-auto mb-2 flex w-fit max-w-full items-center gap-2 rounded-full px-4 py-1.5 text-[0.84rem]"><span aria-hidden className="size-2 shrink-0 rounded-full bg-red-400" />{error}</motion.p>
             )}
           </AnimatePresence>
 
-          <div className="overflow-hidden rounded-[26px] bg-[#0d121b]/88 shadow-[0_24px_80px_rgba(0,0,0,0.5)] ring-1 ring-white/10 backdrop-blur-xl">
+          <motion.div layout="size" transition={ease.surface} className="hud hud-strong overflow-hidden rounded-[28px]">
             <button type="button" onClick={skip} disabled={idle} className="block w-full px-5 pt-4 pb-3 text-left disabled:cursor-default">
               <span className={`block text-[0.68rem] font-semibold tracking-[0.16em] uppercase ${current?.speaker === 'user' ? 'text-sky-300' : role === 'judge' ? 'text-emerald-300' : !role ? 'text-white/45' : 'text-amber-200'}`}>
                 {!current || current.speaker === 'system' ? snap.scenario.briefing.workplace : current.speaker === 'user' ? 'Siz' : role ? LABEL[role] : ''}
               </span>
-              <span className={`mt-1.5 block text-[1.12rem] leading-snug text-pretty ${!current || current.speaker === 'system' ? 'text-white/75 italic' : current.speaker === 'user' ? 'text-white/75' : 'text-white'}`}>
-                {current?.text ?? 'Sud majlisi boshlanmoqda.'}
-              </span>
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.span key={current ? `${current.speaker}:${current.text}` : 'start'} initial={{ opacity: 0, y: 6, filter: 'blur(3px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -4 }} transition={ease.surface}
+                  className={`mt-1.5 block text-[1.12rem] leading-snug text-pretty ${!current || current.speaker === 'system' ? 'text-white/75 italic' : current.speaker === 'user' ? 'text-white/80' : 'text-white'}`}>
+                  {current?.text ?? 'Sud majlisi boshlanmoqda.'}
+                </motion.span>
+              </AnimatePresence>
               {current?.articles && current.articles.length > 0 && (
                 <span className="mt-2 flex flex-wrap gap-1.5">
                   {current.articles.map((a) => (
@@ -535,12 +540,12 @@ function Room({ initial }: { initial: Snapshot }) {
             <p className="sr-only" role="log" aria-live="polite">{current ? `${current.speaker === 'user' ? 'Siz' : role ? LABEL[role] : ''}: ${current.text}` : ''}</p>
 
             {snap.status === 'in-progress' && canSpeak && options.length > 0 && (
-              <ul role="group" aria-label="Javob variantlari" className="border-t border-white/8 px-2 py-2">
+              <ul role="group" aria-label="Javob variantlari" className="border-t border-white/[0.07] px-2 py-2">
                 {options.map((o, i) => (
                   <motion.li key={o.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ ...spring, delay: i * 0.035 }}>
                     <button type="button" onClick={() => choose(o.id)}
-                      className="flex min-h-11 w-full items-start gap-3 rounded-2xl px-3 py-2 text-left transition-[background-color,transform] duration-150 hover:bg-white/[0.08] active:scale-[0.99]">
-                      <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-md bg-white/10 text-[0.7rem] font-semibold tabular-nums text-white/70">{i + 1}</span>
+                      className="hud-row flex min-h-11 w-full items-start gap-3 rounded-[18px] px-3 py-2.5 text-left">
+                      <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-[6px] bg-white/12 text-[0.7rem] font-semibold tabular-nums text-white/75 shadow-[inset_0_-1px_0_rgb(0_0_0/0.3)]">{i + 1}</span>
                       <span className="text-[0.92rem] leading-snug text-white/90">{o.text}</span>
                     </button>
                   </motion.li>
@@ -548,12 +553,12 @@ function Room({ initial }: { initial: Snapshot }) {
               </ul>
             )}
             {snap.status === 'in-progress' && (
-              <form className="border-t border-white/8 px-3 pt-3 pb-2.5" onSubmit={(e) => { e.preventDefault(); send(draft); }}>
+              <form className="border-t border-white/[0.07] px-3 pt-3 pb-2.5" onSubmit={(e) => { e.preventDefault(); send(draft); }}>
                 {level !== 'advanced' && canSpeak && !draft.trim() && (
                   <div role="group" aria-label="Protsessual harakatlar" className="-mx-1 mb-2 flex gap-1.5 overflow-x-auto overscroll-x-contain px-1 scrollbar-none">
                     {MOVES(respondentSide ? 'daʼvogar' : 'javobgar').map((m) => (
                       <button key={m.id} type="button" onClick={() => begin(m.start)} title={m.start.trim()}
-                        className="min-h-8 shrink-0 rounded-full bg-white/[0.07] px-3 text-[0.8rem] font-medium whitespace-nowrap text-white/75 transition-[background-color,transform] duration-150 hover:bg-white/12 hover:text-white active:scale-[0.97] pointer-coarse:min-h-10">
+                        className="hud-row min-h-8 shrink-0 rounded-full bg-white/[0.07] px-3 text-[0.8rem] font-medium whitespace-nowrap text-white/80 hover:text-white pointer-coarse:min-h-10">
                         {m.label}
                       </button>
                     ))}
@@ -572,7 +577,7 @@ function Room({ initial }: { initial: Snapshot }) {
                     }
                   }}
                   placeholder={canSpeak ? (options.length ? 'Variantni tanlang (1-4) yoki oʻzingiz ayting…' : 'Hurmatli sud, …   (Enter - yuborish, T - aytish)') : snap.pending ? 'Raqib tomon javobini kuting…' : 'Gapni tinglang…'}
-                  className="w-full resize-none rounded-2xl bg-white/[0.07] px-3.5 py-2.5 text-[0.98rem] leading-snug text-white outline-none placeholder:text-white/40 focus-visible:ring-2 focus-visible:ring-emerald-400 disabled:opacity-60" />
+                  className="w-full resize-none rounded-[20px] bg-white/[0.08] px-4 py-2.5 text-[0.98rem] leading-snug text-white shadow-[inset_0_0_0_0.5px_rgb(255_255_255/0.08)] outline-none transition-[background-color,box-shadow] duration-200 placeholder:text-white/40 focus-visible:outline-none focus-visible:bg-white/[0.11] focus-visible:shadow-[inset_0_0_0_1px_rgb(52_211_153/0.7)] disabled:opacity-60" />
                 <div className="mt-2 flex flex-wrap items-center gap-2">
                   <Talk enabled={canSpeak} onError={(m) => setHeardSaid(m)}
                     onHeard={(said) => {
@@ -603,11 +608,11 @@ function Room({ initial }: { initial: Snapshot }) {
                 </div>
               </form>
             )}
-            {snap.status === 'evaluating' && <p className="border-t border-white/8 px-5 py-3 text-[0.88rem] text-white/70" role="status">Hisobot tayyorlanmoqda…</p>}
+            {snap.status === 'evaluating' && <p className="border-t border-white/[0.07] px-5 py-3 text-[0.88rem] text-white/70" role="status">Hisobot tayyorlanmoqda…</p>}
             {snap.status === 'report-ready' && (
-              <div className="border-t border-white/8 px-3 py-2.5"><Link href={`/simulation/${id}/report`} className="btn btn-primary">Hisobotni ochish →</Link></div>
+              <div className="border-t border-white/[0.07] px-3 py-2.5"><Link href={`/simulation/${id}/report`} className="btn btn-primary">Hisobotni ochish →</Link></div>
             )}
-          </div>
+          </motion.div>
         </section>
       )}
 
@@ -666,7 +671,7 @@ function Briefing({ snap, busy, onEnter }: { snap: Snapshot; busy: boolean; onEn
 /** The coach: what to do now, the usual mistake, and an example you may put in your answer (never sent for you). */
 function HintSheet({ hint, onUse, onClose }: { hint: Hint; onUse: (text: string) => void; onClose: () => void }) {
   return (
-    <Drawer side="left" label="Maslahat" onClose={onClose} top="top-20" className="bottom-auto! h-fit w-[min(24rem,calc(100vw-1.5rem))] rounded-[22px] bg-[#0d121b]/95 p-4 text-[0.88rem] leading-snug ring-1 ring-white/10 backdrop-blur-xl sm:left-4"
+    <Drawer side="left" label="Maslahat" onClose={onClose} top="top-20" className="bottom-auto! h-fit w-[min(24rem,calc(100vw-1.5rem))] rounded-[22px] hud p-4 text-[0.88rem] leading-snug sm:left-4"
       header={
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1">

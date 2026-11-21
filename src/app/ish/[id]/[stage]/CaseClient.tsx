@@ -310,7 +310,7 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
       <AnimatePresence>
         {hoverName && !inHand && (
           <motion.p key="hover" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={spring}
-            className="pointer-events-none absolute top-20 left-1/2 z-20 -translate-x-1/2 rounded-full bg-black/70 px-4 py-1.5 text-[0.84rem] text-white">
+            className="hud pointer-events-none absolute top-20 left-1/2 z-20 -translate-x-1/2 rounded-full px-4 py-1.5 text-[0.84rem]">
             {hoverName} - <span className="text-white/65">bosing: qoʻlga olish · sudrang: joyini oʻzgartirish</span>
           </motion.p>
         )}
@@ -323,13 +323,14 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
             const here = s.id === stage;
             return (
               <Link key={s.id} href={`/ish/${snap.caseId}/${s.id}`} aria-current={here ? 'step' : undefined} title={`${s.number}. ${s.place} - ${s.title}`}
-                className={`flex h-9 shrink-0 items-center gap-2 rounded-full px-2.5 text-[0.82rem] font-medium transition-colors duration-150 ${here ? 'bg-white text-[#0c0f14]' : 'text-white/75 hover:bg-white/10'}`}>
-                <span className={`grid size-5 place-items-center rounded-full text-[0.7rem] font-bold tabular-nums ${here ? 'bg-[#0c0f14] text-white' : s.status === 'done' ? 'bg-emerald-500 text-white' : s.status === 'returned' ? 'bg-red-500 text-white' : 'bg-white/15'}`}>
+                className={`relative flex h-9 shrink-0 items-center gap-2 rounded-full px-2.5 text-[0.82rem] font-medium transition-colors duration-200 ${here ? 'text-[#0c0f14]' : 'text-white/80 hover:bg-white/10 hover:text-white'}`}>
+                {here && <motion.span layoutId="stage-lens" transition={ease.droplet} aria-hidden className="absolute inset-0 rounded-full bg-white shadow-[0_1px_2px_rgb(0_0_0/0.2),0_6px_16px_-6px_rgb(0_0_0/0.4)]" />}
+                <span className={`relative grid size-5 place-items-center rounded-full text-[0.7rem] font-bold tabular-nums ${here ? 'bg-[#0c0f14] text-white' : s.status === 'done' ? 'bg-emerald-500 text-white' : s.status === 'returned' ? 'bg-red-500 text-white' : 'bg-white/15'}`}>
                   {s.status === 'done' && !here ? (
                     <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-label="bajarilgan"><path d="M2.5 6.4 5 8.8l4.5-5.3" /></svg>
                   ) : s.number}
                 </span>
-                <span className={here ? 'inline' : 'hidden xl:inline'}>{s.place}</span>
+                <span className={`relative ${here ? 'inline' : 'hidden xl:inline'}`}>{s.place}</span>
               </Link>
             );
           })}
@@ -362,32 +363,36 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
             <AnimatePresence>
               {snap.feedback && idle && !ruling && !(snap.feedback.tone === 'info' && infoSeen) && (
                 <motion.p key={snap.feedback.message} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={spring} role={snap.feedback.tone === 'bad' ? 'alert' : 'status'}
-                  className={`mx-auto mb-2 flex w-fit max-w-full items-center gap-2 rounded-full px-4 py-1.5 text-[0.84rem] ${snap.feedback.tone === 'bad' ? 'bg-[#6b221c]/95' : 'bg-[#163d2f]/95'}`}>
+                  className="hud mx-auto mb-2 flex w-fit max-w-full items-center gap-2 rounded-full py-1.5 pr-2 pl-3 text-[0.84rem]">
+                  <span aria-hidden className={`size-2 shrink-0 rounded-full ${snap.feedback.tone === 'bad' ? 'bg-red-400 shadow-[0_0_10px_rgb(248_113_113/0.8)]' : 'bg-emerald-400 shadow-[0_0_10px_rgb(52_211_153/0.8)]'}`} />
                   <span className="min-w-0">{snap.feedback.message}</span>
                   {snap.feedback.article && <button type="button" className="shrink-0 rounded-full bg-white/15 px-2.5 py-0.5 text-[0.76rem] font-semibold" onClick={() => setCode(snap.feedback!.article)}>{snap.feedback.article}</button>}
                 </motion.p>
               )}
             </AnimatePresence>
 
-            <div className="overflow-hidden rounded-[26px] bg-[#0d121b]/88 shadow-[0_24px_80px_rgba(0,0,0,0.5)] ring-1 ring-white/10 backdrop-blur-xl">
+            <motion.div layout="size" transition={ease.surface} className="hud hud-strong overflow-hidden rounded-[28px]">
               <button type="button" onClick={skip} disabled={idle} className="block w-full px-5 pt-4 pb-3 text-left disabled:cursor-default">
                 <span className={`block text-[0.68rem] font-semibold tracking-[0.16em] uppercase ${current?.speaker === 'you' ? 'text-sky-300' : current?.speaker === 'judge' ? 'text-emerald-300' : current?.speaker === 'system' || !current ? 'text-white/45' : 'text-amber-200'}`}>
                   {!current || current.speaker === 'system' ? `${def.number}. ${def.place}` : current.speaker === 'you' ? 'Siz' : who ? `${who.label} · ${who.name}` : ''}
                 </span>
-                <span className={`mt-1.5 block text-[1.12rem] leading-snug text-pretty ${!current || current.speaker === 'system' ? 'text-white/75 italic' : current.speaker === 'you' ? 'text-white/75' : 'text-white'}`}>
-                  {current?.text ?? def.goal}
-                </span>
+                <AnimatePresence mode="popLayout" initial={false}>
+                  <motion.span key={current ? `${current.speaker}:${current.text}` : 'goal'} initial={{ opacity: 0, y: 6, filter: 'blur(3px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -4 }} transition={ease.surface}
+                    className={`mt-1.5 block text-[1.12rem] leading-snug text-pretty ${!current || current.speaker === 'system' ? 'text-white/75 italic' : current.speaker === 'you' ? 'text-white/80' : 'text-white'}`}>
+                    {current?.text ?? def.goal}
+                  </motion.span>
+                </AnimatePresence>
                 {!idle && <span className="mt-1 block text-right text-[0.7rem] text-white/40">Space - davom</span>}
               </button>
               <p className="sr-only" role="log" aria-live="polite">{current ? `${current.speaker === 'you' ? 'Siz' : who?.label ?? ''}: ${current.text}` : ''}</p>
 
               {canAnswer && snap.options.length > 0 && (
-                <ul role="group" aria-label="Javoblar" className="border-t border-white/8 px-2 py-2">
+                <ul role="group" aria-label="Javoblar" className="border-t border-white/[0.07] px-2 py-2">
                   {snap.options.map((o, i) => (
                     <motion.li key={o.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ ...spring, delay: i * 0.035 }}>
                       <button type="button" onClick={() => choose(o.id)}
-                        className="flex min-h-11 w-full items-start gap-3 rounded-2xl px-3 py-2 text-left transition-[background-color,transform] duration-150 hover:bg-white/[0.08] active:scale-[0.99]">
-                        <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-md bg-white/10 text-[0.7rem] font-semibold tabular-nums text-white/70">{i + 1}</span>
+                        className="hud-row flex min-h-11 w-full items-start gap-3 rounded-[18px] px-3 py-2.5 text-left">
+                        <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-[6px] bg-white/12 text-[0.7rem] font-semibold tabular-nums text-white/75 shadow-[inset_0_-1px_0_rgb(0_0_0/0.3)]">{i + 1}</span>
                         <span className={`text-[0.92rem] leading-snug ${o.kind === 'act' ? 'font-medium text-sky-200' : 'text-white/90'}`}>{o.kind === 'act' ? `→ ${o.text}` : o.text}</span>
                       </button>
                     </motion.li>
@@ -397,7 +402,7 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
 
               {canAnswer && (
                 // one row for one's own words: speak (hold the mic or T) or type
-                <form className="flex items-center gap-2 border-t border-white/8 px-3 py-2.5" onSubmit={(e) => { e.preventDefault(); sayOwn(said, 'text'); }}>
+                <form className="flex items-center gap-2 border-t border-white/[0.07] px-3 py-2.5" onSubmit={(e) => { e.preventDefault(); sayOwn(said, 'text'); }}>
                   <Talk compact enabled={canAnswer} onError={(m) => setHeard({ said: m, ok: false })}
                     onHeard={(spoken) => {
                       // an exact option read aloud is that option; anything else is understood on the server
@@ -407,14 +412,24 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
                       else sayOwn(spoken, 'voice');
                     }} />
                   <label className="sr-only" htmlFor="own-answer">Oʻz soʻzingiz bilan javob</label>
-                  <input id="own-answer" value={said} onChange={(e) => setSaid(e.target.value)} maxLength={800} autoComplete="off"
-                    placeholder={courtroom ? 'Hurmatli sud, …' : snap.options.length ? 'Yoki oʻz soʻzingiz bilan…' : 'Oʻz soʻzingiz bilan…'}
-                    className="min-h-11 min-w-0 flex-1 rounded-2xl bg-white/[0.07] px-3.5 text-[0.95rem] text-white outline-none placeholder:text-white/40 focus-visible:ring-2 focus-visible:ring-emerald-400" />
-                  <button type="submit" disabled={!said.trim() || busy} className="btn btn-primary !min-h-11 !px-4">Yuborish</button>
+                  <div className="relative flex min-w-0 flex-1 items-center rounded-full bg-white/[0.08] shadow-[inset_0_0_0_0.5px_rgb(255_255_255/0.08)] transition-[background-color,box-shadow] duration-200 focus-within:bg-white/[0.11] focus-within:shadow-[inset_0_0_0_1px_rgb(52_211_153/0.7)]">
+                    <input id="own-answer" value={said} onChange={(e) => setSaid(e.target.value)} maxLength={800} autoComplete="off"
+                      placeholder={courtroom ? 'Hurmatli sud, …' : snap.options.length ? 'Yoki oʻz soʻzingiz bilan…' : 'Oʻz soʻzingiz bilan…'}
+                      className="min-h-11 min-w-0 flex-1 bg-transparent pr-12 pl-4 text-[0.95rem] text-white outline-none placeholder:text-white/40 focus-visible:outline-none" />
+                    <AnimatePresence>
+                      {said.trim() && (
+                        <motion.button key="send" type="submit" disabled={busy} aria-label="Yuborish" title="Yuborish (Enter)"
+                          initial={{ scale: 0.4, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.4, opacity: 0 }} transition={ease.droplet} whileTap={{ scale: 0.9 }}
+                          className="absolute right-1 grid size-9 place-items-center rounded-full bg-emerald-500 text-white shadow-[0_4px_12px_-2px_rgb(16_185_129/0.6)] disabled:opacity-50">
+                          <svg aria-hidden width="14" height="14" viewBox="0 0 14 14"><path d="M7 12V2.5M2.8 6.5 7 2.3l4.2 4.2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                        </motion.button>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </form>
               )}
               {(canAnswer || (courtroom && idle && !snap.stageDone)) && (
-                <div className="flex flex-wrap items-center justify-end gap-2 border-t border-white/8 px-3 py-2.5">
+                <div className="flex flex-wrap items-center justify-end gap-2 border-t border-white/[0.07] px-3 py-2.5">
                   {/* what was heard, or what the room expects now - wraps instead of being cut off */}
                   <p className={`min-w-0 flex-1 basis-40 text-[0.8rem] leading-snug text-pretty ${heard && !heard.ok && !prompt ? 'text-amber-200' : 'text-white/60'}`} role="status">
                     {prompt ?? heard?.said ?? (canAnswer ? <><span className="pointer-coarse:hidden"><kbd className="bg-white/15!">T</kbd> yoki </span>mikrofonni bosib turib gapiring</> : '')}
@@ -439,7 +454,7 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
                   )}
                 </div>
               )}
-            </div>
+            </motion.div>
             {error && <p role="alert" className="mx-auto mt-2 w-fit rounded-full bg-danger px-4 py-1.5 text-[0.85rem]">{error}</p>}
           </motion.section>
         )}
@@ -601,7 +616,7 @@ function Prebrief({ id, role, stage, courtroom, level }: { id: string; role: str
   };
   return (
     <motion.aside initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} transition={spring} aria-label="Bosqich vazifasi"
-      className="absolute top-20 left-3 z-20 w-[min(22rem,calc(100vw-1.5rem))] rounded-[22px] bg-[#0d121b]/90 p-4 text-[0.84rem] leading-snug ring-1 ring-white/10 backdrop-blur-xl sm:left-4">
+      className="absolute top-20 left-3 z-20 w-[min(22rem,calc(100vw-1.5rem))] rounded-[22px] hud p-4 text-[0.84rem] leading-snug sm:left-4">
       <div className="flex items-start gap-3">
         <div className="min-w-0 flex-1">
           <p className="text-[0.66rem] font-semibold tracking-[0.16em] text-amber-200 uppercase">{stage.number}-bosqich · siz - {role.toLowerCase()}</p>
@@ -687,7 +702,7 @@ function CaseFolder({ snap, onClose, onRuling }: { snap: CaseSnapshot; onClose: 
   return (
     // a click anywhere outside the drawer puts the folder away; grab the header to fling it back
     <Drawer side="right" label="Ish papkasi" onClose={onClose}
-      className="w-[min(24rem,calc(100vw-1.5rem))] rounded-[24px] bg-[#0d121b]/95 ring-1 ring-white/10 backdrop-blur-xl"
+      className="w-[min(24rem,calc(100vw-1.5rem))] rounded-[24px] hud hud-strong"
       header={
         <header className="flex items-center gap-3 px-5 pt-4 pb-3">
           <h2 className="flex-1 text-[1rem] font-semibold">Ish papkasi</h2>

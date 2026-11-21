@@ -162,7 +162,7 @@ const consult: StageDef = {
       id: 'c-hub',
       enter: [['client', 'Assalomu alaykum. Meni ishdan boʻshatishdi… Nima qilishni bilmayapman.', { emotion: 'upset' }]],
       options: [
-        { id: 'greet', once: true, text: 'Va alaykum assalom. Oʻtiring, xotirjam gapiring — suhbatimiz sir saqlanadi.',
+        { id: 'greet', once: true, text: 'Va alaykum assalom. Oʻtiring, xotirjam gapiring - suhbatimiz sir saqlanadi.',
           reply: [['client', 'Rahmat… Kechadan beri uxlay olmadim.', { emotion: 'uncertain' }]], effect: { mood: 'calm' }, tone: 'good' },
         { id: 'story', once: true, text: 'Nima boʻlganini boshidan aytib bering.',
           reply: [['client', '14-oktabr kuni buyruq bilan boʻshatishdi: 9–10-oktabr ishga kelmagansan, deb. Lekin oʻsha kunlari kasal edim, boshligʻimga telefon qilib aytganman.']],
@@ -183,7 +183,7 @@ const consult: StageDef = {
         { id: 'authority', once: true, text: 'Sizni sudda himoya qilishim uchun shartnoma tuzamiz, advokat orderi rasmiylashtiriladi.',
           reply: [['client', 'Roziman. Qayerga imzo qoʻyay?']], effect: { learn: ['authority'] }, tone: 'good', article: '67-modda',
           feedback: 'FPK 67-68: sudda professional vakil - advokat; vakolati belgilangan tartibda tasdiqlanadi.' },
-        { id: 'promise', once: true, text: 'Xavotir olmang, yuz foiz yutamiz — kafolat beraman.',
+        { id: 'promise', once: true, text: 'Xavotir olmang, yuz foiz yutamiz - kafolat beraman.',
           reply: [['client', 'Rostdanmi?! Unda xotirjam boʻldim…', { emotion: 'reassured' }]], effect: { penalty: [15, 'Natijani kafolatladingiz — qarorni sud qabul qiladi'] },
           tone: 'bad', feedback: 'Advokat natijani kafolatlay olmaydi. Imkoniyat va xavflarni halol ayting.' },
         { id: 'connections', once: true, text: 'Sudda tanishlarim bor, ish tez hal boʻladi.',
@@ -263,7 +263,7 @@ const chamber: StageDef = {
       id: 'k-start',
       enter: [['judge', 'Oʻtiring. Ishni tayyorlash tartibida taraflarni soʻroq qilaman. Daʼvogar vakili, talablaringiz mohiyatini qisqacha bayon qiling.']],
       options: [
-        { id: 'essence', requires: ['sick'], text: 'Hurmatli sud, daʼvogar 9–10-oktabr kunlari uzrsiz kelmagan deb boʻshatilgan, holbuki u kasal boʻlgan. Ishga tiklashni soʻraymiz.',
+        { id: 'essence', requires: ['sick'], text: 'Hurmatli sud, daʼvogar 9-10-oktabr kunlari uzrsiz kelmagan deb boʻshatilgan, holbuki u kasal boʻlgan. Ishga tiklashni soʻraymiz.',
           reply: [['judge', 'Tushunarli.']], next: 'k-evidence', tone: 'good', article: '203-modda' },
         { id: 'essence-thin', hideIf: ['sick'], text: 'Hurmatli sud, daʼvogar asossiz boʻshatilgan, ishga tiklashni soʻraymiz.',
           reply: [['judge', 'Asossiz deysiz — qaysi holatlarga tayanasiz?']], effect: { penalty: [10, 'Holatlarni aniq aytmadingiz'] }, next: 'k-evidence', tone: 'info', article: '203-modda' },
@@ -279,7 +279,7 @@ const chamber: StageDef = {
           reply: [['judge', 'Iltimos qanoatlantiriladi.']], effect: { learn: ['witness-called'] }, next: 'k-settle', tone: 'good', article: '204-modda' },
         { id: 'only-docs', text: 'Hurmatli sud, ilova qilingan hujjatlar bilan cheklanamiz.',
           reply: [['judge', 'Yaxshi.']], effect: { penalty: [10, 'Guvohni chaqirtirmadingiz'] }, next: 'k-settle', tone: 'info' },
-        { id: 'self-witness', text: 'Hurmatli sud, mijoz hammasini menga aytgan — guvoh sifatida oʻzim gapiraman.',
+        { id: 'self-witness', text: 'Hurmatli sud, mijoz hammasini menga aytgan - guvoh sifatida oʻzim gapiraman.',
           reply: [['judge', 'Mumkin emas: vakil vakillik munosabati bilan bilgan holatlar boʻyicha guvoh boʻla olmaydi.', { emotion: 'impatient' }]], effect: { penalty: [15, 'Vakil guvoh boʻla olmaydi'] }, tone: 'bad', article: '56-modda' },
       ],
     },
@@ -289,7 +289,7 @@ const chamber: StageDef = {
       options: [
         { id: 'consult-client', text: 'Hurmatli sud, mijozim bilan maslahatlashdik: faqat ishga tiklanish sharti bilan kelishuvga tayyormiz.',
           reply: [['client', 'Ha, shunday.'], ['judge', 'Qayd etildi. Ish 2-zalda, soat 10:00 da koʻriladi.']], next: 'k-end', tone: 'good', article: '203-modda' },
-        { id: 'refuse-alone', text: 'Kelishuv — yutqazish degani. Rad etamiz.',
+        { id: 'refuse-alone', text: 'Kelishuv - yutqazish degani. Rad etamiz.',
           reply: [['client', '(sekin) Meni ham bir soʻrasangiz boʻlardi…', { emotion: 'uncertain' }], ['judge', 'Bu qarorni daʼvogarning oʻzi qabul qiladi. Ish 2-zalda, soat 10:00 da koʻriladi.']],
           effect: { mood: 'uncertain', penalty: [15, 'Kelishuv masalasini mijozsiz hal qildingiz'] }, next: 'k-end', tone: 'bad', article: '44-modda' },
       ],
@@ -336,7 +336,7 @@ const hearing: StageDef = {
       options: [
         { id: 'no-recusal', text: 'Hurmatli sud, rad qilish toʻgʻrisida arizamiz yoʻq.', next: 'h-explain', tone: 'good', article: '216-modda' },
         { id: 'rude', text: 'Yoʻq.', reply: [['judge', 'Sudga «Hurmatli sud!» deb murojaat qilinadi.', { emotion: 'impatient' }]], next: 'h-explain', effect: { penalty: [10, '«Hurmatli sud!» demadingiz'] }, tone: 'bad', article: '212-modda' },
-        { id: 'recuse-party', text: 'Hurmatli sud, javobgar vakilini rad qilishni soʻraymiz — u bizga nisbatan xolis emas.',
+        { id: 'recuse-party', text: 'Hurmatli sud, javobgar vakilini rad qilishni soʻraymiz - u bizga nisbatan xolis emas.',
           reply: [['judge', 'Rad qilish sudya, prokuror, ekspert, mutaxassis, tarjimon va sud majlisi kotibiga nisbatan bildiriladi. Taraf vakili rad qilinmaydi.', { emotion: 'impatient' }]],
           next: 'h-explain', effect: { penalty: [10, 'Taraf vakilini rad qilishga urindingiz'] }, tone: 'bad', article: '22-modda',
           feedback: 'FPK 21-22: rad qilish sudya, prokuror, ekspert, mutaxassis, tarjimon va sud majlisi kotibiga nisbatan bildiriladi; taraflar va ularning vakillari rad qilinmaydi.' },
@@ -350,7 +350,7 @@ const hearing: StageDef = {
         ['judge', 'Ish mazmunan koʻriladi. Daʼvogar 14-oktabrdagi buyruq bilan boʻshatilgan va ishga tiklashni soʻraydi. Daʼvogar tomoni, talablaringizni quvvatlaysizmi? Tushuntirish bering.'],
       ],
       options: [
-        { id: 'explain', requires: ['sick'], text: 'Hurmatli sud! Talabni quvvatlaymiz. Daʼvogar 9–10-oktabr kunlari kasal boʻlgan, kasallik varaqasi bor va boshligʻiga xabar bergan. Undan yozma tushuntirish ham soʻralmagan. Boʻshatish asossiz.',
+        { id: 'explain', requires: ['sick'], text: 'Hurmatli sud! Talabni quvvatlaymiz. Daʼvogar 9-10-oktabr kunlari kasal boʻlgan, kasallik varaqasi bor va boshligʻiga xabar bergan. Undan yozma tushuntirish ham soʻralmagan. Boʻshatish asossiz.',
           reply: [['respondent', 'Hurmatli sud! Varaqa vaqtida topshirilmagan, shu sababli kunlar uzrsiz deb topildi.', { emotion: 'calm' }]], next: 'h-evidence', effect: { strength: 1 }, tone: 'good', article: '227-modda' },
         { id: 'thin', text: 'Hurmatli sud, arizada hammasi yozilgan.',
           reply: [['respondent', 'Hurmatli sud! Daʼvogar ikki kun ishga kelmagan. Boʻshatish qonuniy.']], next: 'h-evidence', effect: { penalty: [15, 'Tushuntirish bermadingiz'] }, tone: 'bad', article: '227-modda' },
@@ -363,9 +363,9 @@ const hearing: StageDef = {
       // FPK 233: written evidence is read out in the session and shown to the parties
       enter: [['judge', 'Yozma dalillar oʻqib eshittiriladi: 14-oktabrdagi 47-k-sonli buyruq va mehnatga layoqatsizlik varaqasi. Taraflar, dalillar yuzasidan fikringiz?']],
       options: [
-        { id: 'dates', requires: ['sickleave'], text: 'Hurmatli sud, varaqadagi sanalarga eʼtibor qaratishingizni soʻraymiz: 9–10-oktabr — buyruqda «kelmagan» deb koʻrsatilgan aynan oʻsha kunlar.',
+        { id: 'dates', requires: ['sickleave'], text: 'Hurmatli sud, varaqadagi sanalarga eʼtibor qaratishingizni soʻraymiz: 9-10-oktabr - buyruqda «kelmagan» deb koʻrsatilgan aynan oʻsha kunlar.',
           reply: [['judge', 'Qayd etildi.']], next: 'h-evidence-next', tone: 'good', article: '233-modda' },
-        { id: 'skip-reading', text: 'Hurmatli sud, hujjatlar ishda bor — oʻqib oʻtirmasak ham boʻladi, vaqtni tejaylik.',
+        { id: 'skip-reading', text: 'Hurmatli sud, hujjatlar ishda bor - oʻqib oʻtirmasak ham boʻladi, vaqtni tejaylik.',
           reply: [['judge', 'Yozma dalillar sud majlisida oʻqib eshittiriladi — qaror faqat majlisda tekshirilgan dalillarga asoslanadi.', { emotion: 'impatient' }]],
           next: 'h-evidence-next', effect: { penalty: [10, 'Yozma dalillarni tekshirishdan voz kechishni taklif qildingiz'] }, tone: 'bad', article: '233-modda' },
       ],
@@ -401,7 +401,7 @@ const hearing: StageDef = {
       options: [
         { id: 'speech', text: 'Hurmatli sud! Tekshirilgan dalillar daʼvogarning kelmasligi uzrli boʻlganini tasdiqlaydi. Uni ishga tiklashingizni soʻrayman.',
           reply: [['respondent', 'Hurmatli sud, daʼvoni rad etishingizni soʻrayman.']], next: 'h-retire', effect: { strength: 1 }, tone: 'good', article: '244-modda' },
-        { id: 'law-only', text: 'Hurmatli sud! Boshqa sudlar ham bunday ishlarda xodim foydasiga qaror chiqargan — shuning uchun daʼvoni qanoatlantirishingizni soʻrayman.',
+        { id: 'law-only', text: 'Hurmatli sud! Boshqa sudlar ham bunday ishlarda xodim foydasiga qaror chiqargan - shuning uchun daʼvoni qanoatlantirishingizni soʻrayman.',
           reply: [['judge', 'Sud ushbu ishda tekshirilgan dalillar va qonunga asoslanadi. Dalillaringizni tahlil qiling.', { emotion: 'impatient' }], ['respondent', 'Hurmatli sud, daʼvoni rad etishingizni soʻrayman.']],
           next: 'h-retire', effect: { penalty: [10, 'Muzokarada dalillar tahlili oʻrniga boshqa ishlarga tayandingiz'] }, tone: 'bad', article: '249-modda' },
         { id: 'new-evidence', text: 'Hurmatli sud, hozir ishda yoʻq yangi maʼlumotnomani koʻrsataman.',

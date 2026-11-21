@@ -143,7 +143,7 @@ export function createHearing(owner: string): HearingSnapshot {
     seed: randomBytes(4).readUInt32LE(0),
     index: 0,
     attempts: [],
-    lines: [{ id: 'l_0', speaker: 'system', text: 'Tayinlangan vaqt boʻldi. Siz majlis zaliga kirdingiz — hozir boʻlganlar oʻrnidan turdi.' }],
+    lines: [{ id: 'l_0', speaker: 'system', text: 'Tayinlangan vaqt boʻldi. Siz majlis zaliga kirdingiz - hozir boʻlganlar oʻrnidan turdi.' }],
     feedback: null,
     witnessPresent: true,
     processed: new Map(),

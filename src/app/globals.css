@@ -38,20 +38,19 @@ body {
   font-optical-sizing: auto;
 }
 
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-  border-radius: 6px;
+/* In the base layer, so a component can show focus its own way (e.g. a glass capsule's ring). */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
 }
 
 /* Floating material over the 3D view: structure without stealing focus. */
 .glass {
-  background: rgba(16, 20, 28, 0.8);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-top-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  background: rgba(24, 27, 34, 0.6);
+  backdrop-filter: blur(26px) saturate(170%) brightness(0.95);
+  -webkit-backdrop-filter: blur(26px) saturate(170%) brightness(0.95);
   color: #f5f5f7;
 }
 .glass-light {
@@ -304,3 +303,46 @@ kbd {
 :root[data-quality='low'] .lg::after { display: none; }
 
 /* orbs: gradient edges */
+
+/* ───────────────────────── HUD glass: dark material over the live 3D room ─────────────────────────
+   Lighter than a slab, so the room stays present (visionOS/iOS over video): tinted blur, a bright top
+   edge where light catches the material, a hairline, a deep soft shadow. `.hud-strong` is thicker for
+   panels with running text. Weak device / reduced transparency: near-solid, no blur. */
+@layer components {
+  .hud {
+    background: rgb(24 27 34 / 0.56);
+    -webkit-backdrop-filter: blur(26px) saturate(170%) brightness(0.95);
+    backdrop-filter: blur(26px) saturate(170%) brightness(0.95);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.14),
+      inset 0 0 0 0.5px rgb(255 255 255 / 0.1),
+      inset 0 -1px 0 rgb(0 0 0 / 0.25),
+      0 18px 50px -12px rgb(0 0 0 / 0.55);
+    color: #f5f5f7;
+  }
+  .hud-strong { background: rgb(20 22 28 / 0.7); }
+  /* Rows inside a HUD panel: a soft lift on hover, a give under the finger. */
+  .hud-row { transition: background-color 160ms ease, transform 220ms var(--ease-out); }
+  .hud-row:hover { background: rgb(255 255 255 / 0.08); }
+  .hud-row:active { transform: scale(0.985); transition-duration: 100ms; }
+}
+/* Existing HUD capsules (.glass) catch the light too. */
+.glass {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14), inset 0 0 0 0.5px rgb(255 255 255 / 0.08), 0 18px 50px rgb(0 0 0 / 0.35);
+}
+:root[data-quality='low'] .hud { background: rgb(22 25 32 / 0.95); }
+:root[data-quality='low'] .hud-strong { background: rgb(18 20 26 / 0.97); }
+@media (prefers-reduced-transparency: reduce) {
+  .hud, .hud-strong { background: rgb(18 20 26); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+@media (prefers-contrast: more) {
+  .hud { background: rgb(12 14 18); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.5); }
+}
+/* hud material */
+
+/* hud v2 */
+
+/* hud v3 */
+/* hud v4 */
+/* hud v5 */
+/* focus layer */

@@ -55,7 +55,7 @@ const report: StageDef = {
         ['officer', 'Navbatchi qism. Qanday masalada keldingiz?'],
       ],
       options: [
-        { id: 'purpose', text: 'Assalomu alaykum. Men advokatman, Nodira K.ning vakiliman. Kecha uning telefoni oʻgʻirlangan — jinoyat toʻgʻrisida ariza bermoqchimiz.',
+        { id: 'purpose', text: 'Assalomu alaykum. Men advokatman, Nodira K.ning vakiliman. Kecha uning telefoni oʻgʻirlangan - jinoyat toʻgʻrisida ariza bermoqchimiz.',
           reply: [['officer', 'Tushunarli. Ariza yozma boʻladimi yoki ogʻzaki? Ogʻzaki boʻlsa, bayonnomaga yozaman.']], next: 'r-form', tone: 'good', article: '324-modda' },
         { id: 'anonymous', text: 'Ismimizni yozmay qoʻya qoling, shunchaki xabar beramiz.',
           reply: [['officer', 'Imzosiz, anonim xabar jinoyat ishini qoʻzgʻatishga sabab boʻla olmaydi.', { emotion: 'impatient' }]],
@@ -65,7 +65,7 @@ const report: StageDef = {
     {
       id: 'r-form',
       options: [
-        { id: 'written', text: 'Yozma ariza tayyor — Nodira opa imzolagan. Shaxsini tasdiqlovchi hujjati ham shu yerda.',
+        { id: 'written', text: 'Yozma ariza tayyor - Nodira opa imzolagan. Shaxsini tasdiqlovchi hujjati ham shu yerda.',
           reply: [['officer', 'Yaxshi, qabul qilaman.']], effect: { learn: ['signed'] }, next: 'r-warn', tone: 'good', article: '324-modda' },
         { id: 'oral', text: 'Ogʻzaki aytamiz, bayonnomaga yozing.',
           reply: [['officer', 'Bayonnomada arizachi, yashash va ish joyi, shaxsiy hujjatlari koʻrsatiladi; holatlar uning nomidan, iloji boricha soʻzma-soʻz yoziladi.']], effect: { learn: ['signed'] }, next: 'r-warn', tone: 'good', article: '324-modda' },
@@ -87,7 +87,7 @@ const report: StageDef = {
       id: 'r-evidence',
       enter: [['officer', 'Ariza roʻyxatga olindi va darhol koʻriladi; tekshiruv kerak boʻlsa — oʻn sutkadan kechiktirmay hal qilinadi. Qoʻshimcha nima taqdim etasiz?']],
       options: [
-        { id: 'imei', text: 'Telefon qutisi va xarid cheki — IMEI raqami bor. Bozordagi doʻkonlarda kamera boʻlishi mumkin, shuni ham qayd eting.',
+        { id: 'imei', text: 'Telefon qutisi va xarid cheki - IMEI raqami bor. Bozordagi doʻkonlarda kamera boʻlishi mumkin, shuni ham qayd eting.',
           reply: [['officer', 'Qabul qildim, ilova qilaman. Kamera boʻyicha topshiriq beriladi.']], effect: { learn: ['imei'] }, next: 'r-end', tone: 'good', article: '329-modda' },
         { id: 'vigilante', text: 'Gumondorni oʻzimiz topib, ushlab kelamiz.',
           reply: [['officer', 'Oʻzboshimchalik qilmang. Tekshiruvni vakolatli organ oʻtkazadi.', { emotion: 'impatient' }]], effect: { penalty: [15, 'Oʻzboshimchalikka ishora'] }, next: 'r-end', tone: 'bad' },
@@ -136,7 +136,7 @@ const interview: StageDef = {
       id: 'i-record',
       enter: [['investigator', 'Soʻroq tugadi. Bayonnomani imzolang.']],
       options: [
-        { id: 'read', text: 'Avval bayonnomani oʻqib chiqamiz. Koʻrsatuv soʻzma-soʻz yozilmagan joy bor — tuzatishni soʻraymiz va mening arzimni bayonnomaga kiriting.',
+        { id: 'read', text: 'Avval bayonnomani oʻqib chiqamiz. Koʻrsatuv soʻzma-soʻz yozilmagan joy bor - tuzatishni soʻraymiz va mening arzimni bayonnomaga kiriting.',
           reply: [['investigator', 'Haqlisiz, tuzatamiz. Arzingiz bayonnomaga kiritildi.']], effect: { learn: ['record'] }, next: 'i-end', tone: 'good', article: '106-modda' },
         { id: 'sign-blind', text: 'Oʻqimasdan imzolayveramiz, vaqt yoʻq.',
           reply: [['client', 'Nimani imzolayotganimni bilmayman…', { emotion: 'uncertain' }]], effect: { penalty: [20, 'Bayonnoma oʻqilmasdan imzolandi'] }, next: 'i-end', tone: 'bad', article: '106-modda' },

@@ -21,7 +21,7 @@ export function CodePanel({ code, open, onOpen, onClose }: { code: Code; open: s
   return (
     // a click anywhere outside the drawer closes the Code; grab the header to fling it away
     <Drawer side="right" label="Fuqarolik protsessual kodeksi" onClose={onClose} z="z-50"
-      className="w-[min(30rem,calc(100vw-1.5rem))] rounded-[24px] bg-[#0d121b]/97 text-white shadow-[0_30px_90px_rgba(0,0,0,0.55)] ring-1 ring-white/10 backdrop-blur-xl"
+      className="w-[min(30rem,calc(100vw-1.5rem))] rounded-[24px] hud hud-strong"
       header={
       <header className="px-5 pt-4">
         <div className="flex items-start gap-3">

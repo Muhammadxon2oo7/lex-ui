@@ -74,6 +74,21 @@ export default function CaseClient() {
     };
   }, [id, stage, round]);
 
+  // a character answering through the AI is still "thinking": ask again until the line comes
+  const thinking = snap?.thinking ?? null;
+  const lastLine = snap?.lines.at(-1)?.id;
+  useEffect(() => {
+    if (!thinking) return;
+    let alive = true;
+    const t = setTimeout(() => {
+      call(`/${id}/npc`, {}).then((s) => alive && setSnap((cur) => (cur && cur.lines.at(-1)?.id === lastLine ? s : cur)), () => {});
+    }, 6000);
+    return () => {
+      alive = false;
+      clearTimeout(t);
+    };
+  }, [id, thinking, lastLine, snap]);
+
   if (!stage || (error && !snap)) {
     return (
       <main className="grid min-h-dvh place-items-center bg-[#0c0f14] p-6 text-center text-white">
@@ -375,6 +390,7 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
               <button type="button" onClick={skip} disabled={idle} className="block w-full px-5 pt-4 pb-3 text-left disabled:cursor-default">
                 <span className={`block text-[0.68rem] font-semibold tracking-[0.16em] uppercase ${current?.speaker === 'you' ? 'text-sky-300' : current?.speaker === 'judge' ? 'text-emerald-300' : current?.speaker === 'system' || !current ? 'text-white/45' : 'text-amber-200'}`}>
                   {!current || current.speaker === 'system' ? `${def.number}. ${def.place}` : current.speaker === 'you' ? 'Siz' : who ? `${who.label} · ${who.name}` : ''}
+                  {current?.engine === 'llm' && <span title="Bu gap oldindan yozilmagan: qahramon sunʼiy intellekt orqali javob berdi" className="ml-2 rounded-full bg-white/12 px-1.5 py-px align-[1px] text-[0.6rem] tracking-[0.08em] text-white/80">AI</span>}
                 </span>
                 <AnimatePresence mode="popLayout" initial={false}>
                   <motion.span key={current ? `${current.speaker}:${current.text}` : 'goal'} initial={{ opacity: 0, y: 6, filter: 'blur(3px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -4 }} transition={ease.surface}
@@ -383,6 +399,12 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
                   </motion.span>
                 </AnimatePresence>
                 {!idle && <span className="mt-1 block text-right text-[0.7rem] text-white/40">Space - davom</span>}
+                {idle && snap.thinking && (
+                  <span role="status" className="mt-2 flex items-center gap-2 text-[0.84rem] text-white/60">
+                    <span aria-hidden className="flex gap-1">{[0, 1, 2].map((i) => <span key={i} className="size-1.5 animate-pulse rounded-full bg-amber-200/80 motion-reduce:animate-none" style={{ animationDelay: `${i * 160}ms` }} />)}</span>
+                    {party(snap.thinking)?.name ?? 'Suhbatdosh'} oʻylayapti…
+                  </span>
+                )}
               </button>
               <p className="sr-only" role="log" aria-live="polite">{current ? `${current.speaker === 'you' ? 'Siz' : who?.label ?? ''}: ${current.text}` : ''}</p>
 

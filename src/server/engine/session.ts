@@ -37,6 +37,7 @@ import { RuleIntentClassifier, type IntentClassifier, type IntentTag } from './i
 import { evaluate } from './evaluator';
 import { pack, unpack } from '@/server/durable';
 import { situationLine, type Situation } from '@/server/situation';
+import { askNpc } from '@/server/case/npc';
 
 export class HttpError extends Error {
   constructor(
@@ -171,8 +172,9 @@ function setStatus(s: Session, batch: SimEvent[], status: SessionStatus) {
   emit(s, batch, 'session.status', { status });
 }
 
-function npcSay(s: Session, batch: SimEvent[], text: string, gesture: Gesture, revealed: string[] = []) {
+function npcSay(s: Session, batch: SimEvent[], text: string, gesture: Gesture, revealed: string[] = [], engine?: 'llm') {
   const turn = addTurn(s, 'npc', text, s.emotion);
+  if (engine) turn.engine = engine;
   emit(s, batch, 'dialogue.npcTurn', { turn, revealedFactIds: revealed });
   emit(s, batch, 'npc.emotion', { npcId: s.scenario.public.npc.id, emotion: s.emotion, intensity: s.intensity });
   if (gesture !== 'none') emit(s, batch, 'npc.gesture', { npcId: s.scenario.public.npc.id, clip: gesture });
@@ -448,7 +450,7 @@ export function processTurn(
         (s.evidence.dismiss ??= []).push(userTurn.id);
         s.patience -= 10;
         s.trust -= 8;
-      } else s.patience -= 3;
+      } else if (situation.action !== 'repeat_last') s.patience -= 3;
       moodOverride = human.emotion ?? null;
     } else if (tags.has('injection')) {
       beat = 'injection';
@@ -540,11 +542,32 @@ export function processTurn(
     s.emotion = moodOverride ?? mood.emotion;
     s.intensity = moodOverride ? 0.6 : mood.intensity;
 
-    if (human) {
+    if (human && situation?.action === 'repeat_last') {
+      // «eshitmadim, qaytaring»: «Albatta, qaytaraman.» and the citizen's last words again
+      const last = [...s.turns].reverse().find((t) => t.speaker === 'npc' && t.id !== userTurn.id);
+      npcSay(s, batch, human.text, 'none');
+      if (last) npcSay(s, batch, last.text, 'none', [], last.engine === 'llm' ? 'llm' : undefined);
+    } else if (human) {
       npcSay(s, batch, human.text, situation?.ethics ? 'shake-head' : 'none');
     } else if (beat === 'bribe-pushed') {
       npcSay(s, batch, s.scenario.bribe.pushLine, 'offer-envelope');
     } else {
+      // nothing in the script fits a free answer: the citizen may answer in role through the AI (court
+      // server v1.5 /npc/reply) - from the facts already told only, so the questions still have to be asked
+      const ai = beat === 'fallback' && !input.optionId && s.ownerToken ? await askNpc(s.ownerToken, {
+        speaker: 'citizen',
+        caseKind: 'dxm',
+        stage: 'reception',
+        goal: 'Fuqaroning murojaatini tinglash, vaziyatni aniqlash va davlat xizmatini tushuntirish',
+        utterance: text,
+        facts: s.scenario.facts.filter((f) => s.unlocked.has(f.id)).map((f) => f.summary).slice(0, 12),
+        articles: [],
+        history: s.turns.filter((t) => t.speaker !== 'system').slice(-16).map((t) => ({ speaker: t.speaker === 'user' ? 'operator' : 'citizen', text: t.text })),
+        conversationId: `dxm-${s.id}`.slice(0, 64),
+      }, true) : null;
+      if (ai?.kind === 'ok') {
+        npcSay(s, batch, ai.text, 'none', [], ai.engine === 'llm' ? 'llm' : undefined);
+      } else {
       const reply = await character.reply(
         {
           beat,
@@ -559,6 +582,7 @@ export function processTurn(
         text,
       );
       npcSay(s, batch, reply.text, reply.gesture, revealed.map((f) => f.id));
+      }
     }
 
     if (s.unlocked.size >= 2) setObjective(s, batch, 'clarify');

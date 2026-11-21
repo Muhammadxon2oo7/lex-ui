@@ -11,8 +11,8 @@
  *
  * Either way the court names a winner of the DEBATE; it never pretends to decide a real claim.
  */
-import { MootVerdictSchema, type MootEntry, type MootSide, type MootStep, type MootVerdict } from '@/contracts/moot';
-import { keyed, remoteKeyed } from '@/server/remote/key';
+import { MootExplainSchema, MootVerdictSchema, type MootEntry, type MootSide, type MootStep, type MootVerdict } from '@/contracts/moot';
+import { keyed, remoteKeyed, studentHash } from '@/server/remote/key';
 import type { MootCase } from './cases';
 
 const norm = (t: string) => t.toLowerCase().replace(/[ʻʼ'`’‘]/g, 'ʻ').replace(/\s+/g, ' ');
@@ -20,6 +20,11 @@ const words = (t: string) => t.trim().split(/\s+/).filter(Boolean).length;
 /** Swearing ends the manners score (a short list of stems; the court server's own filter is the real one). */
 const FOUL = ['sik', 'jalab', 'qoʻtoq', 'qotoq', 'naxuy', 'нахуй', 'сука', 'blya', 'бля', 'haromi', 'ahmoq'];
 const LEGAL = [/\bmodda/, /kodeks/, /\bband/, /shartnomaning/, /qonun/];
+/**
+ * Criterion weights - the court server's rubric «moot-2026.11.1» (GET /rubrics/moot): each tied to a moot or
+ * qualifying-exam standard (Jessup, Vis, Berkeley, SQE2). Kept equal so both readings add up the same way.
+ */
+export const W = { legal: 30, rebuttal: 25, facts: 20, participation: 15, manners: 10 } as const;
 
 export interface JudgePlayer {
   id: string;
@@ -50,27 +55,33 @@ export function ruleVerdict(c: MootCase, agenda: MootStep[], transcript: MootEnt
       const later = mine.filter((e) => e.seq > theirFirst).map((e) => e.text).join(' ');
       const legal = LEGAL.filter((r) => r.test(norm(all))).length;
       return [side, {
-        participation: steps.length ? Math.round((used / steps.length) * 20) : 0,
-        manners: foul ? 0 : openings.length ? Math.round((polite / openings.length) * 15) : 0,
-        facts: c.points[side].length ? Math.round((coverage(all, c.points[side]) / c.points[side].length) * 30) : 0,
-        rebuttal: Math.round((Math.min(3, coverage(later, c.points[other])) / 3) * 20),
-        legal: Math.round((Math.min(3, legal) / 3) * 15),
+        participation: steps.length ? Math.round((used / steps.length) * W.participation) : 0,
+        manners: foul ? 0 : openings.length ? Math.round((polite / openings.length) * W.manners) : 0,
+        facts: c.points[side].length ? Math.round((coverage(all, c.points[side]) / c.points[side].length) * W.facts) : 0,
+        rebuttal: Math.round((Math.min(3, coverage(later, c.points[other])) / 3) * W.rebuttal),
+        legal: Math.round((Math.min(3, legal) / 3) * W.legal),
         foul,
       }];
     }),
   ) as Record<MootSide, { participation: number; manners: number; facts: number; rebuttal: number; legal: number; foul: boolean }>;
 
   const rows: [keyof Omit<(typeof score)['claimant'], 'foul'>, string, number, string][] = [
-    ['participation', 'Soʻzdan foydalanish', 20, 'Har bir berilgan soʻzda mazmunli chiqish qilindimi.'],
-    ['manners', 'Sud odobi', 15, '«Hurmatli sud» deb murojaat; haqorat boʻlsa - 0.'],
-    ['facts', 'Faktlar va dalillar', 30, 'Ish materiallaridagi holat va dalillarga tayanish.'],
-    ['rebuttal', 'Raqibga javob', 20, 'Qarshi tomon dalillariga munosabat bildirildimi.'],
-    ['legal', 'Huquqiy asos', 15, 'Shartnoma bandi, modda yoki qonunga havola.'],
+    ['legal', 'Huquqiy asos', W.legal, 'Shartnoma bandi, modda yoki qonunga havola.'],
+    ['rebuttal', 'Raqibga javob', W.rebuttal, 'Qarshi tomon dalillariga munosabat bildirildimi.'],
+    ['facts', 'Faktlar va dalillar', W.facts, 'Ish materiallaridagi holat va dalillarga tayanish.'],
+    ['participation', 'Soʻzdan foydalanish', W.participation, 'Har bir berilgan soʻzda mazmunli chiqish qilindimi.'],
+    ['manners', 'Sud odobi', W.manners, '«Hurmatli sud» deb murojaat; haqorat boʻlsa - 0.'],
   ];
   const criteria = rows.map(([id, label, max, note]) => ({ id, label, max, claimant: score.claimant[id], respondent: score.respondent[id], note }));
   const totals = { claimant: criteria.reduce((n, r) => n + r.claimant, 0), respondent: criteria.reduce((n, r) => n + r.respondent, 0) };
   if (forfeit) totals[forfeit] = 0;
-  const winner: MootSide | null = forfeit ? (forfeit === 'claimant' ? 'respondent' : 'claimant') : totals.claimant === totals.respondent ? null : totals.claimant > totals.respondent ? 'claimant' : 'respondent';
+  // the ethics ceiling (court server v1.5): a side that swore scores at most 40 and cannot win
+  for (const s of sides) if (score[s].foul) totals[s] = Math.min(totals[s], 40);
+  const fouled = sides.filter((s) => score[s].foul);
+  const winner: MootSide | null = forfeit ? (forfeit === 'claimant' ? 'respondent' : 'claimant')
+    : fouled.length === 1 ? (fouled[0] === 'claimant' ? 'respondent' : 'claimant')
+    : fouled.length === 2 || Math.abs(totals.claimant - totals.respondent) <= 2 ? null
+    : totals.claimant > totals.respondent ? 'claimant' : 'respondent';
   const NAME = { claimant: 'daʼvogar tomoni', respondent: 'javobgar tomoni' } as const;
   const edge = winner && !forfeit ? [...criteria].sort((a, b) => b[winner] - b[winner === 'claimant' ? 'respondent' : 'claimant'] - (a[winner] - a[winner === 'claimant' ? 'respondent' : 'claimant']))[0] : null;
   const ruling = forfeit
@@ -96,6 +107,8 @@ export function ruleVerdict(c: MootCase, agenda: MootStep[], transcript: MootEnt
     engine: 'rules',
     forfeit: Boolean(forfeit),
     pending: false,
+    verdictId: null,
+    explain: null,
   };
 }
 
@@ -108,13 +121,16 @@ export type JudgeAnswer = { kind: 'ok'; verdict: MootVerdict } | { kind: 'pendin
  * an error, a malformed verdict - is 'none', and the rules decide (the hearing always ends with a decision).
  * `owner`: whose identity goes with the call (X-LexSim-Owner is required by the server).
  */
-export async function askJudge(c: MootCase, agenda: MootStep[], transcript: MootEntry[], players: JudgePlayer[], owner: string): Promise<JudgeAnswer> {
+export async function askJudge(c: MootCase, agenda: MootStep[], transcript: MootEntry[], players: JudgePlayer[], owner: string, participants: { owner: string; side: MootSide }[] = []): Promise<JudgeAnswer> {
   if (!remoteKeyed()) return { kind: 'none' };
   const base = ruleVerdict(c, agenda, transcript, players, null);
-  const r = await keyed<{ verdict?: unknown; error?: { code?: string } }>(owner, '/moot/judge', {
+  const r = await keyed<{ verdict?: unknown; verdictId?: unknown; explain?: unknown; error?: { code?: string } }>(owner, '/moot/judge', {
     timeout: 26_000,
     body: {
-      case: { id: c.id, title: c.title, claim: c.claim, facts: c.facts, evidence: c.evidence, side: c.side },
+      // case.id: the case-lab id when the case lives there (so a solution can be bound to this verdict)
+      case: { id: c.labId ?? c.id, title: c.title, claim: c.claim, facts: c.facts, evidence: c.evidence, side: c.side },
+      // who may bind this verdict to their solution, and on which side (hashed owners, never the cookie)
+      participants: participants.map((p) => ({ owner: studentHash(p.owner), side: p.side })),
       agenda: agenda.map(({ id, title, side, role }) => ({ id, title, side, role })),
       transcript: transcript.filter((e) => e.side).map(({ seq, by, name, side, text, step }) => ({ seq, by, name, side, text, step })),
       players,
@@ -123,6 +139,11 @@ export async function askJudge(c: MootCase, agenda: MootStep[], transcript: Moot
   });
   if (!r) return { kind: 'none' };
   if (r.status === 503 && r.json?.error?.code === 'judge_pending') return { kind: 'pending', retryAfter: 15 };
-  const parsed = MootVerdictSchema.safeParse(r.status === 200 ? { ...(r.json?.verdict as object), engine: 'model', forfeit: false, pending: false } : null);
+  const explain = MootExplainSchema.safeParse(r.json?.explain);
+  const parsed = MootVerdictSchema.safeParse(r.status === 200 ? {
+    ...(r.json?.verdict as object), engine: 'model', forfeit: false, pending: false,
+    verdictId: typeof r.json?.verdictId === 'string' ? r.json.verdictId : null,
+    explain: explain.success ? explain.data : null,
+  } : null);
   return parsed.success ? { kind: 'ok', verdict: parsed.data } : { kind: 'none' };
 }

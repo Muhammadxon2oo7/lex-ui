@@ -48,6 +48,12 @@ export const LibCaseSchema = z.object({
   balance: z.object({ claimant_strong: z.string().catch(''), claimant_weak: z.string().catch(''), respondent_strong: z.string().catch(''), respondent_weak: z.string().catch('') }).nullable().optional().catch(null),
   questions: z.array(z.string()).catch([]),
   disclaimer: z.string().catch('Oʻquv ishi. Huquqiy maslahat emas.'),
+  /** v1.5: public - everyone after a mentor approves; private - the author and whoever has the share code. */
+  visibility: z.enum(['public', 'private']).catch('public'),
+  /** Only the author gets it: the link «…?case={id}&code={shareCode}» opens a private case. */
+  shareCode: z.string().nullable().optional().catch(null),
+  /** How many public solutions the case has. */
+  solutions: z.number().int().nonnegative().catch(0),
   reviewNote: z.string().nullable().optional().catch(null),
   createdAt: z.string().nullable().optional().catch(null),
   updatedAt: z.string().nullable().optional().catch(null),
@@ -70,5 +76,37 @@ export type Draft = z.infer<typeof DraftSchema>;
 /** What the student may send: the story (80–4000), optional answers to the model's questions. */
 export const DraftRequestSchema = z.object({ domain: z.string().min(1).max(40), story: z.string().trim().min(80).max(4000), answers: z.string().trim().max(4000).optional() });
 /** A case the student edited and saves (the server keeps only articles from its own base). */
-export const SaveCaseSchema = LibCaseSchema.omit({ id: true, source: true, status: true, mine: true, reviewNote: true, createdAt: true, updatedAt: true }).extend({ draftId: z.string().optional() });
+export const SaveCaseSchema = LibCaseSchema.omit({ id: true, source: true, status: true, mine: true, reviewNote: true, createdAt: true, updatedAt: true, shareCode: true, solutions: true }).extend({ draftId: z.string().optional() });
+
+export const VisibilitySchema = z.object({ visibility: z.enum(['public', 'private']) });
+
+/**
+ * A solution (v1.5): how someone approached the case - which side, what they relied on, how it ended.
+ * The result is never typed by the student: the server binds a real verdict when `verdictId` is sent.
+ */
+export const SolutionSchema = z.object({
+  id: z.string(),
+  caseId: z.string().catch(''),
+  name: z.string().catch('Anonim'),
+  side: z.enum(['claimant', 'respondent']).nullable().catch(null),
+  approach: z.string().catch(''),
+  visibility: z.enum(['public', 'private', 'hidden']).catch('private'),
+  mine: z.boolean().catch(false),
+  verdict: z.object({ verified: z.boolean().catch(false), winner: z.enum(['claimant', 'respondent']).nullable().catch(null), won: z.boolean().nullable().catch(null), side: z.enum(['claimant', 'respondent']).nullable().optional().catch(null) }).nullable().catch(null),
+  createdAt: z.string().nullable().optional().catch(null),
+  updatedAt: z.string().nullable().optional().catch(null),
+});
+export type Solution = z.infer<typeof SolutionSchema>;
+export const NewSolutionSchema = z.object({
+  approach: z.string().trim().min(50).max(4000),
+  side: z.enum(['claimant', 'respondent']).nullable().default(null),
+  visibility: z.enum(['public', 'private']).default('private'),
+  name: z.string().trim().max(40).optional(),
+  verdictId: z.string().max(64).optional(),
+  code: z.string().max(64).optional(),
+});
+export const EditSolutionSchema = z.union([
+  z.object({ delete: z.literal(true) }),
+  z.object({ visibility: z.enum(['public', 'private']).optional(), approach: z.string().trim().min(50).max(4000).optional(), name: z.string().trim().max(40).optional() }),
+]);
 export const ReviewSchema = z.object({ decision: z.enum(['approve', 'reject']), note: z.string().trim().max(1000).catch('') });

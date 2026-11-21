@@ -16,6 +16,8 @@ export function Badges({ c }: { c: LibCase }) {
       <span className={`rounded-full px-2.5 py-0.5 text-[0.72rem] font-semibold ${c.source === 'system' ? 'bg-ink text-white' : 'bg-black/[0.06] text-ink-2'}`}>{c.source === 'system' ? 'Tizim' : 'Foydalanuvchi'}</span>
       {c.mine && <span className="rounded-full bg-black/[0.06] px-2.5 py-0.5 text-[0.72rem] font-semibold text-ink-2">Meniki</span>}
       {c.mine && c.status !== 'approved' && <span className={`rounded-full px-2.5 py-0.5 text-[0.72rem] font-semibold ${STATUS[c.status][1]}`}>{STATUS[c.status][0]}</span>}
+      {c.mine && c.visibility === 'private' && <span className="rounded-full bg-black/[0.06] px-2.5 py-0.5 text-[0.72rem] font-semibold text-ink-2">Yopiq</span>}
+      {c.solutions > 0 && <span className="rounded-full bg-accent-soft px-2.5 py-0.5 text-[0.72rem] font-semibold text-accent-ink">{c.solutions} ta yechim</span>}
     </span>
   );
 }

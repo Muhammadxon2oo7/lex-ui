@@ -16,6 +16,8 @@ import { AnimatePresence, MotionConfig, motion } from 'motion/react';
 import { Talk } from '@/components/hud/Talk';
 import { Drawer } from '@/components/ui/Drawer';
 import { CaseMeta, Debrief, Norms, Timeline } from '@/components/moot/CaseParts';
+import { Explain } from '@/components/moot/Explain';
+import { SolutionForm } from '@/components/library/Solutions';
 import { modal, note } from '@/lib/motion';
 import { PracticeRecord } from '@/components/record/PracticeRecord';
 import { GlassLayer } from '@/components/ui/glass';
@@ -629,6 +631,7 @@ function Verdict({ room }: { room: MootRoom }) {
     [room.transcript, room.me.id],
   );
   const mine = v.players.find((p) => p.id === room.me.id);
+  const [solved, setSolved] = useState<'public' | 'private' | null>(null);
   return (
     <main className="relative isolate mx-auto w-full max-w-4xl flex-1 px-5 py-8 sm:py-12">
       <GlassLayer />
@@ -680,7 +683,18 @@ function Verdict({ room }: { room: MootRoom }) {
         </section>
       )}
 
+      {v.explain && !v.forfeit && <Explain explain={v.explain} mine={side} transcript={room.transcript} />}
+
       {room.case.debrief && <Debrief d={room.case.debrief} />}
+
+      {room.case.labId && v.verdictId && !v.pending && side && (
+        <section className="surface mt-4 rounded-[28px] p-5" aria-labelledby="mysol-title">
+          <h2 id="mysol-title" className="display text-lg font-semibold">Yechimingizni yozing</h2>
+          <p className="mt-1 mb-4 text-[0.9rem] text-ink-2">Nimaga tayandingiz va nima ishladi? Bahs natijasi yechimga avtomatik biriktiriladi; boshqalar koʻrishini oʻzingiz tanlaysiz.</p>
+          {solved ? <p role="status" className="rounded-2xl bg-accent-soft px-4 py-3 text-[0.92rem] font-semibold text-accent-ink">Yechim saqlandi{solved === 'public' ? ' va boshqalarga ochiq' : ' (faqat sizga koʻrinadi)'}.</p>
+            : <SolutionForm caseId={room.case.labId} verdictId={v.verdictId} fixedSide={side} onSaved={(s) => setSolved(s.visibility === 'public' ? 'public' : 'private')} />}
+        </section>
+      )}
 
       <section className="mt-4 surface rounded-[28px] p-5" aria-labelledby="people-title">
         <h2 id="people-title" className="display text-lg font-semibold">Ishtirokchilar</h2>

@@ -50,6 +50,8 @@ export const CaseLineSchema = z.object({
   scene: SceneSchema,
   /** How the speaker feels saying it (drives the face and posture). */
   emotion: EmotionSchema.optional(),
+  /** 'llm' - not a written line: the character answered through the AI (marked «AI» on screen). */
+  engine: z.enum(['llm']).optional(),
 });
 export type CaseLine = z.infer<typeof CaseLineSchema>;
 
@@ -198,6 +200,8 @@ export const CaseSnapshotSchema = z.object({
   await: z.enum(['stand', 'sit', 'draft']).nullable(),
   standing: z.boolean(),
   feedback: z.object({ tone: z.enum(['good', 'bad', 'info']), message: z.string(), article: z.string().nullable() }).nullable(),
+  /** A character is answering through the AI and the line is still being written: ask again (POST …/npc). */
+  thinking: CaseSpeakerSchema.nullable().optional(),
   facts: z.array(CaseItemSchema),
   evidence: z.array(CaseItemSchema),
   /** Everything a draft may cite (labels only — what the student has not learned stays hidden). */

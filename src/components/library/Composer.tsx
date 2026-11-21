@@ -11,9 +11,10 @@ import type { Domain, Draft, LibCase } from '@/contracts/library';
 import { ApiError } from '@/game/api';
 import { library } from '@/game/library';
 import { Sheet } from '@/components/ui/Sheet';
+import { Segmented } from '@/components/ui/glass';
 import { ease, note } from '@/lib/motion';
 
-type Editable = Omit<LibCase, 'id' | 'source' | 'status' | 'mine' | 'reviewNote' | 'createdAt' | 'updatedAt'>;
+type Editable = Omit<LibCase, 'id' | 'source' | 'status' | 'mine' | 'reviewNote' | 'createdAt' | 'updatedAt' | 'shareCode' | 'solutions'>;
 const field = 'field';
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -91,8 +92,8 @@ export function Composer({ domain, onClose, onSaved }: { domain: Domain; onClose
       }
       if (!alive.current) return;
       if (d.status !== 'ready' || !d.case) throw new ApiError(502, 'draft_failed', d.error?.message ?? (d.status === 'working' ? 'AI juda uzoq ishladi. Qayta urinib koʻring.' : 'Qoralama tuzilmadi'));
-      const { id: _id, source: _s, status: _st, mine: _m, reviewNote: _r, createdAt: _c, updatedAt: _u, ...rest } = d.case;
-      void [_id, _s, _st, _m, _r, _c, _u];
+      const { id: _id, source: _s, status: _st, mine: _m, reviewNote: _r, createdAt: _c, updatedAt: _u, shareCode: _sc, solutions: _so, ...rest } = d.case;
+      void [_id, _s, _st, _m, _r, _c, _u, _sc, _so];
       setDraft(d);
       setEdit(rest);
       setPhase('edit');
@@ -129,7 +130,8 @@ export function Composer({ domain, onClose, onSaved }: { domain: Domain; onClose
         </div>
       ) : phase === 'edit' || phase === 'saving' ? (
         <div className="flex flex-wrap items-center gap-3">
-          <span className="text-[0.8rem] text-ink-3">Saqlangach mentorga boradi. Siz darhol koʻrasiz va oʻynay olasiz.</span>
+          {edit && <div className="w-52"><Segmented label="Kim koʻradi" size="sm" value={edit.visibility} onChange={(v) => set('visibility', v)} options={[['public', 'Hamma'], ['private', 'Havola bilan']]} /></div>}
+          <span className="max-w-[34ch] text-[0.8rem] text-ink-3">{edit?.visibility === 'private' ? 'Yopiq: faqat siz va havolani olganlar koʻradi, mentor tekshiruvi kerak emas.' : 'Saqlangach mentorga boradi. Siz darhol koʻrasiz va oʻynay olasiz.'}</span>
           <button type="button" className="btn btn-primary ml-auto" disabled={phase === 'saving' || !edit?.title.trim()} aria-busy={phase === 'saving'} onClick={() => void save()}>{phase === 'saving' ? 'Saqlanmoqda…' : 'Saqlash'}</button>
         </div>
       ) : undefined}>

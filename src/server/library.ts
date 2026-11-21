@@ -12,7 +12,7 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
-import { DomainsEnvelope, DraftSchema, LibCaseSchema, type Domain, type Draft, type LibCase } from '@/contracts/library';
+import { DomainsEnvelope, DraftSchema, LibCaseSchema, SolutionSchema, type Domain, type Draft, type LibCase, type Solution } from '@/contracts/library';
 import { HttpError } from '@/server/engine/session';
 import { keyHeaders, REMOTE_BASE, remoteKeyed } from '@/server/remote/key';
 
@@ -21,7 +21,7 @@ const MENTOR_CODE = process.env.LEXSIM_MENTOR_CODE || null;
 const SECRET = process.env.LEXSIM_COOKIE_SECRET || process.env.LEXSIM_REMOTE_KEY || 'lexsim-dev-only';
 const MENTOR_COOKIE = 'lexsim_mentor';
 
-type Init = { method?: string; body?: unknown; admin?: boolean; timeout?: number };
+type Init = { method?: string; body?: unknown; admin?: boolean; timeout?: number; headers?: Record<string, string> };
 
 /** A backend call; backend errors come back as our errors ({code, message} in Uzbek). */
 async function call(owner: string | undefined, path: string, init: Init = {}): Promise<{ status: number; json: unknown; retryAfter: number | null }> {
@@ -36,6 +36,7 @@ async function call(owner: string | undefined, path: string, init: Init = {}): P
       headers: {
         ...(needsKey ? keyHeaders(owner) : {}),
         ...(init.admin && ADMIN ? { 'X-Admin-Token': ADMIN } : {}),
+        ...(init.headers ?? {}),
         ...(init.body === undefined ? {} : { 'Content-Type': 'application/json' }),
       },
       body: init.body === undefined ? undefined : JSON.stringify(init.body),
@@ -80,8 +81,33 @@ export async function listCases(owner: string, domain: string, scope: 'all' | 'm
   return listOf(r.json).map(publicView);
 }
 
-export async function getCase(owner: string, id: string): Promise<LibCase> {
-  return publicView(oneOf((await call(owner, `/cases/${encodeURIComponent(id)}`)).json));
+/** `code`: the share code of a private case (whoever has the link may read it). */
+export async function getCase(owner: string, id: string, code?: string): Promise<LibCase> {
+  return publicView(oneOf((await call(owner, `/cases/${encodeURIComponent(id)}${code ? `?code=${encodeURIComponent(code)}` : ''}`)).json));
+}
+
+/** The author opens or closes a case (opening sends it to review; closing again gives a new share code). */
+export async function setVisibility(owner: string, id: string, visibility: 'public' | 'private'): Promise<LibCase> {
+  return oneOf((await call(owner, `/cases/${encodeURIComponent(id)}/visibility`, { body: { visibility } })).json);
+}
+
+/* ───────────────────────── solutions (v1.5) ───────────────────────── */
+
+const solutionsOf = (json: unknown) => parse(z.array(SolutionSchema), Array.isArray(json) ? json : (json as { solutions?: unknown } | null)?.solutions);
+const solutionOf = (json: unknown) => parse(SolutionSchema, (json as { solution?: unknown } | null)?.solution ?? json);
+
+export async function solutions(owner: string, caseId: string, code?: string): Promise<Solution[]> {
+  return solutionsOf((await call(owner, `/cases/${encodeURIComponent(caseId)}/solutions${code ? `?code=${encodeURIComponent(code)}` : ''}`)).json);
+}
+
+export async function addSolution(owner: string, caseId: string, body: unknown): Promise<Solution> {
+  return solutionOf((await call(owner, `/cases/${encodeURIComponent(caseId)}/solutions`, { body })).json);
+}
+
+/** Edit, open, close or delete one's own solution (`{delete: true}` returns null). */
+export async function editSolution(owner: string, id: string, body: unknown): Promise<Solution | null> {
+  const r = await call(owner, `/solutions/${encodeURIComponent(id)}`, { body });
+  return (body as { delete?: boolean }).delete ? null : solutionOf(r.json);
 }
 
 export async function startDraft(owner: string, body: { domain: string; story: string; answers?: string }): Promise<{ draft: Draft; retryAfter: number }> {
@@ -144,6 +170,33 @@ export async function mootCases(owner: string): Promise<{ id: string; title: str
 }
 
 /** The whole case, both sides' confidential facts — for the room engine only, never sent to a browser as is. */
-export async function mootCaseFull(owner: string, id: string): Promise<LibCase> {
-  return oneOf((await call(owner, `/moot/cases/${encodeURIComponent(id)}`)).json);
+export async function mootCaseFull(owner: string, id: string, code?: string): Promise<LibCase> {
+  return oneOf((await call(owner, `/moot/cases/${encodeURIComponent(id)}${code ? `?code=${encodeURIComponent(code)}` : ''}`)).json);
+}
+
+/* ───────────────────────── AI review: system → AI → mentor (v1.5) ───────────────────────── */
+
+/**
+ * The court server's review queue: moot verdicts and AI characters' replies the AI itself sent to a
+ * mentor (no quote found, runs disagreed, ethics) plus a random 3 % audit of the ones it called good.
+ * Shapes are passed through as JSON (the screen reads them leniently); the admin token stays here.
+ */
+export async function auditQueue(owner: string, kind: 'moot_verdict' | 'npc_reply'): Promise<unknown> {
+  await mentorOnly();
+  return (await call(owner, `/review/queue?kind=${kind}&status=pending`, { admin: true })).json;
+}
+
+export async function auditItem(owner: string, id: string): Promise<unknown> {
+  await mentorOnly();
+  return (await call(owner, `/review/${encodeURIComponent(id)}`, { admin: true })).json;
+}
+
+export async function auditDecide(owner: string, id: string, body: unknown, reviewer?: string): Promise<unknown> {
+  await mentorOnly();
+  return (await call(owner, `/review/${encodeURIComponent(id)}`, { admin: true, body, headers: reviewer ? { 'X-Reviewer': reviewer } : {} })).json;
+}
+
+export async function auditStats(owner: string): Promise<unknown> {
+  await mentorOnly();
+  return (await call(owner, '/review/stats', { admin: true })).json;
 }

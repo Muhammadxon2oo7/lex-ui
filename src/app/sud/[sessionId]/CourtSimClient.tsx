@@ -520,6 +520,7 @@ function Room({ initial }: { initial: Snapshot }) {
             <button type="button" onClick={skip} disabled={idle} className="block w-full px-5 pt-4 pb-3 text-left disabled:cursor-default">
               <span className={`block text-[0.68rem] font-semibold tracking-[0.16em] uppercase ${current?.speaker === 'user' ? 'text-sky-300' : role === 'judge' ? 'text-emerald-300' : !role ? 'text-white/45' : 'text-amber-200'}`}>
                 {!current || current.speaker === 'system' ? snap.scenario.briefing.workplace : current.speaker === 'user' ? 'Siz' : role ? LABEL[role] : ''}
+                {current?.speaker === 'npc' && current.engine === 'llm' && <span title="Bu gap oldindan yozilmagan: sunʼiy intellekt shu vaziyatga javob berdi" className="ml-2 rounded-full bg-white/12 px-1.5 py-px align-[1px] text-[0.6rem] tracking-[0.08em] text-white/80">AI</span>}
               </span>
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span key={current ? `${current.speaker}:${current.text}` : 'start'} initial={{ opacity: 0, y: 6, filter: 'blur(3px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -4 }} transition={ease.surface}
@@ -656,7 +657,7 @@ function Briefing({ snap, busy, onEnter }: { snap: Snapshot; busy: boolean; onEn
           <li>• {snap.level === 'advanced' ? 'Javobni faqat oʻzingiz aytasiz yoki yozasiz - variant va maslahat yoʻq; tahlil oxirida.' : snap.level === 'intermediate' ? 'Javobni oʻzingiz aytasiz yoki yozasiz; kerak boʻlsa variantlarni ochasiz (−10).' : 'Variantni tanlang (1-4) yoki oʻz soʻzingiz bilan ayting/yozing.'} <kbd className="!border-black/10 !bg-black/5">T</kbd> - ovoz.</li>
           <li>• Sudga tik turib (<kbd className="!border-black/10 !bg-black/5">G</kbd>) va «Hurmatli sud!» deb murojaat qilinadi.</li>
           {snap.mode === 'tutorial' && snap.hintsAllowed !== false && <li>• <kbd className="!border-black/10 !bg-black/5">M</kbd> maslahat - nima deyish kerakligini koʻrsatadi (−5 ball).</li>}
-          {snap.engine === 'llm' && snap.level === 'advanced' && <li>• Kutilmagan dalilga raqib tomon javobini til modeli tuzadi - bunday paytda biroz kutiladi.</li>}
+          <li>• Tayyor javob boʻlmasa, sudya va raqib sunʼiy intellekt orqali javob beradi (gap yonida «AI» belgisi) - bunday paytda biroz kutiladi.</li>
         </ul>
         <div className="mt-6 flex flex-wrap gap-2">
           <button type="button" className="btn btn-primary" onClick={onEnter} disabled={busy} autoFocus>{busy ? 'Kirilmoqda…' : 'Majlis zaliga kirish'}</button>

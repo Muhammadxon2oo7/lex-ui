@@ -21,7 +21,8 @@ type Nlu = {
   situation?: unknown;
 };
 
-export type Understood = { optionId: string | null; clarify: string | null; ethics: boolean; situation?: Situation | null };
+/** `ai`: nothing ready fits - the character may answer through the AI (court server /npc/reply). */
+export type Understood = { optionId: string | null; clarify: string | null; ethics: boolean; situation?: Situation | null; ai?: boolean };
 
 const FORBIDDEN = ['pora', 'tanish', 'konvert', 'pul beraman', 'kelishib qoʻyamiz'];
 
@@ -52,7 +53,7 @@ export async function understand(id: string, owner: string | undefined, text: st
       return { optionId: trap?.id ?? null, clarify: null, ethics: !trap };
     }
     if (n.match) return { optionId: n.match.id, clarify: null, ethics: false };
-    return { optionId: null, clarify: n.clarify ?? 'Fikringizni aniqroq, toʻliq gap bilan ayting.', ethics: false };
+    return { optionId: null, clarify: n.clarify ?? 'Fikringizni aniqroq, toʻliq gap bilan ayting.', ethics: false, ai: true };
   }
   // fallback: our cautious lexical matcher
   if (FORBIDDEN.some((w) => text.toLowerCase().includes(w))) {
@@ -60,5 +61,5 @@ export async function understand(id: string, owner: string | undefined, text: st
     return { optionId: trap?.id ?? null, clarify: null, ethics: !trap };
   }
   const m = matchUtterance(text, cand.options);
-  return m ? { optionId: m.option.id, clarify: null, ethics: false } : { optionId: null, clarify: 'Tushunmadim — fikringizni aniqroq, toʻliq gap bilan ayting.', ethics: false };
+  return m ? { optionId: m.option.id, clarify: null, ethics: false } : { optionId: null, clarify: 'Tushunmadim - fikringizni aniqroq, toʻliq gap bilan ayting.', ethics: false, ai: true };
 }

@@ -39,3 +39,38 @@ describe('court server verdict (POST /moot/judge, backend sample v1.4.8)', () =>
     expect(file).not.toContain('120 mln');
   });
 });
+
+describe('v1.5: explainable verdict and the new weights', () => {
+  it('reads the explain object of the backend note (items, quotes, band, mentor routing)', async () => {
+    const { MootExplainSchema } = await import('@/contracts/moot');
+    const e = MootExplainSchema.parse({
+      rubric: 'moot', version: 'moot-2026.11.1', runs: 1, needsMentor: false, routing: [],
+      sides: { claimant: { total: 31, band: [31, 31], criteria: [{ id: 'facts', label: 'Faktlar va dalillar', max: 20, score: 15, basis: ['jessup', 'vis', 'ipk68'] }],
+        items: [{ id: 'F2', dim: 'facts', ask: 'Ish materiallaridagi aniq dalil hujjatini nomlab, u nimani isbotlashini aytdi', weight: 3, method: 'ai', met: 'yes', agree: 1.0, basis: ['ipk68', 'jessup'],
+          evidence: [{ turnId: '3', quote: 'fakturalar javobgar direktori tomonidan imzolangan', match: 1.0 }], why: 'Imzolangan fakturalarni nomlab…' }] } },
+    });
+    expect(e.sides.claimant?.items[0].evidence[0].turnId).toBe('3');
+    expect(e.sides.respondent).toBeUndefined();
+    // anything odd degrades, never breaks the verdict
+    expect(MootExplainSchema.safeParse({ sides: { claimant: { items: [{ id: 'X', dim: 'legal', met: 'maybe', evidence: 'none' }] } } }).success).toBe(true);
+  });
+
+  it('the rules use the rubric weights (legal 30, rebuttal 25, facts 20, participation 15, manners 10)', async () => {
+    const { ruleVerdict } = await import('./judge');
+    const v = ruleVerdict(MOOT_CASES.ijara, [], [], [], null);
+    expect(Object.fromEntries(v.criteria.map((c) => [c.id, c.max]))).toEqual({ legal: 30, rebuttal: 25, facts: 20, participation: 15, manners: 10 });
+    expect(v.winner).toBeNull(); // nobody spoke: a draw
+  });
+
+  it('a side that swore scores at most 40 and cannot win', async () => {
+    const { ruleVerdict } = await import('./judge');
+    const agenda = [{ id: 's1', kind: 'speech' as const, title: 'Daʼvo', side: 'claimant' as const, role: 'lead' as const, seconds: 60 }, { id: 's2', kind: 'speech' as const, title: 'Javob', side: 'respondent' as const, role: 'lead' as const, seconds: 60 }];
+    const say = (seq: number, side: 'claimant' | 'respondent', text: string, step: string) => ({ id: `e${seq}`, seq, at: seq, by: side, name: side, side, text, step });
+    const v = ruleVerdict(MOOT_CASES.ijara, agenda, [
+      say(1, 'claimant', 'Hurmatli sud! 32-P shartnoma, hisob-faktura imzolangan, foydalangan, asosiy qarz 25 620, penya 8.5-band, toʻlanmagan, FK modda, qonun, kodeks. Ahmoq javobgar.', 's1'),
+      say(2, 'respondent', 'Hurmatli sud, dalolatnoma imzolanmagan, penyani kamaytirishni soʻraymiz.', 's2'),
+    ], [], null);
+    expect(v.totals.claimant).toBeLessThanOrEqual(40);
+    expect(v.winner).toBe('respondent');
+  });
+});

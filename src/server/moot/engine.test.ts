@@ -47,7 +47,7 @@ describe('moot court room', () => {
     const respondent = claimant === A ? B : A;
     expect(r.agenda[r.step].id).toBe('claim');
     expect(() => actRoom(respondent, code, { type: 'say', text: 'Hurmatli sud, navbatsiz gapiraman.' })).toThrow(); // not your floor
-    actRoom(claimant, code, { type: 'say', text: 'Hurmatli sud, 32-P-sonli shartnoma boʻyicha qarz toʻlanmagan, hisob-fakturalar imzolangan, 8.5-bandga koʻra penya soʻraymiz.' });
+    actRoom(claimant, code, { type: 'say', text: 'Hurmatli sud, 32-P-sonli shartnoma boʻyicha qarz toʻlanmagan, hisob-fakturalar imzolangan, 8.5-bandga koʻra penya soʻraymiz; FK 326-moddasi va qonun boʻyicha penya mutanosib.' });
     r = actRoom(claimant, code, { type: 'yield' });
     expect(r.agenda[r.step].id).toBe('answer');
     expect(r.speaker).toBe(r.players.find((p) => p.id !== (claimant === A ? r.me.id : ''))?.id ?? r.speaker);

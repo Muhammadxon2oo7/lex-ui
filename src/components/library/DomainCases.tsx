@@ -1,6 +1,6 @@
 'use client';
 /** One line of practice: its cases (the system's and people's), each opened in a sheet with its modes. */
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { AnimatePresence, LayoutGroup, MotionConfig, motion } from 'motion/react';
 import { useCallback, useEffect, useState } from 'react';
 import type { Domain, LibCase } from '@/contracts/library';
@@ -13,10 +13,14 @@ import { Sheet } from '@/components/ui/Sheet';
 import { ease, note } from '@/lib/motion';
 import { Badges, CaseView } from './CaseView';
 import { Composer } from './Composer';
+import { Solutions } from './Solutions';
+
+/** Cases that live on the court server's case-lab (solutions, sharing); the built-in ones do not. */
+const onLab = (c: LibCase) => /^[us]_/.test(c.id);
 
 /** Where a mode of a case leads. */
-async function startMode(mode: string, domain: Domain, c: LibCase): Promise<string> {
-  if (mode === 'moot') return `/bahs?case=${encodeURIComponent(c.id)}`;
+async function startMode(mode: string, domain: Domain, c: LibCase, code?: string): Promise<string> {
+  if (mode === 'moot') return `/bahs?case=${encodeURIComponent(c.id)}${c.mine && c.shareCode ? `&code=${encodeURIComponent(c.shareCode)}` : code ? `&code=${encodeURIComponent(code)}` : ''}`;
   if (mode === 'path') {
     if (domain.id === 'dxm') return `/simulation/${(await api.createSession('dxm-yoqolgan-staj', 'tutorial')).sessionId}`;
     const kind = domain.id === 'theft' ? 'theft' : 'labour';
@@ -41,6 +45,38 @@ export default function DomainCases() {
   const [open, setOpen] = useState<LibCase | null>(null);
   const [composing, setComposing] = useState(false);
   const [starting, setStarting] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  // a private case shared by its author: /sohalar/{domain}?case={id}&code={code}
+  const params = useSearchParams();
+  const sharedId = params.get('case');
+  const sharedCode = params.get('code') ?? undefined;
+  useEffect(() => {
+    if (!sharedId) return;
+    let alive = true;
+    library.case(sharedId, sharedCode).then((c) => alive && setOpen(c), (e) => alive && setError(e instanceof ApiError ? e.message : 'Case ochilmadi'));
+    return () => {
+      alive = false;
+    };
+  }, [sharedId, sharedCode]);
+  const share = async (c: LibCase) => {
+    const url = `${location.origin}/sohalar/${encodeURIComponent(id)}?case=${encodeURIComponent(c.id)}${c.shareCode ? `&code=${encodeURIComponent(c.shareCode)}` : ''}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      setError(`Havola: ${url}`);
+    }
+  };
+  const toggle = async (c: LibCase) => {
+    try {
+      const next = await library.visibility(c.id, c.visibility === 'public' ? 'private' : 'public');
+      setOpen(next);
+      setCases((l) => l?.map((x) => (x.id === next.id ? next : x)) ?? l);
+    } catch (e) {
+      setError(e instanceof ApiError ? e.message : 'Oʻzgartirib boʻlmadi');
+    }
+  };
 
   useEffect(() => {
     let alive = true;
@@ -64,7 +100,7 @@ export default function DomainCases() {
     if (!domain || starting) return;
     setStarting(`${c.id}:${mode}`);
     try {
-      router.push(await startMode(mode, domain, c));
+      router.push(await startMode(mode, domain, c, sharedCode));
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Ochib boʻlmadi');
       setStarting(null);
@@ -119,6 +155,12 @@ export default function DomainCases() {
               footer={
                 <div className="flex flex-wrap items-center gap-2">
                   {modesOf(open).length === 0 && <span className="text-[0.84rem] text-ink-3">{open.status === 'approved' ? 'Bu case uchun rejim hali yoʻq.' : 'Mentor tasdiqlagach Bahsga chiqadi.'}</span>}
+                  {open.mine && onLab(open) && (
+                    <>
+                      <button type="button" className="btn btn-quiet press" onClick={() => void toggle(open)}>{open.visibility === 'public' ? 'Yopish' : 'Ochish'}</button>
+                      {(open.visibility === 'private' || open.status === 'approved') && <button type="button" className="btn btn-quiet press" onClick={() => void share(open)}>{copied ? 'Nusxalandi ✓' : 'Havolani ulashish'}</button>}
+                    </>
+                  )}
                   {modesOf(open).map((m, i) => (
                     <button key={m} type="button" className={`btn press ${i === 0 ? 'btn-primary' : 'btn-quiet'}`} disabled={Boolean(starting)} aria-busy={starting === `${open.id}:${m}`} onClick={() => void go(m, open)}>
                       {starting === `${open.id}:${m}` ? 'Ochilmoqda…' : MODE_LABEL[m] ?? m}
@@ -128,6 +170,8 @@ export default function DomainCases() {
               }>
               <div className="mb-3"><Badges c={open} /></div>
               <CaseView c={open} />
+              {open.mine && onLab(open) && <p className="mt-3 text-[0.82rem] text-ink-3">{open.visibility === 'private' ? 'Yopiq: faqat siz va havolani olganlar koʻradi, mentor tekshiruvi kerak emas.' : 'Ochiq: mentor tasdiqlagach hamma koʻradi va «Bahs»ga chiqadi.'}</p>}
+              {onLab(open) && <Solutions caseId={open.id} code={open.mine ? undefined : sharedCode} />}
             </Sheet>
           )}
           {composing && domain && (

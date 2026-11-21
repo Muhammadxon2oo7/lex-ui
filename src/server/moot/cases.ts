@@ -35,6 +35,8 @@ export interface MootCase {
    */
   points: Record<MootSide, string[][]>;
   disclaimer: string;
+  /** The case's id on the court server's case-lab (solutions and verdicts are bound to it); none for our own cases. */
+  labId?: string;
   /** Catalogue: the subject, how hard, which of the five skills it trains. */
   topic?: string;
   level?: 1 | 2 | 3;
@@ -82,6 +84,7 @@ export const MOOT_CASES: Record<string, MootCase> = {
       respondent: [['dalolatnoma'], ['imzolanmagan', 'imzolanma'], ['topshiril'], ['uch oy', '3 oy'], ['penya'], ['kamaytir', 'nomutanosib'], ['moliyaviy', 'ahvol']],
     },
     disclaimer: 'Oʻquv ishi. Real iqtisodiy sud ishi asosida, sezilarli oʻzgartirilgan. Huquqiy maslahat emas.',
+    labId: 's_ijara',
     topic: 'Ijara',
     level: 1,
     skills: ['dalil', 'qoida'],
@@ -112,7 +115,7 @@ export function fromLibrary(c: LibCase): MootCase {
   const stems = (items: { title: string }[]) => items.map((i) => (i.title.split(/\s+/).sort((a, b) => b.length - a.length)[0] ?? '').toLowerCase().slice(0, 6)).filter((w) => w.length >= 4).map((w) => [w]);
   const points = c.points?.claimant?.length && c.points?.respondent?.length ? { claimant: c.points.claimant, respondent: c.points.respondent } : { claimant: stems([...c.facts, ...c.evidence]), respondent: stems([...c.facts, ...c.evidence]) };
   return {
-    id: c.id, title: c.title, court: c.court || 'Oʻquv sudi', summary: c.summary, parties: c.parties, claim: c.claim,
+    id: c.id, labId: c.id, title: c.title, court: c.court || 'Oʻquv sudi', summary: c.summary, parties: c.parties, claim: c.claim,
     facts: c.facts, evidence: c.evidence, side: c.side, points, disclaimer: c.disclaimer,
   };
 }
@@ -149,6 +152,6 @@ export function builtinLibCases(domain: string): LibCase[] {
       title: c.title, court: c.court, summary: c.summary, parties: c.parties, claim: c.claim, facts: c.facts, evidence: c.evidence,
       side: { claimant: { task: c.side.claimant.task, confidential: [] }, respondent: { task: c.side.respondent.task, confidential: [] } },
       legal: (c.norms ?? []).map((n) => { const r = normRef(n); return { normId: r.ref, label: r.label, url: r.url, why: r.title }; }),
-      balance: null, questions: [], disclaimer: c.disclaimer, reviewNote: null, createdAt: null, updatedAt: null,
+      balance: null, questions: [], disclaimer: c.disclaimer, visibility: 'public', shareCode: null, solutions: 0, reviewNote: null, createdAt: null, updatedAt: null,
     }));
 }

@@ -214,7 +214,7 @@ function announce(r: Room, v: MootVerdict, lead: string | null) {
 /**
  * The decision. While the court retires, the court server's model is asked (≈22 s). If it is still
  * writing (judge_pending), the rules' reading is announced as provisional at once and the same request
- * is repeated in the background for up to 90 s; the model's verdict then replaces it and is read out.
+ * is repeated in the background for up to 120 s; the model's verdict then replaces it and is read out.
  * With no model (no key, an error, a forfeit) the rules decide.
  */
 function finish(r: Room, forfeit: MootSide | null) {
@@ -233,13 +233,14 @@ function finish(r: Room, forfeit: MootSide | null) {
     bump(r);
   };
   if (forfeit) return void done(rules, null);
-  const ask = () => askJudge(r.case, r.agenda, r.transcript, players, owner);
+  const participants = r.players.filter((p) => sideOf(r, p)).map((p) => ({ owner: p.owner, side: sideOf(r, p)! }));
+  const ask = () => askJudge(r.case, r.agenda, r.transcript, players, owner, participants);
   void ask().then(async (first) => {
     if (first.kind === 'ok') return done(first.verdict, null);
     if (first.kind === 'none') return done(rules, null);
     // the model is still writing: the provisional reading now, the verdict when it comes
     done({ ...rules, pending: true }, 'Sud dastlabki baholarni eʼlon qiladi. Yakuniy qaror yozilmoqda.');
-    const until = Date.now() + 90_000;
+    const until = Date.now() + 120_000; // v1.5: 17 rubric items take the model ~75 s
     let wait = first.retryAfter;
     while (Date.now() < until && rooms.has(r.code)) {
       await new Promise((res) => setTimeout(res, wait * 1000));
@@ -319,6 +320,7 @@ function view(r: Room, me: Player): MootRoom {
       confidential: side ? c.side[side].confidential : [],
       task: side ? c.side[side].task : [],
       disclaimer: c.disclaimer,
+      labId: c.labId ?? null,
       topic: c.topic ?? null,
       level: c.level ?? null,
       skills: c.skills ?? [],

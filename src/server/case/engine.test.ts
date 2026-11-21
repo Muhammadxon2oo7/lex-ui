@@ -216,3 +216,47 @@ describe('Ish yoʻli engine', () => {
     expect(s3.feedback?.tone).toBe('info');
   });
 });
+
+describe('v1.5: the AI character and «qaytaring»', () => {
+  const say = (caseId: string, owner: string, text: string, extra: Parameters<typeof actSaid>[3]) => actSaid(caseId, owner, { clientActionId: `ai-${++n}`, text, inputMode: 'text' }, extra);
+
+  it('nothing ready fits: the client answers in role through the AI, marked as such', async () => {
+    const { npcRequest } = await import('./engine');
+    const r = run('owner-ai-1');
+    r.step({ type: 'enter', stage: 'consult' });
+    const s = r.get();
+    const req = npcRequest(s.caseId, 'owner-ai-1', 'Rahbaringiz bilan janjallashganmidingiz?');
+    expect(req?.speaker).toBe('client');
+    expect(req?.facts.length).toBeGreaterThan(0);
+    expect(req?.conversationId).toContain(s.caseId);
+    const after = say(s.caseId, 'owner-ai-1', 'Rahbaringiz bilan janjallashganmidingiz?', { optionId: null, clarify: 'x', ethics: false, npc: { req: req!, answer: { kind: 'ok', text: 'Yoʻq, janjallashmaganman.', emotion: 'uncertain', engine: 'llm' } } });
+    expect(after.lines.at(-1)).toMatchObject({ speaker: 'client', text: 'Yoʻq, janjallashmaganman.', engine: 'llm', emotion: 'uncertain' });
+    expect(after.thinking).toBeNull();
+    expect(CaseSnapshotSchema.safeParse(after).success).toBe(true);
+  });
+
+  it('while the AI writes, the character thinks; a new move supersedes it', async () => {
+    const { npcRequest } = await import('./engine');
+    const r = run('owner-ai-2');
+    r.step({ type: 'enter', stage: 'consult' });
+    const s = r.get();
+    const req = npcRequest(s.caseId, 'owner-ai-2', 'Ish beruvchi sizga nima dedi?')!;
+    const thinking = say(s.caseId, 'owner-ai-2', 'Ish beruvchi sizga nima dedi?', { optionId: null, clarify: 'x', ethics: false, npc: { req, answer: { kind: 'pending' } } });
+    expect(thinking.thinking).toBe('client');
+    expect(thinking.lines.at(-1)?.speaker).toBe('you');
+    const moved = r.choose(thinking.options[0].id);
+    expect(moved.thinking).toBeNull();
+  });
+
+  it('«eshitmadim, qaytaring»: the last line again, no points', () => {
+    const r = run('owner-ai-3');
+    r.step({ type: 'enter', stage: 'consult' });
+    const s = r.get();
+    const last = [...s.lines].reverse().find((l) => l.speaker === 'client')!;
+    const sit = { id: 'repeat', tone: 'info' as const, ethics: false, note: null, action: 'repeat_last', replies: { client: { lines: ['Albatta, qaytaraman.'] } } };
+    const again = say(s.caseId, 'owner-ai-3', 'eshitmadim, qaytaring', { optionId: null, clarify: null, ethics: false, situation: sit });
+    expect(again.lines.at(-2)?.text).toBe('Albatta, qaytaraman.');
+    expect(again.lines.at(-1)?.text).toBe(last.text);
+    expect(again.feedback).toBeNull();
+  });
+});

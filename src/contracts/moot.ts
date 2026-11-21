@@ -107,6 +107,8 @@ export const MootCaseViewSchema = z.object({
   timeline: z.array(z.object({ date: z.string(), text: z.string() })).default([]),
   /** Norms handed out with the file: verbatim text is fetched from /api/v1/law by `ref`. */
   norms: z.array(NormRefSchema).default([]),
+  /** The case's id on the court server's case-lab: a solution can be left on it (none for our built-in cases). */
+  labId: z.string().nullable().default(null),
   /** Only once the verdict is in: what the case is based on and what the real courts decided. */
   debrief: z.object({
     ruling: z.string(),
@@ -119,6 +121,40 @@ export const MootCaseViewSchema = z.object({
   }).nullable().default(null),
 });
 export type MootCaseView = z.infer<typeof MootCaseViewSchema>;
+
+/** One rubric item as the court judged it: met or not, its weight, the student's own words as evidence. */
+const ExplainItem = z.object({
+  id: z.string(),
+  dim: z.string(),
+  ask: z.string().catch(''),
+  weight: z.number().catch(0),
+  method: z.string().catch('ai'),
+  met: z.enum(['yes', 'no', 'na']).catch('na'),
+  basis: z.array(z.string()).catch([]),
+  evidence: z.array(z.object({ turnId: z.union([z.string(), z.number()]).transform(String).catch(''), quote: z.string().catch(''), match: z.number().catch(0) })).catch([]),
+  why: z.string().catch(''),
+});
+const ExplainSide = z.object({
+  total: z.number().catch(0),
+  band: z.array(z.number()).catch([]),
+  criteria: z.array(z.object({ id: z.string(), label: z.string().catch(''), max: z.number().catch(0), score: z.number().catch(0), basis: z.array(z.string()).catch([]) })).catch([]),
+  items: z.array(ExplainItem).catch([]),
+});
+export const MootExplainSchema = z.object({
+  rubric: z.string().catch('moot'),
+  version: z.string().catch(''),
+  needsMentor: z.boolean().catch(false),
+  routing: z.array(z.object({ reason: z.string().catch('') }).passthrough()).catch([]),
+  sides: z.object({ claimant: ExplainSide.optional(), respondent: ExplainSide.optional() }).catch({}),
+});
+export type MootExplain = z.infer<typeof MootExplainSchema>;
+
+/** «Nimaga asoslanib?»: the rubric's sources (GET /rubrics/moot, no key), for naming each criterion's basis. */
+export const MootRubricSchema = z.object({
+  dims: z.array(z.object({ id: z.string(), label: z.string().catch(''), max: z.number().catch(0), why: z.string().catch('') })).catch([]),
+  sources: z.record(z.string(), z.object({ title: z.string().catch(''), url: z.string().catch(''), note: z.string().catch('') })).catch({}),
+});
+export type MootRubric = z.infer<typeof MootRubricSchema>;
 
 const Criterion = z.object({ id: z.string(), label: z.string(), max: z.number(), claimant: z.number(), respondent: z.number(), note: z.string() });
 export const MootVerdictSchema = z.object({
@@ -135,6 +171,10 @@ export const MootVerdictSchema = z.object({
   forfeit: z.boolean(),
   /** The rules' reading is shown while the court server's model is still writing its verdict. */
   pending: z.boolean().default(false),
+  /** The court server's id of this verdict (v1.5): a solution can be bound to it, so a result cannot be faked. */
+  verdictId: z.string().nullable().default(null),
+  /** «Nimaga asoslanib N ball?» (v1.5): each side's criteria and the items behind them, with quotes. */
+  explain: MootExplainSchema.nullable().default(null),
 });
 export type MootVerdict = z.infer<typeof MootVerdictSchema>;
 
@@ -163,7 +203,7 @@ export const MootRoomSchema = z.object({
 });
 export type MootRoom = z.infer<typeof MootRoomSchema>;
 
-export const MootCreateSchema = z.object({ name: z.string().trim().min(2).max(40), avatar: z.enum(['man', 'woman']), size: z.number().int().min(1).max(3).default(2), assign: z.enum(['pick', 'random']).default('pick'), caseId: z.string().max(64).optional() });
+export const MootCreateSchema = z.object({ name: z.string().trim().min(2).max(40), avatar: z.enum(['man', 'woman']), size: z.number().int().min(1).max(3).default(2), assign: z.enum(['pick', 'random']).default('pick'), caseId: z.string().max(64).optional(), code: z.string().max(64).optional() });
 export const MootJoinSchema = z.object({ name: z.string().trim().min(2).max(40), avatar: z.enum(['man', 'woman']) });
 export const MootActSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('team'), team: TeamSchema.nullable() }),

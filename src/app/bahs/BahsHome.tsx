@@ -45,7 +45,9 @@ export default function BahsHome() {
   const [busy, setBusy] = useState<'create' | 'join' | null>(null);
   const [error, setError] = useState<string | null>(null);
   // the case to argue: the built-in one, or one approved on the court server (?case= from a domain page)
-  const asked = useSearchParams().get('case');
+  const search = useSearchParams();
+  const asked = search.get('case');
+  const askedCode = search.get('code') ?? undefined;
   const [cases, setCases] = useState<{ id: string; title: string }[]>([]);
   const [catalog, setCatalog] = useState<MootCatalogItem[] | null>(null);
   const [caseId, setCaseId] = useState<string>(asked ?? 'ijara');
@@ -68,7 +70,7 @@ export default function BahsHome() {
     setError(null);
     saveProfile({ name: who, avatar: look, role: saved?.role ?? 'student' });
     try {
-      const room = kind === 'create' ? await moot.create(who, look, size, assign, caseId === 'ijara' ? undefined : caseId) : await moot.join(code.trim().toUpperCase(), who, look);
+      const room = kind === 'create' ? await moot.create(who, look, size, assign, caseId === 'ijara' ? undefined : caseId, caseId === asked ? askedCode : undefined) : await moot.join(code.trim().toUpperCase(), who, look);
       router.push(`/bahs/${room.code}`);
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'Xatolik yuz berdi');

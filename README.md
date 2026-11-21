@@ -3,6 +3,9 @@
 `dxm-yoqolgan-staj` ssenariysining boshidan oxirigacha ishlaydigan 3D amaliyoti:
 brifing → 3D markaz → Rustam aka bilan suhbat → yashirin faktlar → “choy puli” → terminalda hujjat → 6 mezonli hisobot.
 
+
+> **Sunʼiy intellekt:** qaysi modellar ishlatiladi, ular qanday nazorat qilinadi va ballni kim beradi - [docs/AI_MODELLAR.md](docs/AI_MODELLAR.md).
+
 ```bash
 npm install
 npm run assets     # Poly Haven (CC0) → public/assets (bir marta; natija repoda bor)

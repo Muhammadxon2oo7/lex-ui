@@ -138,6 +138,7 @@ export function DialoguePanel({ variant }: { variant: 'immersive' | 'plain' }) {
                 {/* The full line is exposed to assistive tech; the typing effect is visual only. */}
                 <span className="sr-only">{mine ? 'Siz: ' : `${snapshot.scenario.npc.name}: `}{turn.text}</span>
                 <span aria-hidden>{body || ' '}</span>
+                {!mine && turn.engine === 'llm' && <span title="Bu gap oldindan yozilmagan: fuqaro sunʼiy intellekt orqali javob berdi" className={`ml-1.5 rounded-full px-1.5 py-px align-[1px] text-[0.6rem] font-semibold tracking-[0.08em] ${dark ? 'bg-white/12 text-white/75' : 'bg-black/[0.06] text-ink-3'}`}>AI</span>}
               </p>
             </div>
           );

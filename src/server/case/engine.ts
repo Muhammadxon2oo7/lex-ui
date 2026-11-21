@@ -5,8 +5,8 @@
  * the prepared case file). Every mutation is idempotent by `clientActionId`.
  */
 import { randomBytes, timingSafeEqual } from 'node:crypto';
-import type { CaseActRequest, CaseKind, CaseLine, CaseSnapshot, ClaimDraft, Ruling, StageId, StageView, Decision } from '@/contracts/case';
-import type { InputMode, Level } from '@/contracts';
+import type { CaseActRequest, CaseKind, CaseLine, CaseSnapshot, CaseSpeaker, ClaimDraft, Ruling, StageId, StageView, Decision } from '@/contracts/case';
+import type { Emotion, InputMode, Level } from '@/contracts';
 import { kindOfStage } from '@/contracts/case';
 import { HttpError } from '../engine/session';
 import fpk from '../law/fpk-case.json';
@@ -15,6 +15,7 @@ import { checkClaim, filingRuling } from './claim';
 import { ATTACHMENTS, BOOK as LABOUR, type CaseBookShape, type CaseView, type Effect, type Line, type Node, type Opt, type Scene, type StageDef } from './ishga-tiklash';
 import { BOOK as THEFT } from './ogirlik';
 import { situationLine, type Situation } from '@/server/situation';
+import { askNpc, canVoice, type NpcAnswer, type NpcRequest } from './npc';
 
 /** Rooms that are courtrooms: answers standing, the judge enters, a judgment closes the room. */
 const COURT = new Set<StageId>(['hearing', 'trial']);
@@ -62,6 +63,8 @@ interface CaseState {
   stageDone: boolean;
   result: CaseSnapshot['result'];
   processed: Map<string, CaseSnapshot>;
+  /** An AI character's line being written (court server /npc/reply): the same request is asked again. */
+  npcWait?: { req: NpcRequest; to: CaseSpeaker; since: number } | null;
 }
 
 const g = globalThis as unknown as { __lexsimCases2?: Map<string, CaseState>; __lexsimCaseByOwner2?: Map<string, string> };
@@ -100,11 +103,11 @@ function patchScene(c: CaseState, patch: Partial<Scene> | undefined) {
 }
 
 /** Every line records the room as it is while it is spoken. */
-function say(c: CaseState, lines: Line[]) {
+function say(c: CaseState, lines: Line[], engine?: 'llm') {
   for (const [speaker, text, cue] of lines) {
     const { emotion, ...patch } = cue ?? {};
     patchScene(c, patch);
-    c.lines.push({ id: `l${++c.seq}`, speaker, text, scene: { ...c.scene }, ...(emotion ? { emotion } : {}) });
+    c.lines.push({ id: `l${++c.seq}`, speaker, text, scene: { ...c.scene }, ...(emotion ? { emotion } : {}), ...(engine ? { engine } : {}) });
   }
 }
 
@@ -304,6 +307,7 @@ function snapshot(c: CaseState): CaseSnapshot {
     await: c.stageDone ? null : (node?.await ?? null),
     standing: c.standing,
     feedback: c.feedback,
+    thinking: c.npcWait?.to ?? null,
     facts: Object.entries(FACTS).filter(([id]) => c.known.has(id)).map(([id, f]) => ({ id, label: f.label, detail: f.detail })),
     evidence: Object.entries(EVIDENCE).filter(([, e]) => c.known.has(e.requires)).map(([id, e]) => ({ id, label: e.label, detail: e.detail })),
     draft: c.draft,
@@ -385,6 +389,7 @@ export function loadCase(owner: string, raw: unknown): void {
   c.level ??= 'beginner';
   c.revealed ??= new Set();
   c.situations ??= {};
+  c.npcWait ??= null;
   cases.set(c.id, c);
   byOwner.set(`${owner}:${c.kind}`, c.id);
 }
@@ -541,15 +546,73 @@ export const CLARIFY = {
 };
 export const FORMAL = new Set<string>(['judge', 'clerk', 'secretary', 'officer', 'investigator', 'chief']);
 
-export function actSaid(id: string, owner: string | undefined, input: { clientActionId: string; text: string; inputMode: InputMode }, understood: { optionId: string | null; clarify: string | null; ethics: boolean; situation?: Situation | null }): CaseSnapshot {
+/**
+ * What the AI character needs to answer a free line (court server /npc/reply): who is being spoken to,
+ * the room's goal, the facts that character knows, the conversation so far. Null when nobody the AI
+ * may voice is listening.
+ */
+export function npcRequest(id: string, owner: string | undefined, utterance: string): NpcRequest | null {
+  const c = owned(id, owner);
+  const to = [...c.lines].reverse().find((l) => l.speaker !== 'you' && l.speaker !== 'system')?.speaker;
+  if (!to || !c.stage || !canVoice(to)) return null;
+  const { FACTS, STAGES } = book(c);
+  // the client knows their own story; officials know only what is already on file
+  const facts = (to === 'client' ? Object.values(FACTS) : [...c.known].map((k) => FACTS[k]).filter(Boolean)).map((f) => `${f.label}: ${f.detail}`).slice(0, 12);
+  return {
+    speaker: to,
+    caseKind: c.kind,
+    stage: c.stage,
+    goal: STAGES.find((s) => s.id === c.stage)?.goal ?? '',
+    utterance,
+    facts,
+    articles: [],
+    history: c.lines.filter((l) => l.speaker !== 'system').slice(-16).map((l) => ({ speaker: l.speaker, text: l.text })),
+    conversationId: `${c.kind}-${c.id}-${c.stage}`.slice(0, 64),
+  };
+}
+
+/** The AI character's line has come (or is given up on): it is said, or the room asks again as before. */
+function npcSay(c: CaseState, to: CaseSpeaker, answer: NpcAnswer) {
+  c.npcWait = null;
+  if (answer.kind === 'ok') {
+    say(c, [[to, answer.text, ...(answer.emotion ? [{ emotion: answer.emotion as Emotion }] : [])] as Line], answer.engine === 'llm' ? 'llm' : undefined);
+    c.feedback = null;
+  } else {
+    const set = FORMAL.has(to) ? CLARIFY.formal : CLARIFY.plain;
+    say(c, [[to, set[c.seq % set.length]]]);
+  }
+}
+
+/** The client asks again while a character "thinks" (the same request; the server caches the line). */
+export async function npcPoll(id: string, owner: string | undefined): Promise<CaseSnapshot> {
+  const c = owned(id, owner);
+  const w = c.npcWait;
+  if (!w) return snapshot(c);
+  const answer = await askNpc(owner, w.req, false);
+  // the student may have moved on meanwhile
+  if (c.npcWait !== w) return snapshot(c);
+  if (answer.kind === 'pending' && Date.now() - w.since < 120_000) return snapshot(c);
+  npcSay(c, w.to, answer.kind === 'pending' ? { kind: 'none' } : answer);
+  return snapshot(c);
+}
+
+export function actSaid(id: string, owner: string | undefined, input: { clientActionId: string; text: string; inputMode: InputMode }, understood: { optionId: string | null; clarify: string | null; ethics: boolean; situation?: Situation | null; npc?: { req: NpcRequest; answer: NpcAnswer } | null }): CaseSnapshot {
   const c = owned(id, owner);
   const cached = c.processed.get(input.clientActionId);
   if (cached) return cached;
   if (!c.stage || c.stageDone) throw new HttpError(409, 'not_in_room', 'Hozir hech qaysi xonada emassiz');
+  c.npcWait = null;
   const to = [...c.lines].reverse().find((l) => l.speaker !== 'you' && l.speaker !== 'system')?.speaker;
   const sit = understood.situation && to ? understood.situation : null;
   const line = sit && to ? situationLine(sit, to, (c.situations[sit.id] = (c.situations[sit.id] ?? -1) + 1)) : null;
-  if (sit && line && to) {
+  const last = to ? [...c.lines].reverse().find((l) => l.speaker === to) : undefined;
+  if (sit && to && sit.action === 'repeat_last' && last) {
+    // «eshitmadim, qaytaring»: the same words again, no points, the moment stays open
+    say(c, [['you', input.text]]);
+    if (line) say(c, [[to, line.text, ...(line.emotion ? [{ emotion: line.emotion }] : [])] as Line]);
+    say(c, [[to, last.text, ...(last.emotion ? [{ emotion: last.emotion }] : [])] as Line], last.engine);
+    c.feedback = null;
+  } else if (sit && line && to) {
     // a person's answer to the unexpected: what you said stays on record, they answer in their own
     // words and mood, and the moment stays open (the stage does not move)
     say(c, [['you', input.text]]);
@@ -568,6 +631,13 @@ export function actSaid(id: string, owner: string | undefined, input: { clientAc
     record(c, input.text, 'bad', 40, 'Pora, tanish-bilish yoki bosimga ishora — mutlaqo mumkin emas.', null, null);
     c.log[c.log.length - 1].inputMode = input.inputMode;
     c.feedback = c.level === 'advanced' ? null : { tone: 'bad', message: 'Bunday gap - korrupsion ishora. Mutlaqo mumkin emas.', article: null };
+  } else if (understood.npc && to && understood.npc.answer.kind !== 'none') {
+    // nothing ready fits: the character answers in their own role through the AI (or starts thinking)
+    say(c, [['you', input.text]]);
+    if (understood.npc.answer.kind === 'pending') {
+      c.npcWait = { req: understood.npc.req, to, since: Date.now() };
+      c.feedback = null;
+    } else npcSay(c, to, understood.npc.answer);
   } else {
     // not understood: what you said stays on record, and whoever you are talking to asks again — out loud,
     // in their own way (a judge formally, a client plainly); nothing is lost, the moment stays open
@@ -649,6 +719,8 @@ export function act(id: string, owner: string | undefined, input: CaseActRequest
   const c = owned(id, owner);
   const cached = c.processed.get(input.clientActionId);
   if (cached) return cached;
+  // any new move supersedes a line the AI is still writing (re-entering the room keeps it)
+  if (input.type !== 'enter') c.npcWait = null;
   switch (input.type) {
     case 'enter':
       enter(c, input.stage);

@@ -5,7 +5,8 @@ import { useCallback, useEffect, useState } from 'react';
 import type { LibCase } from '@/contracts/library';
 import { ApiError } from '@/game/api';
 import { library } from '@/game/library';
-import { GlassLayer, GlassToolbar, ToolbarLink } from '@/components/ui/glass';
+import { GlassLayer, GlassToolbar, Segmented, ToolbarLink } from '@/components/ui/glass';
+import { Audit } from './Audit';
 import { Sheet } from '@/components/ui/Sheet';
 import { ease, note } from '@/lib/motion';
 import { CaseView } from './CaseView';
@@ -18,6 +19,7 @@ export default function Mentor() {
   const [reason, setReason] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [tab, setTab] = useState<'cases' | 'moot' | 'npc' | 'stats'>('cases');
   const fail = (e: unknown) => setError(e instanceof ApiError ? e.message : 'Xatolik yuz berdi');
 
   useEffect(() => {
@@ -54,7 +56,7 @@ export default function Mentor() {
         <div className="mx-auto w-full max-w-4xl px-5 pt-8 pb-16 sm:pt-12">
           <p className="text-[0.8rem] font-semibold tracking-wider text-accent-ink uppercase">Mentor</p>
           <h1 className="display mt-2 text-[clamp(2rem,5vw,3rem)] font-semibold tracking-tight">Tekshiruv navbati</h1>
-          <p className="mt-2 max-w-[60ch] text-[0.96rem] text-ink-2">Foydalanuvchilar kiritgan caselar boshqalarga faqat siz tasdiqlagandan keyin chiqadi. Faktlar, muvozanat va moddalarni lex.uz havolasi orqali tekshiring.</p>
+          <p className="mt-2 max-w-[60ch] text-[0.96rem] text-ink-2">Tekshiruv uch bosqichli: tizim, AI, keyin siz. Caselar boshqalarga faqat siz tasdiqlagandan keyin chiqadi; AI baholari va AI qahramon javoblari shubhali boʻlsa yoki tasodifiy audit uchun shu yerga keladi.</p>
           <AnimatePresence>{error && <motion.p key="e" {...note} role="alert" className="mt-5 rounded-2xl bg-danger-soft px-4 py-3 text-[0.92rem] text-danger">{error}</motion.p>}</AnimatePresence>
 
           {mentor === false && (
@@ -70,8 +72,12 @@ export default function Mentor() {
           )}
 
           {mentor && (
+            <div className="mt-6 max-w-xl"><Segmented label="Boʻlim" size="sm" value={tab} onChange={setTab} options={[['cases', 'Caselar'], ['moot', 'Bahs baholari'], ['npc', 'AI javoblari'], ['stats', 'Statistika']]} /></div>
+          )}
+          {mentor && tab !== 'cases' && <div className="mt-6"><Audit tab={tab} /></div>}
+          {mentor && tab === 'cases' && (
             <LayoutGroup>
-              <ul className="mt-8 space-y-3">
+              <ul className="mt-6 space-y-3">
                 {!queue && <li className="surface h-24 animate-pulse rounded-[22px] motion-reduce:animate-none" />}
                 {queue?.length === 0 && <li className="surface rounded-[22px] p-6 text-center text-ink-2">Navbat boʻsh.</li>}
                 <AnimatePresence initial={false}>

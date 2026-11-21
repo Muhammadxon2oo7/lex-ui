@@ -21,6 +21,8 @@ export interface Situation {
   tone: 'bad' | 'info';
   ethics: boolean;
   note: string | null;
+  /** v1.5: «repeat_last» - the student did not hear: the character says their last line again. */
+  action: string | null;
   replies: Record<string, SituationReply>;
 }
 
@@ -37,7 +39,7 @@ export function readSituation(raw: unknown): Situation | null {
     if (lines.length) replies[who] = { lines, emotion: (r as SituationReply).emotion, voices: (r as SituationReply).voices };
   }
   if (!Object.keys(replies).length) return null;
-  return { id: s.id.slice(0, 40), tone: s.tone === 'bad' ? 'bad' : 'info', ethics: s.ethics === true, note: typeof s.note === 'string' ? s.note.slice(0, 300) : null, replies };
+  return { id: s.id.slice(0, 40), tone: s.tone === 'bad' ? 'bad' : 'info', ethics: s.ethics === true, note: typeof s.note === 'string' ? s.note.slice(0, 300) : null, action: typeof s.action === 'string' ? s.action.slice(0, 40) : null, replies };
 }
 
 /**

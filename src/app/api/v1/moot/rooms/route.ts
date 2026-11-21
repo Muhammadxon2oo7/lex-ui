@@ -10,6 +10,6 @@ export const POST = handle(async (request: Request) => {
   rateLimit(`moot-create:${owner}`, 10);
   const input = await readBody(request, MootCreateSchema);
   // a built-in case, or one approved on the court server; without one, the default case file
-  const file = !input.caseId ? undefined : (Object.hasOwn(MOOT_CASES, input.caseId) ? MOOT_CASES[input.caseId] : null) ?? fromLibrary(await mootCaseFull(owner, input.caseId));
+  const file = !input.caseId ? undefined : (Object.hasOwn(MOOT_CASES, input.caseId) ? MOOT_CASES[input.caseId] : null) ?? fromLibrary(await mootCaseFull(owner, input.caseId, input.code));
   return { room: createRoom(owner, input, file) };
 });

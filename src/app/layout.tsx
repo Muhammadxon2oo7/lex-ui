@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: { default: 'LexSim — virtual huquqiy amaliyot', template: '%s · LexSim' },
+  title: { default: 'LexSim - virtual huquqiy amaliyot', template: '%s · LexSim' },
   description:
     'Huquqshunoslik talabalari uchun 3D amaliyot simulyatori: real ish joyi, jonli fuqaro personaji va 6 mezonli manbali baho.',
   applicationName: 'LexSim',
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'uz_UZ',
     siteName: 'LexSim',
-    title: 'LexSim — virtual huquqiy amaliyot',
+    title: 'LexSim - virtual huquqiy amaliyot',
     description: 'Bitta ishni maslahatdan sud qarorigacha 3D xonalarda yuritib chiqing: moddalar lex.uz saytidan, har qadam tahlili bilan.',
   },
   formatDetection: { telephone: false },

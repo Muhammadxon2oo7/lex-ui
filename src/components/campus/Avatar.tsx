@@ -1,7 +1,7 @@
 'use client';
 /**
  * The student's own body: a rigged Rocketbox avatar driven by motion-captured
- * clips (Rocketbox, MIT) — idle, walk and an occasional look-around —
+ * clips (Rocketbox, MIT) - idle, walk and an occasional look-around -
  * blended by the speed the controller reports.
  *
  * `motion.current.speed` is metres per second along the ground. The walk

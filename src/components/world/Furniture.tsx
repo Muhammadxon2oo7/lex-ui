@@ -111,7 +111,7 @@ function Workstation({ m }: { m: Materials }) {
         text(ctx, 'Yagona oyna · 3-xona', 32, 38, 30, '#ffffff', 700);
         text(ctx, 'oʻquv muhiti', w - 32, 38, 22, '#9fb0cf', 500, 'right');
         text(ctx, 'Navbat: A-047', 32, 130, 34, '#16213e', 700);
-        text(ctx, submitted ? 'Soʻrov rasmiylashtirildi' : 'Yangi murojaat — rasmiylashtirilmagan', 32, 178, 24, submitted ? '#1f8a5b' : '#8a5a1f', 600);
+        text(ctx, submitted ? 'Soʻrov rasmiylashtirildi' : 'Yangi murojaat - rasmiylashtirilmagan', 32, 178, 24, submitted ? '#1f8a5b' : '#8a5a1f', 600);
         for (let i = 0; i < 4; i++) {
           ctx.fillStyle = '#ffffff';
           ctx.fillRect(32, 230 + i * 84, w - 64, 68);

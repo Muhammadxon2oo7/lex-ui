@@ -1,6 +1,6 @@
 'use client';
 /**
- * Room 3 — "Ish qurollari xonasi". A quiet room with a long table on which
+ * Room 3 - "Ish qurollari xonasi". A quiet room with a long table on which
  * the tools of a front-desk official are laid out. Look around (drag), point
  * at an object to see what it is, click to pick it up and handle it.
  */
@@ -107,7 +107,7 @@ export default function ToolsClient() {
         <header className="glass absolute top-4 left-4 max-w-sm rounded-[20px] px-4 py-3 max-sm:top-17 max-sm:right-4">
           <p className="text-[0.66rem] font-semibold tracking-[0.18em] text-amber-200 uppercase">3-xona</p>
           <h1 className="text-lg leading-tight font-semibold">Ish qurollari xonasi</h1>
-          <p className="mt-1 text-[0.84rem] leading-snug text-white/70">Stol ustidagi buyumni bosing — qoʻlingizga olib, aylantirib, ishlatib koʻring. Sudrab — xonaga qarash.</p>
+          <p className="mt-1 text-[0.84rem] leading-snug text-white/70">Stol ustidagi buyumni bosing - qoʻlingizga olib, aylantirib, ishlatib koʻring. Sudrab - xonaga qarash.</p>
         </header>
         <Link href="/kampus" className="glass btn absolute top-4 right-4 !min-h-10 !px-4 text-[0.86rem]">Yoʻlakka chiqish</Link>
 

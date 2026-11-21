@@ -1,13 +1,13 @@
 /**
- * The practice record: everything said in a hearing or a room, in order — the court's lines,
- * the student's answers (with the student's own voice when it was spoken) and the debrief —
+ * The practice record: everything said in a hearing or a room, in order - the court's lines,
+ * the student's answers (with the student's own voice when it was spoken) and the debrief -
  * and its downloads:
  *
- *   PDF   — a printed A4 record (the browser's "Save as PDF"), for the student's portfolio and the teacher;
- *   Word  — the same document as .doc, for a teacher who annotates;
- *   Audio — the whole session as ONE file: the actors in their voices, the student in their own,
+ *   PDF   - a printed A4 record (the browser's "Save as PDF"), for the student's portfolio and the teacher;
+ *   Word  - the same document as .doc, for a teacher who annotates;
+ *   Audio - the whole session as ONE file: the actors in their voices, the student in their own,
  *           a natural pause between speakers; the page plays it with the transcript following along;
- *   xAPI  — the machine-readable statements, for an LMS (teachers only, not shown first).
+ *   xAPI  - the machine-readable statements, for an LMS (teachers only, not shown first).
  *
  * Everything is built in the browser from what the page already has; the student's voice never
  * leaves the device unless they download it.
@@ -85,7 +85,7 @@ export function recordHtml(meta: RecordMeta, lines: RecordLine[], spoken: boolea
     analysis.errors?.length ? `<h2>Xatolar</h2><ul>${analysis.errors.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>` : '',
   ].join('');
   const said = lines.filter((l) => l.role === 'student').length;
-  return `<!doctype html><html lang="uz"${word ? ' xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"' : ''}><head><meta charset="utf-8"><title>${esc(`LexSim — ${meta.title} — ${meta.student}`)}</title>
+  return `<!doctype html><html lang="uz"${word ? ' xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"' : ''}><head><meta charset="utf-8"><title>${esc(`LexSim - ${meta.title} - ${meta.student}`)}</title>
 <style>
 @page { size: A4; margin: 18mm 16mm 20mm; }
 * { box-sizing: border-box; }
@@ -111,19 +111,19 @@ ol.dec li.bad b { color: #b42318; } ol.dec li.good b { color: #1f8a5b; } .why { 
 </style></head><body>
 <div class="brand">LexSim · Huquqiy amaliyot simulyatori</div>
 <h1>Amaliyot yozuvi</h1>
-<p class="sub">${esc(meta.title)} — ${esc(meta.subtitle)}</p>
+<p class="sub">${esc(meta.title)} - ${esc(meta.subtitle)}</p>
 <table class="meta">
 <tr><td>Talaba</td><td>${esc(meta.student)}</td></tr>
 <tr><td>Sana</td><td>${fmtDate(meta.date)}</td></tr>
 <tr><td>Javoblar</td><td>${said} ta (${spoken.filter(Boolean).length} tasi ovozli)</td></tr>
-${meta.score !== null ? `<tr><td>Natija</td><td><span class="score">${meta.score}</span>/ 100${meta.outcome ? ` — ${esc(meta.outcome)}` : ''}</td></tr>` : ''}
+${meta.score !== null ? `<tr><td>Natija</td><td><span class="score">${meta.score}</span>/ 100${meta.outcome ? ` - ${esc(meta.outcome)}` : ''}</td></tr>` : ''}
 </table>
 ${criteria}
 <h2>Majlis yozuvi</h2>
 <table class="tr">${rows}</table>
 ${decisions}
 ${notes}
-<p class="foot">Oʻquv simulyatsiyasi, yuridik maslahat emas. Ish holatlari toʻqilgan; moddalar lex.uz saytidagi matnga bogʻlangan. Avtomatik baho — mentor tasdigʻi talab etilishi mumkin.</p>
+<p class="foot">Oʻquv simulyatsiyasi, yuridik maslahat emas. Ish holatlari toʻqilgan; moddalar lex.uz saytidagi matnga bogʻlangan. Avtomatik baho - mentor tasdigʻi talab etilishi mumkin.</p>
 </body></html>`;
 }
 

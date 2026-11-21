@@ -15,7 +15,7 @@ import type { RecordLine, RecordMeta } from '@/game/practiceRecord';
 import { useProfile } from '@/game/profile';
 
 const COURT_LABEL = { judge: 'Sudya', secretary: 'Sud majlisi kotibi', opponent: 'Raqib tomon vakili', witness: 'Guvoh', expert: 'Ekspert' } as const;
-/** «Title: message» — unless the message already starts with its title. */
+/** «Title: message» - unless the message already starts with its title. */
 const line = (f: { title: string; message: string }) => (f.message.startsWith(f.title) ? f.message : `${f.title}: ${f.message}`);
 const LEVEL_NAME = { beginner: 'boshlangʻich', intermediate: 'oʻrta', advanced: 'professional' } as const;
 
@@ -48,7 +48,7 @@ export default function ReportClient() {
   const [error, setError] = useState<string | null>(null);
   const [reason, setReason] = useState('');
   const [sending, setSending] = useState(false);
-  // whose report: the economic court (court server) or the DXM office — from the session itself
+  // whose report: the economic court (court server) or the DXM office - from the session itself
   const [snap, setSnap] = useState<Snapshot | null>(null);
   const court = sessionId.startsWith('rmt_');
   const title = snap ? `${court ? 'Iqtisodiy sud' : 'DXM xodimi'} · ${snap.scenario.title}` : null;
@@ -83,8 +83,8 @@ export default function ReportClient() {
     );
     const level = snap?.level ? `${LEVEL_NAME[snap.level]} daraja` : null;
     const meta: RecordMeta = {
-      // «Ijara qarzi va penya — daʼvogar vakili»: the role is in the subtitle already
-      title: snap ? `${court ? 'Iqtisodiy sud' : 'DXM xodimi'} · ${snap.scenario.title.split(/\s+[—–-]\s+/)[0]}` : court ? 'Iqtisodiy sud' : 'DXM xodimi',
+      // «Ijara qarzi va penya - daʼvogar vakili»: the role is in the subtitle already
+      title: snap ? `${court ? 'Iqtisodiy sud' : 'DXM xodimi'} · ${snap.scenario.title.split(/\s+[---]\s+/)[0]}` : court ? 'Iqtisodiy sud' : 'DXM xodimi',
       subtitle: [snap?.scenario.briefing.position, level].filter(Boolean).join(' · '),
       student,
       date: new Date(report.evaluatedAt),
@@ -154,7 +154,7 @@ export default function ReportClient() {
         </p>
       )}
       <p className="mt-4 inline-flex rounded-full bg-warn-soft px-3 py-1 text-[0.78rem] font-semibold text-warn">
-        {report.reviewStatus === 'mentor-approved' ? 'Mentor tasdiqlagan' : report.appeal ? 'Eʼtiroz yuborilgan — mentor koʻrib chiqadi' : 'Avtomatik baho · mentor tasdigʻi kutilmoqda'}
+        {report.reviewStatus === 'mentor-approved' ? 'Mentor tasdiqlagan' : report.appeal ? 'Eʼtiroz yuborilgan - mentor koʻrib chiqadi' : 'Avtomatik baho · mentor tasdigʻi kutilmoqda'}
       </p>
 
       <section className="mt-8 rounded-[24px] border border-line bg-card p-6" aria-labelledby="criteria">
@@ -231,7 +231,7 @@ export default function ReportClient() {
       {/* court sessions: every decision, what it cost and what would have been better (debrief) */}
       {report.decisions && report.decisions.length > 0 && (
         <section className="mt-4 rounded-[24px] border border-line bg-card p-6" aria-labelledby="debrief">
-          <h2 id="debrief" className="text-lg font-semibold">Tahlil — har bir gapingiz</h2>
+          <h2 id="debrief" className="text-lg font-semibold">Tahlil - har bir gapingiz</h2>
           <p className="mt-1 text-[0.84rem] text-ink-3 tabular-nums">
             {report.decisions.filter((d) => d.tone !== 'info').length} ta gap · {report.decisions.filter((d) => d.tone === 'bad').length} ta xato · {report.hints ?? 0} ta maslahat
           </p>
@@ -263,7 +263,7 @@ export default function ReportClient() {
           {report.idealPath.map((p, i) => (
             <li key={p.step} className="flex gap-3 text-[0.93rem]">
               <span aria-hidden className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-full text-[0.7rem] font-bold ${p.done ? 'bg-accent text-white' : 'bg-paper text-ink-3'}`}>{p.done ? '✓' : i + 1}</span>
-              <span className={p.done ? '' : 'text-ink-2'}>{p.step}<span className="sr-only">{p.done ? ' — bajarildi' : ' — bajarilmadi'}</span></span>
+              <span className={p.done ? '' : 'text-ink-2'}>{p.step}<span className="sr-only">{p.done ? ' - bajarildi' : ' - bajarilmadi'}</span></span>
             </li>
           ))}
         </ol>
@@ -280,7 +280,7 @@ export default function ReportClient() {
                 {isOfficialSource(s.officialUrl) ? (
                   <a href={s.officialUrl} target="_blank" rel="noopener noreferrer" className="underline decoration-white/40 underline-offset-2">{s.title}</a>
                 ) : s.title}
-                <span className="text-white/55"> — lex.uz, amaldagi tahrir tekshirilmagan</span>
+                <span className="text-white/55"> - lex.uz, amaldagi tahrir tekshirilmagan</span>
               </li>
             ))}
           </ul>
@@ -305,7 +305,7 @@ export default function ReportClient() {
           <p className="mt-2 text-[0.92rem] text-ink-2" role="status">Eʼtirozingiz qabul qilindi va oʻqituvchiga yuboriladi: “{report.appeal.reason}”</p>
         ) : (
           <>
-            <label htmlFor="appeal-text" className="mt-2 block text-[0.9rem] text-ink-2">Baho adolatsiz deb hisoblasangiz, sababini yozing — ish oʻqituvchi koʻrigiga oʻtadi.</label>
+            <label htmlFor="appeal-text" className="mt-2 block text-[0.9rem] text-ink-2">Baho adolatsiz deb hisoblasangiz, sababini yozing - ish oʻqituvchi koʻrigiga oʻtadi.</label>
             <textarea id="appeal-text" className="field mt-2 min-h-24" maxLength={1500} value={reason} onChange={(e) => setReason(e.target.value)} />
             <button type="button" className="btn btn-dark mt-3" disabled={sending || reason.trim().length < 10} onClick={() => void sendAppeal()}>
               Oʻqituvchiga eʼtiroz yuborish

@@ -1,7 +1,7 @@
 'use client';
 /**
  * Conversation UI (DOM, not 3D text): transcript, typed replies, discovered
- * facts and — in tutorial mode only — the patience / trust read-out.
+ * facts and - in tutorial mode only - the patience / trust read-out.
  * Shared by the immersive view (floating sheet) and the 2D fallback.
  */
 import { useEffect, useRef, useState } from 'react';
@@ -191,7 +191,7 @@ export function DialoguePanel({ variant }: { variant: 'immersive' | 'plain' }) {
               }}
               rows={1}
               maxLength={800}
-              placeholder="Yoki oʻz soʻzingiz bilan yozing (Enter — yuborish)"
+              placeholder="Yoki oʻz soʻzingiz bilan yozing (Enter - yuborish)"
               className={`min-h-11 flex-1 resize-none bg-transparent px-3 py-2 text-base outline-none ${dark ? 'placeholder:text-white/45' : 'placeholder:text-ink-3'}`}
             />
             <button type="button" className="btn btn-primary" onClick={submit} disabled={busy || !text.trim()}>
@@ -200,7 +200,7 @@ export function DialoguePanel({ variant }: { variant: 'immersive' | 'plain' }) {
           </div>
           <div className="mt-2.5 flex flex-wrap items-center gap-2">
             <button type="button" className="btn btn-quiet !min-h-10 text-[0.88rem]" onClick={() => useGame.getState().openTerminal()}>
-              {snapshot.documentSubmitted ? 'Terminal · yuborilgan' : 'Terminal — hujjat'}
+              {snapshot.documentSubmitted ? 'Terminal · yuborilgan' : 'Terminal - hujjat'}
             </button>
             {variant === 'immersive' && (
               <button type="button" className="btn btn-quiet !min-h-10 text-[0.88rem]" onClick={stand}>

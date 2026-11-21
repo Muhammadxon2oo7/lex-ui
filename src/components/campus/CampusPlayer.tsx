@@ -2,8 +2,8 @@
 /**
  * Third-person controller and the one camera of the campus.
  *
- * Each phase only describes where the camera WANTS to be — over the
- * shoulder onto the orientation terminal, or a follow camera while walking —
+ * Each phase only describes where the camera WANTS to be - over the
+ * shoulder onto the orientation terminal, or a follow camera while walking -
  * and the real camera eases toward it, so leaving the terminal and walking
  * off is one continuous move, never a cut.
  *
@@ -121,7 +121,7 @@ export function CampusPlayer({ avatar, reducedMotion, sensitivity }: { avatar: A
       const door = DOORS.find((d) => d.id === campus.focus!.id)!;
       if (!door.action) {
         audio.door(false);
-        campus.set({ toast: `«${door.title}» hali tayyorlanmoqda — tez orada ochiladi.` });
+        campus.set({ toast: `«${door.title}» hali tayyorlanmoqda - tez orada ochiladi.` });
         return;
       }
       audio.door(true);

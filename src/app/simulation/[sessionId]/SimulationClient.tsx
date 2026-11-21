@@ -2,7 +2,7 @@
 /**
  * Client boundary of the simulation route. Loads the authoritative session
  * snapshot (refresh-safe), then mounts either the lazy 3D world or the
- * accessible 2D workflow — same session, same server state.
+ * accessible 2D workflow - same session, same server state.
  */
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
@@ -66,7 +66,7 @@ function Immersive({ onUnsupported }: { onUnsupported: () => void }) {
 
   if (contextLost) {
     return (
-      <Notice title="Grafika uzildi" body="Brauzer 3D kontekstni yoʻqotdi. Sessiyangiz saqlangan — qayta yuklang yoki 2D rejimda davom eting.">
+      <Notice title="Grafika uzildi" body="Brauzer 3D kontekstni yoʻqotdi. Sessiyangiz saqlangan - qayta yuklang yoki 2D rejimda davom eting.">
         <button type="button" className="btn btn-primary" onClick={() => location.reload()}>Qayta yuklash</button>
         <button type="button" className="btn btn-quiet" onClick={onUnsupported}>2D rejim</button>
       </Notice>
@@ -140,7 +140,7 @@ function Flat() {
               </ol>
             </section>
             <p className="rounded-[22px] bg-navy p-4 text-[0.84rem] leading-relaxed text-white/85">
-              Fuqaro stolingiz qarshisida oʻtiribdi. U muammosini oʻz soʻzlari bilan aytadi — muhim tafsilotlarni faqat toʻgʻri savol bersangiz ochadi.
+              Fuqaro stolingiz qarshisida oʻtiribdi. U muammosini oʻz soʻzlari bilan aytadi - muhim tafsilotlarni faqat toʻgʻri savol bersangiz ochadi.
             </p>
           </aside>
         </div>

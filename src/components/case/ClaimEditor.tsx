@@ -1,12 +1,12 @@
 'use client';
 /**
- * «Hujjatlar» — the drafting desk. The student works the way an advocate does: reads the papers in
- * the folder, fills in the order (the official form, 12 items) and WRITES the statement of claim —
+ * «Hujjatlar» - the drafting desk. The student works the way an advocate does: reads the papers in
+ * the folder, fills in the order (the official form, 12 items) and WRITES the statement of claim -
  * the court is chosen from the court system, everything else is typed. The page fills in on the
  * right exactly as it will be printed. Validation is the court's job (server): nothing here says
  * what is missing.
  *
- * Sources: FPK 189–191 (contents and attachments of a claim); Law «Sudlar toʻgʻrisida», art. 2 (the
+ * Sources: FPK 189-191 (contents and attachments of a claim); Law «Sudlar toʻgʻrisida», art. 2 (the
  * courts); Adliya vazirining 2023-yil 31-yanvardagi 1-mh-son buyrugʻi (the order form).
  */
 import { motion } from 'motion/react';
@@ -174,7 +174,7 @@ function Folder({ known }: { known: Set<string> }) {
   const missing = FOLDER.filter((p) => p.requires && !known.has(p.requires));
   return (
     <div className="space-y-3">
-      <p className="text-[0.84rem] leading-relaxed text-white/60">Maslahatda olgan hujjatlaringiz. Arizani va orderni shu maʼlumotlar asosida oʻzingiz yozasiz — sud har bir rekvizitni shu hujjatlar bilan solishtiradi.</p>
+      <p className="text-[0.84rem] leading-relaxed text-white/60">Maslahatda olgan hujjatlaringiz. Arizani va orderni shu maʼlumotlar asosida oʻzingiz yozasiz - sud har bir rekvizitni shu hujjatlar bilan solishtiradi.</p>
       {papers.map((p) => (
         <article key={p.id} className="rounded-2xl bg-[#fbfaf6] p-4 font-serif text-[#1b1b1b] shadow-[0_10px_30px_rgba(0,0,0,0.35)] select-text">
           <h3 className="text-[0.92rem] font-bold">{p.title}</h3>
@@ -198,21 +198,21 @@ function OrderForm({ o, set, onSigned }: { o: OrderDraft; set: <K extends keyof 
   return (
     <div className="space-y-3">
       <p className="text-[0.84rem] leading-relaxed text-white/60">
-        Advokatning muayyan ishni olib borishga vakolati order bilan tasdiqlanadi. Shakl — Adliya vazirining 2023-yil 31-yanvardagi 1-mh-son buyrugʻi ilovasi. 1–12-bandlar toʻliq toʻldirilmagan order haqiqiy hisoblanmaydi.
+        Advokatning muayyan ishni olib borishga vakolati order bilan tasdiqlanadi. Shakl - Adliya vazirining 2023-yil 31-yanvardagi 1-mh-son buyrugʻi ilovasi. 1-12-bandlar toʻliq toʻldirilmagan order haqiqiy hisoblanmaydi.
       </p>
-      <Section n="1–5" title="Order va advokat" article="Order shakli, 1–5-bandlar">
+      <Section n="1-5" title="Order va advokat" article="Order shakli, 1-5-bandlar">
         <Text label="1. Order raqami" value={o.number} onChange={(v) => set('number', v)} max={40} hint="Advokat oʻzi beradi; yil boshidan oʻsib boradi." />
         <Text label="2. Advokatlik tuzilmasining nomi" value={o.firm} onChange={(v) => set('firm', v)} />
         <Text label="3. Advokatlik tuzilmasining manzili va telefon raqami" value={o.firmAddress} onChange={(v) => set('firmAddress', v)} />
         <Text label="4. Advokatning familiyasi, ismi va otasining ismi" value={o.advocate} onChange={(v) => set('advocate', v)} />
         <Text label="5. Advokatlik guvohnomasining rekvizitlari" value={o.license} onChange={(v) => set('license', v)} hint="Raqami, berilgan sanasi, kim tomonidan berilgan." />
       </Section>
-      <Section n="6–8" title="Ixtisoslik va asos" article="Order shakli, 6–8-bandlar">
+      <Section n="6-8" title="Ixtisoslik va asos" article="Order shakli, 6-8-bandlar">
         <Radio label="6. Advokatning litsenziya boʻyicha ixtisosligi" value={o.specialty} onChange={(v) => set('specialty', v)} options={[{ id: 'civil-economic', label: 'Fuqarolik va iqtisodiy sud ishlarini yuritish' }, { id: 'admin-criminal', label: 'Maʼmuriy va jinoiy sud ishlarini yuritish' }]} />
         <Radio label="7. Order berishga asos" value={o.basis} onChange={(v) => set('basis', v)} options={[{ id: 'contract', label: 'Shartnoma (bitim)' }, { id: 'ruling', label: 'Qaror (ajrim)' }]} />
         <Text label="8. Asos boʻlgan hujjat rasmiylashtirilgan sana" value={o.basisDate} onChange={(v) => set('basisDate', v)} max={40} />
       </Section>
-      <Section n="9–12" title="Ishonch bildiruvchi va ish" article="Order shakli, 9–12-bandlar">
+      <Section n="9-12" title="Ishonch bildiruvchi va ish" article="Order shakli, 9-12-bandlar">
         <Text label="9. Ishonch bildiruvchi shaxsning familiyasi, ismi va otasining ismi" value={o.client} onChange={(v) => set('client', v)} />
         <Select label="10. Yuridik yordam koʻrsatiladigan ish turi" placeholder="Ish turini tanlang" value={o.caseType} onChange={(v) => set('caseType', v)}
           options={[{ id: 'civil', label: 'Fuqarolik ishi' }, { id: 'economic', label: 'Iqtisodiy ish' }, { id: 'admin-offence', label: 'Maʼmuriy huquqbuzarlik toʻgʻrisidagi ish' }, { id: 'administrative', label: 'Maʼmuriy ish' }, { id: 'criminal', label: 'Jinoiy ish' }, { id: 'other', label: 'Boshqa ish' }]} />
@@ -279,7 +279,7 @@ export function ClaimEditor({ facts, evidence, advocate, initial, busy, onSubmit
       demand: d.demand.trim() ? { text: d.demand.trim() } : { text: '[talab]', empty: true },
       attachments: [
         ...d.attachments.map((id) => ({ text: ATTACH.find((a) => a.id === id)?.label ?? id })),
-        ...(d.copies > 0 ? [{ text: `Arizaning javobgar uchun nusxasi — ${d.copies} dona` }] : []),
+        ...(d.copies > 0 ? [{ text: `Arizaning javobgar uchun nusxasi - ${d.copies} dona` }] : []),
         ...(d.attachments.length === 0 && d.copies === 0 ? [{ text: '[ilovalar roʻyxati]', empty: true }] : []),
       ],
       date: longDate(d.date) || '[sana]',
@@ -301,7 +301,7 @@ export function ClaimEditor({ facts, evidence, advocate, initial, busy, onSubmit
         <header className="border-b border-white/10 px-5 pt-3.5">
           <p className="text-[0.66rem] font-semibold tracking-[0.18em] text-amber-200 uppercase">Hujjatlar · 2-bosqich</p>
           <h2 id="claim-title" className="text-[1.15rem] font-semibold">Daʼvo arizasini tuzish</h2>
-          <p className="text-[0.8rem] text-white/55">Hujjatlarni oʻqing, orderni toʻldiring, arizani oʻzingiz yozing. Kamchiliklarni sud aniqlaydi — xuddi hayotdagidek.</p>
+          <p className="text-[0.8rem] text-white/55">Hujjatlarni oʻqing, orderni toʻldiring, arizani oʻzingiz yozing. Kamchiliklarni sud aniqlaydi - xuddi hayotdagidek.</p>
           <div role="tablist" aria-label="Hujjatlar" className="mt-3 -mb-px flex gap-1">
             {TABS.map(([id, label]) => (
               <button key={id} type="button" role="tab" aria-selected={tab === id} onClick={() => setTab(id)}
@@ -316,12 +316,12 @@ export function ClaimEditor({ facts, evidence, advocate, initial, busy, onSubmit
           {tab === 'folder' && <Folder known={known} />}
           {tab === 'order' && (known.has('authority')
             ? <OrderForm o={o} set={setOrder} onSigned={(v) => setOrder('signed', v)} />
-            : <p className="rounded-xl bg-black/25 px-4 py-3 text-[0.88rem] text-white/60">Mijoz bilan shartnoma tuzilmagan — order berishga asos yoʻq (Order shakli, 7-band). Maslahat xonasida vakolatni rasmiylashtiring.</p>)}
+            : <p className="rounded-xl bg-black/25 px-4 py-3 text-[0.88rem] text-white/60">Mijoz bilan shartnoma tuzilmagan - order berishga asos yoʻq (Order shakli, 7-band). Maslahat xonasida vakolatni rasmiylashtiring.</p>)}
           {tab === 'claim' && (
             <>
               <Section n={1} title="Ariza berilayotgan sud" article="189-m. 1-band · 26, 28, 33-m.">
                 <Select label="Sud" placeholder="Sudni tanlang" value={d.court.type} onChange={(v: CourtType) => setPart('court', { type: v })}
-                  options={COURT_TYPES.map((c) => ({ id: c.id, label: c.label }))} hint="Sud tizimi — «Sudlar toʻgʻrisida»gi Qonun, 2-modda." />
+                  options={COURT_TYPES.map((c) => ({ id: c.id, label: c.label }))} hint="Sud tizimi - «Sudlar toʻgʻrisida»gi Qonun, 2-modda." />
                 {d.court.type !== 'supreme' && (
                   <Select label="Hudud" placeholder="Tuman (shahar)ni tanlang" value={d.court.district} onChange={(v) => setPart('court', { district: v })}
                     options={DISTRICTS.map((x) => ({ id: x, label: `${x} tumani` }))} />
@@ -336,7 +336,7 @@ export function ClaimEditor({ facts, evidence, advocate, initial, busy, onSubmit
                 <Text label="Vakilning manzili" value={d.representative.address} onChange={(v) => setPart('representative', { address: v })} />
               </Section>
               <Section n={3} title="Javobgar" article="189-m. 3-band">
-                <Text label="Javobgar (tashkilot boʻlsa — nomi)" value={d.respondent.name} onChange={(v) => setPart('respondent', { name: v })} />
+                <Text label="Javobgar (tashkilot boʻlsa - nomi)" value={d.respondent.name} onChange={(v) => setPart('respondent', { name: v })} />
                 <Text label="Joylashgan yeri (pochta manzili)" value={d.respondent.address} onChange={(v) => setPart('respondent', { address: v })} />
               </Section>
               <Section n={4} title="Daʼvogarning talabi" article="189-m. 4-band">
@@ -359,7 +359,7 @@ export function ClaimEditor({ facts, evidence, advocate, initial, busy, onSubmit
               <Section n={7} title="Sudgacha hal qilish tartibi va aloqa" article="189-m. 7-band · oxirgi qism">
                 <Select label="Nizoni sudgacha hal qilish tartibi" placeholder="Tanlang" value={d.pretrial} onChange={(v: 'none' | 'done') => set('pretrial', v)}
                   options={[{ id: 'none', label: 'Qonunda yoki shartnomada majburiy tartib nazarda tutilmagan' }, { id: 'done', label: 'Ish beruvchiga murojaat qilingan, natija boʻlmagan' }]} />
-                <Text label="Elektron manzil (ixtiyoriy)" value={d.email} onChange={(v) => set('email', v)} hint="Koʻrsatilsa — sud xabarnomalarini elektron olishga rozilik." max={120} />
+                <Text label="Elektron manzil (ixtiyoriy)" value={d.email} onChange={(v) => set('email', v)} hint="Koʻrsatilsa - sud xabarnomalarini elektron olishga rozilik." max={120} />
               </Section>
               <Section n={8} title="Ilovalar" article="191-modda · 190-modda">
                 <div className="grid gap-1.5">
@@ -368,7 +368,7 @@ export function ClaimEditor({ facts, evidence, advocate, initial, busy, onSubmit
                     return (
                       <label key={a.id} className={`flex min-h-10 items-center gap-3 rounded-xl px-3 ring-1 ring-white/10 ${available ? 'bg-black/20' : 'bg-black/10 opacity-40'}`}>
                         <input type="checkbox" className="size-4 accent-emerald-500" disabled={!available} checked={d.attachments.includes(a.id)} onChange={() => toggle('attachments', a.id)} />
-                        <span className="text-[0.86rem]">{a.label}{!available && ' — qoʻlingizda yoʻq'}{a.id === 'warrant' && available && ' — «Advokat orderi» varagʻidagi shakl'}</span>
+                        <span className="text-[0.86rem]">{a.label}{!available && ' - qoʻlingizda yoʻq'}{a.id === 'warrant' && available && ' - «Advokat orderi» varagʻidagi shakl'}</span>
                       </label>
                     );
                   })}

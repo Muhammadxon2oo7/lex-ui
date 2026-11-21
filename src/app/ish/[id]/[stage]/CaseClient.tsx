@@ -1,8 +1,8 @@
 'use client';
 /**
- * "Ish yoʻli" — one room of the case. Screen layout, kept deliberately calm:
- *   top    — one bar: the five stages (jump to any), case folder, Code, exit;
- *   bottom — one dialogue dock: who speaks, the line, your replies, mic.
+ * "Ish yoʻli" - one room of the case. Screen layout, kept deliberately calm:
+ *   top    - one bar: the five stages (jump to any), case folder, Code, exit;
+ *   bottom - one dialogue dock: who speaks, the line, your replies, mic.
  * Everything else (claim desk, rulings, results) appears as a single
  * focused sheet and goes away again.
  */
@@ -189,7 +189,7 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
   const courtroom = stage === 'hearing';
   const drafting = snap.await === 'draft' && idle;
   const finished = snap.stageDone && idle && !ruling;
-  // the room waits for an answer — options may be hidden at higher levels, own words are always welcome
+  // the room waits for an answer - options may be hidden at higher levels, own words are always welcome
   const canAnswer = idle && !busy && !snap.stageDone && snap.answering && !ruling;
   const [said, setSaid] = useState('');
 
@@ -292,7 +292,7 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
     if (nav && pill) nav.scrollTo({ left: pill.offsetLeft - (nav.clientWidth - pill.offsetWidth) / 2, behavior: 'instant' });
   }, [stage]);
   const prompt = courtroom && idle && !snap.stageDone && snap.await
-    ? snap.await === 'stand' ? (snap.standing ? null : 'Zaldagilar oʻrnidan turmoqda — siz ham turing') : snap.standing ? 'Endi oʻtirishingiz mumkin' : null
+    ? snap.await === 'stand' ? (snap.standing ? null : 'Zaldagilar oʻrnidan turmoqda - siz ham turing') : snap.standing ? 'Endi oʻtirishingiz mumkin' : null
     : null;
 
   return (
@@ -309,7 +309,7 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
         {hoverName && !inHand && (
           <motion.p key="hover" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={spring}
             className="pointer-events-none absolute top-20 left-1/2 z-20 -translate-x-1/2 rounded-full bg-black/70 px-4 py-1.5 text-[0.84rem] text-white">
-            {hoverName} — <span className="text-white/65">bosing: qoʻlga olish · sudrang: joyini oʻzgartirish</span>
+            {hoverName} - <span className="text-white/65">bosing: qoʻlga olish · sudrang: joyini oʻzgartirish</span>
           </motion.p>
         )}
       </AnimatePresence>
@@ -320,7 +320,7 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
           {snap.stages.map((s) => {
             const here = s.id === stage;
             return (
-              <Link key={s.id} href={`/ish/${snap.caseId}/${s.id}`} aria-current={here ? 'step' : undefined} title={`${s.number}. ${s.place} — ${s.title}`}
+              <Link key={s.id} href={`/ish/${snap.caseId}/${s.id}`} aria-current={here ? 'step' : undefined} title={`${s.number}. ${s.place} - ${s.title}`}
                 className={`flex h-9 shrink-0 items-center gap-2 rounded-full px-2.5 text-[0.82rem] font-medium transition-colors duration-150 ${here ? 'bg-white text-[#0c0f14]' : 'text-white/75 hover:bg-white/10'}`}>
                 <span className={`grid size-5 place-items-center rounded-full text-[0.7rem] font-bold tabular-nums ${here ? 'bg-[#0c0f14] text-white' : s.status === 'done' ? 'bg-emerald-500 text-white' : s.status === 'returned' ? 'bg-red-500 text-white' : 'bg-white/15'}`}>
                   {s.status === 'done' && !here ? (
@@ -345,7 +345,7 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
         </div>
       </header>
 
-      {/* ── prebrief: role, task, how it is scored — until the first answer ── */}
+      {/* ── prebrief: role, task, how it is scored - until the first answer ── */}
       <AnimatePresence>
         {!drafting && !finished && !snap.lines.some((l) => l.speaker === 'you') && (
           <Prebrief key={`brief-${stage}`} id={`${snap.caseId}:${stage}`} role={snap.parties.find((p) => p.role === 'you')?.label ?? 'Advokat'} stage={def} courtroom={courtroom} level={snap.level} />
@@ -375,7 +375,7 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
                 <span className={`mt-1.5 block text-[1.12rem] leading-snug text-pretty ${!current || current.speaker === 'system' ? 'text-white/75 italic' : current.speaker === 'you' ? 'text-white/75' : 'text-white'}`}>
                   {current?.text ?? def.goal}
                 </span>
-                {!idle && <span className="mt-1 block text-right text-[0.7rem] text-white/40">Space — davom</span>}
+                {!idle && <span className="mt-1 block text-right text-[0.7rem] text-white/40">Space - davom</span>}
               </button>
               <p className="sr-only" role="log" aria-live="polite">{current ? `${current.speaker === 'you' ? 'Siz' : who?.label ?? ''}: ${current.text}` : ''}</p>
 
@@ -413,7 +413,7 @@ function Room({ snap, stage, busy, error, act, replay }: { snap: CaseSnapshot; s
               )}
               {(canAnswer || (courtroom && idle && !snap.stageDone)) && (
                 <div className="flex flex-wrap items-center justify-end gap-2 border-t border-white/8 px-3 py-2.5">
-                  {/* what was heard, or what the room expects now — wraps instead of being cut off */}
+                  {/* what was heard, or what the room expects now - wraps instead of being cut off */}
                   <p className={`min-w-0 flex-1 basis-40 text-[0.8rem] leading-snug text-pretty ${heard && !heard.ok && !prompt ? 'text-amber-200' : 'text-white/60'}`} role="status">
                     {prompt ?? heard?.said ?? (canAnswer ? <><span className="pointer-coarse:hidden"><kbd className="bg-white/15!">T</kbd> yoki </span>mikrofonni bosib turib gapiring</> : '')}
                   </p>
@@ -602,16 +602,16 @@ function Prebrief({ id, role, stage, courtroom, level }: { id: string; role: str
       className="absolute top-20 left-3 z-20 w-[min(22rem,calc(100vw-1.5rem))] rounded-[22px] bg-[#0d121b]/90 p-4 text-[0.84rem] leading-snug ring-1 ring-white/10 backdrop-blur-xl sm:left-4">
       <div className="flex items-start gap-3">
         <div className="min-w-0 flex-1">
-          <p className="text-[0.66rem] font-semibold tracking-[0.16em] text-amber-200 uppercase">{stage.number}-bosqich · siz — {role.toLowerCase()}</p>
+          <p className="text-[0.66rem] font-semibold tracking-[0.16em] text-amber-200 uppercase">{stage.number}-bosqich · siz - {role.toLowerCase()}</p>
           <p className="mt-1 text-[0.98rem] font-semibold">{stage.title}</p>
           <p className="mt-1 line-clamp-2 text-white/80 sm:line-clamp-none">{stage.goal}</p>
         </div>
         <button type="button" onClick={close} aria-label="Yopish" className="-mt-1 -mr-1 grid size-9 shrink-0 place-items-center rounded-full text-white/60 hover:bg-white/10 hover:text-white">✕</button>
       </div>
       <ul className="mt-3 hidden space-y-1 text-white/70 sm:block">
-        <li>• {level === 'advanced' ? 'Professional: faqat oʻz soʻzingiz bilan (yozing yoki T bilan ayting), maslahatsiz; izohlar — oxirgi tahlilda.' : level === 'intermediate' ? 'Oʻrta: oʻz soʻzingiz bilan javob bering; kerak boʻlsa variantlarni oching (−10).' : 'Variantni tanlang yoki oʻz soʻzingiz bilan yozing/ayting (T).'}</li>
+        <li>• {level === 'advanced' ? 'Professional: faqat oʻz soʻzingiz bilan (yozing yoki T bilan ayting), maslahatsiz; izohlar - oxirgi tahlilda.' : level === 'intermediate' ? 'Oʻrta: oʻz soʻzingiz bilan javob bering; kerak boʻlsa variantlarni oching (−10).' : 'Variantni tanlang yoki oʻz soʻzingiz bilan yozing/ayting (T).'}</li>
         <li>• Har bir qaror baholanadi; xatoning sababi va moddasi yakuniy tahlilda koʻrsatiladi.</li>
-        <li>• {level !== 'advanced' && <><kbd>M</kbd> maslahat — kerakli moddani koʻrsatadi (−5 ball). </>}<kbd>K</kbd> kodeks, <kbd>H</kbd> ish papkasi.</li>
+        <li>• {level !== 'advanced' && <><kbd>M</kbd> maslahat - kerakli moddani koʻrsatadi (−5 ball). </>}<kbd>K</kbd> kodeks, <kbd>H</kbd> ish papkasi.</li>
         {courtroom && <li>• Sudga tik turib (<kbd>G</kbd>) va «Hurmatli sud!» deb murojaat qilinadi.</li>}
       </ul>
     </motion.aside>
@@ -632,7 +632,7 @@ function Reflection({ id, question }: { id: string; question: string }) {
     <label className="mt-5 block">
       <span className="text-[0.72rem] font-semibold tracking-[0.12em] text-black/45 uppercase">Mulohaza</span>
       <span className="mt-1 block text-[0.9rem] font-medium">{question}</span>
-      <textarea value={text} rows={3} placeholder="Ikki-uch jumla — faqat shu brauzerda saqlanadi"
+      <textarea value={text} rows={3} placeholder="Ikki-uch jumla - faqat shu brauzerda saqlanadi"
         onChange={(e) => {
           setText(e.target.value);
           try {
@@ -662,7 +662,7 @@ function RoomRecord({ snap, stage }: { snap: CaseSnapshot; stage: CaseSnapshot['
           : { who: party(l.speaker) ? `${party(l.speaker)!.label} · ${party(l.speaker)!.name}` : l.speaker, role: 'npc', text: l.text, voice: party(l.speaker)?.voice, emotion: l.emotion },
     );
     const meta: RecordMeta = {
-      title: `${snap.title} — ${stage.number}-bosqich: ${stage.place}`,
+      title: `${snap.title} - ${stage.number}-bosqich: ${stage.place}`,
       subtitle: `${stage.title} · ${({ beginner: 'boshlangʻich', intermediate: 'oʻrta', advanced: 'professional' } as const)[snap.level]} daraja`,
       student,
       date: new Date(),

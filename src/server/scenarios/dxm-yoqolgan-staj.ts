@@ -94,7 +94,7 @@ export const dxmYoqolganStaj: ScenarioDefinition = {
   facts: [
     {
       id: 'work-period-1991-1998',
-      summary: '1991–1998-yillarda jamoa xoʻjaligida ishlagan; shu davr stajga qoʻshilmagan.',
+      summary: '1991-1998-yillarda jamoa xoʻjaligida ishlagan; shu davr stajga qoʻshilmagan.',
       unlockedBy: 'ask-work-period',
       minTrust: 0,
       lines: [

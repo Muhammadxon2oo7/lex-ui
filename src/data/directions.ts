@@ -1,7 +1,7 @@
 /**
  * Which normative acts each line of practice rests on, and which of their articles it actually uses.
  * Every article named here must be in src/data/sources.json (built from legal/sources, verbatim from
- * lex.uz) — src/data/sources.test.ts fails otherwise. `articles: []` means the act is listed as the
+ * lex.uz) - src/data/sources.test.ts fails otherwise. `articles: []` means the act is listed as the
  * profession's ground rules, but nothing in the practice is scored against one of its articles.
  */
 import fpkCase from '@/server/law/fpk-case.json';
@@ -30,7 +30,7 @@ const all = (doc: string) => sources.docs.find((d) => d.id === doc)!.articles.ma
 export const DIRECTION_SOURCES: DirectionSources[] = [
   {
     id: 'advokat', role: 'Advokat', title: 'Ishga tiklash nizosi',
-    note: 'Ish holatlari toʻqilgan. Protsessual tartib, arizaning mazmuni va ilovalari, sudning ajrimlari — FPK matni boʻyicha; ishga tiklash shartlari — Mehnat kodeksi va Oliy sud Plenumi qarori boʻyicha.',
+    note: 'Ish holatlari toʻqilgan. Protsessual tartib, arizaning mazmuni va ilovalari, sudning ajrimlari - FPK matni boʻyicha; ishga tiklash shartlari - Mehnat kodeksi va Oliy sud Plenumi qarori boʻyicha.',
     uses: [
       { doc: 'FPK', why: 'Maslahat, vakillik, daʼvo arizasi va uni qaytarish, ishni tayyorlash, sud majlisi, hal qiluv qarori va shikoyat muddati', articles: nums(fpkCase) },
       { doc: 'MK', why: 'Qonunga xilof boʻshatish oqibatlari va isbot yuki, intizomiy jazo tartibi (yozma tushuntirish), sudga murojaat muddati', articles: ['174-modda', '313-modda', '560-modda'] },
@@ -38,24 +38,24 @@ export const DIRECTION_SOURCES: DirectionSources[] = [
       { doc: 'ADVKAFOLAT', why: 'Advokatning muayyan ishni olib borishga vakolati order bilan tasdiqlanadi', articles: ['4-modda'] },
       { doc: 'ORDER', why: '«Hujjatlar» xonasidagi order shakli: 12 band va izohlar', articles: all('ORDER') },
       { doc: 'DAVLATBOJI', why: 'Mehnat munosabatlaridan kelib chiqadigan talab boʻyicha daʼvogar davlat bojidan ozod', articles: ['8-modda'] },
-      { doc: 'SUDLAR', why: '«Hujjatlar» xonasida sud turini tanlash roʻyxati — sud tizimi', articles: ['2-modda'] },
+      { doc: 'SUDLAR', why: '«Hujjatlar» xonasida sud turini tanlash roʻyxati - sud tizimi', articles: ['2-modda'] },
       { doc: 'JK', why: 'Sud majlisida guvohni yolgʻon koʻrsatuv uchun javobgarlik haqida ogohlantirish', articles: ['238-modda'] },
       { doc: 'ADVOKATURA', why: 'Kasbning asosiy qonuni: advokatlik faoliyati, advokatning huquq va majburiyatlari (umumiy asos)', articles: [] },
     ],
   },
   {
     id: 'tergov', role: 'Jabrlanuvchi vakili', title: 'Telefon oʻgʻirligi: arizadan shikoyatgacha',
-    note: 'Ish holatlari toʻqilgan. Arizani qabul qilish, jabrlanuvchini soʻroq qilish va tergovchi ustidan shikoyat — JPK matni boʻyicha. Jinoyatni kvalifikatsiya qilish bu mashqda baholanmaydi.',
+    note: 'Ish holatlari toʻqilgan. Arizani qabul qilish, jabrlanuvchini soʻroq qilish va tergovchi ustidan shikoyat - JPK matni boʻyicha. Jinoyatni kvalifikatsiya qilish bu mashqda baholanmaydi.',
     uses: [
       { doc: 'JPK', why: 'Jabrlanuvchining huquqlari, soʻroq tartibi va bayonnoma, jinoyat toʻgʻrisidagi arizalar, ish qoʻzgʻatish, shikoyat', articles: nums(jpkCase) },
-      { doc: 'ADVOKATURA', why: 'Jabrlanuvchining vakili — advokat: kasbning asosiy qonuni (umumiy asos)', articles: [] },
+      { doc: 'ADVOKATURA', why: 'Jabrlanuvchining vakili - advokat: kasbning asosiy qonuni (umumiy asos)', articles: [] },
       { doc: 'ADVKAFOLAT', why: 'Advokatning vakolati order bilan tasdiqlanadi', articles: ['4-modda'] },
       { doc: 'PROKURATURA', why: 'Tergov ustidan nazorat qiluvchi organ (maʼlumot uchun)', articles: [] },
     ],
   },
   {
     id: 'sudya', role: 'Sudya', title: 'Sud majlisida raislik qilish',
-    note: 'Majlis bosqichlari va har bosqichdagi sudyaning harakati — FPK 208–248, 276-moddalar matni boʻyicha.',
+    note: 'Majlis bosqichlari va har bosqichdagi sudyaning harakati - FPK 208-248, 276-moddalar matni boʻyicha.',
     uses: [
       { doc: 'FPK', why: 'Sud majlisini ochish, zal tartibi, ishtirokchilarni tekshirish, rad qilish, huquqlarni tushuntirish, ishni mazmunan koʻrish, muzokaralar, hal qiluv qarori, bayonnoma', articles: nums(fpkHearing) },
       { doc: 'PLENUM-2018-14', why: 'Birinchi instansiya sudi tomonidan FPK normalarini qoʻllash amaliyoti (umumiy asos)', articles: [] },
@@ -64,7 +64,7 @@ export const DIRECTION_SOURCES: DirectionSources[] = [
   },
   {
     id: 'iqtisodiy', role: 'Tomon vakili', title: 'Iqtisodiy sudda nizo',
-    note: 'Ssenariylar (ish holatlari, sudya va raqib javoblari) sud serverida tuziladi va oʻsha yerda IPK moddalariga bogʻlanadi. Bu yerda — majlis tartibi tayanadigan IPK moddalari.',
+    note: 'Ssenariylar (ish holatlari, sudya va raqib javoblari) sud serverida tuziladi va oʻsha yerda IPK moddalariga bogʻlanadi. Bu yerda - majlis tartibi tayanadigan IPK moddalari.',
     uses: [
       { doc: 'IPK', why: 'Iqtisodiy sudda majlis tartibi: ochish, ishtirokchilar, rad qilish, huquqlar, tushuntirishlar, dalillar, muzokaralar, hal qiluv qarori', articles: ['20-modda', '21-modda', '22-modda', '23-modda', '24-modda', '42-modda', '52-modda', '54-modda', '56-modda', '58-modda', '60-modda', '86-modda', '87-modda', '88-modda', '89-modda', '125-modda', '126-modda', '165-modda', '167-modda', '168-modda', '169-modda', '170-modda', '171-modda', '173-modda', '174-modda', '175-modda', '176-modda', '177-modda', '178-modda', '179-modda', '186-modda', '201-modda', '202-modda', '203-modda', '259-modda', '261-modda', '262-modda'] },
       { doc: 'SUDLAR', why: 'Tumanlararo iqtisodiy sudning tarkibi va vakolati', articles: ['2-modda', '39-modda', '40-modda'] },
@@ -72,7 +72,7 @@ export const DIRECTION_SOURCES: DirectionSources[] = [
   },
   {
     id: 'dxm', role: 'Davlat xizmatchisi', title: 'Yoʻqolgan staj: fuqaro murojaati',
-    note: 'Fuqaro va uning holati toʻqilgan. Stajni tasdiqlash yoʻllari, xizmatlar va odob qoidalari — quyidagi hujjatlardan. Qaysi modda aynan shu holatga javob berishini mentor tasdiqlaydi.',
+    note: 'Fuqaro va uning holati toʻqilgan. Stajni tasdiqlash yoʻllari, xizmatlar va odob qoidalari - quyidagi hujjatlardan. Qaysi modda aynan shu holatga javob berishini mentor tasdiqlaydi.',
     uses: [
       { doc: 'PENSIYA', why: 'Ish stajini tasdiqlash: hujjatlar, mehnat daftarchasi boʻlmaganda, sud tartibida', articles: range(37, 42, 'modda') },
       { doc: 'VMQ592', why: 'Pensiya tayinlash nizomi: stajni tasdiqlovchi hujjatlar, maxsus komissiya', articles: [...range(52, 56, 'band'), ...range(70, 74, 'band')] },
@@ -87,7 +87,7 @@ export const DIRECTION_SOURCES: DirectionSources[] = [
   },
   {
     id: 'bahs', role: 'Jamoaviy bahs', title: 'Kursdoshlar bilan sudda',
-    note: 'Bahs tartibi (14 qadam, vaqt chegaralari) — oʻquv tartibi: IPKdagi majlis tartibiga yaqinlashtirilgan, lekin uning oʻzi emas. Ish papkasi sud serveridagi ssenariydan olingan. Gʻolibni aniqlash — oʻquv bahosi, sud qarori emas.',
+    note: 'Bahs tartibi (14 qadam, vaqt chegaralari) - oʻquv tartibi: IPKdagi majlis tartibiga yaqinlashtirilgan, lekin uning oʻzi emas. Ish papkasi sud serveridagi ssenariydan olingan. Gʻolibni aniqlash - oʻquv bahosi, sud qarori emas.',
     uses: [
       { doc: 'IPK', why: 'Majlis tartibining asosi: tushuntirishlar, dalillar, sud muzokaralari va replika', articles: ['165-modda', '173-modda', '174-modda', '175-modda', '176-modda', '177-modda'] },
     ],

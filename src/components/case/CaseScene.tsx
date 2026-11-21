@@ -51,7 +51,7 @@ const Lights = ({ sun }: { sun?: V3 }) => <RoomLight sun={sun} reach={6} />;
 
 /**
  * You, from inside: your own body sits (or stands) where the camera is, its
- * head not drawn — look down and there are your knees, your hands, your shoes.
+ * head not drawn - look down and there are your knees, your hands, your shoes.
  */
 function Me({ avatar = 'man', at, rotation = 0, standing = false, chair = true }: { avatar?: 'man' | 'woman'; at: V3; rotation?: number; standing?: boolean; chair?: boolean }) {
   return (
@@ -163,7 +163,7 @@ function DraftRoom({ m, paper, avatar }: { m: Materials; paper?: PaperModel | nu
         ctx.font = `700 28px ${UI_FONT}`;
         ctx.fillStyle = '#fff';
         ctx.textBaseline = 'middle';
-        ctx.fillText('Daʼvo arizasi — loyiha', 28, 32);
+        ctx.fillText('Daʼvo arizasi - loyiha', 28, 32);
         ctx.fillStyle = '#d9dde4';
         for (let i = 0; i < 9; i++) ctx.fillRect(60, 110 + i * 48, 520 + ((i * 131) % 330), 14);
       }),

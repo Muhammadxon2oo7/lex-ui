@@ -1,6 +1,6 @@
 'use client';
 /**
- * 3D runtime root (client only, lazy-loaded — never part of the landing,
+ * 3D runtime root (client only, lazy-loaded - never part of the landing,
  * hub or report bundles).
  *
  * Render pipeline (WebGL2, R3F v9):

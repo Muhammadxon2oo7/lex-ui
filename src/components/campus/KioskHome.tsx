@@ -1,9 +1,9 @@
 'use client';
 /**
- * The terminal's home: what the student can do, in three tabs —
- *   Ishlar           — the two case paths, each with its progress and ONE clear next step;
- *   Sud majlislari   — the court server's cases (random or chosen) and the presiding-judge hearing;
- *   Boshqa           — the library and the DXM office.
+ * The terminal's home: what the student can do, in three tabs -
+ *   Ishlar           - the two case paths, each with its progress and ONE clear next step;
+ *   Sud majlislari   - the court server's cases (random or chosen) and the presiding-judge hearing;
+ *   Boshqa           - the library and the DXM office.
  * One scroll area for everything: nothing is squeezed or cut off at the bottom.
  */
 import { useRouter } from 'next/navigation';
@@ -26,8 +26,8 @@ const LEVELS: [Level, string, string][] = [
 const levelName = (lv: Level) => LEVELS.find(([id]) => id === lv)![1];
 
 const CASES: Record<CaseKind, { tag: string; title: string; role: string }> = {
-  labour: { tag: 'Fuqarolik ishi · FPK', title: 'Sardor N. — «Namuna Savdo» MChJ: ishga tiklash', role: 'Siz — daʼvogarning advokati' },
-  theft: { tag: 'Jinoyat-protsessual · JPK', title: 'Nodira K. — telefon oʻgʻirligi', role: 'Siz — jabrlanuvchining advokati' },
+  labour: { tag: 'Fuqarolik ishi · FPK', title: 'Sardor N. - «Namuna Savdo» MChJ: ishga tiklash', role: 'Siz - daʼvogarning advokati' },
+  theft: { tag: 'Jinoyat-protsessual · JPK', title: 'Nodira K. - telefon oʻgʻirligi', role: 'Siz - jabrlanuvchining advokati' },
 };
 
 type Tab = 'cases' | 'court' | 'other';
@@ -117,7 +117,7 @@ function CaseCard({ kind, snap, setSnap, onEnter }: { kind: CaseKind; snap: Case
               {i > 0 && <span aria-hidden className={`absolute top-[15px] right-1/2 h-px w-full ${stages[i - 1].status === 'done' ? 'bg-emerald-400/60' : 'bg-white/12'}`} />}
               <button type="button" onClick={() => onEnter(STAGE_DOOR[s.id])} aria-current={current ? 'step' : undefined}
                 className="group relative flex w-full flex-col items-center gap-1.5 rounded-xl px-1 pt-0 pb-1.5 text-center transition-colors duration-150 hover:bg-white/[0.06]"
-                title={`${s.place} — ${bare(s.title)}`}>
+                title={`${s.place} - ${bare(s.title)}`}>
                 <span className={`grid size-[30px] place-items-center rounded-full text-[0.78rem] font-bold ring-4 ring-[#0d1626] transition-transform duration-150 group-active:scale-95 ${
                   s.status === 'done' ? 'bg-emerald-500 text-white' : s.status === 'returned' ? 'bg-red-500 text-white' : current ? 'bg-white text-[#0b1322]' : 'bg-[#1c2638] text-white/60'}`}>
                   {s.status === 'done' ? <Check /> : s.number}
@@ -135,7 +135,7 @@ function CaseCard({ kind, snap, setSnap, onEnter }: { kind: CaseKind; snap: Case
         className="mt-3 flex min-h-12 w-full items-center gap-3 rounded-xl bg-[#1f8a5b] px-4 text-left transition-[background-color,transform] duration-150 hover:bg-[#23a06a] active:scale-[0.99]">
         <span className="min-w-0 flex-1">
           <span className="block text-[0.7rem] text-white/75">{next ? (done ? 'Davom etish' : 'Boshlash') : 'Ish yakunlangan · qayta koʻrish'}</span>
-          <span className="block truncate text-[0.95rem] font-semibold">{(next ?? stages[0]).number}. {(next ?? stages[0]).place} — {bare((next ?? stages[0]).title)}</span>
+          <span className="block truncate text-[0.95rem] font-semibold">{(next ?? stages[0]).number}. {(next ?? stages[0]).place} - {bare((next ?? stages[0]).title)}</span>
         </span>
         <Chevron />
       </button>
@@ -255,7 +255,7 @@ export function KioskHome({ caseSnap, setCaseSnap, theftSnap, setTheftSnap, onEn
           <motion.div key={tab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} transition={{ duration: 0.18, ease: 'easeOut' }} className="space-y-3">
             {tab === 'cases' && (
               <>
-                <p className="text-[0.84rem] text-white/55">Har bir xona — ishning bir bosqichi. Navbatdagisidan davom eting yoki istalganini oching.</p>
+                <p className="text-[0.84rem] text-white/55">Har bir xona - ishning bir bosqichi. Navbatdagisidan davom eting yoki istalganini oching.</p>
                 <CaseCard kind="labour" snap={caseSnap} setSnap={setCaseSnap} onEnter={onEnter} />
                 <CaseCard kind="theft" snap={theftSnap} setSnap={setTheftSnap} onEnter={onEnter} />
               </>
@@ -264,7 +264,7 @@ export function KioskHome({ caseSnap, setCaseSnap, theftSnap, setTheftSnap, onEn
             {tab === 'court' && (
               <>
                 <ul className="rounded-2xl bg-white/[0.04] p-2 ring-1 ring-white/10">
-                  <Row title="Bahs — jamoaviy sud" sub="Kursdoshlar bilan 1×1, 2×2 yoki 3×3 · sudya — sunʼiy intellekt" meta="2–6 kishi" onClick={() => void go('moot', async () => '/bahs')} disabled={Boolean(starting)} busy={starting === 'moot'} />
+                  <Row title="Bahs - jamoaviy sud" sub="Kursdoshlar bilan 1×1, 2×2 yoki 3×3 · sudya - sunʼiy intellekt" meta="2-6 kishi" onClick={() => void go('moot', async () => '/bahs')} disabled={Boolean(starting)} busy={starting === 'moot'} />
                 </ul>
                 <section aria-labelledby="eco-title" className="rounded-2xl bg-white/[0.04] p-4 ring-1 ring-white/10 sm:p-5">
                   <p className="text-[0.66rem] font-semibold tracking-[0.18em] text-amber-200/90 uppercase">Iqtisodiy sud · tomon vakili</p>
@@ -294,7 +294,7 @@ export function KioskHome({ caseSnap, setCaseSnap, theftSnap, setTheftSnap, onEn
                       )}
                       <ul className="-mx-1.5 mt-2 divide-y divide-white/[0.06]" aria-label="Iqtisodiy sud ishlari">
                         {scenarios.map((sc) => (
-                          <Row key={sc.id} title={(sc.title || sc.role).split(/\s+[—–-]\s+/)[0]} sub={sc.position || sc.role} meta={`${sc.durationMinutes} daq.`}
+                          <Row key={sc.id} title={(sc.title || sc.role).split(/\s+[---]\s+/)[0]} sub={sc.position || sc.role} meta={`${sc.durationMinutes} daq.`}
                             onClick={() => void economic(sc.id)} disabled={Boolean(starting)} busy={starting === sc.id} />
                         ))}
                       </ul>
@@ -304,7 +304,7 @@ export function KioskHome({ caseSnap, setCaseSnap, theftSnap, setTheftSnap, onEn
                 <section aria-labelledby="presiding-title" className="rounded-2xl bg-white/[0.04] p-2 ring-1 ring-white/10">
                   <h3 id="presiding-title" className="sr-only">Raislik qiluvchi</h3>
                   <ul>
-                    <Row title="Raislik qiluvchi sudya" sub="Fuqarolik ishi · majlisni FPK tartibida 14 bosqichda olib borasiz" meta="10–15 daq." onClick={() => void presiding()} disabled={Boolean(starting)} busy={starting === 'presiding'} />
+                    <Row title="Raislik qiluvchi sudya" sub="Fuqarolik ishi · majlisni FPK tartibida 14 bosqichda olib borasiz" meta="10-15 daq." onClick={() => void presiding()} disabled={Boolean(starting)} busy={starting === 'presiding'} />
                   </ul>
                 </section>
               </>
@@ -315,7 +315,7 @@ export function KioskHome({ caseSnap, setCaseSnap, theftSnap, setTheftSnap, onEn
                 {DOORS.filter((d) => d.action === 'library').map((d) => (
                   <Row key={d.id} title={d.title} sub={`${d.subtitle} · ${d.basis}`} onClick={() => onEnter(d.id)} />
                 ))}
-                <Row title="DXM xodimi" sub="Davlat xizmati · nafaqasi kam chiqqan fuqaro bilan suhbat" meta="12–18 daq." onClick={() => void dxm()} disabled={Boolean(starting)} busy={starting === 'dxm'} />
+                <Row title="DXM xodimi" sub="Davlat xizmati · nafaqasi kam chiqqan fuqaro bilan suhbat" meta="12-18 daq." onClick={() => void dxm()} disabled={Boolean(starting)} busy={starting === 'dxm'} />
               </ul>
             )}
 

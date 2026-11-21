@@ -1,8 +1,8 @@
 'use client';
 /**
  * Push-to-talk. Hold T (or press and hold the microphone button), speak,
- * release. While held: a live level meter and — where the browser provides
- * it — the words as they are recognised. The parent decides what the words
+ * release. While held: a live level meter and - where the browser provides
+ * it - the words as they are recognised. The parent decides what the words
  * mean (usually: which offered reply was said).
  */
 import { AnimatePresence, motion } from 'motion/react';
@@ -162,7 +162,7 @@ export function Talk({ enabled, onHeard, onError, compact = false }: { enabled: 
             transition={{ type: 'spring', bounce: 0, duration: 0.3 }}
             role="status"
             aria-live="polite"
-            // in the middle of the view, above the conversation panel — never over the replies
+            // in the middle of the view, above the conversation panel - never over the replies
             className="glass pointer-events-none fixed inset-x-0 top-[26%] z-40 mx-auto flex w-fit max-w-[min(42rem,calc(100vw-2rem))] items-center gap-4 rounded-[24px] px-5 py-3.5"
           >
             {phase === 'thinking' ? (
@@ -177,7 +177,7 @@ export function Talk({ enabled, onHeard, onError, compact = false }: { enabled: 
               </span>
             )}
             <span className="min-w-0">
-              {/* what you are saying, as you say it — and it stays there while it is being understood */}
+              {/* what you are saying, as you say it - and it stays there while it is being understood */}
               <span className={`block text-[1.05rem] leading-snug ${partial ? 'text-white' : 'text-white/70'}`}>
                 {partial ? `«${partial}»` : phase === 'starting' ? 'Mikrofon yoqilmoqda…' : phase === 'thinking' ? 'Ovozingiz tanilmoqda…' : 'Gapiring, eshityapman…'}
               </span>
@@ -186,7 +186,7 @@ export function Talk({ enabled, onHeard, onError, compact = false }: { enabled: 
                   {waited < 3 ? 'Tushunilmoqda…' : `Tushunilmoqda… ${waited} s${waited >= 8 ? ' · server sekin ishlayapti' : ''}`}
                 </span>
               )}
-              {phase === 'listening' && <span className="mt-0.5 block text-[0.76rem] text-white/45">Qoʻyib yuborsangiz — yuboriladi</span>}
+              {phase === 'listening' && <span className="mt-0.5 block text-[0.76rem] text-white/45">Qoʻyib yuborsangiz - yuboriladi</span>}
             </span>
           </motion.div>
         )}

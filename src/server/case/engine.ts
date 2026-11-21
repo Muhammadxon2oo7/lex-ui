@@ -449,7 +449,7 @@ function choose(c: CaseState, optionId: string, via: InputMode = 'option') {
     }
     c.scolded.add(node.id);
     say(c, [['judge', 'Daʼvogar vakili, oʻrningizdan turib gapiring.']]);
-    c.feedback = { tone: 'bad', message: 'Sudga tik turib murojaat qilinadi. G — turing, soʻng javob bering.', article: '212-modda' };
+    c.feedback = { tone: 'bad', message: 'Sudga tik turib murojaat qilinadi. G - turing, soʻng javob bering.', article: '212-modda' };
     return;
   }
 
@@ -540,7 +540,7 @@ export function actSaid(id: string, owner: string | undefined, input: { clientAc
     c.penalties.push({ points: 40, note: 'Axloqiy chegarani buzish (pora yoki bosimga ishora)' });
     record(c, input.text, 'bad', 40, 'Pora, tanish-bilish yoki bosimga ishora — mutlaqo mumkin emas.', null, null);
     c.log[c.log.length - 1].inputMode = input.inputMode;
-    c.feedback = c.level === 'advanced' ? null : { tone: 'bad', message: 'Bunday gap — korrupsion ishora. Mutlaqo mumkin emas.', article: null };
+    c.feedback = c.level === 'advanced' ? null : { tone: 'bad', message: 'Bunday gap - korrupsion ishora. Mutlaqo mumkin emas.', article: null };
   } else {
     // not understood: what you said stays on record, and whoever you are talking to asks again — out loud,
     // in their own way (a judge formally, a client plainly); nothing is lost, the moment stays open

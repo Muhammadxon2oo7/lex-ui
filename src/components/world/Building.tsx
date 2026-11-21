@@ -2,7 +2,7 @@
 /**
  * Architecture of the DXM branch: walls, floors, ceilings, windows with
  * vertical blinds, the glazed entrance, skirting, ceiling luminaires and the
- * static physics colliders — all generated from the room manifest.
+ * static physics colliders - all generated from the room manifest.
  */
 import { useFrame } from '@react-three/fiber';
 import { CuboidCollider, RigidBody, type RapierCollider } from '@react-three/rapier';

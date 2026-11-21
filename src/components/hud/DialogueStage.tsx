@@ -1,10 +1,10 @@
 'use client';
 /**
- * Cinematic conversation layer for the immersive view — the way simulation
+ * Cinematic conversation layer for the immersive view - the way simulation
  * games do it, not a chat window:
  *
  *   • the citizen's line appears as a subtitle while he speaks and gestures;
- *   • when he stops, the student picks a reply (1–4, Tab for more) or
+ *   • when he stops, the student picks a reply (1-4, Tab for more) or
  *     answers in their own words (T);
  *   • desk actions live on single keys: terminal (F), notebook (V),
  *     look at the phone photo (R), stand up (G).
@@ -433,7 +433,7 @@ export function DialogueStage() {
 
         {heard && (
           <p className="mx-auto -mt-2 max-w-2xl text-center text-[0.8rem] leading-snug text-white/60" role="status">
-            Eshitildi: «{heard.said}»{heard.as ? <> → <span className="text-white/85">{heard.as}</span></> : ' — erkin javob sifatida yuborildi'}
+            Eshitildi: «{heard.said}»{heard.as ? <> → <span className="text-white/85">{heard.as}</span></> : ' - erkin javob sifatida yuborildi'}
           </p>
         )}
         {/* replies */}

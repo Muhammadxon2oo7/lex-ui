@@ -4,7 +4,7 @@
  * against). Names, addresses and numbers are invented for training and stay the same in every room.
  *
  * The list of courts is the court system of the Law «Sudlar toʻgʻrisida» (28.07.2021, Oʻ RQ-703),
- * article 2 — legal/sources/SUDLAR.json.
+ * article 2 - legal/sources/SUDLAR.json.
  */
 
 export const COURT_TYPES = [
@@ -87,7 +87,7 @@ export const FOLDER: FolderPaper[] = [
     id: 'sickleave', title: 'Mehnatga layoqatsizlik varaqasi', requires: 'sickleave',
     lines: [
       ['Kim', PEOPLE.claimant.name],
-      ['Davr', '2026-yil 9–10-oktabr'],
+      ['Davr', '2026-yil 9-10-oktabr'],
       ['Bergan muassasa', 'Namuna tuman oilaviy poliklinikasi'],
     ],
   },

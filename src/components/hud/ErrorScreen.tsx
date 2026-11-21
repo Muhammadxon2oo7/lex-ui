@@ -17,7 +17,7 @@ export function ErrorScreen({ error, retry }: { error: unknown; retry: () => voi
         <p className="text-[0.7rem] font-semibold tracking-[0.16em] text-amber-200 uppercase">Xona ochilmadi</p>
         <h1 className="mt-2 text-[1.35rem] leading-tight font-semibold">Sahnani yuklashda xatolik yuz berdi</h1>
         <p className="mt-2 text-[0.92rem] leading-relaxed text-white/70">
-          Ish serverda saqlangan — hech narsa yoʻqolmadi. Qayta urinib koʻring yoki terminalga qayting. Muammo takrorlansa, brauzerni yangilang yoki apparat tezlatgichi (WebGL) yoqilganini tekshiring.
+          Ish serverda saqlangan - hech narsa yoʻqolmadi. Qayta urinib koʻring yoki terminalga qayting. Muammo takrorlansa, brauzerni yangilang yoki apparat tezlatgichi (WebGL) yoqilganini tekshiring.
         </p>
         <div className="mt-6 flex flex-wrap gap-2">
           <button type="button" className="btn btn-primary" onClick={() => retry()} autoFocus>Qayta urinish</button>

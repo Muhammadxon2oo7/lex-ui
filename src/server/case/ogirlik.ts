@@ -12,8 +12,8 @@ import type { StageId } from '@/contracts/case';
 import type { CaseBookShape, CaseView, StageDef } from './ishga-tiklash';
 
 export const CASE = {
-  title: 'Nodira K. — telefon oʻgʻirligi',
-  note: 'Ish holatlari, ismlar va sanalar oʻquv uchun toʻqilgan. Protsessual tartib va moddalar matni — Jinoyat-protsessual kodeksidan (lex.uz). Jinoyat kodeksi boʻyicha kvalifikatsiya bu mashqda baholanmaydi.',
+  title: 'Nodira K. - telefon oʻgʻirligi',
+  note: 'Ish holatlari, ismlar va sanalar oʻquv uchun toʻqilgan. Protsessual tartib va moddalar matni - Jinoyat-protsessual kodeksidan (lex.uz). Jinoyat kodeksi boʻyicha kvalifikatsiya bu mashqda baholanmaydi.',
   parties: [
     { role: 'you' as const, label: 'Jabrlanuvchining vakili (advokat)', name: 'Siz' },
     { role: 'client' as const, label: 'Arizachi, jabrlanuvchi', name: 'Nodira K.', voice: 'female' as const },

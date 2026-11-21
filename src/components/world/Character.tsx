@@ -1,6 +1,6 @@
 'use client';
 /**
- * Seated citizen — realistic rigged avatar (Microsoft Rocketbox, MIT) driven
+ * Seated citizen - realistic rigged avatar (Microsoft Rocketbox, MIT) driven
  * entirely by code: no baked clips.
  *
  * Every frame the skeleton and the ARKit-style face morphs are composed from
@@ -81,11 +81,11 @@ interface Pose {
   headRoll: number;
   fidget: number; // 0..1 restless leg / fingers
   // FACS-based detail (the meshes carry the full ARKit 52 set)
-  cheek: number; // cheek raiser — a felt (Duchenne) smile reaches the eyes
-  sneer: number; // nose wrinkle — irritation, contempt
-  press: number; // lips pressed — tension, holding back
-  shrug: number; // lower lip pushed up — doubt
-  wide: number; // upper lids raised — alarm, attention
+  cheek: number; // cheek raiser - a felt (Duchenne) smile reaches the eyes
+  sneer: number; // nose wrinkle - irritation, contempt
+  press: number; // lips pressed - tension, holding back
+  shrug: number; // lower lip pushed up - doubt
+  wide: number; // upper lids raised - alarm, attention
 }
 
 const POSES: Record<Emotion, Pose> = {
@@ -202,7 +202,7 @@ function readBody(src: THREE.SkinnedMesh) {
  * The short cape over the shoulders (with its stand collar) and the round
  * gilt badge at the neck. The cape is built round the body in the bind pose,
  * never closer than the clothes beneath it, and every point is skinned like
- * the nearest points of the body — so it lies over the shoulders and follows
+ * the nearest points of the body - so it lies over the shoulders and follows
  * the arms down instead of being pierced by them.
  */
 function makeCape(src: THREE.SkinnedMesh, unit: number): THREE.SkinnedMesh[] {
@@ -351,7 +351,7 @@ function makeCape(src: THREE.SkinnedMesh, unit: number): THREE.SkinnedMesh[] {
  * A judge's mantle, built from the body mesh itself so it is skinned to the
  * same skeleton and follows every recorded movement (walking, sitting,
  * gesturing). Hands and shoes are left out; the cloth stands off the clothes
- * — a little at the shoulders, more at the sleeves and the skirt, where a
+ * - a little at the shoulders, more at the sleeves and the skirt, where a
  * mantle hangs loose.
  */
 function makeMantle(scene: THREE.Object3D): THREE.SkinnedMesh | null {
@@ -532,7 +532,7 @@ export function Character({ model, position, rotation, seatTop, driven = false, 
     return { path: enterPath, spot: [position[0] + Math.sin(rotation) * travel.riseZ, position[2] + Math.cos(rotation) * travel.riseZ] as [number, number] };
   });
   // The root is placed once; afterwards it is moved only by walking (a re-render must not snap it back).
-  // An arriving character starts at the beginning of its route, facing along it — never at the seat.
+  // An arriving character starts at the beginning of its route, facing along it - never at the seat.
   const [placed] = useState(() => {
     if (enterPath && enterPath.length) {
       const [a, b = enterPath[0]] = enterPath;

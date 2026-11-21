@@ -13,7 +13,7 @@ import { createHash, randomInt, randomUUID } from 'node:crypto';
 import type { MootAct, MootEntry, MootPhase, MootRole, MootRoom, MootSide, MootStep, MootVerdict, Team } from '@/contracts/moot';
 import { HttpError } from '@/server/engine/session';
 import { DEFAULT_CASE, MOOT_CASES, type MootCase } from './cases';
-import { decide } from './judge';
+import { askJudge, ruleVerdict } from './judge';
 
 interface Player {
   id: string;
@@ -203,24 +203,65 @@ function advance(r: Room, timeUp: boolean) {
   finish(r, null);
 }
 
+function announce(r: Room, v: MootVerdict, lead: string | null) {
+  entry(r, 'secretary', 'Sud majlisi kotibi', 'Sud kirib kelmoqda, oʻrningizdan turing!');
+  if (lead) judge(r, lead);
+  for (const line of v.ruling) judge(r, line);
+  if (!v.pending) judge(r, 'Sud majlisi yopiq deb eʼlon qilinadi.');
+}
+
+/**
+ * The decision. While the court retires, the court server's model is asked (≈22 s). If it is still
+ * writing (judge_pending), the rules' reading is announced as provisional at once and the same request
+ * is repeated in the background for up to 90 s; the model's verdict then replaces it and is read out.
+ * With no model (no key, an error, a forfeit) the rules decide.
+ */
 function finish(r: Room, forfeit: MootSide | null) {
   if (r.deciding || r.verdict) return;
   r.deciding = true;
   r.speaker = null;
   r.endsAt = null;
   const players = r.players.filter((p) => sideOf(r, p)).map((p) => ({ id: p.id, name: p.name, side: sideOf(r, p)! }));
-  void decide(r.case, r.agenda, r.transcript, players, forfeit)
-    .then((v) => {
-      r.verdict = v;
-      r.phase = 'verdict';
-      entry(r, 'secretary', 'Sud majlisi kotibi', 'Sud kirib kelmoqda, oʻrningizdan turing!');
-      for (const line of v.ruling) judge(r, line);
+  const rules = ruleVerdict(r.case, r.agenda, r.transcript, players, forfeit);
+  const owner = r.players.find((p) => p.host)?.owner ?? r.players[0]?.owner ?? r.code;
+  const done = (v: MootVerdict, lead: string | null) => {
+    r.verdict = v;
+    r.phase = 'verdict';
+    announce(r, v, lead);
+    r.deciding = false;
+    bump(r);
+  };
+  if (forfeit) return void done(rules, null);
+  const ask = () => askJudge(r.case, r.agenda, r.transcript, players, owner);
+  void ask().then(async (first) => {
+    if (first.kind === 'ok') return done(first.verdict, null);
+    if (first.kind === 'none') return done(rules, null);
+    // the model is still writing: the provisional reading now, the verdict when it comes
+    done({ ...rules, pending: true }, 'Sud dastlabki baholarni eʼlon qiladi. Yakuniy qaror yozilmoqda.');
+    const until = Date.now() + 90_000;
+    let wait = first.retryAfter;
+    while (Date.now() < until && rooms.has(r.code)) {
+      await new Promise((res) => setTimeout(res, wait * 1000));
+      const next = await ask();
+      if (next.kind === 'pending') {
+        wait = next.retryAfter;
+        continue;
+      }
+      r.verdict = next.kind === 'ok' ? next.verdict : { ...rules, pending: false };
+      if (next.kind === 'ok') {
+        judge(r, 'Sud yakuniy qarorni eʼlon qiladi.');
+        for (const line of next.verdict.ruling) judge(r, line);
+      } else judge(r, 'Yakuniy qaror yozilmadi: dastlabki baho kuchda qoladi.');
       judge(r, 'Sud majlisi yopiq deb eʼlon qilinadi.');
-    })
-    .finally(() => {
-      r.deciding = false;
+      return bump(r);
+    }
+    if (r.verdict?.pending) {
+      r.verdict = { ...r.verdict, pending: false };
+      judge(r, 'Yakuniy qaror vaqtida yozilmadi: dastlabki baho kuchda qoladi.');
+      judge(r, 'Sud majlisi yopiq deb eʼlon qilinadi.');
       bump(r);
-    });
+    }
+  }, () => done(rules, null));
 }
 
 /** Lets the clock and absences take effect. Called on every request and by the room's timer. */
@@ -245,9 +286,9 @@ function tick(r: Room) {
       const next = floorOf(r, s.side!, s.role!);
       if (next && next.id !== sp.id) {
         r.speaker = next.id;
-        entry(r, 'system', '', `${sp.name} aloqada yoʻq — soʻz jamoadoshi ${next.name}ga oʻtdi.`);
+        entry(r, 'system', '', `${sp.name} aloqada yoʻq - soʻz jamoadoshi ${next.name}ga oʻtdi.`);
       } else {
-        entry(r, 'system', '', `${sp.name} aloqada yoʻq — soʻz keyingi tomonga oʻtadi.`);
+        entry(r, 'system', '', `${sp.name} aloqada yoʻq - soʻz keyingi tomonga oʻtadi.`);
         advance(r, false);
       }
       changed = true;
@@ -307,7 +348,7 @@ function room(code: string): Room {
 }
 function member(r: Room, owner: string | undefined): Player {
   const p = owner ? r.players.find((x) => x.owner === owner) : undefined;
-  if (!p) throw new HttpError(403, 'not_in_room', 'Siz bu xonada emassiz — avval qoʻshiling');
+  if (!p) throw new HttpError(403, 'not_in_room', 'Siz bu xonada emassiz - avval qoʻshiling');
   p.seen = Date.now();
   return p;
 }
@@ -337,7 +378,7 @@ export function joinRoom(owner: string, code: string, input: { name: string; ava
     again.name = input.name;
     return view(r, again);
   }
-  if (r.phase !== 'lobby') throw new HttpError(409, 'room_started', 'Majlis boshlangan — qoʻshilib boʻlmaydi');
+  if (r.phase !== 'lobby') throw new HttpError(409, 'room_started', 'Majlis boshlangan - qoʻshilib boʻlmaydi');
   if (r.players.length >= r.size * 2) throw new HttpError(409, 'room_full', 'Xona toʻla');
   // the emptier team first
   const count = (t: Team) => r.players.filter((p) => p.team === t).length;
@@ -438,7 +479,7 @@ export function actRoom(owner: string | undefined, code: string, a: MootAct): Mo
           rooms.delete(r.code);
           return view(r, me);
         }
-      } else me.seen = 0; // mid-hearing: gone — the floor passes, an empty side forfeits
+      } else me.seen = 0; // mid-hearing: gone - the floor passes, an empty side forfeits
       break;
     }
   }

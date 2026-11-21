@@ -14,6 +14,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { MootAct, MootEntry, MootPlayer, MootRole, MootRoom, MootSide, Team } from '@/contracts/moot';
 import { Talk } from '@/components/hud/Talk';
 import { PracticeRecord } from '@/components/record/PracticeRecord';
+import { GlassLayer } from '@/components/ui/glass';
 import { ApiError } from '@/game/api';
 import { moot } from '@/game/moot';
 import type { RecordLine } from '@/game/practiceRecord';
@@ -127,7 +128,7 @@ function PlayerRow({ p, me, tag }: { p: MootPlayer; me: boolean; tag?: string })
 
 function CaseFile({ room, dark = false }: { room: MootRoom; dark?: boolean }) {
   const c = room.case;
-  const box = dark ? 'rounded-2xl bg-white/8 p-4' : 'rounded-2xl border border-line bg-card p-4';
+  const box = dark ? 'rounded-2xl bg-white/8 p-4' : 'surface rounded-[20px] p-4';
   const dim = dark ? 'text-white/65' : 'text-ink-2';
   const h = `text-[0.74rem] font-semibold tracking-wider uppercase ${dark ? 'text-white/55' : 'text-ink-3'}`;
   return (
@@ -205,7 +206,7 @@ function Lobby({ room, act, say }: { room: MootRoom; act: (a: MootAct) => Promis
   const share = async () => {
     const url = `${location.origin}/bahs/${room.code}`;
     try {
-      if (navigator.share && matchMedia('(pointer: coarse)').matches) await navigator.share({ title: 'LexSim — Bahs', text: `Sud bahsiga qoʻshiling. Xona kodi: ${room.code}`, url });
+      if (navigator.share && matchMedia('(pointer: coarse)').matches) await navigator.share({ title: 'LexSim - Bahs', text: `Sud bahsiga qoʻshiling. Xona kodi: ${room.code}`, url });
       else {
         await navigator.clipboard.writeText(url);
         setCopied(true);
@@ -220,7 +221,7 @@ function Lobby({ room, act, say }: { room: MootRoom; act: (a: MootAct) => Promis
     const list = room.players.filter((p) => p.team === t);
     const mine = me.team === t;
     return (
-      <section key={t} aria-label={`${t} jamoa`} className={`rounded-[24px] border bg-card p-4 ${mine ? 'border-accent' : 'border-line'}`}>
+      <section key={t} aria-label={`${t} jamoa`} className={`surface rounded-[28px] p-4 ${mine ? 'ring-2 ring-accent' : ''}`}>
         <div className="flex items-center justify-between">
           <h2 className="display text-lg font-semibold">{t} jamoa</h2>
           <span className="text-[0.8rem] text-ink-3">{list.length} / {room.size}</span>
@@ -234,7 +235,8 @@ function Lobby({ room, act, say }: { room: MootRoom; act: (a: MootAct) => Promis
     );
   };
   return (
-    <main className="mx-auto w-full max-w-4xl flex-1 px-5 py-8 sm:py-12">
+    <main className="relative isolate mx-auto w-full max-w-4xl flex-1 px-5 py-8 sm:py-12">
+      <GlassLayer />
       <Link href="/bahs" className="text-[0.85rem] font-semibold text-accent-ink" onClick={() => void moot.act(room.code, { type: 'leave' }).catch(() => {})}>← Xonadan chiqish</Link>
       <div className="mt-5 flex flex-wrap items-end justify-between gap-4">
         <div>
@@ -250,7 +252,7 @@ function Lobby({ room, act, say }: { room: MootRoom; act: (a: MootAct) => Promis
       {room.assign === 'pick' ? (
         <div className="mt-6 grid gap-4 md:grid-cols-2">{(['A', 'B'] as Team[]).map(team)}</div>
       ) : (
-        <section aria-label="Ishtirokchilar" className="mt-6 rounded-[24px] border border-line bg-card p-4">
+        <section aria-label="Ishtirokchilar" className="mt-6 surface rounded-[28px] p-4">
           <div className="flex items-center justify-between">
             <h2 className="display text-lg font-semibold">Ishtirokchilar</h2>
             <span className="text-[0.8rem] text-ink-3">Jamoalar qurʼa bilan · {room.players.length} / {room.size * 2}</span>
@@ -260,7 +262,7 @@ function Lobby({ room, act, say }: { room: MootRoom; act: (a: MootAct) => Promis
       )}
 
       {me.host && (
-        <div className="mt-4 flex flex-wrap gap-x-8 gap-y-3 rounded-[24px] border border-line bg-card p-4">
+        <div className="mt-4 flex flex-wrap gap-x-8 gap-y-3 surface rounded-[28px] p-4">
           <fieldset>
             <legend className="text-[0.8rem] font-semibold text-ink-2">Jamoa hajmi</legend>
             <div className="mt-1.5 flex gap-1 rounded-2xl bg-paper p-1" role="radiogroup">
@@ -299,29 +301,30 @@ function Briefing({ room, act, say, skew }: { room: MootRoom; act: (a: MootAct) 
   const role = room.me.role ?? 'lead';
   const floors = room.agenda.filter((s) => s.kind === 'speech' && s.side === side && (s.role === role || !mates.some((p) => p.role === s.role)));
   return (
-    <main className="mx-auto w-full max-w-5xl flex-1 px-5 py-8 sm:py-12">
+    <main className="relative isolate mx-auto w-full max-w-5xl flex-1 px-5 py-8 sm:py-12">
+      <GlassLayer />
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-[0.78rem] font-semibold tracking-wider text-accent-ink uppercase">Qurʼa natijasi · {room.me.team} jamoa</p>
-          <h1 className="display mt-1 text-[clamp(1.8rem,5vw,2.8rem)] font-semibold text-balance">Siz — {SIDE[side].toLowerCase()}, {ROLE[role][0].toLowerCase()}</h1>
-          <p className="mt-1 text-[0.98rem] text-ink-2">{ROLE[role][1]} Majlisda tayyor javob yoʻq — ish papkasini oʻqing va jamoangiz bilan kelishing.</p>
+          <h1 className="display mt-1 text-[clamp(1.8rem,5vw,2.8rem)] font-semibold text-balance">Siz - {SIDE[side].toLowerCase()}, {ROLE[role][0].toLowerCase()}</h1>
+          <p className="mt-1 text-[0.98rem] text-ink-2">{ROLE[role][1]} Majlisda tayyor javob yoʻq - ish papkasini oʻqing va jamoangiz bilan kelishing.</p>
         </div>
         <div className="rounded-2xl bg-card px-4 py-2 text-center ring-1 ring-line" role="timer" aria-label="Majlis boshlanishiga qolgan vaqt">
           <p className="text-[0.72rem] font-semibold tracking-wider text-ink-3 uppercase">Majlisgacha</p>
-          <p className="font-mono text-2xl font-semibold tabular-nums">{left === null ? '—' : mmss(left)}</p>
+          <p className="font-mono text-2xl font-semibold tabular-nums">{left === null ? '-' : mmss(left)}</p>
         </div>
       </div>
 
       <div className="mt-6 grid gap-5 lg:grid-cols-[1.35fr_1fr]">
         <CaseFile room={room} />
         <div className="space-y-4">
-          <section className="rounded-[24px] border border-line bg-card p-4">
+          <section className="surface rounded-[28px] p-4">
             <h2 className="text-[0.74rem] font-semibold tracking-wider text-ink-3 uppercase">Jamoangiz · {SIDE[side]}</h2>
             <ul className="mt-2 space-y-1.5">{mates.map((p) => <PlayerRow key={p.id} p={p} me={p.id === me.id} tag={p.role ? ROLE[p.role][0] : undefined} />)}</ul>
             <h2 className="mt-4 text-[0.74rem] font-semibold tracking-wider text-ink-3 uppercase">Raqib · {SIDE[side === 'claimant' ? 'respondent' : 'claimant']}</h2>
             <ul className="mt-2 space-y-1.5">{foes.map((p) => <PlayerRow key={p.id} p={p} me={false} tag={p.role ? ROLE[p.role][0] : undefined} />)}</ul>
           </section>
-          <section className="rounded-[24px] border border-line bg-card p-4">
+          <section className="surface rounded-[28px] p-4">
             <h2 className="text-[0.74rem] font-semibold tracking-wider text-ink-3 uppercase">Sizga soʻz beriladi</h2>
             <ol className="mt-2 space-y-1.5 text-[0.92rem]">
               {floors.map((s) => <li key={s.id} className="flex justify-between gap-3"><span>{s.title}</span><span className="shrink-0 font-mono text-ink-3 tabular-nums">{mmss(s.seconds)}</span></li>)}
@@ -329,13 +332,13 @@ function Briefing({ room, act, say, skew }: { room: MootRoom; act: (a: MootAct) 
             <p className="mt-2 text-[0.8rem] text-ink-3">Sudga «Hurmatli sud!» deb murojaat qiling. Soʻz sizda boʻlganda T tugmasini bosib turib gapirasiz.</p>
           </section>
           {mates.length > 1 && (
-            <section className="flex max-h-80 flex-col rounded-[24px] border border-line bg-card p-4">
+            <section className="flex max-h-80 flex-col surface rounded-[28px] p-4">
               <h2 className="mb-1 text-[0.74rem] font-semibold tracking-wider text-ink-3 uppercase">Jamoa chati</h2>
               <TeamChat room={room} act={act} />
             </section>
           )}
           <button type="button" className={`btn w-full ${me.ready ? 'btn-quiet' : 'btn-primary'}`} onClick={() => void act({ type: 'ready', ready: !me.ready }).catch((e) => say(e instanceof ApiError ? e.message : 'Xatolik'))}>
-            {me.ready ? 'Tayyorman ✓ — boshqalar kutilmoqda' : 'Oʻqib boʻldim, tayyorman'}
+            {me.ready ? 'Tayyorman ✓ - boshqalar kutilmoqda' : 'Oʻqib boʻldim, tayyorman'}
           </button>
           <p className="text-center text-[0.8rem] text-ink-3">{room.players.filter((p) => p.ready).length} / {room.players.length} kishi tayyor. Hamma tayyor boʻlsa, majlis darhol boshlanadi.</p>
         </div>
@@ -560,7 +563,7 @@ function Hearing({ room, act, say, skew, onVerdict }: { room: MootRoom; act: (a:
           <div className="glass w-full max-w-2xl rounded-[24px] p-3">
             {myWords.length > 0 && (
               <ul className="mb-2 max-h-24 space-y-1 overflow-y-auto text-[0.9rem] text-white/75 select-text" aria-label="Aytganlaringiz">
-                {myWords.map((e) => <li key={e.id}>— {e.text}</li>)}
+                {myWords.map((e) => <li key={e.id}>- {e.text}</li>)}
               </ul>
             )}
             <form className="flex items-center gap-2" onSubmit={(e) => { e.preventDefault(); void send(draft, false); }}>
@@ -600,16 +603,23 @@ function Verdict({ room }: { room: MootRoom }) {
   );
   const mine = v.players.find((p) => p.id === room.me.id);
   return (
-    <main className="mx-auto w-full max-w-4xl flex-1 px-5 py-8 sm:py-12">
+    <main className="relative isolate mx-auto w-full max-w-4xl flex-1 px-5 py-8 sm:py-12">
+      <GlassLayer />
       <p className="text-[0.78rem] font-semibold tracking-wider text-accent-ink uppercase">Bahs yakuni · {room.case.title}</p>
       <h1 className="display mt-1 text-[clamp(2rem,6vw,3.2rem)] font-semibold text-balance">
         {v.winner === null ? 'Durang' : won === null ? `${SIDE[v.winner]} ustun keldi` : won ? 'Jamoangiz ustun keldi' : 'Bu safar raqib ustun keldi'}
       </h1>
       <p className="mt-2 max-w-[62ch] text-[0.98rem] leading-relaxed text-ink-2">{v.ruling.join(' ')}</p>
+      {v.pending && (
+        <p role="status" className="mt-3 inline-flex items-center gap-2 rounded-full bg-accent-soft px-3.5 py-1.5 text-[0.86rem] font-semibold text-accent-ink">
+          <span aria-hidden className="size-2 animate-pulse rounded-full bg-accent motion-reduce:animate-none" />
+          Dastlabki baho. Sudya qarori yozilmoqda…
+        </p>
+      )}
 
       <div className="mt-6 grid grid-cols-2 gap-3">
         {(['claimant', 'respondent'] as MootSide[]).map((s) => (
-          <div key={s} className={`rounded-[24px] border bg-card p-5 ${v.winner === s ? 'border-accent' : 'border-line'}`}>
+          <div key={s} className={`surface rounded-[28px] p-5 ${v.winner === s ? 'ring-2 ring-accent' : ''}`}>
             <p className="text-[0.8rem] font-semibold text-ink-2">{SIDE[s]}{side === s ? ' · siz' : ''}</p>
             <p className="display mt-1 text-4xl font-semibold tabular-nums">{v.totals[s]}<span className="text-lg font-normal text-ink-3"> / 100</span></p>
             {v.winner === s && <p className="mt-1 text-[0.8rem] font-semibold text-accent-ink">{v.forfeit ? 'Texnik gʻalaba' : 'Gʻolib'}</p>}
@@ -618,7 +628,7 @@ function Verdict({ room }: { room: MootRoom }) {
       </div>
 
       {!v.forfeit && (
-        <section className="mt-4 rounded-[24px] border border-line bg-card p-5" aria-labelledby="crit-title">
+        <section className="mt-4 surface rounded-[28px] p-5" aria-labelledby="crit-title">
           <h2 id="crit-title" className="display text-lg font-semibold">Mezonlar boʻyicha</h2>
           <div className="mt-3 overflow-x-auto">
             <table className="w-full min-w-[30rem] text-left text-[0.9rem]">
@@ -637,13 +647,13 @@ function Verdict({ room }: { room: MootRoom }) {
           </div>
           <p className="mt-3 rounded-2xl bg-paper px-3 py-2 text-[0.82rem] text-ink-2">
             {v.engine === 'model'
-              ? 'Baho sud serveridagi til modeli tomonidan berildi: chiqishlar mazmuni ish materiallari bilan solishtirildi. Bu oʻquv bahsi natijasi — haqiqiy sud qarori emas.'
-              : 'Dastlabki baho: shakl va qamrov oʻlchandi (soʻzdan foydalanish, odob, ish faktlariga tayanish, raqibga javob, huquqiy havola). Dalillarning mazmunan kuchi hali baholanmadi — bu sud serveridagi til modeli ulangach qoʻshiladi.'}
+              ? 'Baho sud serveridagi til modeli tomonidan berildi: chiqishlar mazmuni ish materiallari bilan solishtirildi. Bu oʻquv bahsi natijasi - haqiqiy sud qarori emas.'
+              : 'Dastlabki baho: shakl va qamrov oʻlchandi (soʻzdan foydalanish, odob, ish faktlariga tayanish, raqibga javob, huquqiy havola). Dalillarning mazmunan kuchi hali baholanmadi - bu sud serveridagi til modeli ulangach qoʻshiladi.'}
           </p>
         </section>
       )}
 
-      <section className="mt-4 rounded-[24px] border border-line bg-card p-5" aria-labelledby="people-title">
+      <section className="mt-4 surface rounded-[28px] p-5" aria-labelledby="people-title">
         <h2 id="people-title" className="display text-lg font-semibold">Ishtirokchilar</h2>
         <ul className="mt-2 divide-y divide-line">
           {v.players.map((p) => (
@@ -682,7 +692,7 @@ function JoinGate({ code, error, onJoined }: { code: string; error: ApiError; on
   const canJoin = error.code === 'not_in_room';
   return (
     <main className="mx-auto grid w-full max-w-md flex-1 place-items-center px-5 py-16">
-      <div className="w-full rounded-[24px] border border-line bg-card p-6 text-center">
+      <div className="w-full surface rounded-[28px] p-6 text-center">
         <p className="font-mono text-2xl font-semibold tracking-[0.2em]">{code}</p>
         {canJoin ? (
           <form className="mt-4 space-y-3 text-left" onSubmit={(e) => {
@@ -738,7 +748,7 @@ export default function MootClient() {
       {room.phase === 'briefing' && <Briefing room={room} act={act} say={setNotice} skew={skew} />}
       {(room.phase === 'hearing' || (room.phase === 'verdict' && !shown)) && <Hearing room={room} act={act} say={setNotice} skew={skew} onVerdict={showVerdict} />}
       {room.phase === 'verdict' && shown && <Verdict room={room} />}
-      {error && room.phase !== 'verdict' && <p role="status" className="fixed top-3 left-1/2 z-50 -translate-x-1/2 rounded-full bg-[#1d1d1f] px-4 py-2 text-[0.84rem] font-medium text-white shadow-xl">Aloqa uzildi — qayta ulanmoqda…</p>}
+      {error && room.phase !== 'verdict' && <p role="status" className="fixed top-3 left-1/2 z-50 -translate-x-1/2 rounded-full bg-[#1d1d1f] px-4 py-2 text-[0.84rem] font-medium text-white shadow-xl">Aloqa uzildi - qayta ulanmoqda…</p>}
       <Notice text={notice} onClose={clear} />
     </>
   );

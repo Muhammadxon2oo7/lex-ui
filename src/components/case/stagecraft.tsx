@@ -59,7 +59,7 @@ export function SeatCamera({ seated, standing, up = false, base, focus, limit = 
     };
   }, [gl, limit]);
 
-  // Turn to whoever starts speaking — unless you are steering.
+  // Turn to whoever starts speaking - unless you are steering.
   useEffect(() => {
     if (!focus || look.current.dragging) return;
     const from = up && standing ? standing : seated;
@@ -135,9 +135,9 @@ export function DevProbe() {
 /* ── quality that follows the device ── */
 /*
  * Decided before the first frame (lib/deviceTier) and only ever stepped DOWN while a scene runs:
- *   high   — every effect, up to 1.75 px per px, 2048 shadows;
- *   medium — bloom + vignette, no ambient occlusion / MSAA, 1.25 px per px, 1024 shadows;
- *   low    — no post chain (the renderer tone-maps), no shadows, 0.8 px per px, a steady 30 fps.
+ *   high   - every effect, up to 1.75 px per px, 2048 shadows;
+ *   medium - bloom + vignette, no ambient occlusion / MSAA, 1.25 px per px, 1024 shadows;
+ *   low    - no post chain (the renderer tone-maps), no shadows, 0.8 px per px, a steady 30 fps.
  * A flip-flop between tiers is itself a stutter, so a tier that was dropped never comes back.
  */
 const quality = { tier: 'medium' as Tier, ready: false, subs: new Set<() => void>() };
@@ -156,7 +156,7 @@ const subscribe = (f: () => void) => {
 export function useTier(): Tier {
   return useSyncExternalStore(subscribe, () => (quality.ready ? quality.tier : deviceTier()), () => 'medium');
 }
-// low renders 0.8 px per px: a third fewer pixels, barely softer — the single biggest saving on a weak GPU
+// low renders 0.8 px per px: a third fewer pixels, barely softer - the single biggest saving on a weak GPU
 const DPR: Record<Tier, number> = { low: 0.8, medium: 1.25, high: 1.75 };
 const SHADOW: Record<Tier, number> = { low: 0, medium: 1024, high: 2048 };
 
@@ -173,7 +173,7 @@ export function QualityGovernor() {
     if (!quality.ready) setTier(deviceTier());
   }, []);
   // compile every shader in the background once the room has loaded: the first glance at a new
-  // material then costs nothing (otherwise a 100–200 ms hitch the first time it comes into view)
+  // material then costs nothing (otherwise a 100-200 ms hitch the first time it comes into view)
   useEffect(() => {
     const t = setTimeout(() => void gl.compileAsync?.(scene, camera).catch(() => {}), 1500);
     return () => clearTimeout(t);
@@ -200,7 +200,7 @@ export function QualityGovernor() {
     gl.shadowMap.needsUpdate = true;
     // low: no post chain, so the renderer itself tone-maps (ACES, as the chain would)
     gl.toneMapping = tier === 'low' ? THREE.ACESFilmicToneMapping : THREE.NoToneMapping;
-    // low: a steady 30 fps — an even pace reads smoother than an uneven 40, and halves the GPU work
+    // low: a steady 30 fps - an even pace reads smoother than an uneven 40, and halves the GPU work
     if (tier !== 'low') {
       setFrameloop('always');
       return;
@@ -290,7 +290,7 @@ const panelLight = new THREE.MeshStandardMaterial({ color: '#ffffff', emissive: 
 /** Floor, ceiling and four walls; `zc` is the room's centre along z. */
 /**
  * The light of a room, the same in every room: a warm low sun through the windows (the only light
- * that casts shadows — soft-edged, as real window light is), a cool sky fill from above and a warm
+ * that casts shadows - soft-edged, as real window light is), a cool sky fill from above and a warm
  * bounce from the floor, and the room's own reflections. Warm key against cool fill is what gives
  * a face and a desk their shape; an even white wash is what made the rooms look flat.
  */
@@ -598,7 +598,7 @@ export function Bookcase({ m, position, rotation = 0, width = 1.0, height = 2.1,
 const ceilingLed = new THREE.MeshStandardMaterial({ color: '#ffffff', emissive: new THREE.Color('#f6f8ff'), emissiveIntensity: 2.2, roughness: 0.6 });
 /**
  * The court building's ceiling: a lowered plaster border round the room and
- * square LED panels — as in real Uzbek court premises.
+ * square LED panels - as in real Uzbek court premises.
  */
 export function TrayCeiling({ m, w, d, h, zc = 0, panels }: { m: Materials; w: number; d: number; h: number; zc?: number; panels: [number, number][] }) {
   return (

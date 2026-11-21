@@ -1,11 +1,11 @@
 /**
  * Case files for the moot court. A case is what both sides study before the hearing: the facts
  * everyone knows, each side's own task and confidential facts, and the evidence in the file.
- * There are no scripted answers — people argue it.
+ * There are no scripted answers - people argue it.
  *
  * Facts come from the court server's published scenario (ijara, both briefings). Nothing is
  * invented here: no sums, dates or articles beyond what that scenario states. New cases are
- * written and signed off by a lawyer (see docs/BACKEND_TASKS.md) — never made up in code.
+ * written and signed off by a lawyer (see docs/BACKEND_TASKS.md) - never made up in code.
  */
 import type { MootSide } from '@/contracts/moot';
 
@@ -21,7 +21,7 @@ export interface MootCase {
   side: Record<MootSide, { task: string[]; confidential: string[] }>;
   /**
    * What a side's argument is expected to touch (for the reference scorer): groups of word stems,
-   * one hit per group. From the facts above only — the scorer measures coverage, not truth.
+   * one hit per group. From the facts above only - the scorer measures coverage, not truth.
    */
   points: Record<MootSide, string[][]>;
   disclaimer: string;
@@ -48,7 +48,7 @@ export const MOOT_CASES: Record<string, MootCase> = {
     side: {
       claimant: {
         task: ['Daʼvo talablarini quvvatlang: qarz va penya nimaga asoslanganini dalillar bilan koʻrsating.', 'Raqibning eʼtirozlariga javob bering.', 'Sudga «Hurmatli sud!» deb murojaat qiling.'],
-        confidential: ['Topshirish dalolatnomasi imzolanmagan — bu zaif joyingiz.', 'Lekin javobgar hisob-fakturalarni imzolagan va joydan foydalangan.'],
+        confidential: ['Topshirish dalolatnomasi imzolanmagan - bu zaif joyingiz.', 'Lekin javobgar hisob-fakturalarni imzolagan va joydan foydalangan.'],
       },
       respondent: {
         task: ['Mijoz manfaatini himoya qiling: daʼvoga asosli eʼtiroz bildiring.', 'Penya boʻyicha iltimosnoma bering.', 'Sudga «Hurmatli sud!» deb murojaat qiling.'],

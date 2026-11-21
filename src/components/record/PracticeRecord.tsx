@@ -1,7 +1,7 @@
 'use client';
 /**
- * "Amaliyot yozuvi": the whole session as it happened — who said what, in order, the student's
- * answers marked spoken or typed — with ONE player for the whole hearing (the transcript follows
+ * "Amaliyot yozuvi": the whole session as it happened - who said what, in order, the student's
+ * answers marked spoken or typed - with ONE player for the whole hearing (the transcript follows
  * the sound and any line can be clicked to jump there) and the downloads (PDF, Word, audio; xAPI
  * for teachers).
  */
@@ -124,7 +124,7 @@ export function PracticeRecord({ meta, lines, analysis, scope, xapi }: {
             <span className="min-w-0 flex-1">
               <span className="block text-[0.92rem] font-semibold">{progress ? 'Ovozlar yigʻilmoqda…' : 'Butun majlisni tinglash'}</span>
               <span className="block text-[0.76rem] text-black/50">
-                {progress ? `${progress[0]} / ${progress[1]}` : failed ? 'Ovozni yigʻib boʻlmadi — qayta urinib koʻring' : 'Sud va sizning ovozingiz bitta yozuvda; matn ovoz bilan birga yuradi'}
+                {progress ? `${progress[0]} / ${progress[1]}` : failed ? 'Ovozni yigʻib boʻlmadi - qayta urinib koʻring' : 'Sud va sizning ovozingiz bitta yozuvda; matn ovoz bilan birga yuradi'}
               </span>
             </span>
             {progress && (

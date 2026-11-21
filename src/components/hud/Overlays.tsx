@@ -1,7 +1,7 @@
 'use client';
 /**
  * Heads-up layer for the immersive view. Deliberately minimal: a crosshair,
- * one contextual prompt, the task list — everything else appears only when
+ * one contextual prompt, the task list - everything else appears only when
  * the player asks for it (pause) or the scenario calls for it.
  */
 import Link from 'next/link';
@@ -26,7 +26,7 @@ export function Objectives() {
             <span aria-hidden className={`mt-[3px] grid size-4 shrink-0 place-items-center rounded-full border text-[0.6rem] ${o.done ? 'border-emerald-300/60 bg-emerald-400/25 text-emerald-200' : 'border-white/35'}`}>
               {o.done ? '✓' : ''}
             </span>
-            <span>{o.label}<span className="sr-only">{o.done ? ' — bajarildi' : ''}</span></span>
+            <span>{o.label}<span className="sr-only">{o.done ? ' - bajarildi' : ''}</span></span>
           </li>
         ))}
       </ol>
@@ -53,7 +53,7 @@ export function ExploreHud() {
         </AnimatePresence>
       </div>
       <p className="glass pointer-events-none absolute bottom-4 left-4 hidden rounded-full px-4 py-2 text-[0.78rem] text-white/80 sm:block">
-        <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> yurish <span className="mx-1.5 text-white/30">·</span> sichqoncha — qarash{' '}
+        <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> yurish <span className="mx-1.5 text-white/30">·</span> sichqoncha - qarash{' '}
         <span className="mx-1.5 text-white/30">·</span> <kbd>Shift</kbd> tez <span className="mx-1.5 text-white/30">·</span> <kbd>Esc</kbd> pauza
       </p>
     </>
@@ -112,7 +112,7 @@ export function Briefing({ onStart, immersive }: { onStart: () => void; immersiv
         <p className="mt-5 rounded-2xl bg-paper px-4 py-3 text-[0.8rem] leading-relaxed text-ink-2">
           {mode === 'tutorial'
             ? 'Mashq rejimi: fuqaroning sabr va ishonch darajasi ekranda koʻrinadi.'
-            : 'Baholash rejimi: koʻrsatkichlar yashirin — fuqaroning holatini uning oʻzidan oʻqing.'}{' '}
+            : 'Baholash rejimi: koʻrsatkichlar yashirin - fuqaroning holatini uning oʻzidan oʻqing.'}{' '}
           {scenario.disclaimer}
         </p>
 
@@ -127,7 +127,7 @@ export function Briefing({ onStart, immersive }: { onStart: () => void; immersiv
           )}
         </div>
         {immersive && (
-          <p className="mt-3 text-[0.78rem] text-ink-3">Boshlagach sichqoncha qulflanadi. Chiqish — Esc. Vaqt hisobi shu tugmadan boshlanadi.</p>
+          <p className="mt-3 text-[0.78rem] text-ink-3">Boshlagach sichqoncha qulflanadi. Chiqish - Esc. Vaqt hisobi shu tugmadan boshlanadi.</p>
         )}
       </motion.div>
     </div>
@@ -159,7 +159,7 @@ export function PauseMenu() {
     <div {...dismiss} className="absolute inset-0 z-30 grid place-items-center overflow-y-auto bg-black/45 p-4">
       <motion.div {...sheet} transition={spring} role="dialog" aria-modal="true" aria-labelledby="pause-title" className="glass-light w-full max-w-md rounded-[28px] p-6">
         <h2 id="pause-title" className="display text-2xl font-semibold">Pauza</h2>
-        <p className="mt-1 text-[0.86rem] text-ink-2">Sessiya serverda saqlanadi — sahifani yangilasangiz ham davom etadi.</p>
+        <p className="mt-1 text-[0.86rem] text-ink-2">Sessiya serverda saqlanadi - sahifani yangilasangiz ham davom etadi.</p>
 
         <div className="mt-5 space-y-4">
           <div>

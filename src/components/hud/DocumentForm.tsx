@@ -3,7 +3,7 @@
  * Operator workstation ("Yagona oyna").
  *
  * Not a form dropped on top of the game: it is the computer on the desk.
- * The student works the way a front-desk operator does — scan the ID, find
+ * The student works the way a front-desk operator does - scan the ID, find
  * the service in the catalogue, enter the case details from what the
  * citizen actually said, attach what was actually handed over, review,
  * sign and print the receipt. Steps can be visited in any order; nothing is
@@ -168,7 +168,7 @@ export function DocumentForm() {
           tabIndex={-1}
           role="dialog"
           aria-modal="true"
-          aria-label="Yagona oyna — operator ish joyi"
+          aria-label="Yagona oyna - operator ish joyi"
           className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-[12px] bg-[#eef1f5] text-[#1b2433] outline-none select-text"
         >
           {/* system bar */}
@@ -197,11 +197,11 @@ export function DocumentForm() {
                     {done[i] ? '✓' : i + 1}
                   </span>
                   {label}
-                  <span className="sr-only">{done[i] ? ' — toʻldirilgan' : ''}</span>
+                  <span className="sr-only">{done[i] ? ' - toʻldirilgan' : ''}</span>
                 </button>
               ))}
               <p className="mt-auto hidden rounded-lg bg-[#fff6df] p-2.5 text-[0.72rem] leading-snug text-[#7a5600] md:block">
-                Oʻquv tizimi. Xizmat nomlari va kodlari namunaviy — mentor tasdigʻidan oʻtmagan.
+                Oʻquv tizimi. Xizmat nomlari va kodlari namunaviy - mentor tasdigʻidan oʻtmagan.
               </p>
             </nav>
 
@@ -233,7 +233,7 @@ export function DocumentForm() {
                           <input className={field} value={draft.applicantName} maxLength={120} disabled={locked} onChange={(e) => set('applicantName', e.target.value)} placeholder="Skanerlang yoki qoʻlda kiriting" autoComplete="off" />
                         </label>
                         <p className="text-[0.84rem] leading-relaxed text-[#4a5568]">
-                          Skaner faqat kartadagi maʼlumotni oʻqiydi. Murojaat mazmunini fuqaroning oʻzidan aniqlaysiz — tizim buni bilmaydi.
+                          Skaner faqat kartadagi maʼlumotni oʻqiydi. Murojaat mazmunini fuqaroning oʻzidan aniqlaysiz - tizim buni bilmaydi.
                         </p>
                       </div>
                     </div>
@@ -282,11 +282,11 @@ export function DocumentForm() {
                       <div className="space-y-3">
                         <div className="grid grid-cols-2 gap-3">
                           <label className="block">
-                            <span className="mb-1 block text-[0.85rem] font-semibold">Davr — boshlanishi (yil)</span>
+                            <span className="mb-1 block text-[0.85rem] font-semibold">Davr - boshlanishi (yil)</span>
                             <input className={field} inputMode="numeric" maxLength={10} disabled={locked} value={draft.periodFrom} onChange={(e) => set('periodFrom', e.target.value)} />
                           </label>
                           <label className="block">
-                            <span className="mb-1 block text-[0.85rem] font-semibold">Davr — tugashi (yil)</span>
+                            <span className="mb-1 block text-[0.85rem] font-semibold">Davr - tugashi (yil)</span>
                             <input className={field} inputMode="numeric" maxLength={10} disabled={locked} value={draft.periodTo} onChange={(e) => set('periodTo', e.target.value)} />
                           </label>
                         </div>
@@ -295,7 +295,7 @@ export function DocumentForm() {
                           <input className={field} maxLength={200} disabled={locked} value={draft.employer} onChange={(e) => set('employer', e.target.value)} autoComplete="off" />
                         </label>
                       </div>
-                      {/* your own notes from the interview — reference only, nothing is auto-filled */}
+                      {/* your own notes from the interview - reference only, nothing is auto-filled */}
                       <aside className="rounded-xl bg-[#fffbe8] p-3.5 shadow-[0_1px_0_#e6dca8]" aria-label="Suhbatdan yozib olinganlar">
                         <h3 className="text-[0.78rem] font-semibold tracking-wider text-[#7a6a1c] uppercase">Daftaringiz</h3>
                         {snapshot.facts.length ? (
@@ -340,11 +340,11 @@ export function DocumentForm() {
                   {step === 4 && (
                     <div className="mt-4 space-y-4">
                       <dl className="grid gap-x-6 gap-y-2 rounded-xl bg-white p-4 text-[0.9rem] sm:grid-cols-[10rem_1fr]">
-                        <dt className="text-[#4a5568]">Murojaatchi</dt><dd className="font-medium">{draft.applicantName || '—'}</dd>
-                        <dt className="text-[#4a5568]">Xizmat</dt><dd className="font-medium">{service ? `${service.code} · ${service.title}` : '—'}</dd>
-                        <dt className="text-[#4a5568]">Davr</dt><dd className="font-medium">{draft.periodFrom || '—'} – {draft.periodTo || '—'}</dd>
-                        <dt className="text-[#4a5568]">Ish joyi</dt><dd className="font-medium">{draft.employer || '—'}</dd>
-                        <dt className="text-[#4a5568]">Ilovalar</dt><dd className="font-medium">{draft.evidence.length ? draft.evidence.map((id) => EVIDENCE.find((e) => e.id === id)?.label).join('; ') : '—'}</dd>
+                        <dt className="text-[#4a5568]">Murojaatchi</dt><dd className="font-medium">{draft.applicantName || '-'}</dd>
+                        <dt className="text-[#4a5568]">Xizmat</dt><dd className="font-medium">{service ? `${service.code} · ${service.title}` : '-'}</dd>
+                        <dt className="text-[#4a5568]">Davr</dt><dd className="font-medium">{draft.periodFrom || '-'} - {draft.periodTo || '-'}</dd>
+                        <dt className="text-[#4a5568]">Ish joyi</dt><dd className="font-medium">{draft.employer || '-'}</dd>
+                        <dt className="text-[#4a5568]">Ilovalar</dt><dd className="font-medium">{draft.evidence.length ? draft.evidence.map((id) => EVIDENCE.find((e) => e.id === id)?.label).join('; ') : '-'}</dd>
                       </dl>
                       <label className="block">
                         <span className="mb-1 block text-[0.85rem] font-semibold">Fuqaroga tushuntirilgan keyingi qadam (tilxatga chiqadi)</span>
@@ -360,7 +360,7 @@ export function DocumentForm() {
                       </label>
                       <div className="flex flex-wrap items-center gap-3">
                         {locked ? (
-                          <p className="rounded-lg bg-[#e4f3ec] px-4 py-2.5 font-semibold text-[#136443]" role="status">Rasmiylashtirildi — tilxat chop etilgan. Yozuv yopiq.</p>
+                          <p className="rounded-lg bg-[#e4f3ec] px-4 py-2.5 font-semibold text-[#136443]" role="status">Rasmiylashtirildi - tilxat chop etilgan. Yozuv yopiq.</p>
                         ) : (
                           <button type="button" className="min-h-11 rounded-lg bg-[#1f8a5b] px-5 font-semibold text-white hover:bg-[#17704a] disabled:opacity-50" disabled={busy || printing} onClick={() => void submit()}>
                             {printing ? 'Tilxat chop etilmoqda…' : 'Imzolash va tilxat chiqarish'}

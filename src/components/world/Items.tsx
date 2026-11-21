@@ -4,7 +4,7 @@
  * used where the object lies in the room and in the in-hand inspection view,
  * so what you pick up is exactly what you saw on the desk.
  *
- * Every printed surface is drawn on a canvas — synthetic samples only, no
+ * Every printed surface is drawn on a canvas - synthetic samples only, no
  * real person's data and no legal text.
  */
 import { useFrame } from '@react-three/fiber';
@@ -130,7 +130,7 @@ function Stamp() {
   );
 }
 
-/** Flag stripes along the top edge — the way Uzbek ID cards are coloured, without the state emblem. */
+/** Flag stripes along the top edge - the way Uzbek ID cards are coloured, without the state emblem. */
 const flagBand = (ctx: CanvasRenderingContext2D, w: number, y: number, h: number) => flagBands(ctx, 0, y, w, h);
 
 /** Fine guilloche-like lines, the security background of a real card (decorative only). */
@@ -193,7 +193,7 @@ function IdCard() {
     ctx.bezierCurveTo(90, 520, 120, 590, 160, 545);
     ctx.bezierCurveTo(190, 515, 220, 575, 270, 540);
     ctx.stroke();
-    // training watermark — this is not a document
+    // training watermark - this is not a document
     ctx.save();
     ctx.translate(w / 2, h / 2 + 30);
     ctx.rotate(-0.35);
@@ -336,7 +336,7 @@ function CaseFolder({ act }: { act?: Act }) {
     put(ctx, 'Navbat raqami:  A-047', 130, 300, 30, '#2c2414', 600);
     put(ctx, 'Xona:  3', 130, 350, 30, '#2c2414', 600);
     put(ctx, 'Sana:  ____ . ____ . 20__', 130, 400, 30, '#2c2414', 600);
-    put(ctx, 'Shaxsga doir maʼlumot — begonalarga berilmaydi', w / 2, h - 90, 24, '#5b3a1a', 600, 'center');
+    put(ctx, 'Shaxsga doir maʼlumot - begonalarga berilmaydi', w / 2, h - 90, 24, '#5b3a1a', 600, 'center');
   });
   const form = useTex(700, 960, (ctx, w, h) => {
     ctx.fillStyle = '#fbfaf5';

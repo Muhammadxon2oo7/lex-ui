@@ -7,7 +7,7 @@ const good: ClaimDraft = PREPARED.draft;
 const knowsAll = () => true;
 const grounds = (d: ClaimDraft) => checkClaim(d, knowsAll).filter((x) => x.ground);
 
-describe('«Hujjatlar»: the written claim (FPK 189–191, 195)', () => {
+describe('«Hujjatlar»: the written claim (FPK 189-191, 195)', () => {
   it('a complete claim is accepted with no remarks', () => {
     expect(checkClaim(good, knowsAll)).toEqual([]);
     expect(filingRuling([], 1).kind).toBe('accepted');
@@ -38,7 +38,7 @@ describe('«Hujjatlar»: the written claim (FPK 189–191, 195)', () => {
     expect(missing.map((x) => x.message).join(' ')).toMatch(/kasal/);
   });
 
-  it('an incomplete advocate’s order is not valid (1-mh-son buyruq, izoh 6) — FPK 195 p.2', () => {
+  it('an incomplete advocate’s order is not valid (1-mh-son buyruq, izoh 6) - FPK 195 p.2', () => {
     expect(checkOrder(good.order)).toEqual([]);
     const g = grounds({ ...good, order: { ...good.order!, specialty: 'admin-criminal', number: '' } });
     expect(g[0]).toMatchObject({ ground: '195-modda 1-qism 2-band' });

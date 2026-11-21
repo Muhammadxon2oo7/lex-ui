@@ -2,9 +2,9 @@
  * The moot court's decision.
  *
  * Two layers, and it says which one spoke:
- *   · 'model' — the court server's language model reads the whole record against the case file
+ *   · 'model' - the court server's language model reads the whole record against the case file
  *     and weighs the SUBSTANCE (who proved what, who answered whom). Used when the server offers it.
- *   · 'rules' — the reference scorer below: what can be measured without understanding — did each
+ *   · 'rules' - the reference scorer below: what can be measured without understanding - did each
  *     side use its floor, address the court, rely on the case's facts and evidence, answer the other
  *     side's points, refer to the contract or the law. It is a fair first reading of form and
  *     coverage, not a judgment on the merits, and the ruling says so.
@@ -62,7 +62,7 @@ export function ruleVerdict(c: MootCase, agenda: MootStep[], transcript: MootEnt
 
   const rows: [keyof Omit<(typeof score)['claimant'], 'foul'>, string, number, string][] = [
     ['participation', 'Soʻzdan foydalanish', 20, 'Har bir berilgan soʻzda mazmunli chiqish qilindimi.'],
-    ['manners', 'Sud odobi', 15, '«Hurmatli sud» deb murojaat; haqorat boʻlsa — 0.'],
+    ['manners', 'Sud odobi', 15, '«Hurmatli sud» deb murojaat; haqorat boʻlsa - 0.'],
     ['facts', 'Faktlar va dalillar', 30, 'Ish materiallaridagi holat va dalillarga tayanish.'],
     ['rebuttal', 'Raqibga javob', 20, 'Qarshi tomon dalillariga munosabat bildirildimi.'],
     ['legal', 'Huquqiy asos', 15, 'Shartnoma bandi, modda yoki qonunga havola.'],
@@ -77,7 +77,7 @@ export function ruleVerdict(c: MootCase, agenda: MootStep[], transcript: MootEnt
     ? [`${NAME[forfeit][0].toUpperCase()}${NAME[forfeit].slice(1)} majlisni tark etdi.`, `Bahsda ${NAME[winner!]} texnik gʻalaba qozondi.`]
     : [
         'Sud taraflarning chiqishlarini eshitdi va baholadi.',
-        `Daʼvogar tomoni — ${totals.claimant} ball, javobgar tomoni — ${totals.respondent} ball.`,
+        `Daʼvogar tomoni - ${totals.claimant} ball, javobgar tomoni - ${totals.respondent} ball.`,
         winner ? `Bahsda ${NAME[winner]} ustun keldi${edge ? `: ayniqsa «${edge.label.toLowerCase()}» boʻyicha` : ''}.` : 'Taraflar teng chiqdi: bahs durang bilan yakunlandi.',
         ...(score.claimant.foul || score.respondent.foul ? ['Sud zalida haqoratga yoʻl qoʻyilmaydi: odob mezoni boʻyicha ball berilmadi.'] : []),
       ];
@@ -95,18 +95,24 @@ export function ruleVerdict(c: MootCase, agenda: MootStep[], transcript: MootEnt
     }),
     engine: 'rules',
     forfeit: Boolean(forfeit),
+    pending: false,
   };
 }
 
+export type JudgeAnswer = { kind: 'ok'; verdict: MootVerdict } | { kind: 'pending'; retryAfter: number } | { kind: 'none' };
+
 /**
- * The court server's model, when it offers one (POST /moot/judge → a verdict in our shape).
- * Anything short of a well-formed verdict falls back to the rules: the hearing always ends with a decision.
+ * One call to the court server's model (POST /moot/judge → a verdict in our shape).
+ * The server waits ~22 s; a slower model answers 503 judge_pending and keeps writing in the background:
+ * the SAME request asked again later returns the finished verdict from its cache. Anything else - no key,
+ * an error, a malformed verdict - is 'none', and the rules decide (the hearing always ends with a decision).
+ * `owner`: whose identity goes with the call (X-LexSim-Owner is required by the server).
  */
-export async function decide(c: MootCase, agenda: MootStep[], transcript: MootEntry[], players: JudgePlayer[], forfeit: MootSide | null): Promise<MootVerdict> {
-  const base = ruleVerdict(c, agenda, transcript, players, forfeit);
-  if (forfeit || !remoteKeyed()) return base;
-  const r = await keyed<{ verdict?: unknown }>(undefined, '/moot/judge', {
-    timeout: 25_000,
+export async function askJudge(c: MootCase, agenda: MootStep[], transcript: MootEntry[], players: JudgePlayer[], owner: string): Promise<JudgeAnswer> {
+  if (!remoteKeyed()) return { kind: 'none' };
+  const base = ruleVerdict(c, agenda, transcript, players, null);
+  const r = await keyed<{ verdict?: unknown; error?: { code?: string } }>(owner, '/moot/judge', {
+    timeout: 26_000,
     body: {
       case: { id: c.id, title: c.title, claim: c.claim, facts: c.facts, evidence: c.evidence, side: c.side },
       agenda: agenda.map(({ id, title, side, role }) => ({ id, title, side, role })),
@@ -115,6 +121,8 @@ export async function decide(c: MootCase, agenda: MootStep[], transcript: MootEn
       rules: { totals: base.totals, criteria: base.criteria },
     },
   });
-  const parsed = MootVerdictSchema.safeParse(r?.status === 200 ? { ...(r.json?.verdict as object), engine: 'model', forfeit: false } : null);
-  return parsed.success ? parsed.data : base;
+  if (!r) return { kind: 'none' };
+  if (r.status === 503 && r.json?.error?.code === 'judge_pending') return { kind: 'pending', retryAfter: 15 };
+  const parsed = MootVerdictSchema.safeParse(r.status === 200 ? { ...(r.json?.verdict as object), engine: 'model', forfeit: false, pending: false } : null);
+  return parsed.success ? { kind: 'ok', verdict: parsed.data } : { kind: 'none' };
 }

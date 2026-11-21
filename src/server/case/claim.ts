@@ -1,7 +1,7 @@
 /**
  * Checks a claim drafted in the documents room (written by the student, not picked) against
- * FPK 189–191 and decides what the judge does with it when it is filed (193 accept / 195 return).
- * SERVER ONLY — the student learns the defects from the ruling, as in life.
+ * FPK 189-191 and decides what the judge does with it when it is filed (193 accept / 195 return).
+ * SERVER ONLY - the student learns the defects from the ruling, as in life.
  *
  * Sources (legal/sources, verbatim from lex.uz):
  *   FPK 26, 28, 33, 68, 72, 189, 190, 191, 193, 195 · MK 174, 313, 560 · «Davlat boji toʻgʻrisida» 8-modda
@@ -28,7 +28,7 @@ const all = (text: string, ...words: string[]) => words.every((w) => norm(text).
 /** What a fact looks like in the student's own words: any one group of stems is enough. */
 const FACT_WORDS: Record<string, { label: string; any: string[][] }> = {
   dismissal: { label: 'boʻshatish buyrugʻi (14-oktabr, 47-k)', any: [['47-k'], ['buyruq', '14'], ['boʻshat', '14-oktabr']] },
-  sick: { label: '9–10-oktabr kunlari kasal boʻlgani', any: [['kasal'], ['layoqatsiz']] },
+  sick: { label: '9-10-oktabr kunlari kasal boʻlgani', any: [['kasal'], ['layoqatsiz']] },
   notified: { label: 'boshligʻiga telefonda xabar bergani', any: [['telefon'], ['qoʻngʻiroq'], ['xabar bergan']] },
   refused: { label: 'kasallik varaqasi qabul qilinmagani', any: [['qabul qilinmagan'], ['qabul qilmagan'], ['qabul qilishdan bosh tort']] },
   explanation: { label: 'yozma tushuntirish talab qilinmagani (MK 313)', any: [['tushuntirish']] },
@@ -51,7 +51,7 @@ export function checkOrder(o: OrderDraft | null): string[] {
   if (o.specialty !== 'civil-economic') out.push('litsenziya boʻyicha ixtisoslik (6-band): fuqarolik ishi uchun «fuqarolik va iqtisodiy sud ishlarini yuritish»');
   if (o.basis !== 'contract') out.push('order berishga asos (7-band): mijoz bilan shartnoma tuzilgan');
   if (!o.basisDate.trim()) out.push('asos hujjat sanasi (8-band) yoʻq');
-  if (!all(o.client, 'nurmatov', 'sardor')) out.push('ishonch bildiruvchi shaxs (9-band) — mijozning familiyasi, ismi, otasining ismi');
+  if (!all(o.client, 'nurmatov', 'sardor')) out.push('ishonch bildiruvchi shaxs (9-band) - mijozning familiyasi, ismi, otasining ismi');
   if (o.caseType !== 'civil') out.push('ish turi (10-band): fuqarolik ishi');
   if (!o.issued.trim()) out.push('order berilgan sana (11-band) yoʻq');
   if (!o.signed) out.push('advokat imzosi va tuzilma muhri (12-band) yoʻq');
@@ -73,7 +73,7 @@ export function checkClaim(d: ClaimDraft, knows: (id: string) => boolean): Defec
       regional: 'Bunday ishlar birinchi instansiyada fuqarolik ishlari boʻyicha tumanlararo, tuman (shahar) sudida koʻriladi (28-modda)',
       supreme: 'Bunday ishlar birinchi instansiyada fuqarolik ishlari boʻyicha tumanlararo, tuman (shahar) sudida koʻriladi (28-modda)',
     };
-    ret('3-band', d.court.type === 'regional' || d.court.type === 'supreme' ? '28-modda' : '26-modda', 6, `${why[d.court.type]} — ish mazkur sudning sudloviga tegishli emas.`);
+    ret('3-band', d.court.type === 'regional' || d.court.type === 'supreme' ? '28-modda' : '26-modda', 6, `${why[d.court.type]} - ish mazkur sudning sudloviga tegishli emas.`);
   } else if (norm(d.court.district) !== norm(PEOPLE.employer.registered.replace(' tumani', ''))) {
     ret('3-band', '33-modda', 6, `Tashkilotga nisbatan ariza u davlat roʻyxatidan oʻtgan joydagi sudga beriladi (33-modda). Javobgar ${PEOPLE.employer.registered}da roʻyxatdan oʻtgan, ariza esa ${d.court.district} sudiga yozilgan.`);
   }
@@ -87,13 +87,13 @@ export function checkClaim(d: ClaimDraft, knows: (id: string) => boolean): Defec
   // 3 · respondent (189 p.3)
   const company = has(d.respondent.name, 'namuna savdo');
   if (!d.respondent.name.trim()) ret('4-band', '189-modda', 6, 'Javobgar koʻrsatilmagan (189-modda 3-band).');
-  else if (!company) weak('189-modda', 4, 'Javobgar notoʻgʻri: mehnat shartnomasidagi ish beruvchi — «Namuna Savdo» MChJ, direktor shaxsan emas (189-modda 3-band).');
+  else if (!company) weak('189-modda', 4, 'Javobgar notoʻgʻri: mehnat shartnomasidagi ish beruvchi - «Namuna Savdo» MChJ, direktor shaxsan emas (189-modda 3-band).');
   if (company && !all(d.respondent.address, 'ipak', '5')) ret('4-band', '189-modda', 3, 'Javobgar tashkilotning joylashgan yeri (pochta manzili) koʻrsatilmagan (189-modda 3-band).');
 
-  // 4 · the demand (189 p.4) — what restores the right: reinstatement and pay for the forced absence (MK 174)
+  // 4 · the demand (189 p.4) - what restores the right: reinstatement and pay for the forced absence (MK 174)
   if (!d.demand.trim()) ret('4-band', '189-modda', 6, 'Daʼvogarning talabi koʻrsatilmagan (189-modda 4-band).');
   else {
-    if (!has(d.demand, 'tiklash', 'tiklansin')) weak('189-modda', 6, 'Talabda ishga (avvalgi lavozimga) tiklash soʻralmagan — buzilgan huquq shu bilan tiklanadi (MK 174-modda).');
+    if (!has(d.demand, 'tiklash', 'tiklansin')) weak('189-modda', 6, 'Talabda ishga (avvalgi lavozimga) tiklash soʻralmagan - buzilgan huquq shu bilan tiklanadi (MK 174-modda).');
     if (!has(d.demand, 'progul', 'oʻrtacha ish haqi', 'ish haqi')) weak('189-modda', 3, 'Majburiy progul vaqti uchun haq undirish soʻralmagan (MK 174-modda).');
     if (has(d.demand, 'javobgarlikka tort', 'uzr')) weak('189-modda', 3, 'Talabda fuqarolik sudi hal qilmaydigan narsa bor (direktorni javobgarlikka tortish, uzr soʻratish).');
   }
@@ -106,15 +106,15 @@ export function checkClaim(d: ClaimDraft, knows: (id: string) => boolean): Defec
     if (knows(id) && !written.includes(id)) weak('189-modda', 2, `Muhim holat arizada yoʻq: ${f.label}.`);
 
   // 7 · contact (189, last part): an e-mail must be one
-  if (d.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email.trim())) weak('189-modda', 1, 'Elektron manzil notoʻgʻri yozilgan — sud xabarnomalari yetib bormaydi.');
+  if (d.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email.trim())) weak('189-modda', 1, 'Elektron manzil notoʻgʻri yozilgan - sud xabarnomalari yetib bormaydi.');
 
   // signature (189, part 2) and authority (189 part 2; 191 p.4; FPK 68; Advokatlik kafolatlari 4-modda; order shakli)
-  if (!d.signed) ret('4-band', '189-modda', 6, 'Ariza imzolanmagan — 189-moddaga koʻra ariza daʼvogar yoki uning vakili tomonidan imzolanadi.');
+  if (!d.signed) ret('4-band', '189-modda', 6, 'Ariza imzolanmagan - 189-moddaga koʻra ariza daʼvogar yoki uning vakili tomonidan imzolanadi.');
   const orderFaults = checkOrder(d.order);
   if (!d.attachments.includes('warrant'))
-    ret('2-band', '191-modda', 6, 'Arizani vakil imzolagan, lekin vakolatni tasdiqlovchi hujjat — advokat orderi ilova qilinmagan (189-modda ikkinchi qismi, 191-modda 4-band).');
+    ret('2-band', '191-modda', 6, 'Arizani vakil imzolagan, lekin vakolatni tasdiqlovchi hujjat - advokat orderi ilova qilinmagan (189-modda ikkinchi qismi, 191-modda 4-band).');
   else if (orderFaults.length)
-    ret('2-band', '191-modda', 6, `Ilova qilingan advokat orderi haqiqiy emas: ${orderFaults.join('; ')}. Order shaklining 1–12-bandlari toʻliq toʻldirilmagan boʻlsa, u haqiqiy hisoblanmaydi (Adliya vazirining 2023-yil 31-yanvardagi 1-mh-son buyrugʻi, izohning 6-bandi).`);
+    ret('2-band', '191-modda', 6, `Ilova qilingan advokat orderi haqiqiy emas: ${orderFaults.join('; ')}. Order shaklining 1-12-bandlari toʻliq toʻldirilmagan boʻlsa, u haqiqiy hisoblanmaydi (Adliya vazirining 2023-yil 31-yanvardagi 1-mh-son buyrugʻi, izohning 6-bandi).`);
 
   // 191 p.3: postage is paid; the worker is exempt from the state duty
   if (!d.attachments.includes('receipt'))
@@ -122,17 +122,17 @@ export function checkClaim(d: ClaimDraft, knows: (id: string) => boolean): Defec
 
   // 190: a copy for the respondent; 191 p.1: the main evidence
   if (d.copies < 1) weak('190-modda', 2, 'Javobgar uchun ariza nusxasi tayyorlanmagan (190-modda).');
-  if (knows('sickleave') && !d.attachments.includes('sickleave')) weak('191-modda', 3, 'Asosiy dalil — kasallik varaqasi nusxasi ilova qilinmagan (191-modda 1-band).');
+  if (knows('sickleave') && !d.attachments.includes('sickleave')) weak('191-modda', 3, 'Asosiy dalil - kasallik varaqasi nusxasi ilova qilinmagan (191-modda 1-band).');
   for (const id of d.attachments) {
     const trap = ATTACHMENTS[id]?.trap;
     if (trap) weak('191-modda', 1, trap);
   }
 
   // MK 560: three months from the day the order was handed over (14.10.2026). Not a ground to return
-  // the claim — the court decides it at the hearing (Plenum 2023-26, 8-band).
+  // the claim - the court decides it at the hearing (Plenum 2023-26, 8-band).
   const date = Date.parse(d.date);
-  if (Number.isFinite(date) && date > Date.parse('2027-01-14')) weak('MK 560-modda', 6, 'Ishga tiklash nizosi boʻyicha sudga murojaat muddati — buyruq nusxasi topshirilgan kundan uch oy (MK 560-modda). Ariza sanasi bu muddatdan keyin.');
-  if (Number.isFinite(date) && date < Date.parse('2026-10-14')) weak('189-modda', 1, 'Ariza sanasi boʻshatish buyrugʻidan oldingi kun — sana notoʻgʻri.');
+  if (Number.isFinite(date) && date > Date.parse('2027-01-14')) weak('MK 560-modda', 6, 'Ishga tiklash nizosi boʻyicha sudga murojaat muddati - buyruq nusxasi topshirilgan kundan uch oy (MK 560-modda). Ariza sanasi bu muddatdan keyin.');
+  if (Number.isFinite(date) && date < Date.parse('2026-10-14')) weak('189-modda', 1, 'Ariza sanasi boʻshatish buyrugʻidan oldingi kun - sana notoʻgʻri.');
   return out;
 }
 

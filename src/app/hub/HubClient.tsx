@@ -9,7 +9,7 @@ import { ensureCase } from '@/game/rooms';
 
 // the two "Ish yoʻli" cases are the same ones as at the campus kiosk (resumed where the student left off)
 const ROLES = [
-  { id: 'dxm', role: 'DXM xodimi', scenario: 'Yoʻqolgan staj', meta: 'Davlat xizmati · 12–18 daqiqa', body: 'Nafaqasi kam chiqqan fuqaro. Shikoyat ortida nima turganini aniqlang.' },
+  { id: 'dxm', role: 'DXM xodimi', scenario: 'Yoʻqolgan staj', meta: 'Davlat xizmati · 12-18 daqiqa', body: 'Nafaqasi kam chiqqan fuqaro. Shikoyat ortida nima turganini aniqlang.' },
   { id: 'labour', role: 'Advokat', scenario: 'Ishga tiklash nizosi', meta: 'Fuqarolik ishi · 5 xona', body: 'Ishdan boʻshatilgan mijoz: maslahatdan daʼvo arizasi va sud majlisidagi hal qiluv qarorigacha.' },
   { id: 'theft', role: 'Jabrlanuvchi vakili', scenario: 'Telefon oʻgʻirligi', meta: 'Jinoyat-protsessual ish · 3 xona', body: 'Arizani roʻyxatdan oʻtkazishdan tergovchi ustidan shikoyatgacha.' },
 ] as const;
@@ -140,7 +140,7 @@ export default function HubClient() {
       </div>
       <p className="mt-3 min-h-5 text-[0.82rem] text-ink-3" role="status">
         {mode === 'tutorial' ? 'Mashq: sabr va ishonch koʻrsatkichlari koʻrinadi.' : 'Baholash: koʻrsatkichlar yashirin, fuqaroni oʻzingiz oʻqiysiz.'}{' '}
-        {device === 'touch' && 'Binoda yurish uchun sichqoncha kerak — DXM 2D rejimda ochiladi; ish xonalari va sud zallari sensorli ekranda ham ishlaydi.'}
+        {device === 'touch' && 'Binoda yurish uchun sichqoncha kerak - DXM 2D rejimda ochiladi; ish xonalari va sud zallari sensorli ekranda ham ishlaydi.'}
         {device === 'none' && 'Bu brauzerda WebGL2 yoʻq: faqat DXM 2D rejimda ochiladi.'}
       </p>
 
@@ -164,10 +164,10 @@ export default function HubClient() {
         <h2 id="court-title" className="display text-2xl font-semibold">Sud zali</h2>
         <div className="mt-3 flex flex-wrap items-center gap-5 rounded-[24px] border border-line bg-card p-6">
           <div className="min-w-0 flex-1 basis-80">
-            <p className="text-[0.75rem] font-semibold uppercase tracking-wider text-accent-ink">Fuqarolik ishi · 1-instansiya · 10–15 daqiqa</p>
+            <p className="text-[0.75rem] font-semibold uppercase tracking-wider text-accent-ink">Fuqarolik ishi · 1-instansiya · 10-15 daqiqa</p>
             <h3 className="display mt-1 text-xl font-semibold">Raislik qiluvchi: majlisni tartib boʻyicha olib boring</h3>
             <p className="mt-1.5 text-[0.92rem] leading-relaxed text-ink-2">
-              Sudya oʻrnida oʻtirasiz va majlisni ochishdan qarorni oʻqib eshittirishgacha 14 bosqichni Fuqarolik protsessual kodeksi tartibida boshqarasiz. Kodeks qoʻl ostingizda — har bir bosqich lex.uz saytidagi modda matniga bogʻlangan.
+              Sudya oʻrnida oʻtirasiz va majlisni ochishdan qarorni oʻqib eshittirishgacha 14 bosqichni Fuqarolik protsessual kodeksi tartibida boshqarasiz. Kodeks qoʻl ostingizda - har bir bosqich lex.uz saytidagi modda matniga bogʻlangan.
             </p>
           </div>
           <button type="button" className="btn btn-primary min-w-40 max-sm:w-full" disabled={busy || !roomsOk} onClick={() => void startCourt()}>
@@ -179,10 +179,10 @@ export default function HubClient() {
         <h2 id="moot-title" className="display text-2xl font-semibold">Bahs</h2>
         <div className="mt-3 flex flex-wrap items-center gap-5 rounded-[24px] border border-line bg-card p-6">
           <div className="min-w-0 flex-1 basis-80">
-            <p className="text-[0.75rem] font-semibold uppercase tracking-wider text-accent-ink">Jamoaviy · 2–6 kishi · 15–20 daqiqa</p>
+            <p className="text-[0.75rem] font-semibold uppercase tracking-wider text-accent-ink">Jamoaviy · 2-6 kishi · 15-20 daqiqa</p>
             <h3 className="display mt-1 text-xl font-semibold">Kursdoshlaringiz bilan sudda bahslashing</h3>
             <p className="mt-1.5 text-[0.92rem] leading-relaxed text-ink-2">
-              Ikki jamoa — daʼvogar va javobgar; tomon va rol qurʼa bilan tushadi. Tayyor javob yoʻq: sudya soʻz berganda oʻz soʻzingiz bilan gapirasiz. Sudya — sunʼiy intellekt: majlisni olib boradi va gʻolibni aniqlaydi.
+              Ikki jamoa - daʼvogar va javobgar; tomon va rol qurʼa bilan tushadi. Tayyor javob yoʻq: sudya soʻz berganda oʻz soʻzingiz bilan gapirasiz. Sudya - sunʼiy intellekt: majlisni olib boradi va gʻolibni aniqlaydi.
             </p>
           </div>
           <Link href="/bahs" className="btn btn-primary min-w-40 max-sm:w-full">Xona ochish yoki qoʻshilish</Link>
@@ -212,8 +212,8 @@ export default function HubClient() {
             {remote.scenarios.map((sc) => (
               <li key={sc.id} className="flex flex-col rounded-[24px] border border-line bg-card p-6">
                 <p className="text-[0.75rem] font-semibold uppercase tracking-wider text-accent-ink">Iqtisodiy ish · {sc.durationMinutes} daqiqa</p>
-                <h3 className="display mt-2 text-xl font-semibold text-balance">{/* the role is on the next line: «… — daʼvogar vakili» is not repeated */}
-                  {(sc.title || sc.role).split(/\s+[—–-]\s+/)[0]}</h3>
+                <h3 className="display mt-2 text-xl font-semibold text-balance">{/* the role is on the next line: «… - daʼvogar vakili» is not repeated */}
+                  {(sc.title || sc.role).split(/\s+[---]\s+/)[0]}</h3>
                 {sc.position && <p className="font-medium text-ink-2">{sc.position}</p>}
                 <p className="mt-2 line-clamp-4 flex-1 text-[0.92rem] leading-relaxed text-pretty text-ink-2">{sc.briefing}</p>
                 <button type="button" className="btn btn-primary mt-5" disabled={busy || !roomsOk} aria-busy={starting === sc.id} onClick={() => void startEconomic(sc.id)}>

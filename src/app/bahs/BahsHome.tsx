@@ -1,14 +1,14 @@
 'use client';
 /**
- * "Bahs" — the door to the moot court: open a room (you get a code to share) or join one by its code.
+ * "Bahs" - the door to the moot court: open a room (you get a code to share) or join one by its code.
  * No accounts: a name and an avatar, kept in this browser like the rest of LexSim.
  */
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useSyncExternalStore } from 'react';
 import { ApiError } from '@/game/api';
 import { moot } from '@/game/moot';
 import { getProfile, saveProfile, type AvatarModel } from '@/game/profile';
+import { GlassLayer, GlassToolbar, Segmented, ToolbarLink } from '@/components/ui/glass';
 
 const noSubscribe = () => () => {};
 
@@ -59,45 +59,44 @@ export default function BahsHome() {
   };
 
   return (
-    <main className="mx-auto w-full max-w-4xl flex-1 px-5 py-10 sm:py-16">
-      <Link href="/hub" className="text-[0.85rem] font-semibold text-accent-ink">← Rollar</Link>
-      <p className="mt-6 text-[0.78rem] font-semibold tracking-wider text-accent-ink uppercase">Jamoaviy sud · 2–6 kishi</p>
+    <main className="relative isolate w-full flex-1">
+      <GlassLayer />
+      <GlassToolbar back={{ href: '/', label: 'YOʻNALISHLAR' }}>
+        <ToolbarLink href="/manbalar">Manbalar</ToolbarLink>
+      </GlassToolbar>
+      <div className="mx-auto w-full max-w-4xl px-5 pt-8 pb-14 sm:pt-12">
+      <p className="mt-2 text-[0.78rem] font-semibold tracking-wider text-accent-ink uppercase">Jamoaviy sud · 2-6 kishi</p>
       <h1 className="display mt-2 text-[clamp(2rem,5vw,3.2rem)] font-semibold text-balance">Bahs: jamoangiz bilan sudda bahslashing</h1>
       <p className="mt-3 max-w-[60ch] text-[1.02rem] leading-relaxed text-pretty text-ink-2">
-        Ikki jamoa — daʼvogar va javobgar. Tomon va rol qurʼa bilan tushadi. Tayyor javob yoʻq: ish papkasini oʻrganasiz, sudya soʻz berganda oʻz soʻzingiz bilan gapirasiz. Sudya — sunʼiy intellekt: majlisni olib boradi va gʻolibni aniqlaydi.
+        Ikki jamoa - daʼvogar va javobgar. Tomon va rol qurʼa bilan tushadi. Tayyor javob yoʻq: ish papkasini oʻrganasiz, sudya soʻz berganda oʻz soʻzingiz bilan gapirasiz. Sudya - sunʼiy intellekt: majlisni olib boradi va gʻolibni aniqlaydi.
       </p>
 
       {mounted && (
-        <div className="mt-8 rounded-[24px] border border-line bg-card p-5 sm:p-6">
+        <div className="surface mt-8 rounded-[28px] p-5 sm:p-6">
           <div className="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end">
             <label className="block">
               <span className="text-[0.8rem] font-semibold text-ink-2">Ismingiz (boshqalar shuni koʻradi)</span>
               <input value={name ?? saved?.name ?? ''} onChange={(e) => setName(e.target.value)} maxLength={40} autoComplete="name" placeholder="Masalan: Karimova Aziza" className="field mt-1.5" />
             </label>
-            <div role="radiogroup" aria-label="Qiyofa" className="grid grid-cols-2 gap-1 rounded-2xl bg-paper p-1">
-              {(['man', 'woman'] as const).map((a) => (
-                <button key={a} type="button" role="radio" aria-checked={look === a} onClick={() => setAvatar(a)}
-                  className={`min-h-11 rounded-xl px-4 text-[0.9rem] font-semibold transition-colors duration-150 ${look === a ? 'bg-card shadow-sm' : 'text-ink-3 hover:text-ink'}`}>{a === 'man' ? 'Erkak' : 'Ayol'}</button>
-              ))}
-            </div>
+            <div className="min-w-48"><Segmented label="Jins" value={look} onChange={setAvatar} options={[['man', 'Erkak'], ['woman', 'Ayol']]} /></div>
           </div>
         </div>
       )}
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
-        <section aria-labelledby="create-title" className="flex flex-col rounded-[24px] border border-line bg-card p-5 sm:p-6">
+        <section aria-labelledby="create-title" className="surface flex flex-col rounded-[28px] p-5 sm:p-6">
           <h2 id="create-title" className="display text-xl font-semibold">Xona ochish</h2>
           <p className="mt-1 text-[0.9rem] text-ink-2">Kod olasiz va uni doʻstlaringizga yuborasiz.</p>
           <div className="mt-4 space-y-4">
             <Choice label="Jamoa hajmi" value={size} onChange={setSize} options={[[1, '1 ga 1', 'yakkama-yakka'], [2, '2 ga 2', 'bosh va ikkinchi vakil'], [3, '3 ga 3', '+ taraf']]} />
-            <Choice label="Jamoalar" value={assign} onChange={setAssign} options={[['pick', 'Oʻzimiz tanlaymiz', 'A yoki B jamoaga qoʻshilasiz'], ['random', 'Qurʼa bilan', 'kim kim bilan — boshlanganda maʼlum boʻladi']]} />
+            <Choice label="Jamoalar" value={assign} onChange={setAssign} options={[['pick', 'Oʻzimiz tanlaymiz', 'A yoki B jamoaga qoʻshilasiz'], ['random', 'Qurʼa bilan', 'kim kim bilan - boshlanganda maʼlum boʻladi']]} />
           </div>
           <button type="button" className="btn btn-primary mt-5" disabled={!ok || busy !== null} aria-busy={busy === 'create'} onClick={() => void go('create')}>
             {busy === 'create' ? 'Ochilmoqda…' : 'Xona ochish'}
           </button>
         </section>
 
-        <section aria-labelledby="join-title" className="flex flex-col rounded-[24px] border border-line bg-card p-5 sm:p-6">
+        <section aria-labelledby="join-title" className="surface flex flex-col rounded-[28px] p-5 sm:p-6">
           <h2 id="join-title" className="display text-xl font-semibold">Kod bilan qoʻshilish</h2>
           <p className="mt-1 text-[0.9rem] text-ink-2">Xona egasi yuborgan 5 belgili kodni kiriting.</p>
           <form className="mt-4 flex flex-1 flex-col" onSubmit={(e) => { e.preventDefault(); void go('join'); }}>
@@ -115,13 +114,14 @@ export default function BahsHome() {
 
       <ol className="mt-10 grid gap-3 text-[0.9rem] sm:grid-cols-4">
         {[['1', 'Xona', 'Kod bilan yigʻilasiz, jamoalarga boʻlinasiz.'], ['2', 'Qurʼa', 'Tomon va rol tasodifiy tushadi.'], ['3', 'Ish papkasi', 'Faktlar, dalillar va faqat sizning jamoangiz biladigan maʼlumot.'], ['4', 'Majlis', 'Sudya navbat bilan soʻz beradi; oxirida qaror va tahlil.']].map(([n, t, d]) => (
-          <li key={n} className="rounded-2xl border border-line bg-card p-4">
+          <li key={n} className="surface rounded-[22px] p-4">
             <span className="grid size-7 place-items-center rounded-full bg-accent-soft text-[0.8rem] font-bold text-accent-ink">{n}</span>
             <p className="mt-2 font-semibold">{t}</p>
             <p className="mt-0.5 text-[0.84rem] leading-snug text-ink-2">{d}</p>
           </li>
         ))}
       </ol>
+      </div>
     </main>
   );
 }

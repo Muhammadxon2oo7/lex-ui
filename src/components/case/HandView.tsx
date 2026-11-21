@@ -151,7 +151,7 @@ export function HandView({ doc, onClose }: { doc: DeskDoc; onClose: () => void }
   const current = doc.pages[Math.min(page, pages - 1)];
   return (
     <motion.div ref={dialog} tabIndex={-1} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={spring}
-      role="dialog" aria-modal="true" aria-label={`${doc.name} — qoʻlda`}
+      role="dialog" aria-modal="true" aria-label={`${doc.name} - qoʻlda`}
       className="absolute inset-0 z-50 grid grid-cols-1 bg-[#05070b]/80 outline-none backdrop-blur-sm lg:grid-cols-[1fr_22rem]">
       <div className="relative min-h-[55dvh] cursor-grab active:cursor-grabbing"
         onPointerDown={(e) => {
@@ -182,7 +182,7 @@ export function HandView({ doc, onClose }: { doc: DeskDoc; onClose: () => void }
             <Held doc={doc} page={page} open={open} flipped={flipped} />
           </Suspense>
         </Canvas>
-        <p className="pointer-events-none absolute inset-x-0 bottom-4 text-center text-[0.78rem] text-white/55">Sudrang — aylantirish · gʻildirak — yaqinlashtirish · F — agʻdarish{doc.kind === 'folder' ? ' · O — ochish' : ''}{pages > 1 ? ' · ← → — varaqlash' : ''}</p>
+        <p className="pointer-events-none absolute inset-x-0 bottom-4 text-center text-[0.78rem] text-white/55">Sudrang - aylantirish · gʻildirak - yaqinlashtirish · F - agʻdarish{doc.kind === 'folder' ? ' · O - ochish' : ''}{pages > 1 ? ' · ← → - varaqlash' : ''}</p>
       </div>
       <aside className="flex flex-col gap-3 bg-[#0d121b]/95 p-5 text-white ring-1 ring-white/10 select-text">
         <p className="text-[0.68rem] font-semibold tracking-[0.16em] text-amber-200 uppercase">Qoʻlingizda</p>

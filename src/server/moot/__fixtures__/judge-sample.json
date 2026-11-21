@@ -1,0 +1,77 @@
+{
+    "verdict": {
+        "winner": "claimant",
+        "totals": {
+            "claimant": 76,
+            "respondent": 72
+        },
+        "criteria": [
+            {
+                "id": "participation",
+                "label": "Soʻzdan foydalanish",
+                "max": 20,
+                "claimant": 14,
+                "respondent": 13,
+                "note": "Aziza oʻz pozitsiyasini bayon qilib, dalillarni keltirdi. Bekzod ham eʼtiroz bildirdi, biroq har ikki tomonning nutqi qisqa boʻlib, dalillarni kengroq tushuntirish imkoniyati ishlatilmadi."
+            },
+            {
+                "id": "manners",
+                "label": "Sud odobi",
+                "max": 15,
+                "claimant": 14,
+                "respondent": 14,
+                "note": "Har ikki ishtirokchi sudga hurmat bilan murojaat qildi. Sud odobiga zid iboralar yoki raqibga nisbatan hurmatsizlik kuzatilmadi."
+            },
+            {
+                "id": "facts",
+                "label": "Faktlar va dalillar",
+                "max": 30,
+                "claimant": 25,
+                "respondent": 23,
+                "note": "Aziza ish materiallaridagi imzolangan fakturalarga va javobgar direktorining imzosiga tayandi. Bekzod dalolatnoma mavjud emasligini toʻgʻri koʻrsatdi, biroq imzolangan fakturalarning daliliy ahamiyatini toʻliq inkor etuvchi qoʻshimcha asos keltirmadi."
+            },
+            {
+                "id": "rebuttal",
+                "label": "Raqibga javob",
+                "max": 20,
+                "claimant": 15,
+                "respondent": 17,
+                "note": "Bekzod daʼvogarning fakturalar topshirishni isbotlaydi degan aniq daliliga javob berdi va dalolatnoma yoʻqligini qarshi vaj sifatida ishlatdi. Aziza esa dalolatnoma imzolanmaganligi haqidagi eʼtirozga fakturalarning oʻzi yetarli dalil ekanini batafsil asoslab javob bermadi."
+            },
+            {
+                "id": "legal",
+                "label": "Huquqiy asos",
+                "max": 15,
+                "claimant": 8,
+                "respondent": 5,
+                "note": "Daʼvogar shartnomaning 32-punkti va FKning 333-moddasiga murojaat qilishi mumkin edi, ammo bayonnomada bu normalar mazmunan asoslantirilmadi. Javobgar esa huquqiy norma yoki shartnoma bandiga tayanmadi."
+            }
+        ],
+        "ruling": [
+            "Sud taraflarning chiqishlarini eshitdi va baholadi.",
+            "Sud bahsda daʼvogarning 120 mln soʻm ijara qarzi va penya undirish talabini, javobgarning esa topshirish dalolatnomasi mavjud emasligi haqidagi eʼtirozini eshitdi.",
+            "Azizaning eng kuchli jihati — javobgar direktorining imzosi qoʻyilgan fakturalarni dalil sifatida keltirganidir.",
+            "Bekzodning eng kuchli jihati — fakturalarning oʻzi mol amalda topshirilganini toʻliq isbotlamasligi mumkinligini koʻrsatib, daʼvogarning asosiy daliliga bevosita javob berganidir.",
+            "Har ikki tomonning zaif jihati — ijara qarzining hisob-kitobi, penya miqdori va shartnoma hamda FK 333-moddaning mazmunini yetarlicha ochib bermaganidir.",
+            "Bahsda daʼvogar tomoni ustun keldi."
+        ],
+        "players": [
+            {
+                "id": "pA",
+                "name": "Aziza",
+                "side": "claimant",
+                "words": 18,
+                "speeches": 2,
+                "note": "Imzolangan fakturalarning nima sababdan topshirish faktini tasdiqlashini batafsil tushuntiring. Javobgarning dalolatnoma yoʻqligi haqidagi eʼtiroziga bevosita javob bering va shartnomaning 32-punkti hamda FK 333-moddaning talabga aloqasini asoslang."
+            },
+            {
+                "id": "pB",
+                "name": "Bekzod",
+                "side": "respondent",
+                "words": 13,
+                "speeches": 2,
+                "note": "Dalolatnoma yoʻqligi haqidagi eʼtirozingizni kuchaytirish uchun imzolangan fakturalarning daliliy ahamiyatini nima sababdan yetarli emas deb hisoblashingizni tushuntiring. Daʼvogarning 120 mln soʻmlik qarz hisob-kitobi va penya talabiga ham alohida eʼtiroz bildiring."
+            }
+        ]
+    }
+}

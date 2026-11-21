@@ -307,7 +307,7 @@ function Foyer({ m }: { m: Materials }) {
       text(ctx, d.title, 190, y - 14, 40, '#ffffff', 700);
       text(ctx, d.action ? d.subtitle : 'Tez orada', 190, y + 28, 28, d.action ? '#b7c4dc' : '#7d89a3', 500);
     });
-    text(ctx, '[E] — batafsil', w - 70, h - 70, 30, '#ffcf6b', 600, 'right');
+    text(ctx, '[E] - batafsil', w - 70, h - 70, 30, '#ffcf6b', 600, 'right');
   });
   const W = FOYER.x1 - FOYER.x0;
   const D = FOYER.z1 - FOYER.z0;
@@ -343,7 +343,7 @@ function Foyer({ m }: { m: Materials }) {
       {/* koshin band along the foyer's back wall, above the corridor opening */}
       <OrnamentBand width={W - 0.4} position={[0, 3.75, FOYER.z0 + 0.012]} />
 
-      {/* directory board — read it with E */}
+      {/* directory board - read it with E */}
       <group position={INFO_BOARD.position} rotation={[0, Math.PI / 2, 0]}>
         <mesh material={m.trim} position={[0, 0, -0.03]}>
           <boxGeometry args={[1.32, 1.62, 0.04]} />

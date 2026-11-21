@@ -1,6 +1,6 @@
 'use client';
 /**
- * Protsess xaritasi — how a matter actually moves in Uzbekistan, step by
+ * Protsess xaritasi - how a matter actually moves in Uzbekistan, step by
  * step: from the application at a state body, through the five procedural
  * codes, to the decision and the appeal. Every stage is tied to articles
  * quoted verbatim from lex.uz (built by tools/build-process.mjs from the
@@ -24,7 +24,7 @@ type ProcessMap = { builtAt: string; complete: boolean; tracks: Track[]; sources
 
 const spring = { type: 'spring', bounce: 0, duration: 0.4 } as const;
 
-/** Which road a matter takes — orientation only (study guide), the law decides. */
+/** Which road a matter takes - orientation only (study guide), the law decides. */
 const ROUTES: { when: string; track: string }[] = [
   { when: 'Davlat organiga ariza, xizmat soʻrash, murojaat', track: 'ADMIN' },
   { when: 'Fuqaroning qarzi, aliment, uy-joy, mehnat nizosi', track: 'FPK' },
@@ -110,7 +110,7 @@ export default function ProcessClient() {
 
         <div className="mx-auto max-w-7xl px-5 pt-6 pb-16">
           <p className="max-w-[72ch] text-[0.98rem] leading-relaxed text-white/70">
-            Oʻzbekistonda ish qanday yuritiladi — ariza berishdan qarorgacha va shikoyatgacha. Har bir bosqich qonundagi moddaga bogʻlangan: moddani bosing, lex.uz saytidagi matni soʻzma-soʻz ochiladi.
+            Oʻzbekistonda ish qanday yuritiladi - ariza berishdan qarorgacha va shikoyatgacha. Har bir bosqich qonundagi moddaga bogʻlangan: moddani bosing, lex.uz saytidagi matni soʻzma-soʻz ochiladi.
           </p>
 
           {/* which road? */}
@@ -189,7 +189,7 @@ export default function ProcessClient() {
                             <p className="text-[0.92rem] leading-snug font-semibold">{st.label}</p>
                             <p className="mt-1 text-[0.74rem] leading-snug text-white/50">
                               {st.actor}
-                              {st.output && st.output !== '—' && <> · natija: <span className="text-white/70">{st.output}</span></>}
+                              {st.output && st.output !== '-' && <> · natija: <span className="text-white/70">{st.output}</span></>}
                             </p>
                             <div className="mt-2 flex flex-wrap gap-1">
                               {st.articles.map((k) => {

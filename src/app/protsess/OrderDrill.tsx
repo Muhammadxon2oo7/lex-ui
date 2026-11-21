@@ -1,6 +1,6 @@
 'use client';
 /**
- * "Tartibni tiklang" — the stages of a procedure, shuffled; the student
+ * "Tartibni tiklang" - the stages of a procedure, shuffled; the student
  * picks what comes next. A wrong pick costs a point and names the article
  * that governs the step that actually comes next. The order is the order
  * of the procedure map (which follows the articles of the code).

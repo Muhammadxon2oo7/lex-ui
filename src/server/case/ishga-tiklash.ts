@@ -89,8 +89,8 @@ export interface CaseBookShape {
 }
 
 export const CASE = {
-  title: 'Sardor N. — «Namuna Savdo» MChJ: ishga tiklash',
-  note: 'Ish holatlari, ismlar, sanalar va natija oʻquv uchun toʻqilgan. Protsessual tartib va moddalar matni — Fuqarolik protsessual kodeksidan (lex.uz). Mehnat kodeksi normalari bu mashqda baholanmaydi.',
+  title: 'Sardor N. - «Namuna Savdo» MChJ: ishga tiklash',
+  note: 'Ish holatlari, ismlar, sanalar va natija oʻquv uchun toʻqilgan. Protsessual tartib va moddalar matni - Fuqarolik protsessual kodeksidan (lex.uz). Mehnat kodeksi normalari bu mashqda baholanmaydi.',
   parties: [
     { role: 'you' as const, label: 'Daʼvogar vakili (advokat)', name: 'Siz' },
     { role: 'client' as const, label: 'Daʼvogar', name: 'Sardor N.', voice: 'male' as const },
@@ -103,21 +103,21 @@ export const CASE = {
 };
 
 export const FACTS: Record<string, { label: string; detail: string; key?: boolean }> = {
-  dismissal: { label: 'Boʻshatish buyrugʻi 14-oktabr', detail: '«Ishga uzrsiz kelmagani uchun» — 9 va 10-oktabr kunlari.', key: true },
-  sick: { label: '9–10-oktabr kunlari kasal boʻlgan', detail: 'Poliklinika kasallik varaqasi bergan.', key: true },
+  dismissal: { label: 'Boʻshatish buyrugʻi 14-oktabr', detail: '«Ishga uzrsiz kelmagani uchun» - 9 va 10-oktabr kunlari.', key: true },
+  sick: { label: '9-10-oktabr kunlari kasal boʻlgan', detail: 'Poliklinika kasallik varaqasi bergan.', key: true },
   notified: { label: 'Boshligʻiga telefonda xabar bergan', detail: '9-oktabr ertalab boʻlim boshligʻiga qoʻngʻiroq qilgan.', key: true },
   refused: { label: 'Kadrlar varaqani qabul qilmagan', detail: '13-oktabr kuni varaqani topshirmoqchi boʻlgan, qabul qilinmagan.', key: true },
   witness: { label: 'Guvoh: hamkasbi Bahodir R.', detail: 'Qoʻngʻiroq paytida boshliq yonida boʻlgan.', key: true },
   employer: { label: 'Javobgar: «Namuna Savdo» MChJ', detail: 'Namuna tumanida roʻyxatdan oʻtgan; besh yil omborchi, oyligi 4,2 mln soʻm.', key: true },
   authority: { label: 'Advokatlik shartnomasi tuzildi', detail: 'Sudda daʼvogar nomidan ish yuritish vakolati (FPK 67, 68).', key: true },
   explanation: { label: 'Yozma tushuntirish talab qilinmagan', detail: 'Intizomiy jazodan oldin ish beruvchi yozma tushuntirish talab qilishi shart (Mehnat kodeksi 313-modda).', key: true },
-  served: { label: 'Buyruq nusxasi 14-oktabrda berilgan', detail: 'Ishga tiklash nizosi boʻyicha sudga murojaat muddati — shu kundan uch oy (Mehnat kodeksi 560-modda).', key: true },
+  served: { label: 'Buyruq nusxasi 14-oktabrda berilgan', detail: 'Ishga tiklash nizosi boʻyicha sudga murojaat muddati - shu kundan uch oy (Mehnat kodeksi 560-modda).', key: true },
 };
 
 export const EVIDENCE: Record<string, { label: string; detail: string; requires: string }> = {
   order: { label: 'Boʻshatish buyrugʻi nusxasi', detail: '14-oktabrdagi buyruq.', requires: 'order' },
   contract: { label: 'Mehnat shartnomasi', detail: 'Omborchi lavozimi.', requires: 'contract' },
-  sickleave: { label: 'Kasallik varaqasi', detail: '9–10-oktabr kunlari uchun.', requires: 'sickleave' },
+  sickleave: { label: 'Kasallik varaqasi', detail: '9-10-oktabr kunlari uchun.', requires: 'sickleave' },
   warrant: { label: 'Advokat orderi', detail: 'Advokatning vakolati order bilan tasdiqlanadi (FPK 68; «Advokatlik faoliyatining kafolatlari…» Qonun, 4-modda).', requires: 'authority' },
 };
 
@@ -176,19 +176,19 @@ const consult: StageDef = {
           reply: [['client', '«Namuna Savdo» MChJ, Namuna tumanida. Besh yil omborchi boʻldim, oyligim 4,2 million.']], effect: { learn: ['employer'] }, tone: 'good' },
         { id: 'explain-letter', once: true, requires: ['dismissal'], text: 'Boʻshatishdan oldin sizdan yozma tushuntirish soʻrashganmi?',
           reply: [['client', 'Yoʻq. Hech narsa soʻrashmadi — toʻgʻridan-toʻgʻri buyruq chiqarishdi.']], effect: { learn: ['explanation'] }, tone: 'good',
-          feedback: 'Mehnat kodeksi 313-modda: ish beruvchi intizomiy jazo qoʻllanguniga qadar xodimdan yozma tushuntirish talab qilishi shart. Bu — muhim dalil.' },
+          feedback: 'Mehnat kodeksi 313-modda: ish beruvchi intizomiy jazo qoʻllanguniga qadar xodimdan yozma tushuntirish talab qilishi shart. Bu - muhim dalil.' },
         { id: 'served', once: true, requires: ['dismissal'], text: 'Buyruq nusxasini qachon qoʻlingizga berishdi?',
           reply: [['client', '14-oktabrning oʻzida berishdi, imzo qoʻydirib.']], effect: { learn: ['served'] }, tone: 'good',
-          feedback: 'Mehnat kodeksi 560-modda: ishga tiklash nizolari boʻyicha sudga murojaat muddati — buyruq nusxasi topshirilgan kundan uch oy. 14-oktabrdan hisoblaganda muddat oʻtmagan.' },
+          feedback: 'Mehnat kodeksi 560-modda: ishga tiklash nizolari boʻyicha sudga murojaat muddati - buyruq nusxasi topshirilgan kundan uch oy. 14-oktabrdan hisoblaganda muddat oʻtmagan.' },
         { id: 'authority', once: true, text: 'Sizni sudda himoya qilishim uchun shartnoma tuzamiz, advokat orderi rasmiylashtiriladi.',
           reply: [['client', 'Roziman. Qayerga imzo qoʻyay?']], effect: { learn: ['authority'] }, tone: 'good', article: '67-modda',
-          feedback: 'FPK 67–68: sudda professional vakil — advokat; vakolati belgilangan tartibda tasdiqlanadi.' },
+          feedback: 'FPK 67-68: sudda professional vakil - advokat; vakolati belgilangan tartibda tasdiqlanadi.' },
         { id: 'promise', once: true, text: 'Xavotir olmang, yuz foiz yutamiz — kafolat beraman.',
           reply: [['client', 'Rostdanmi?! Unda xotirjam boʻldim…', { emotion: 'reassured' }]], effect: { penalty: [15, 'Natijani kafolatladingiz — qarorni sud qabul qiladi'] },
           tone: 'bad', feedback: 'Advokat natijani kafolatlay olmaydi. Imkoniyat va xavflarni halol ayting.' },
         { id: 'connections', once: true, text: 'Sudda tanishlarim bor, ish tez hal boʻladi.',
           reply: [['client', 'Yoʻq… Men bunday ishlarga aralashmayman. Qonun boʻyicha qilaylik.', { emotion: 'upset' }]], effect: { mood: 'upset', penalty: [40, 'Korrupsion ishora'] },
-          tone: 'bad', feedback: 'Sudga taʼsir oʻtkazishga ishora — korrupsiya. Mutlaqo mumkin emas.' },
+          tone: 'bad', feedback: 'Sudga taʼsir oʻtkazishga ishora - korrupsiya. Mutlaqo mumkin emas.' },
         { id: 'finish', requires: ['authority'], text: 'Hujjatlar nusxasini olib qolaman. Ariza tayyor boʻlgach qoʻngʻiroq qilaman.',
           reply: [['client', 'Katta rahmat. Sizga ishonaman.', { emotion: 'reassured' }]], next: 'c-end', tone: 'info' },
       ],
@@ -202,7 +202,7 @@ const draft: StageDef = {
   number: 2,
   title: 'Daʼvo arizasini tuzish',
   place: 'Hujjatlar',
-  goal: 'FPK 189–191 boʻyicha arizani tuzing va imzolang.',
+  goal: 'FPK 189-191 boʻyicha arizani tuzing va imzolang.',
   reflect: 'Arizangizdagi eng kuchli holat va dalil qaysi? Javobgar unga qanday eʼtiroz bildirishi mumkin?',
   start: 'd-form',
   nodes: [
@@ -230,7 +230,7 @@ const filing: StageDef = {
           reply: [['clerk', 'Arizalar devonxona orqali roʻyxatdan oʻtadi. Qabul qilish masalasini sudya yakka tartibda hal qiladi.']],
           effect: { penalty: [15, 'Arizadan oldin sudyaga shaxsan kirishga urindingiz'] }, tone: 'bad', article: '192-modda' },
         { id: 'gift', text: '(papkaga konvert qoʻyib) Bu sizga… ish tezroq yursin.',
-          reply: [['clerk', 'Olib qoʻying! Buni qabul qilmayman.', { emotion: 'upset' }]], effect: { penalty: [40, 'Pora taklifi'] }, tone: 'bad', feedback: 'Pora taklifi — jinoyat.' },
+          reply: [['clerk', 'Olib qoʻying! Buni qabul qilmayman.', { emotion: 'upset' }]], effect: { penalty: [40, 'Pora taklifi'] }, tone: 'bad', feedback: 'Pora taklifi - jinoyat.' },
       ],
     },
     {
@@ -339,7 +339,7 @@ const hearing: StageDef = {
         { id: 'recuse-party', text: 'Hurmatli sud, javobgar vakilini rad qilishni soʻraymiz — u bizga nisbatan xolis emas.',
           reply: [['judge', 'Rad qilish sudya, prokuror, ekspert, mutaxassis, tarjimon va sud majlisi kotibiga nisbatan bildiriladi. Taraf vakili rad qilinmaydi.', { emotion: 'impatient' }]],
           next: 'h-explain', effect: { penalty: [10, 'Taraf vakilini rad qilishga urindingiz'] }, tone: 'bad', article: '22-modda',
-          feedback: 'FPK 21–22: rad qilish sudya, prokuror, ekspert, mutaxassis, tarjimon va sud majlisi kotibiga nisbatan bildiriladi; taraflar va ularning vakillari rad qilinmaydi.' },
+          feedback: 'FPK 21-22: rad qilish sudya, prokuror, ekspert, mutaxassis, tarjimon va sud majlisi kotibiga nisbatan bildiriladi; taraflar va ularning vakillari rad qilinmaydi.' },
       ],
     },
     {

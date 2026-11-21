@@ -2,7 +2,7 @@
 /**
  * In-hand inspection: the object is lifted out of the room and held in
  * front of you. Drag to turn it (it keeps a little momentum, like a real
- * thing), wheel to bring it closer, F to flip it over, Space to use it —
+ * thing), wheel to bring it closer, F to flip it over, Space to use it -
  * press the seal onto paper, open the folder or the book.
  *
  * Runs in its own small canvas above the world so the held object is lit
@@ -138,7 +138,7 @@ function Viewer({ id }: { id: ItemId }) {
   };
 
   const onKey = useEffectEvent((e: KeyboardEvent) => {
-    // While something is in your hand, keys belong to it — not to the room behind.
+    // While something is in your hand, keys belong to it - not to the room behind.
     e.stopPropagation();
     const step = 0.18;
     switch (e.code) {
@@ -176,7 +176,7 @@ function Viewer({ id }: { id: ItemId }) {
       tabIndex={-1}
       role="dialog"
       aria-modal="true"
-      aria-label={`${def.name} — qoʻlda koʻrish`}
+      aria-label={`${def.name} - qoʻlda koʻrish`}
       className="fixed inset-0 z-40 text-white outline-none"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -237,7 +237,7 @@ function Viewer({ id }: { id: ItemId }) {
         )}
         <button type="button" className="btn btn-quiet" onClick={() => (hand.spin += Math.PI)}><kbd>F</kbd> Oʻgirish</button>
         <button type="button" className="btn btn-quiet" onClick={close}><kbd>Esc</kbd> Joyiga qoʻyish</button>
-        <p className="w-full text-center text-[0.78rem] text-white/55">Sudrab aylantiring · gʻildirak yoki <kbd>+</kbd> <kbd>−</kbd> — yaqinlashtirish · <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> — burish</p>
+        <p className="w-full text-center text-[0.78rem] text-white/55">Sudrab aylantiring · gʻildirak yoki <kbd>+</kbd> <kbd>−</kbd> - yaqinlashtirish · <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> - burish</p>
       </div>
     </motion.div>
   );

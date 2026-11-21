@@ -1,5 +1,5 @@
 /**
- * "Bahs" — the multiplayer moot court. Students argue a case against each other in two teams;
+ * "Bahs" - the multiplayer moot court. Students argue a case against each other in two teams;
  * only the court (judge and clerk) is run by the machine. Nobody has ready-made answers: each
  * side studies the case file, and speaks when the judge gives it the floor.
  *
@@ -12,7 +12,7 @@ export const TeamSchema = z.enum(['A', 'B']);
 export type Team = z.infer<typeof TeamSchema>;
 export const MootSideSchema = z.enum(['claimant', 'respondent']);
 export type MootSide = z.infer<typeof MootSideSchema>;
-/** lead — opening and closing; second — evidence and questions; party — the client, answers questions (3 a side). */
+/** lead - opening and closing; second - evidence and questions; party - the client, answers questions (3 a side). */
 export const MootRoleSchema = z.enum(['lead', 'second', 'party']);
 export type MootRole = z.infer<typeof MootRoleSchema>;
 export const MootPhaseSchema = z.enum(['lobby', 'briefing', 'hearing', 'verdict']);
@@ -80,7 +80,7 @@ export type MootCaseView = z.infer<typeof MootCaseViewSchema>;
 
 const Criterion = z.object({ id: z.string(), label: z.string(), max: z.number(), claimant: z.number(), respondent: z.number(), note: z.string() });
 export const MootVerdictSchema = z.object({
-  /** null — a draw */
+  /** null - a draw */
   winner: MootSideSchema.nullable(),
   totals: z.object({ claimant: z.number(), respondent: z.number() }),
   criteria: z.array(Criterion),
@@ -88,9 +88,11 @@ export const MootVerdictSchema = z.object({
   ruling: z.array(z.string()),
   /** One line of feedback per player. */
   players: z.array(z.object({ id: z.string(), name: z.string(), side: MootSideSchema, words: z.number().int(), speeches: z.number().int(), note: z.string() })),
-  /** 'rules' — the reference scorer (form and coverage); 'model' — the court server's language model (substance). */
+  /** 'rules' - the reference scorer (form and coverage); 'model' - the court server's language model (substance). */
   engine: z.enum(['rules', 'model']),
   forfeit: z.boolean(),
+  /** The rules' reading is shown while the court server's model is still writing its verdict. */
+  pending: z.boolean().default(false),
 });
 export type MootVerdict = z.infer<typeof MootVerdictSchema>;
 

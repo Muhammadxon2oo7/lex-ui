@@ -1,6 +1,6 @@
 'use client';
 /**
- * Everything on top of the campus world. There are no "pages" here — the
+ * Everything on top of the campus world. There are no "pages" here - the
  * title screen, the character creator and free play are phases of one
  * continuous scene; this layer only adds what a game would put on screen.
  */
@@ -95,7 +95,7 @@ function Segment<T extends string>({ label, value, options, onChange }: { label:
 
 /**
  * The terminal everyone arrives at. First visit: registration. Then the
- * rooms — choose one and you are placed inside it. Walking the building is
+ * rooms - choose one and you are placed inside it. Walking the building is
  * optional ("Binoda yurish").
  */
 const noSubscribe = () => () => {};
@@ -264,7 +264,7 @@ function PlayHud({ name }: { name: string }) {
       <AnimatePresence>
         {hints && (
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="glass pointer-events-none absolute bottom-4 left-4 hidden rounded-full px-4 py-2 text-[0.78rem] text-white/80 sm:block">
-            <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> yurish · sichqoncha — qarash · <kbd>Shift</kbd> tez · gʻildirak — kamera · <kbd>E</kbd> amal · <kbd>Esc</kbd> pauza
+            <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> yurish · sichqoncha - qarash · <kbd>Shift</kbd> tez · gʻildirak - kamera · <kbd>E</kbd> amal · <kbd>Esc</kbd> pauza
           </motion.p>
         )}
       </AnimatePresence>
@@ -291,7 +291,7 @@ function Board({ onClose }: { onClose: () => void }) {
           ))}
         </ul>
         <div className="mt-5 grid gap-3 text-[0.88rem] leading-relaxed text-ink-2 sm:grid-cols-2">
-          <p><strong className="text-ink">Qanday ishlaydi.</strong> Eshik oldiga boring va <kbd className="!border-line !bg-paper text-ink-2">E</kbd> bosing. Har bir xona — alohida ish kuni: brifing, ish jarayoni, yakunda hisobot.</p>
+          <p><strong className="text-ink">Qanday ishlaydi.</strong> Eshik oldiga boring va <kbd className="!border-line !bg-paper text-ink-2">E</kbd> bosing. Har bir xona - alohida ish kuni: brifing, ish jarayoni, yakunda hisobot.</p>
           <p><strong className="text-ink">Manbalar.</strong> Qonun matnlari lex.uz saytidan soʻzma-soʻz olingan. Mentor tasdiqlamagan joylar shunday deb belgilanadi.</p>
         </div>
         <button type="button" className="btn btn-primary mt-6" onClick={onClose} autoFocus>Yopish</button>
@@ -429,7 +429,7 @@ export default function CampusClient() {
   return (
     <MotionConfig reducedMotion="user">
       <main className="relative h-dvh w-full overflow-hidden bg-[#07090d] text-white select-none">
-        <h1 className="sr-only">LexSim — huquqiy amaliyot markazi</h1>
+        <h1 className="sr-only">LexSim - huquqiy amaliyot markazi</h1>
         {boot === 'ok' && (
           <div className="absolute inset-0" inert={phase !== 'play'}>
             <CampusCanvas avatar={activeAvatar} reducedMotion={settings.reducedMotion} sensitivity={settings.sensitivity} onReady={() => setReady(true)} />

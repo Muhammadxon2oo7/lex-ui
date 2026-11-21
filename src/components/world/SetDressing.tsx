@@ -2,7 +2,7 @@
 /**
  * The small things that make an office read as a real, used place: queue
  * kiosk, radiators, notice board, exit sign, flag, switches, extinguisher.
- * Pure set dressing — none of it carries scenario logic.
+ * Pure set dressing - none of it carries scenario logic.
  */
 import { useTexture } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
@@ -113,9 +113,9 @@ function NoticeBoard() {
       ctx.fillStyle = '#16213e';
       ctx.fillRect(0, 0, 300, 70);
       label(ctx, 'ISH TARTIBI', 150, 36, 26, '#fff', 700);
-      label(ctx, 'Du–Ju  09:00–18:00', 150, 120, 22, '#16213e', 600);
-      label(ctx, 'Tushlik  13:00–14:00', 150, 156, 22, '#16213e', 500);
-      label(ctx, 'Shanba  09:00–13:00', 150, 192, 22, '#16213e', 500);
+      label(ctx, 'Du-Ju  09:00-18:00', 150, 120, 22, '#16213e', 600);
+      label(ctx, 'Tushlik  13:00-14:00', 150, 156, 22, '#16213e', 500);
+      label(ctx, 'Shanba  09:00-13:00', 150, 192, 22, '#16213e', 500);
       lines(6, 30, 240, 240);
     });
     sheet(370, 60, 290, 380, 0.03, '#eaf5ef', () => {
@@ -134,7 +134,7 @@ function NoticeBoard() {
       lines(9, 26, 86, 218);
     });
     sheet(60, 470, 560, 130, 0.01, '#fdeceb', () => {
-      label(ctx, 'Korrupsiyaga yoʻl yoʻq — ishonch telefoni', 280, 50, 24, '#b3261e', 700);
+      label(ctx, 'Korrupsiyaga yoʻl yoʻq - ishonch telefoni', 280, 50, 24, '#b3261e', 700);
       lines(2, 40, 84, 480);
     });
   });
@@ -154,7 +154,7 @@ function NoticeBoard() {
 /**
  * Flag of the Republic of Uzbekistan on an indoor pole: 1:2, blue / white /
  * green with thin red fimbriations; a white crescent and twelve five-pointed
- * stars (rows of 3, 4, 5) in the blue band at the hoist — drawn to the
+ * stars (rows of 3, 4, 5) in the blue band at the hoist - drawn to the
  * proportions of the official construction sheet (unit = 1/125 of the height
  * of a 250×125 flag). Hung from the pole it droops in soft folds.
  */
@@ -163,7 +163,7 @@ function NoticeBoard() {
  * from the official images (tools/symbols/*.svg, the drawings annexed to the
  * Law «Oʻzbekiston Respublikasining Davlat bayrogʻi toʻgʻrisida», 18.11.1991
  * No. 407-XII, and the Law «… Davlat gerbi toʻgʻrisida», 02.07.1992
- * No. 616-XII) by tools/symbols/rasterise.mjs — so the crescent, the twelve
+ * No. 616-XII) by tools/symbols/rasterise.mjs - so the crescent, the twelve
  * stars, Humo, the wreath and the «OʻZBEKISTON» ribbon are exactly theirs.
  */
 const SYMBOLS = { flag: '/assets/symbols/flag.png', emblem: '/assets/symbols/emblem.png' };
@@ -225,7 +225,7 @@ function FlagOnPole({ m, position = [-2.35, 0, 0.62], rotation = 0 }: { m: Mater
   // as the law requires.
   const texture = useSymbol(SYMBOLS.flag);
   // 1.5 × 0.75 m cloth: the hoist is fixed to the pole and the fly hangs in
-  // folds — reaching ~0.9 m from the pole, so it clears walls and furniture.
+  // folds - reaching ~0.9 m from the pole, so it clears walls and furniture.
   const cloth = useMemo(() => {
     const W = 1.5, H = 0.75;
     const geo = new THREE.PlaneGeometry(W, H, 40, 16);

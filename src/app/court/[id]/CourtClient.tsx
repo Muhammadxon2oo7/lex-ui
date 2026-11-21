@@ -3,8 +3,8 @@
  * Court hearing, conducted from the bench.
  *
  * The student presides: at every moment they choose the next procedural
- * action. The Code is always one key away (K) — open-book, as in a real
- * courtroom — and every completed step is tied to the article that governs
+ * action. The Code is always one key away (K) - open-book, as in a real
+ * courtroom - and every completed step is tied to the article that governs
  * it, quoted verbatim from lex.uz.
  */
 import dynamic from 'next/dynamic';
@@ -156,7 +156,7 @@ function Stage({ hearing, busy, error, code, setCode, choose }: { hearing: Heari
   const who = current && current.speaker !== 'system' ? name(current.speaker) : null;
 
   /**
-   * Who is on their feet — FPK 212: everyone rises when the court enters and
+   * Who is on their feet - FPK 212: everyone rises when the court enters and
    * leaves, and while the decision is read; participants give explanations,
    * testimony and answers standing.
    */
@@ -242,7 +242,7 @@ function Stage({ hearing, busy, error, code, setCode, choose }: { hearing: Heari
             />
             {heard && (
               <p className="text-[0.82rem] leading-snug text-white/65" role="status">
-                {heard.error ? heard.said : heard.ok ? <>Eshitildi: «{heard.said}»</> : <>«{heard.said}» — mos protsessual harakat topilmadi. Aniqroq ayting yoki pastdan tanlang.</>}
+                {heard.error ? heard.said : heard.ok ? <>Eshitildi: «{heard.said}»</> : <>«{heard.said}» - mos protsessual harakat topilmadi. Aniqroq ayting yoki pastdan tanlang.</>}
               </p>
             )}
           </div>
@@ -250,7 +250,7 @@ function Stage({ hearing, busy, error, code, setCode, choose }: { hearing: Heari
         <div className="min-h-[14rem]">
           {canAct && (
             <div role="group" aria-label="Protsessual harakatlar">
-              <p className="mb-1.5 text-[0.72rem] font-semibold tracking-[0.14em] text-white/55 uppercase">Raislik qiluvchi sifatida keyingi harakatingiz — ayting yoki tanlang</p>
+              <p className="mb-1.5 text-[0.72rem] font-semibold tracking-[0.14em] text-white/55 uppercase">Raislik qiluvchi sifatida keyingi harakatingiz - ayting yoki tanlang</p>
               <ul className="space-y-1.5">
                 {hearing.options.map((o, i) => (
                   <motion.li key={o.id} initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }} transition={{ ...spring, delay: i * 0.045 }}>
@@ -271,7 +271,7 @@ function Stage({ hearing, busy, error, code, setCode, choose }: { hearing: Heari
           <motion.section initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={spring} role="dialog" aria-modal="true" aria-labelledby="court-result" className="glass-light w-full max-w-2xl rounded-[28px] p-6 select-text sm:p-8">
             <p className="text-[0.72rem] font-semibold tracking-wider text-accent-ink uppercase">Sud majlisi yopildi</p>
             <h2 id="court-result" className="display mt-1 text-3xl font-semibold">Tartibga rioya: {hearing.score} / 100</h2>
-            <p className="mt-2 text-[0.92rem] text-ink-2">{hearing.done.filter((d) => d.attempts === 1).length} ta bosqich birinchi urinishda toʻgʻri, jami {hearing.total} ta. Ball faqat protsessual ketma-ketlikni oʻlchaydi — ishning mazmuni baholanmaydi.</p>
+            <p className="mt-2 text-[0.92rem] text-ink-2">{hearing.done.filter((d) => d.attempts === 1).length} ta bosqich birinchi urinishda toʻgʻri, jami {hearing.total} ta. Ball faqat protsessual ketma-ketlikni oʻlchaydi - ishning mazmuni baholanmaydi.</p>
             <ol className="scroll-soft mt-4 max-h-[42dvh] space-y-1 overflow-y-auto">
               {hearing.done.map((d, i) => {
                 const a = hearing.code.articles.find((x) => x.number === d.article)!;

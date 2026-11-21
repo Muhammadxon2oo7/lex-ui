@@ -21,7 +21,7 @@ export default function CampusCanvas({ avatar, reducedMotion, sensitivity, onRea
       gl={{ antialias: false, powerPreference: 'high-performance', stencil: false, toneMapping: THREE.NoToneMapping }}
       camera={{ fov: 55, near: 0.08, far: 400, position: [16, 7, 32] }}
       role="img"
-      aria-label="LexSim huquqiy amaliyot markazi — 3D bino, maydon va xonalar yoʻlagi"
+      aria-label="LexSim huquqiy amaliyot markazi - 3D bino, maydon va xonalar yoʻlagi"
       onCreated={() => requestAnimationFrame(onReady)}
     >
       <QualityGovernor />

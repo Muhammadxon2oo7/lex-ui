@@ -1,12 +1,12 @@
 'use client';
 /**
- * Iqtisodiy sud — a court session run by the external court backend
+ * Iqtisodiy sud - a court session run by the external court backend
  * (judge procedure tied to IPK, an LLM opposing advocate, Lex.uz RAG),
  * played in our own 3D courtroom with our own conventions:
  *
  *   · every line is presented in turn, in its speaker's voice, and the room
  *     follows it (the hall rises, the judge walks in from the service door);
- *   · the student answers in their own words — typed or spoken (T) — standing
+ *   · the student answers in their own words - typed or spoken (T) - standing
  *     (G), and addresses the court «Hurmatli sud!»;
  *   · M asks the coach (−5 points); a long answer from the opposing advocate
  *     shows as «Raqib advokat javob tayyorlamoqda…» while we poll /events;
@@ -228,7 +228,7 @@ function Room({ initial }: { initial: Snapshot }) {
   }, [canSpeak, draft, lastLine, snap.silenceSec]);
   const attention: 'rise' | 'waiting' | null = (riseNow && riseLate) || (stared && !standing) ? 'rise' : silent && canSpeak && !draft.trim() ? 'waiting' : null;
   // the spoken reprimand, firmer each time, is the judge's (court server, v1.4.2); here only the quiet nudge
-  const riseNote = riseNow && riseLate ? 'Hamma oʻrnidan turdi — siz ham turing' : stared && !standing && seatedSpeech === 1 ? 'Sudga tik turib murojaat qilinadi' : null;
+  const riseNote = riseNow && riseLate ? 'Hamma oʻrnidan turdi - siz ham turing' : stared && !standing && seatedSpeech === 1 ? 'Sudga tik turib murojaat qilinadi' : null;
 
   // the note on the last answer stays a few seconds, then gets out of the way of the next question
   const fbMsg = snap.feedback ? `${snap.feedback.optionId ?? ''}:${snap.feedback.message}` : null;
@@ -296,7 +296,7 @@ function Room({ initial }: { initial: Snapshot }) {
       await api.interact(id, 'sit').then((r) => setSnap(r.snapshot), () => {});
     });
 
-  // how the answer in the box came to be: spoken (T) or typed — reported with the turn
+  // how the answer in the box came to be: spoken (T) or typed - reported with the turn
   const spoken = useRef(false);
   const box = useRef<HTMLTextAreaElement>(null);
   // a move chip writes the opening; the student finishes the sentence (caret at the end)
@@ -529,7 +529,7 @@ function Room({ initial }: { initial: Snapshot }) {
                   ))}
                 </span>
               )}
-              {!idle && <span className="mt-1 block text-right text-[0.7rem] text-white/40">Space — davom</span>}
+              {!idle && <span className="mt-1 block text-right text-[0.7rem] text-white/40">Space - davom</span>}
             </button>
             <p className="sr-only" role="log" aria-live="polite">{current ? `${current.speaker === 'user' ? 'Siz' : role ? LABEL[role] : ''}: ${current.text}` : ''}</p>
 
@@ -570,17 +570,17 @@ function Room({ initial }: { initial: Snapshot }) {
                       send(draft);
                     }
                   }}
-                  placeholder={canSpeak ? (options.length ? 'Variantni tanlang (1–4) yoki oʻzingiz ayting…' : 'Hurmatli sud, …   (Enter — yuborish, T — aytish)') : snap.pending ? 'Raqib tomon javobini kuting…' : 'Gapni tinglang…'}
+                  placeholder={canSpeak ? (options.length ? 'Variantni tanlang (1-4) yoki oʻzingiz ayting…' : 'Hurmatli sud, …   (Enter - yuborish, T - aytish)') : snap.pending ? 'Raqib tomon javobini kuting…' : 'Gapni tinglang…'}
                   className="w-full resize-none rounded-2xl bg-white/[0.07] px-3.5 py-2.5 text-[0.98rem] leading-snug text-white outline-none placeholder:text-white/40 focus-visible:ring-2 focus-visible:ring-emerald-400 disabled:opacity-60" />
                 <div className="mt-2 flex flex-wrap items-center gap-2">
                   <Talk enabled={canSpeak} onError={(m) => setHeardSaid(m)}
                     onHeard={(said) => {
                       spoken.current = true;
-                      setHeardSaid(`«${said}» — tekshirib, yuboring`);
+                      setHeardSaid(`«${said}» - tekshirib, yuboring`);
                       setDraft((d) => (d ? `${d} ${said}` : said));
                     }} />
                   <p className="min-w-0 flex-1 truncate text-[0.78rem] text-white/55" role="status">
-                    {heardSaid ?? (standing ? 'Tik turibsiz' : 'Sudga tik turib murojaat qilinadi — G')}
+                    {heardSaid ?? (standing ? 'Tik turibsiz' : 'Sudga tik turib murojaat qilinadi - G')}
                   </p>
                   {canReveal && (
                     <button type="button" onClick={() => void reveal()} disabled={!canSpeak} title="Shu bosqich uchun javob variantlarini ochadi (−10 ball)"
@@ -630,7 +630,7 @@ function Briefing({ snap, busy, onEnter }: { snap: Snapshot; busy: boolean; onEn
         role="dialog" aria-modal="true" aria-labelledby="brief-title" className="w-full max-w-[36rem] rounded-[28px] bg-[#f7f6f2] p-6 text-[#14171f] shadow-[0_40px_120px_rgba(0,0,0,0.5)] select-text">
         <p className="text-[0.7rem] font-semibold tracking-[0.14em] text-black/45 uppercase">{b.workplace} · {snap.scenario.durationMinutes} daqiqa · {snap.mode === 'tutorial' ? 'mashq' : 'baholash'} · {LEVEL[snap.level ?? 'beginner']}</p>
         <h2 id="brief-title" className="mt-1 text-[1.35rem] leading-tight font-semibold">{snap.scenario.title}</h2>
-        <p className="mt-1 text-[0.95rem] font-medium">Siz — {b.position}</p>
+        <p className="mt-1 text-[0.95rem] font-medium">Siz - {b.position}</p>
         <ul className="mt-4 space-y-1.5 text-[0.92rem] leading-snug">
           {b.task.map((t) => <li key={t} className="flex gap-2"><span aria-hidden className="text-emerald-600">•</span><span>{t}</span></li>)}
         </ul>
@@ -647,10 +647,10 @@ function Briefing({ snap, busy, onEnter }: { snap: Snapshot; busy: boolean; onEn
           </div>
         )}
         <ul className="mt-4 space-y-1 text-[0.82rem] text-black/60">
-          <li>• {snap.level === 'advanced' ? 'Javobni faqat oʻzingiz aytasiz yoki yozasiz — variant va maslahat yoʻq; tahlil oxirida.' : snap.level === 'intermediate' ? 'Javobni oʻzingiz aytasiz yoki yozasiz; kerak boʻlsa variantlarni ochasiz (−10).' : 'Variantni tanlang (1–4) yoki oʻz soʻzingiz bilan ayting/yozing.'} <kbd className="!border-black/10 !bg-black/5">T</kbd> — ovoz.</li>
+          <li>• {snap.level === 'advanced' ? 'Javobni faqat oʻzingiz aytasiz yoki yozasiz - variant va maslahat yoʻq; tahlil oxirida.' : snap.level === 'intermediate' ? 'Javobni oʻzingiz aytasiz yoki yozasiz; kerak boʻlsa variantlarni ochasiz (−10).' : 'Variantni tanlang (1-4) yoki oʻz soʻzingiz bilan ayting/yozing.'} <kbd className="!border-black/10 !bg-black/5">T</kbd> - ovoz.</li>
           <li>• Sudga tik turib (<kbd className="!border-black/10 !bg-black/5">G</kbd>) va «Hurmatli sud!» deb murojaat qilinadi.</li>
-          {snap.mode === 'tutorial' && snap.hintsAllowed !== false && <li>• <kbd className="!border-black/10 !bg-black/5">M</kbd> maslahat — nima deyish kerakligini koʻrsatadi (−5 ball).</li>}
-          {snap.engine === 'llm' && snap.level === 'advanced' && <li>• Kutilmagan dalilga raqib tomon javobini til modeli tuzadi — bunday paytda biroz kutiladi.</li>}
+          {snap.mode === 'tutorial' && snap.hintsAllowed !== false && <li>• <kbd className="!border-black/10 !bg-black/5">M</kbd> maslahat - nima deyish kerakligini koʻrsatadi (−5 ball).</li>}
+          {snap.engine === 'llm' && snap.level === 'advanced' && <li>• Kutilmagan dalilga raqib tomon javobini til modeli tuzadi - bunday paytda biroz kutiladi.</li>}
         </ul>
         <div className="mt-6 flex flex-wrap gap-2">
           <button type="button" className="btn btn-primary" onClick={onEnter} disabled={busy} autoFocus>{busy ? 'Kirilmoqda…' : 'Majlis zaliga kirish'}</button>

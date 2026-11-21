@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import MootClient from './MootClient';
 
-export const metadata: Metadata = { title: 'Bahs — xona' };
+export const metadata: Metadata = { title: 'Bahs - xona' };
 
 export default function MootRoomPage() {
   return (

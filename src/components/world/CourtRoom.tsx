@@ -1,20 +1,20 @@
 'use client';
 /**
- * Courtroom — laid out after real Uzbek district courtrooms (reference:
+ * Courtroom - laid out after real Uzbek district courtrooms (reference:
  * press photographs of open hearings, e.g. daryo.uz, 2020):
  *
  *   · plain light plaster walls, a stepped (tray) ceiling with square LED panels;
  *   · a raised podium; the bench and its high-backed carved chairs in dark
  *     mahogany, a panelled backdrop with a pediment and the round state
  *     State Emblem above the presiding judge (the Law on Courts requires it in
- *     the courtroom — rendered from the official image, see `StateEmblem`);
+ *     the courtroom - rendered from the official image, see `StateEmblem`);
  *   · two dark doors either side of the backdrop (the judges' door is one of them);
  *   · the parties' tables along the side walls, facing each other across the
  *     floor; the witness at a lectern in the middle, facing the bench;
  *   · an air-conditioner and a wall screen for video-conference hearings.
  *
  * Two points of view: the presiding judge's (the bench exercise) and the
- * claimant's advocate's — you, at the claimant's table.
+ * claimant's advocate's - you, at the claimant's table.
  */
 
 import { Canvas, useFrame } from '@react-three/fiber';
@@ -66,7 +66,7 @@ const SEATS: Record<Exclude<Speaker, 'judge' | 'system'>, { position: V3; rotati
   witness: { position: [0, 0, -0.45], rotation: Math.PI, at: [0, 1.6, -0.9] },
 };
 
-/** The value, but only after a delay — people do not all move on the same frame. */
+/** The value, but only after a delay - people do not all move on the same frame. */
 function useLag<T>(value: T, ms: number): T {
   const [lagged, setLagged] = useState(value);
   useEffect(() => {
@@ -213,7 +213,7 @@ function Backdrop({ wood }: { wood: THREE.Material }) {
 /**
  * A dark door. The judges' one is a real doorway onto a short lit corridor;
  * it swings open into the hall (hinged on the wall side, clear of the judge's
- * path) when the judge is at it — driven by where the judge actually is.
+ * path) when the judge is at it - driven by where the judge actually is.
  */
 function Door({ x, judge, m }: { x: number; judge?: { current: THREE.Vector3 }; m?: Materials }) {
   const leaf = useRef<THREE.Group>(null);
@@ -222,7 +222,7 @@ function Door({ x, judge, m }: { x: number; judge?: { current: THREE.Vector3 }; 
     if (!judge || !leaf.current) return;
     const near = Math.hypot(judge.current.x - JUDGE_DOOR[0], judge.current.z - JUDGE_DOOR[1]) < 1.25;
     leaf.current.rotation.y = THREE.MathUtils.damp(leaf.current.rotation.y, near ? 1.45 : 0, near ? 4 : 2.5, dt);
-    // the latch as it opens, the thud as it shuts — heard from where you sit
+    // the latch as it opens, the thud as it shuts - heard from where you sit
     const level = Math.min(1, 3 / Math.max(1, camera.position.distanceTo(_door.set(x, 1.1, BACK))));
     if (near && was.current === 'shut') {
       was.current = 'open';
@@ -238,7 +238,7 @@ function Door({ x, judge, m }: { x: number; judge?: { current: THREE.Vector3 }; 
       {m ? (
         <>
           {/* frame round the opening */}
-          {/* frame: the head sits a little below the lintel and inside the jambs — no shared planes */}
+          {/* frame: the head sits a little below the lintel and inside the jambs - no shared planes */}
           {[-1, 1].map((k) => <Box key={k} m={black} size={[0.05, 2.2, 0.26]} position={[k * (DOOR_HALF + 0.005), 1.1, -0.11]} />)}
           <Box m={black} size={[1.04, 0.05, 0.25]} position={[0, 2.145, -0.11]} />
           {/* threshold: the podium level carries on through the wall */}
@@ -447,7 +447,7 @@ type CourtProps = {
   /**
    * The room's attention is on you without you speaking: you stayed seated when everyone rose,
    * you spoke without rising, or the court waits for your answer. Heads turn to you (when nobody
-   * else speaks) and the judge's face hardens — the room's own way of saying "stand up".
+   * else speaks) and the judge's face hardens - the room's own way of saying "stand up".
    */
   attention?: 'rise' | 'waiting' | null;
   /** Things placed in the room from outside (the papers on your table). */
@@ -493,7 +493,7 @@ function Scene({ speaker, witnessPresent, witnessCalled, standing, view = 'judge
   };
   // whoever speaks holds the room; with nobody speaking, the room's attention may still be on you
   const talker = advocateSpeaking || (attention && (!speaker || speaker === 'system')) ? 'advocate' : speaker;
-  // everyone looks at whoever is speaking — at you only when you speak
+  // everyone looks at whoever is speaking - at you only when you speak
   const gaze = (self: Speaker): V3 | undefined => {
     if (!advocate) return EYE;
     if (!talker || talker === self || talker === 'system') return self === 'judge' ? undefined : judgePresent ? JUDGE_SEAT.at : undefined;

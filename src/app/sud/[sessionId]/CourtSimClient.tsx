@@ -227,7 +227,8 @@ function Room({ initial }: { initial: Snapshot }) {
     };
   }, [canSpeak, draft, lastLine, snap.silenceSec]);
   const attention: 'rise' | 'waiting' | null = (riseNow && riseLate) || (stared && !standing) ? 'rise' : silent && canSpeak && !draft.trim() ? 'waiting' : null;
-  const riseNote = riseNow && riseLate ? 'Hamma oʻrnidan turdi — siz ham turing' : stared && !standing ? (seatedSpeech >= 3 ? 'Sudya norozi: sudga faqat tik turib murojaat qilinadi' : seatedSpeech === 2 ? 'Yana oʻtirgan holda gapirdingiz — hamma sizga qaradi' : 'Sudga tik turib murojaat qilinadi') : null;
+  // the spoken reprimand, firmer each time, is the judge's (court server, v1.4.2); here only the quiet nudge
+  const riseNote = riseNow && riseLate ? 'Hamma oʻrnidan turdi — siz ham turing' : stared && !standing && seatedSpeech === 1 ? 'Sudga tik turib murojaat qilinadi' : null;
 
   // the note on the last answer stays a few seconds, then gets out of the way of the next question
   const fbMsg = snap.feedback ? `${snap.feedback.optionId ?? ''}:${snap.feedback.message}` : null;
@@ -290,6 +291,9 @@ function Room({ initial }: { initial: Snapshot }) {
       audio.unlock(useGame.getState().settings.volume);
       setSnap((await api.interact(id, 'start')).snapshot);
       setSnap((await api.interact(id, 'sit-at-desk')).snapshot);
+      // say plainly that you are seated: the court then knows when you address it without rising
+      // (a posture it never heard of is "unknown" and earns no reprimand at all)
+      await api.interact(id, 'sit').then((r) => setSnap(r.snapshot), () => {});
     });
 
   // how the answer in the box came to be: spoken (T) or typed — reported with the turn
@@ -317,6 +321,8 @@ function Room({ initial }: { initial: Snapshot }) {
     // the student's own voice goes into the practice record with what was sent
     const wav = inputMode === 'voice' ? takeVoice() : (dropVoice(), null);
     if (wav) void saveVoice(id, said, wav);
+    // the room as the answer was given (answers are sent only once every line before has been heard)
+    const presence = { heardTurnId: snap.turns.at(-1)?.id, standing, ...(wav ? { spokenSeconds: Math.round(((wav.byteLength - 44) / 32000) * 10) / 10 } : {}) };
     setDraft('');
     setHint(null);
     spoken.current = false;
@@ -324,7 +330,7 @@ function Room({ initial }: { initial: Snapshot }) {
     void run(async () => {
       try {
         setFbGone(null); // the same note may come again for a new answer
-        await settle((await api.turn(id, clientTurnId, { text: said }, { inputMode })).snapshot);
+        await settle((await api.turn(id, clientTurnId, { text: said }, { inputMode, presence })).snapshot);
       } catch (e) {
         setDraft(said); // nothing is lost: send it again (the same id would be answered once)
         throw e;
@@ -342,7 +348,7 @@ function Room({ initial }: { initial: Snapshot }) {
     setHint(null);
     audio.tick();
     setFbGone(null);
-    void run(async () => settle((await api.turn(id, clientTurnId, { optionId }, { inputMode: 'option' })).snapshot));
+    void run(async () => settle((await api.turn(id, clientTurnId, { optionId }, { inputMode: 'option', presence: { heardTurnId: snap.turns.at(-1)?.id, standing } })).snapshot));
   };
   const reveal = () =>
     run(async () => {
@@ -365,7 +371,9 @@ function Room({ initial }: { initial: Snapshot }) {
   const toggleStand = () =>
     run(async () => {
       audio.chair();
-      setSnap((await api.interact(id, standing ? 'sit' : 'stand')).snapshot);
+      // with the line being spoken at that moment (e.g. rising while the opponent speaks)
+      const during = current && current.speaker === 'npc' && !idle ? { during: { turnId: current.id, ...(current.role ? { role: current.role } : {}) } } : undefined;
+      setSnap((await api.interact(id, standing ? 'sit' : 'stand', during)).snapshot);
     });
 
   const askHint = () =>
@@ -490,7 +498,7 @@ function Room({ initial }: { initial: Snapshot }) {
             )}
             {riseNote && (
               <motion.p key="rise" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={spring} role="status"
-                className={`mx-auto mb-2 flex w-fit max-w-full items-center gap-2 rounded-full px-4 py-1.5 text-[0.84rem] ${seatedSpeech >= 3 && !riseNow ? 'bg-[#6b221c]/95' : 'bg-[#5a4313]/95'}`}>
+                className={`mx-auto mb-2 flex w-fit max-w-full items-center gap-2 rounded-full px-4 py-1.5 text-[0.84rem] bg-[#5a4313]/95`}>
                 <span className="min-w-0">{riseNote}</span>
                 <button type="button" onClick={() => void toggleStand()} className="shrink-0 rounded-full bg-white/15 px-2.5 py-0.5 text-[0.76rem] font-semibold hover:bg-white/25"><kbd className="!bg-white/20">G</kbd> Turish</button>
               </motion.p>

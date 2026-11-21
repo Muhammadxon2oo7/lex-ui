@@ -180,7 +180,7 @@ export default function ReportClient() {
 
       {record && (
         <div className="mt-4">
-          <PracticeRecord meta={record.meta} lines={record.lines} analysis={record.analysis} scope={sessionId} xapi={() => ({ session: sessionId, scenario: report.scenarioId, score: report.scoreTotal, outcome: report.outcome.id, criteria: report.criteria, decisions: report.decisions ?? [], turns: report.turns.map(({ id, speaker, role, text, at }) => ({ id, speaker, role, text, at })) })} />
+          <PracticeRecord meta={record.meta} lines={record.lines} analysis={record.analysis} scope={sessionId} xapi={() => ({ session: sessionId, scenario: report.scenarioId, score: report.scoreTotal, outcome: report.outcome.id, criteria: report.criteria, decisions: report.decisions ?? [], turns: report.turns.map(({ id, speaker, role, text, at, engine }) => ({ id, speaker, role, text, at, engine })), engines: report.turns.reduce<Record<string, number>>((n, t) => (t.engine ? { ...n, [t.engine]: (n[t.engine] ?? 0) + 1 } : n), {}) })} />
         </div>
       )}
 

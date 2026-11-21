@@ -72,6 +72,8 @@ export const TurnSchema = z.object({
   text: z.string(),
   at: z.string(),
   emotion: EmotionSchema.optional(),
+  /** Court sessions: who wrote the line — a canonical script line, the reply bank, or the language model (v1.4.1). */
+  engine: z.enum(['script', 'bank', 'llm']).optional().catch(undefined),
   /** Court sessions: a gesture with the line (nod, shake-head, lean-in…); unknown ones are dropped. */
   gesture: GestureSchema.optional().catch(undefined),
   /** Court sessions: how the listeners take this line (the opponent pleased by a refusal, the client worried…). */
@@ -318,6 +320,13 @@ export const TurnRequestSchema = z
     /** How it was given, and the recogniser's confidence for a spoken answer. */
     inputMode: InputModeSchema.optional(),
     stt: z.object({ confidence: z.number().min(0).max(1), durationMs: z.number().int().nonnegative() }).partial().optional(),
+    /**
+     * Court sessions: what the room looked like when the answer was given. The player sends an answer only
+     * after every line before it has been heard to the end (never over someone), so `heardTurnId` is the last
+     * line the student heard; `spokenSeconds` is the length of a spoken answer (long monologues); `standing`
+     * is the student's posture at that moment.
+     */
+    presence: z.object({ heardTurnId: z.string().max(64), spokenSeconds: z.number().min(0).max(600), standing: z.boolean() }).partial().optional(),
   })
   .refine((v) => Boolean(v.optionId) !== Boolean(v.text), { message: 'optionId xor text' });
 
@@ -325,6 +334,8 @@ export const InteractionRequestSchema = z.object({
   clientActionId: z.string().min(8).max(64),
   // 'stand' / 'sit' are understood by the court backend only (answers are given standing)
   action: z.enum(['start', 'enter-room', 'sit-at-desk', 'open-terminal', 'inspect-phone', 'stand', 'sit', 'reveal-options', 'silence']),
+  /** Court sessions, stand / sit: the line being spoken at that moment (e.g. standing while the opponent speaks). */
+  context: z.object({ during: z.object({ turnId: z.string().max(64), role: z.enum(['judge', 'secretary', 'opponent', 'witness', 'expert']).optional() }) }).partial().optional(),
 });
 
 export const DocumentRequestSchema = z.object({

@@ -26,8 +26,8 @@ async function remoteVoiceStatus() {
   if (remoteVoice && Date.now() - remoteVoice.at < 60_000) return remoteVoice;
   try {
     const r = (await fetch(`${REMOTE}/voice/status`, { cache: 'no-store', signal: AbortSignal.timeout(3000) }).then((x) => x.json())) as { tts?: string | null; stt?: string | null; sttEngine?: string | null };
-    // v1.4.1 reports `stt: null` while recognition works (its engine is named in `sttEngine`): trust the engine
-    remoteVoice = { at: Date.now(), tts: Boolean(r.tts), stt: Boolean(r.stt || r.sttEngine) };
+    // since v1.4.2 `stt` is the engine actually up ("gpu" / "cpu"), null when none is
+    remoteVoice = { at: Date.now(), tts: Boolean(r.tts), stt: Boolean(r.stt) };
   } catch {
     remoteVoice = { at: Date.now(), tts: false, stt: false };
   }

@@ -1,0 +1,127 @@
+# LexSim — holat va reja
+
+**Yangilangan:** 2026-11-21. Backend v1.4.2, frontend `main`.
+**Kimlar uchun:** loyiha egasi, backend dasturchisi, mentor.
+
+Bu **yagona boshqaruv hujjati**. Nima ishlayotgani, kim nima qilishi va qaysi tartibda — shu yerda. Batafsil texnik topshiriqlar ikkita faylda:
+- `LexSim_Backend_Vazifalar_v14.md` — 10 ssenariy, ssenariy paketi, improvizatsiya, ovoz qatlamlari, sahna (`scene`);
+- `LexSim_Backend_Vazifalar_v15.md` — ovozlar palitrasi, emotsiya va imo-ishora, yuridik tekshiruv varaqasi, "tirik" zal.
+
+Eski javoblar va topshiriqlar `arxiv/` papkasida turadi, ular endi kerak emas.
+
+---
+
+## 1. Hozir ishlayapti (21-noyabr, jonli tekshirildi)
+
+| Qism | Holat |
+|---|---|
+| Server `lex-api.e-investment.uz`, HTTPS, CORS | ✅ |
+| Jonli sud: aniqlashtirish, savol, iltimosnoma, e'tiroz, kelishuv, vakolatsiz holat | ✅ 8/8 |
+| To'liq oqim brauzerda, ikkala rol, uch daraja, hisobotgacha | ✅ xatosiz |
+| Ovoz: sud zali 44, "Ish yo'li" 97 ta gap | ✅ hammasi keshda, 429 yo'q |
+| STT GPU'da, status to'g'ri | ✅ (GPU yoniq bo'lsa) |
+| Har bir gapda emotsiya va imo-ishora, tinglovchilar munosabati | ✅ keladi va zalda ijro etiladi |
+| Kuchayib boradigan tanbeh (o'tirib gapirish, «Hurmatli sud» demaslik) | ✅ 1 → 2 → 3 |
+| Terminal: bo'limlar, bosqichlar zanjiri, tasodifiy ish | ✅ |
+| Har bir ish o'z sahnasida: aktyorlar, stoldagi hujjatlar, ekran | ✅ (10 tur uchun preset) |
+| Amaliyot yozuvi: transkript, talabaning o'z ovozi, butun majlis audiosi, PDF, Word, WAV | ✅ |
+| "Tirik" zal: turmagan talabaga hamma qaraydi, jimlikda sudya kutadi | ✅ |
+
+---
+
+## 2. Kim nima qiladi
+
+### 🔴 Loyiha egasi (siz) — boshqa ishlar shunga bog'liq
+
+| # | Ish | Nima ochiladi |
+|---|---|---|
+| E1 | **`LEXSIM_REMOTE_KEY`** ni backenddan shaxsan olib, Netlify'ga va `.env.local` ga qo'yish | "Ish yo'li" va DXM'da server ovozi, NLU, ishni saqlash, xAPI |
+| E2 | **GPU kompyuter doim yoniq bo'lishi** (uxlash rejimi o'chirilsin) | Klon ovozlar, tez STT. U o'chsa, hamma narsa sekin va boshqa ovozda ishlaydi |
+| E3 | **Ovoz namunalari va rozilik:** 3 sudya, 2 kotib, 4 vakil, 3 taraf, 2 guvoh; ayol ovozlari muhim | Har bir ish o'zgacha eshitiladi, ayol aktyorlar ayol ovozida gapiradi |
+| E4 | **Mentor yoki huquqshunos** topib, 9 ta yangi ssenariyning huquqiy mazmunini yozdirish va imzolatish | 10 ta ish (format va tekshiruvchi tayyor) |
+| E5 | **Tez LLM API kaliti** (Gemini Flash yoki Groq) | `advanced` darajada erkin nutqqa 1–3 s javob (hozir 7–20 s) |
+| E6 | **Yozuvlarni saqlash siyosati:** muddat (taklif — 180 kun), shifrlash kaliti, o'chirish tartibi | O'qituvchi panelida talabalar yozuvi (`POST /records`) |
+
+### 🟠 Backend dasturchisi — hozir qilinadigan
+
+| # | Ish | Qayerda batafsil |
+|---|---|---|
+| B1 | **Tik turish holati noma'lum bo'lsa, tanbeh ishlamaydi.** Talaba G'ni hech bosmasa, `standing` `null` bo'lib qoladi va sudya hech qachon tanbeh bermaydi. `sit-at-desk` dan keyin standart holat `false` bo'lsin. (Frontend vaqtincha zalga kirishda `sit` yuboradi.) | — |
+| B2 | **Yangi signallarni ishlatish.** Siz so'ragan "kim gapiryapti" signali tayyor, pastdagi 3-bo'limga qarang. Gap bo'lish, raqib gapirganda tik turish va 90 s dan uzun nutq uchun tanbeh zinapoyasiga ulang | v15 7.2, 7.4 |
+| B3 | STT GPU'da ≤ 2,5 s (hozir ~4 s, tunnel sababli) | v15 1.2 |
+| B4 | Palitra kelgach: `scene.voices`, emotsiya variantlarini render qilish | v15 2 |
+| B5 | Mentor paketi kelgach: 9 ssenariy, linterga sana va summa tekshiruvi, qaror qoidalari | v14 1, 7; v15 4 |
+| B6 | E5 dan keyin: improvizatsiya ≤ 3 s, «qisqa bo'lak + tayyor javob», jonli gap klon ovozda | v14 2, 5 |
+| B7 | E6 dan keyin: `POST /records`, `GET /teacher/records` | v15 5 |
+| B8 | `npcTurn.audio = {id, durationMs}` | v14 5.6 |
+
+### 🟢 Frontend — keyingi navbat
+
+| # | Ish |
+|---|---|
+| F1 | E1 dan keyin: kalitli yo'llarni (NLU, saqlash, xAPI, har xonada ovoz) jonli sinash va hisobot yozish |
+| F2 | B7 dan keyin: «O'qituvchiga yuborish» tugmasi, rozilik oynasi |
+| F3 | Zal backlogi: kotib yozib o'tiradi, raqib va mijoz pichirlashadi, zalning yengil fon tovushi |
+| F4 | Netlify uchun server holatini Redis'ga ko'chirish. DXM va "Ish yo'li" sessiyalari serverless'da yo'qolmasligi uchun. Hozir faqat sud sessiyasi himoyalangan |
+| F5 | Har bir yangi ssenariy kelganda: sahna, ovozlar va hujjatlarni ko'rib chiqish, QA |
+
+### 🔵 Mentor
+
+| # | Ish |
+|---|---|
+| M1 | 9 ta yangi ssenariy: faktlar, dalillar, moddalar (faqat bazadan), ideal yo'l, qaror qoidalari |
+| M2 | Har bir ssenariy uchun tekshiruv varaqasini imzolash (v15 4.5) |
+| M3 | Ishlatilayotgan moddalarga `verifiedAt` qo'yish; tartib buzilishi choralari uchun moddalar (v15 7.2) |
+
+---
+
+## 3. Backend so'ragan signal — tayyor (v1.4.2 «Sizdan kerak», 3-band)
+
+**Frontend kafolati:** talabaning javobi faqat oldingi barcha gaplar oxirigacha eshitilgandan keyin yuboriladi. O'yinchi NPC gapirayotganda javob yuborishga ruxsat bermaydi.
+
+**`POST /sessions/{id}/turns`** — yangi `presence` maydoni:
+```json
+{ "clientTurnId": "…", "text": "…", "inputMode": "voice",
+  "presence": { "heardTurnId": "t_41", "spokenSeconds": 94.2, "standing": false } }
+```
+- `heardTurnId` — talaba oxirigacha eshitgan oxirgi gap;
+- `spokenSeconds` — ovozli javob davomiyligi (90 s chegarasi uchun);
+- `standing` — javob paytidagi holat.
+
+**`POST /sessions/{id}/interactions`** (`stand` / `sit`) — yangi `context` maydoni:
+```json
+{ "clientActionId": "…", "action": "stand", "context": { "during": { "turnId": "t_42", "role": "opponent" } } }
+```
+Bu maydon talaba turgan yoki o'tirgan paytda kim gapirayotganini bildiradi: «raqib gapirayotganda tik turdi».
+
+Ikkalasi ham hozir serverga yuborilmoqda va `200` qaytadi. To'liq sxema: `contracts.schema.json`.
+
+---
+
+## 4. Tartib (qaysi ketma-ketlikda)
+
+1. **E1** — kalit va **E2** — GPU doim yoniq. Bu bugun.
+2. **B1, B2** — kichik, darhol.
+3. **E4 → M1, M2 → B5 → F5** — ssenariylar. Eng uzun yo'l, shuning uchun mentorni hoziroq toping.
+4. **E3 → B4** — ovozlar palitrasi.
+5. **E5 → B6** — tez improvizatsiya.
+6. **E6 → B7 → F2** — o'qituvchi paneli.
+7. **F4** — barqaror hosting (Netlify'da qolsangiz, majburiy).
+
+---
+
+## 5. Tekshirish buyruqlari (frontend repo, `lexsim-web`)
+
+```bash
+curl -s https://lex-api.e-investment.uz/api/v1/health      # version, voice.gpu, coverage
+node tools/qa/live.mjs                                      # jonli sud, 8/8
+node tools/qa/voice-coverage.mjs                            # FAIL 0, rate-limited waits 0
+node tools/qa/economic.mjs                                  # brauzerda to'liq oqim, konsolda xato yo'q
+```
+
+**Backendga beriladigan fayllar:**
+- shu hujjat;
+- `LexSim_Backend_Vazifalar_v14.md`;
+- `LexSim_Backend_Vazifalar_v15.md`;
+- `contracts.schema.json`;
+- `lines.json`.

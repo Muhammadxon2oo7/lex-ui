@@ -72,9 +72,9 @@ export const api = {
   createSession: (scenarioId: string, mode: SessionMode, level?: Level): Promise<Snapshot> =>
     call(SnapshotEnvelope, '/sessions', { scenarioId, mode, ...(level ? { level } : {}) }).then((r) => r.snapshot),
   getSession: (id: string): Promise<Snapshot> => call(SnapshotEnvelope, `/sessions/${id}`).then((r) => r.snapshot),
-  interact: (id: string, action: 'start' | 'enter-room' | 'sit-at-desk' | 'open-terminal' | 'inspect-phone' | 'stand' | 'sit' | 'reveal-options' | 'silence'): Promise<MutationResponse> =>
-    call(MutationResponseSchema, `/sessions/${id}/interactions`, { clientActionId: newId(), action }),
-  turn: (id: string, clientTurnId: string, reply: { text: string } | { optionId: string }, meta?: { inputMode?: InputMode; stt?: { confidence?: number; durationMs?: number } }): Promise<MutationResponse> =>
+  interact: (id: string, action: 'start' | 'enter-room' | 'sit-at-desk' | 'open-terminal' | 'inspect-phone' | 'stand' | 'sit' | 'reveal-options' | 'silence', context?: { during?: { turnId: string; role?: 'judge' | 'secretary' | 'opponent' | 'witness' | 'expert' } }): Promise<MutationResponse> =>
+    call(MutationResponseSchema, `/sessions/${id}/interactions`, { clientActionId: newId(), action, ...(context ? { context } : {}) }),
+  turn: (id: string, clientTurnId: string, reply: { text: string } | { optionId: string }, meta?: { inputMode?: InputMode; stt?: { confidence?: number; durationMs?: number }; presence?: { heardTurnId?: string; spokenSeconds?: number; standing?: boolean } }): Promise<MutationResponse> =>
     // same clientTurnId on the retry → the server answers once (idempotent)
     call(MutationResponseSchema, `/sessions/${id}/turns`, { clientTurnId, ...reply, ...meta }, 0, 190_000),
   document: (id: string, draft: DocumentDraft, submit: boolean): Promise<MutationResponse> =>

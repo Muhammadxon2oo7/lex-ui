@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "LexSim API contracts",
-  "generated": "2026-11-21T02:28:01.728Z",
+  "generated": "2026-11-21T02:54:50.852Z",
   "$defs": {
     "AppealRequest": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -311,6 +311,14 @@
                   "uncertain",
                   "calm",
                   "reassured"
+                ]
+              },
+              "engine": {
+                "type": "string",
+                "enum": [
+                  "script",
+                  "bank",
+                  "llm"
                 ]
               },
               "gesture": {
@@ -967,6 +975,33 @@
             "reveal-options",
             "silence"
           ]
+        },
+        "context": {
+          "type": "object",
+          "properties": {
+            "during": {
+              "type": "object",
+              "properties": {
+                "turnId": {
+                  "type": "string",
+                  "maxLength": 64
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "judge",
+                    "secretary",
+                    "opponent",
+                    "witness",
+                    "expert"
+                  ]
+                }
+              },
+              "required": [
+                "turnId"
+              ]
+            }
+          }
         }
       },
       "required": [
@@ -1053,6 +1088,14 @@
                               "uncertain",
                               "calm",
                               "reassured"
+                            ]
+                          },
+                          "engine": {
+                            "type": "string",
+                            "enum": [
+                              "script",
+                              "bank",
+                              "llm"
                             ]
                           },
                           "gesture": {
@@ -1238,6 +1281,14 @@
                               "uncertain",
                               "calm",
                               "reassured"
+                            ]
+                          },
+                          "engine": {
+                            "type": "string",
+                            "enum": [
+                              "script",
+                              "bank",
+                              "llm"
                             ]
                           },
                           "gesture": {
@@ -2111,6 +2162,14 @@
                       "uncertain",
                       "calm",
                       "reassured"
+                    ]
+                  },
+                  "engine": {
+                    "type": "string",
+                    "enum": [
+                      "script",
+                      "bank",
+                      "llm"
                     ]
                   },
                   "gesture": {
@@ -3171,6 +3230,14 @@
                         "reassured"
                       ]
                     },
+                    "engine": {
+                      "type": "string",
+                      "enum": [
+                        "script",
+                        "bank",
+                        "llm"
+                      ]
+                    },
                     "gesture": {
                       "type": "string",
                       "enum": [
@@ -3354,6 +3421,14 @@
                         "uncertain",
                         "calm",
                         "reassured"
+                      ]
+                    },
+                    "engine": {
+                      "type": "string",
+                      "enum": [
+                        "script",
+                        "bank",
+                        "llm"
                       ]
                     },
                     "gesture": {
@@ -4229,6 +4304,14 @@
                   "reassured"
                 ]
               },
+              "engine": {
+                "type": "string",
+                "enum": [
+                  "script",
+                  "bank",
+                  "llm"
+                ]
+              },
               "gesture": {
                 "type": "string",
                 "enum": [
@@ -4735,6 +4818,23 @@
               "maximum": 9007199254740991
             }
           }
+        },
+        "presence": {
+          "type": "object",
+          "properties": {
+            "heardTurnId": {
+              "type": "string",
+              "maxLength": 64
+            },
+            "spokenSeconds": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 600
+            },
+            "standing": {
+              "type": "boolean"
+            }
+          }
         }
       },
       "required": [
@@ -4778,6 +4878,14 @@
             "uncertain",
             "calm",
             "reassured"
+          ]
+        },
+        "engine": {
+          "type": "string",
+          "enum": [
+            "script",
+            "bank",
+            "llm"
           ]
         },
         "gesture": {

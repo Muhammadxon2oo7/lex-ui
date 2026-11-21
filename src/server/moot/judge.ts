@@ -52,7 +52,7 @@ export function ruleVerdict(c: MootCase, agenda: MootStep[], transcript: MootEnt
       return [side, {
         participation: steps.length ? Math.round((used / steps.length) * 20) : 0,
         manners: foul ? 0 : openings.length ? Math.round((polite / openings.length) * 15) : 0,
-        facts: Math.round((coverage(all, c.points[side]) / c.points[side].length) * 30),
+        facts: c.points[side].length ? Math.round((coverage(all, c.points[side]) / c.points[side].length) * 30) : 0,
         rebuttal: Math.round((Math.min(3, coverage(later, c.points[other])) / 3) * 20),
         legal: Math.round((Math.min(3, legal) / 3) * 15),
         foul,

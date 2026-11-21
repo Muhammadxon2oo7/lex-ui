@@ -353,7 +353,7 @@ function member(r: Room, owner: string | undefined): Player {
   return p;
 }
 
-export function createRoom(owner: string, input: { name: string; avatar: 'man' | 'woman'; size: number; assign: 'pick' | 'random' }): MootRoom {
+export function createRoom(owner: string, input: { name: string; avatar: 'man' | 'woman'; size: number; assign: 'pick' | 'random' }, file: MootCase = MOOT_CASES[DEFAULT_CASE]): MootRoom {
   sweep();
   if (rooms.size > 300) throw new HttpError(503, 'rooms_full', 'Hozir xonalar juda koʻp. Birozdan soʻng urinib koʻring.');
   // a code people can read aloud: no 0/O, 1/I
@@ -363,7 +363,7 @@ export function createRoom(owner: string, input: { name: string; avatar: 'man' |
   while (rooms.has(code));
   const host: Player = { id: playerId(owner, code), owner, name: input.name, avatar: input.avatar, team: 'A', role: null, ready: false, host: true, seen: Date.now() };
   const r: Room = {
-    code, version: 1, phase: 'lobby', size: input.size, assign: input.assign, case: MOOT_CASES[DEFAULT_CASE], players: [host], sides: null, agenda: [], step: 0, speaker: null, endsAt: null,
+    code, version: 1, phase: 'lobby', size: input.size, assign: input.assign, case: file, players: [host], sides: null, agenda: [], step: 0, speaker: null, endsAt: null,
     transcript: [], chat: { A: [], B: [] }, audio: new Map(), audioBytes: 0, verdict: null, deciding: false, seq: 0, timer: null, waiters: new Set(), createdAt: Date.now(),
   };
   rooms.set(code, r);

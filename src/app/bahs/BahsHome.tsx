@@ -4,7 +4,9 @@
  * No accounts: a name and an avatar, kept in this browser like the rest of LexSim.
  */
 import { useRouter } from 'next/navigation';
-import { useState, useSyncExternalStore } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState, useSyncExternalStore } from 'react';
+import { library } from '@/game/library';
 import { ApiError } from '@/game/api';
 import { moot } from '@/game/moot';
 import { getProfile, saveProfile, type AvatarModel } from '@/game/profile';
@@ -40,6 +42,17 @@ export default function BahsHome() {
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState<'create' | 'join' | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // the case to argue: the built-in one, or one approved on the court server (?case= from a domain page)
+  const asked = useSearchParams().get('case');
+  const [cases, setCases] = useState<{ id: string; title: string }[]>([]);
+  const [caseId, setCaseId] = useState<string>(asked ?? 'ijara');
+  useEffect(() => {
+    let alive = true;
+    library.mootCases().then((list) => alive && setCases(list.filter((c) => c.id !== 'ijara')), () => {});
+    return () => {
+      alive = false;
+    };
+  }, []);
   const who = (name ?? saved?.name ?? '').trim();
   const look = avatar ?? saved?.avatar ?? 'man';
   const ok = who.length >= 2;
@@ -50,7 +63,7 @@ export default function BahsHome() {
     setError(null);
     saveProfile({ name: who, avatar: look, role: saved?.role ?? 'student' });
     try {
-      const room = kind === 'create' ? await moot.create(who, look, size, assign) : await moot.join(code.trim().toUpperCase(), who, look);
+      const room = kind === 'create' ? await moot.create(who, look, size, assign, caseId === 'ijara' ? undefined : caseId) : await moot.join(code.trim().toUpperCase(), who, look);
       router.push(`/bahs/${room.code}`);
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'Xatolik yuz berdi');
@@ -88,6 +101,14 @@ export default function BahsHome() {
           <h2 id="create-title" className="display text-xl font-semibold">Xona ochish</h2>
           <p className="mt-1 text-[0.9rem] text-ink-2">Kod olasiz va uni doʻstlaringizga yuborasiz.</p>
           <div className="mt-4 space-y-4">
+            <label className="block">
+              <span className="text-[0.8rem] font-semibold text-ink-2">Ish</span>
+              <select value={caseId} onChange={(e) => setCaseId(e.target.value)} className="field mt-1.5">
+                <option value="ijara">Ijara qarzi va penya (oʻrnatilgan)</option>
+                {cases.map((c) => <option key={c.id} value={c.id}>{c.title}</option>)}
+                {asked && asked !== 'ijara' && !cases.some((c) => c.id === asked) && <option value={asked}>Tanlangan case</option>}
+              </select>
+            </label>
             <Choice label="Jamoa hajmi" value={size} onChange={setSize} options={[[1, '1 ga 1', 'yakkama-yakka'], [2, '2 ga 2', 'bosh va ikkinchi vakil'], [3, '3 ga 3', '+ taraf']]} />
             <Choice label="Jamoalar" value={assign} onChange={setAssign} options={[['pick', 'Oʻzimiz tanlaymiz', 'A yoki B jamoaga qoʻshilasiz'], ['random', 'Qurʼa bilan', 'kim kim bilan - boshlanganda maʼlum boʻladi']]} />
           </div>

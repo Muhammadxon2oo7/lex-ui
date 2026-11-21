@@ -1,11 +1,8 @@
 'use client';
 /** The Code, open-book: searchable list of the exercise's articles, verbatim from lex.uz. */
-import { motion } from 'motion/react';
 import { useMemo, useState } from 'react';
 import type { Article } from '@/contracts/hearing';
-import { useDismiss } from '@/lib/useDismiss';
-
-const spring = { type: 'spring', bounce: 0, duration: 0.4 } as const;
+import { Drawer } from '@/components/ui/Drawer';
 
 export interface Code {
   title: string;
@@ -21,11 +18,11 @@ export function CodePanel({ code, open, onOpen, onClose }: { code: Code; open: s
     const q = query.trim().toLowerCase();
     return code.articles.filter((a) => !q || `${a.number} ${a.title} ${a.text}`.toLowerCase().includes(q));
   }, [query, code.articles]);
-  const dismiss = useDismiss(onClose);
   return (
-    // a click anywhere outside the drawer closes the Code
-    <motion.div {...dismiss} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={spring} className="absolute inset-0 z-50">
-    <motion.aside initial={{ x: 40 }} animate={{ x: 0 }} transition={spring} aria-label="Fuqarolik protsessual kodeksi" className="absolute top-3 right-3 bottom-3 flex w-[min(30rem,calc(100vw-1.5rem))] flex-col rounded-[24px] bg-[#0d121b]/97 text-white shadow-[0_30px_90px_rgba(0,0,0,0.55)] ring-1 ring-white/10 backdrop-blur-xl select-text">
+    // a click anywhere outside the drawer closes the Code; grab the header to fling it away
+    <Drawer side="right" label="Fuqarolik protsessual kodeksi" onClose={onClose} z="z-50"
+      className="w-[min(30rem,calc(100vw-1.5rem))] rounded-[24px] bg-[#0d121b]/97 text-white shadow-[0_30px_90px_rgba(0,0,0,0.55)] ring-1 ring-white/10 backdrop-blur-xl"
+      header={
       <header className="px-5 pt-4">
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1">
@@ -41,6 +38,7 @@ export function CodePanel({ code, open, onOpen, onClose }: { code: Code; open: s
           <input type="search" aria-label="Moddalardan qidirish" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Modda raqami yoki soʻz…" className="mt-3 min-h-11 w-full rounded-xl bg-white/10 px-3 text-base outline-none placeholder:text-white/45 focus-visible:ring-2 focus-visible:ring-emerald-400" />
         )}
       </header>
+      }>
       <div className="scroll-soft mt-3 flex-1 overflow-y-auto px-5 pb-5" tabIndex={0}>
         {article ? (
           <article>
@@ -64,8 +62,7 @@ export function CodePanel({ code, open, onOpen, onClose }: { code: Code; open: s
           </ul>
         )}
       </div>
-    </motion.aside>
-    </motion.div>
+    </Drawer>
   );
 }
 

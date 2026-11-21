@@ -12,12 +12,13 @@
  * Same server contract as before (`DocumentDraft`); drafts autosave on close.
  */
 import { AnimatePresence, motion } from 'motion/react';
+import { ease } from '@/lib/motion';
 import { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import type { DocumentDraft, EvidenceId, ServiceId } from '@/contracts';
 import { useGame } from '@/game/store';
 import { useDismiss } from '@/lib/useDismiss';
 
-const spring = { type: 'spring', bounce: 0, duration: 0.38 } as const;
+const spring = ease.surface;
 
 type Category = 'pension' | 'archive' | 'appeal' | 'other';
 const CATEGORIES: { id: Category | 'all'; label: string }[] = [

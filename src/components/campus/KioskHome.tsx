@@ -8,6 +8,7 @@
  */
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'motion/react';
+import { ease } from '@/lib/motion';
 import { useEffect, useState } from 'react';
 import type { Level, RemoteStatus } from '@/contracts';
 import { type CaseKind, type CaseSnapshot } from '@/contracts/case';
@@ -17,7 +18,7 @@ import { kindOfStage } from '@/contracts/case';
 import { pickScenario } from '@/game/randomCase';
 import { ensureCase } from '@/game/rooms';
 
-const spring = { type: 'spring', bounce: 0, duration: 0.35 } as const;
+const spring = ease.surface;
 const LEVELS: [Level, string, string][] = [
   ['beginner', 'Boshlangʻich', 'variant + oʻz soʻzingiz'],
   ['intermediate', 'Oʻrta', 'oʻz soʻzingiz, variant −10'],

@@ -12,7 +12,10 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { MootAct, MootEntry, MootPlayer, MootRole, MootRoom, MootSide, Team } from '@/contracts/moot';
+import { AnimatePresence, MotionConfig, motion } from 'motion/react';
 import { Talk } from '@/components/hud/Talk';
+import { Drawer } from '@/components/ui/Drawer';
+import { modal, note } from '@/lib/motion';
 import { PracticeRecord } from '@/components/record/PracticeRecord';
 import { GlassLayer } from '@/components/ui/glass';
 import { ApiError } from '@/game/api';
@@ -529,12 +532,16 @@ function Hearing({ room, act, say, skew, onVerdict }: { room: MootRoom; act: (a:
       </div>
 
       {/* side panel */}
-      {panel && (
-        <aside className="glass absolute top-16 right-3 bottom-3 z-30 flex w-[min(26rem,calc(100vw-1.5rem))] flex-col rounded-[24px] p-4 select-text sm:top-20 sm:right-4" aria-label={panel === 'file' ? 'Ish papkasi' : panel === 'chat' ? 'Jamoa chati' : 'Bayonnoma'}>
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="display text-lg font-semibold">{panel === 'file' ? 'Ish papkasi' : panel === 'chat' ? 'Jamoa chati' : 'Majlis bayonnomasi'}</h2>
-            <button type="button" onClick={() => open(null)} aria-label="Yopish" className="grid size-9 place-items-center rounded-full text-white/80 hover:bg-white/12">✕</button>
-          </div>
+      <AnimatePresence>
+        {panel && (
+          <Drawer key="panel" side="right" label={panel === 'file' ? 'Ish papkasi' : panel === 'chat' ? 'Jamoa chati' : 'Bayonnoma'} onClose={() => open(null)} top="top-16 sm:top-20" z="z-30"
+            className="glass w-[min(26rem,calc(100vw-1.5rem))] rounded-[24px] p-4 sm:right-4"
+            header={
+              <div className="mb-3 flex items-center justify-between">
+                <h2 className="display text-lg font-semibold">{panel === 'file' ? 'Ish papkasi' : panel === 'chat' ? 'Jamoa chati' : 'Majlis bayonnomasi'}</h2>
+                <button type="button" onClick={() => open(null)} aria-label="Yopish" className="grid size-9 place-items-center rounded-full text-white/80 hover:bg-white/12">✕</button>
+              </div>
+            }>
           {panel === 'file' && <div className="min-h-0 flex-1 overflow-y-auto pr-1"><CaseFile room={room} dark /></div>}
           {panel === 'chat' && <TeamChat room={room} act={act} dark />}
           {panel === 'record' && (
@@ -547,20 +554,24 @@ function Hearing({ room, act, say, skew, onVerdict }: { room: MootRoom; act: (a:
               ))}
             </ol>
           )}
-        </aside>
-      )}
+          </Drawer>
+        )}
+      </AnimatePresence>
 
       {/* bottom: what is being said, and your floor */}
       <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-3 p-3 sm:p-5">
+        <AnimatePresence mode="popLayout" initial={false}>
         {caption && (!mine || !caughtUp) && (
-          <div className="glass w-full max-w-2xl rounded-[22px] px-4 py-3 select-text" aria-live="polite">
+          <motion.div key={caption.id} {...note} layout="position" className="glass w-full max-w-2xl rounded-[22px] px-4 py-3 select-text" aria-live="polite">
             <p className="text-[0.74rem] font-semibold tracking-wide text-white/60 uppercase">{caption.name}{caption.side ? ` · ${SIDE[caption.side].toLowerCase()}` : ''}</p>
             <p className="mt-0.5 text-[1.02rem] leading-relaxed text-pretty">{caption.text}</p>
-          </div>
+          </motion.div>
         )}
+        </AnimatePresence>
         {deciding && <p className="glass rounded-full px-4 py-2 text-[0.9rem]" role="status">Sudya chiqishlarni baholamoqda…</p>}
+        <AnimatePresence>
         {mine && !over && (
-          <div className="glass w-full max-w-2xl rounded-[24px] p-3">
+          <motion.div key="floor" {...modal} className="glass w-full max-w-2xl rounded-[24px] p-3">
             {myWords.length > 0 && (
               <ul className="mb-2 max-h-24 space-y-1 overflow-y-auto text-[0.9rem] text-white/75 select-text" aria-label="Aytganlaringiz">
                 {myWords.map((e) => <li key={e.id}>- {e.text}</li>)}
@@ -578,8 +589,9 @@ function Hearing({ room, act, say, skew, onVerdict }: { room: MootRoom; act: (a:
               )}
             </form>
             <p className="mt-2 px-1 text-[0.78rem] text-white/55">{sending ? 'Yuborilmoqda…' : 'Bir necha marta gapirishingiz mumkin. «Hurmatli sud!» deb boshlang. Vaqt tugasa, soʻz oʻzi oʻtadi.'}</p>
-          </div>
+          </motion.div>
         )}
+        </AnimatePresence>
         {over && !caughtUp && <button type="button" onClick={() => { stopSpeaking(); onVerdict(); }} className="glass min-h-11 rounded-full px-5 text-[0.9rem] font-semibold">Natijaga oʻtish</button>}
       </div>
     </main>
@@ -743,13 +755,13 @@ export default function MootClient() {
     );
   }
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       {room.phase === 'lobby' && <Lobby room={room} act={act} say={setNotice} />}
       {room.phase === 'briefing' && <Briefing room={room} act={act} say={setNotice} skew={skew} />}
       {(room.phase === 'hearing' || (room.phase === 'verdict' && !shown)) && <Hearing room={room} act={act} say={setNotice} skew={skew} onVerdict={showVerdict} />}
       {room.phase === 'verdict' && shown && <Verdict room={room} />}
       {error && room.phase !== 'verdict' && <p role="status" className="fixed top-3 left-1/2 z-50 -translate-x-1/2 rounded-full bg-[#1d1d1f] px-4 py-2 text-[0.84rem] font-medium text-white shadow-xl">Aloqa uzildi - qayta ulanmoqda…</p>}
       <Notice text={notice} onClose={clear} />
-    </>
+    </MotionConfig>
   );
 }

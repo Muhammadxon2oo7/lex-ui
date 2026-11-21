@@ -6,13 +6,15 @@
  */
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'motion/react';
+import { ease, modal } from '@/lib/motion';
 import { useProfile } from '@/game/profile';
 import { useGame, type Quality } from '@/game/store';
 import { useDismiss } from '@/lib/useDismiss';
 
 /** Critically damped spring: arrives without overshoot (nothing here was flicked). */
-const spring = { type: 'spring', bounce: 0, duration: 0.42 } as const;
-const sheet = { initial: { opacity: 0, y: 28, scale: 0.98 }, animate: { opacity: 1, y: 0, scale: 1 }, exit: { opacity: 0, y: 28, scale: 0.98 } };
+const spring = ease.surface;
+/** Symmetric: a sheet leaves along the path it came in (lib/motion). */
+const sheet = modal;
 
 export function Objectives() {
   const objectives = useGame((s) => s.snapshot?.objectives ?? []);

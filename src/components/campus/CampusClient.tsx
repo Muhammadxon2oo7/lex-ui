@@ -9,6 +9,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
+import { ease } from '@/lib/motion';
 import { useEffect, useEffectEvent, useState, useSyncExternalStore } from 'react';
 import { currentCase, roomUrl } from '@/game/rooms';
 import type { CaseSnapshot } from '@/contracts/case';
@@ -23,7 +24,7 @@ import { useDismiss } from '@/lib/useDismiss';
 void rig;
 
 const CampusCanvas = dynamic(() => import('./CampusCanvas'), { ssr: false });
-const spring = { type: 'spring', bounce: 0, duration: 0.5 } as const;
+const spring = ease.surface;
 
 function webgl2(): boolean {
   try {

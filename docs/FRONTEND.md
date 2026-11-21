@@ -32,7 +32,7 @@ Backend (`lex-api`, FastAPI) - alohida: til modeli, STT, TTS, ssenariylar, saqla
 | Holat | **zustand** 5 | Kampus va sozlamalar |
 | Kontrakt | **zod** 4 | Har bir API javobi tekshiriladi; noto'g'ri javob ekranga chiqmaydi |
 | Modellar | **glTF** + `@gltf-transform/cli` | Personaj va buyumlar siqilgan holda |
-| Test | **vitest** 5 (76 test), **Playwright** 1.65 (brauzer QA) | |
+| Test | **vitest** 5 (81 test), **Playwright** 1.65 (brauzer QA) | |
 | Lint | ESLint 9 + `eslint-config-next` | |
 | Hosting | Netlify (serverless) | |
 
@@ -50,6 +50,7 @@ src/
     sud/[sessionId]/    iqtisodiy sud (backend ssenariylari, til modeli)
     simulation/         DXM xodimi
     bahs/               jamoaviy sud (multiplayer)
+    sohalar/, mentor/   sohalar, caselar (AI qoralama), mentor tekshiruvi
     manbalar/           normativ manbalar
     protsess/, hub/     kutubxona, 2D rejim
     api/v1/             server marshrutlari (cases, hearings, sessions, moot, voice, remote)
@@ -111,6 +112,15 @@ tools/qa/               Playwright sinovlari (moot, draft, live, perf, ...)
 - Imkoniyatlar: `prefers-reduced-motion`, `prefers-reduced-transparency` (shisha qattiq bo'ladi), `prefers-contrast`; kuchsiz qurilmada blur o'chadi, rang qoladi.
 - Matnda o'zbek lotin imlosi: `ʻ` (U+02BB) va `ʼ` (U+02BC).
 
+### Sohalar va caselar (backend case-lab)
+- `/sohalar` - sohalar (2025-yil sud statistikasi ulushi bilan), `/sohalar/{id}` - tizim va foydalanuvchi caselari, "Case qo'shish" (AI qoralama 45-95 s, savollar, tahrir, mentorga yuborish), `/mentor` - tekshiruv navbati.
+- Hammasi `/api/v1/library/*` orqali: kalit, egasining xeshi va mentor tokeni faqat serverda; boshqalarning maxfiy faktlari serverda ham tozalanadi.
+
+### Harakat tizimi (Apple "Designing Fluid Interfaces")
+- Umumiy tokenlar `src/lib/motion.ts`: sirtlar - `bounce 0` (~0,35 s), varaq va panellar - `bounce 0,15`, ketish - tezroq va sakrashsiz; sakrash faqat siltash va kichik "tomchi" elementlarda.
+- `Drawer` (yon panellar) va `Sheet` (modal varaqlar): chiqqan yo'li bilan qaytadi, sarlavhadan ushlab tortiladi, siltashning yakuniy nuqtasi hisoblanadi (momentum projection), Esc va tashqariga bosish yopadi, ichidagi matn belgilanadi.
+- Hamma ekranlar `MotionConfig reducedMotion="user"` ostida: harakat kamaytirilsa, siljish o'rniga yumshoq paydo bo'lish.
+
 ### Hujjatlar va natija
 - "Hujjatlar" xonasi: sud ro'yxatdan tanlanadi ("Sudlar to'g'risida"gi Qonun, 2-modda), qolgani yoziladi; advokat orderi rasmiy 12 bandli shakl bo'yicha.
 - Bayonnoma: matn + umumiy audio, PDF, Word, WAV, xAPI (LMS uchun).
@@ -122,9 +132,10 @@ tools/qa/               Playwright sinovlari (moot, draft, live, perf, ...)
 ```bash
 npm run typecheck          # TypeScript
 npm run lint               # ESLint
-npm test                   # vitest: 76 test
+npm test                   # vitest: 81 test
 node tools/qa/moot.mjs     # bahs: 2 brauzer, to'liq majlis - 11/11
 node tools/qa/draft.mjs    # Hujjatlar: order + ariza + sud qabul qiladi - 4/4
+node tools/qa/library.mjs  # sohalar va case oqimi - 8/8
 node tools/qa/live.mjs     # backend bilan jonli (kalit kerak, Netlify)
 node tools/qa/perf.mjs     # 3D kadr tezligi
 ```
@@ -136,6 +147,7 @@ node tools/qa/perf.mjs     # 3D kadr tezligi
 | O'zgaruvchi | Qayerda | Nima |
 |---|---|---|
 | `LEXSIM_REMOTE_KEY` | faqat Netlify | Backend kaliti. Lokal `.env.local` da yo'q, repoga hech qachon tushmaydi |
+| `LEXSIM_MENTOR_CODE`, `LEXSIM_ADMIN_TOKEN` | faqat Netlify | Mentor kirish kodi va backend admin tokeni (mentor sahifasi uchun) |
 | `LEXSIM_REMOTE_URL` | Netlify | Backend manzili (`https://lex-api.e-investment.uz/api/v1`) |
 
 Kalitsiz ham ilova ishlaydi: ish dvigatellari va qoida bahosi lokal; til modeli, STT va TTS bo'lmaydi.

@@ -15,6 +15,7 @@
  * readers the moment it starts.
  */
 import { AnimatePresence, motion } from 'motion/react';
+import { ease } from '@/lib/motion';
 import { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import type { ReplyOption, Turn } from '@/contracts';
 import { availableItems } from '@/game/items';
@@ -25,7 +26,7 @@ import { Talk } from './Talk';
 import { useDismiss } from '@/lib/useDismiss';
 import { saveVoice } from '@/lib/voiceStore';
 
-const spring = { type: 'spring', bounce: 0, duration: 0.4 } as const;
+const spring = ease.surface;
 const CHARS_PER_TICK = 2;
 const TICK_MS = 30;
 const DWELL_MS = 1500;
@@ -445,7 +446,7 @@ export function DialogueStage() {
               </motion.div>
             )}
             {canReply && writing && (
-              <motion.form key="write" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={spring} className="glass flex items-center gap-2 rounded-full p-1.5 pl-5" onSubmit={(e) => { e.preventDefault(); submitText(); }}>
+              <motion.form key="write" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} transition={spring} className="glass flex items-center gap-2 rounded-full p-1.5 pl-5" onSubmit={(e) => { e.preventDefault(); submitText(); }}>
                 <label htmlFor="own-words" className="sr-only">Oʻz soʻzingiz bilan javob</label>
                 <input id="own-words" ref={input} value={text} maxLength={800} onChange={(e) => setText(e.target.value)} placeholder="Oʻz soʻzingiz bilan ayting…" className="min-h-11 flex-1 bg-transparent text-base outline-none placeholder:text-white/45" autoComplete="off" />
                 <button type="submit" className="btn btn-primary" disabled={!text.trim()}>Aytish</button>

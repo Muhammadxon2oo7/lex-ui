@@ -6,10 +6,11 @@
  */
 import Link from 'next/link';
 import { motion } from 'motion/react';
+import { ease } from '@/lib/motion';
 import { useEffect, useId } from 'react';
 import { deviceTier, markDocument } from '@/lib/deviceTier';
 
-export const spring = { type: 'spring', bounce: 0, duration: 0.45 } as const;
+export const spring = ease.surface;
 export const lensSpring = { type: 'spring', bounce: 0.28, duration: 0.42 } as const;
 
 let lit = false;

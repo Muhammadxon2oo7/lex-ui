@@ -15,13 +15,14 @@
 import { Environment } from '@react-three/drei';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { motion } from 'motion/react';
+import { ease } from '@/lib/motion';
 import { Suspense, useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { audio } from '@/game/audio';
 import { pageTexture } from './DeskItems';
 import type { DeskDoc } from './documents';
 
-const spring = { type: 'spring', bounce: 0, duration: 0.4 } as const;
+const spring = ease.surface;
 const grip = { dragging: false, vx: 0, vy: 0, dx: 0, dy: 0, zoom: 1, flip: 0, open: 0 };
 const reduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

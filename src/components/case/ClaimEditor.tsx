@@ -10,12 +10,13 @@
  * courts); Adliya vazirining 2023-yil 31-yanvardagi 1-mh-son buyrugʻi (the order form).
  */
 import { motion } from 'motion/react';
+import { ease } from '@/lib/motion';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { CaseItem, ClaimDraft, OrderDraft } from '@/contracts/case';
 import { COURT_TYPES, courtName, DISTRICTS, FOLDER, type CourtType } from '@/lib/labourCase';
 import type { PaperModel } from './paper';
 
-const spring = { type: 'spring', bounce: 0, duration: 0.4 } as const;
+const spring = ease.surface;
 
 const ATTACH: { id: string; label: string; needs?: string }[] = [
   { id: 'order', label: 'Boʻshatish buyrugʻi nusxasi', needs: 'order' },

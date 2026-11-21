@@ -19,6 +19,8 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
+import { ease, modal } from '@/lib/motion';
+import { Drawer } from '@/components/ui/Drawer';
 import { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import type { CourtScene, Hint, Snapshot, Turn, Emotion } from '@/contracts';
 import type { Speaker } from '@/contracts/hearing';
@@ -29,12 +31,11 @@ import { useGame } from '@/game/store';
 import { lipTrack, prefetchLine, speak, stopSpeaking, voiceStatus, type VoiceId, dropVoice, takeVoice, takeConfidence, takeDuration } from '@/game/voice';
 import { Talk } from '@/components/hud/Talk';
 import { courtStageFor } from '@/game/courtStage';
-import { useDismiss } from '@/lib/useDismiss';
 import { saveVoice } from '@/lib/voiceStore';
 
 const CourtRoom = dynamic(() => import('@/components/world/CourtRoom'), { ssr: false });
 
-const spring = { type: 'spring', bounce: 0, duration: 0.4 } as const;
+const spring = ease.surface;
 type Role = NonNullable<Turn['role']>;
 /** Where each speaker sits in our courtroom: the other side's advocate at the right-hand table. */
 const SEAT: Record<Role, Speaker> = { judge: 'judge', secretary: 'secretary', opponent: 'respondent', witness: 'witness', expert: 'witness' };
@@ -626,7 +627,7 @@ function Briefing({ snap, busy, onEnter }: { snap: Snapshot; busy: boolean; onEn
   const open = b.authority.filter((a) => !SECRET.test(a));
   return (
     <div className="absolute inset-0 z-40 grid place-items-center overflow-y-auto bg-black/55 p-4 backdrop-blur-[2px]">
-      <motion.section initial={{ opacity: 0, y: 24, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 16 }} transition={spring}
+      <motion.section {...modal}
         role="dialog" aria-modal="true" aria-labelledby="brief-title" className="w-full max-w-[36rem] rounded-[28px] bg-[#f7f6f2] p-6 text-[#14171f] shadow-[0_40px_120px_rgba(0,0,0,0.5)] select-text">
         <p className="text-[0.7rem] font-semibold tracking-[0.14em] text-black/45 uppercase">{b.workplace} · {snap.scenario.durationMinutes} daqiqa · {snap.mode === 'tutorial' ? 'mashq' : 'baholash'} · {LEVEL[snap.level ?? 'beginner']}</p>
         <h2 id="brief-title" className="mt-1 text-[1.35rem] leading-tight font-semibold">{snap.scenario.title}</h2>
@@ -664,11 +665,9 @@ function Briefing({ snap, busy, onEnter }: { snap: Snapshot; busy: boolean; onEn
 
 /** The coach: what to do now, the usual mistake, and an example you may put in your answer (never sent for you). */
 function HintSheet({ hint, onUse, onClose }: { hint: Hint; onUse: (text: string) => void; onClose: () => void }) {
-  const dismiss = useDismiss(onClose);
   return (
-    <motion.div {...dismiss} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={spring} className="absolute inset-0 z-40">
-      <motion.aside initial={{ x: -16 }} animate={{ x: 0 }} transition={spring} aria-label="Maslahat"
-        className="absolute top-20 left-3 w-[min(24rem,calc(100vw-1.5rem))] rounded-[22px] bg-[#0d121b]/95 p-4 text-[0.88rem] leading-snug ring-1 ring-white/10 backdrop-blur-xl select-text sm:left-4">
+    <Drawer side="left" label="Maslahat" onClose={onClose} top="top-20" className="bottom-auto! h-fit w-[min(24rem,calc(100vw-1.5rem))] rounded-[22px] bg-[#0d121b]/95 p-4 text-[0.88rem] leading-snug ring-1 ring-white/10 backdrop-blur-xl sm:left-4"
+      header={
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1">
             <p className="text-[0.66rem] font-semibold tracking-[0.16em] text-amber-200 uppercase">Maslahat · {hint.title}</p>
@@ -676,6 +675,7 @@ function HintSheet({ hint, onUse, onClose }: { hint: Hint; onUse: (text: string)
           </div>
           <button type="button" onClick={onClose} aria-label="Yopish" className="-mt-1 -mr-1 grid size-9 shrink-0 place-items-center rounded-full text-white/60 hover:bg-white/10 hover:text-white">✕</button>
         </div>
+      }>
         {hint.commonMistake && <p className="mt-2.5 rounded-xl bg-red-500/10 px-3 py-2 text-[0.84rem] text-red-100/90"><span className="font-semibold">Koʻp uchraydigan xato: </span>{hint.commonMistake}</p>}
         {hint.example && (
           <div className="mt-2.5 rounded-xl bg-white/[0.06] px-3 py-2">
@@ -688,7 +688,6 @@ function HintSheet({ hint, onUse, onClose }: { hint: Hint; onUse: (text: string)
             {hint.sources.map((s) => <a key={s.officialUrl + s.title} href={s.officialUrl} target="_blank" rel="noopener noreferrer" className="rounded-full bg-white/10 px-2.5 py-0.5 text-[0.74rem] text-white/75 hover:bg-white/15">{s.articleNumber ?? s.title} ↗</a>)}
           </p>
         )}
-      </motion.aside>
-    </motion.div>
+    </Drawer>
   );
 }

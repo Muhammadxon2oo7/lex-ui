@@ -21,7 +21,7 @@ async function call(path: string, init?: RequestInit, timeout = 15_000): Promise
 const post = (body: unknown): RequestInit => ({ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
 
 export const moot = {
-  create: (name: string, avatar: 'man' | 'woman', size: number, assign: 'pick' | 'random') => call('/rooms', post({ name, avatar, size, assign })),
+  create: (name: string, avatar: 'man' | 'woman', size: number, assign: 'pick' | 'random', caseId?: string) => call('/rooms', post({ name, avatar, size, assign, ...(caseId ? { caseId } : {}) })),
   join: (code: string, name: string, avatar: 'man' | 'woman') => call(`/rooms/${code}/join`, post({ name, avatar })),
   /** `since`: wait (≈20 s) for a newer version than the one you hold. */
   read: (code: string, since: number | null, signal?: AbortSignal) =>

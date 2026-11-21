@@ -10,6 +10,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
+import { ease } from '@/lib/motion';
 import { useEffect, useMemo, useState } from 'react';
 import { roomUrl, type RoomAction } from '@/game/rooms';
 import { OrderDrill } from './OrderDrill';
@@ -22,7 +23,7 @@ type Track = { id: string; short: string; title: string; lexUrl?: string; editio
 type Source = { id: string; title: string; lexUrl: string; edition: string | null; retrievedAt: string };
 type ProcessMap = { builtAt: string; complete: boolean; tracks: Track[]; sources: Record<string, Source>; articles: Record<string, Article> };
 
-const spring = { type: 'spring', bounce: 0, duration: 0.4 } as const;
+const spring = ease.surface;
 
 /** Which road a matter takes - orientation only (study guide), the law decides. */
 const ROUTES: { when: string; track: string }[] = [

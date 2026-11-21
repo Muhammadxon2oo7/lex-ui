@@ -11,6 +11,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
+import { ease, modal } from '@/lib/motion';
 import { useEffect, useEffectEvent, useState } from 'react';
 import { HearingEnvelopeSchema, type HearingLine, type HearingSnapshot, type Speaker } from '@/contracts/hearing';
 import { newId } from '@/game/api';
@@ -22,7 +23,7 @@ import { CodePanel } from '@/components/hud/CodePanel';
 const VOICE: Partial<Record<Speaker, VoiceId>> = { secretary: 'female', claimant: 'male', respondent: 'female_alt', witness: 'elder_m' };
 
 const CourtRoom = dynamic(() => import('@/components/world/CourtRoom'), { ssr: false });
-const spring = { type: 'spring', bounce: 0, duration: 0.4 } as const;
+const spring = ease.surface;
 
 async function request(path: string, body?: unknown): Promise<HearingSnapshot> {
   const res = await fetch(`/api/v1/hearings${path}`, {
@@ -268,7 +269,7 @@ function Stage({ hearing, busy, error, code, setCode, choose }: { hearing: Heari
 
       {hearing.finished && idle && (
         <div className="absolute inset-0 z-30 grid place-items-center overflow-y-auto bg-black/60 p-4">
-          <motion.section initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={spring} role="dialog" aria-modal="true" aria-labelledby="court-result" className="glass-light w-full max-w-2xl rounded-[28px] p-6 select-text sm:p-8">
+          <motion.section {...modal} role="dialog" aria-modal="true" aria-labelledby="court-result" className="glass-light w-full max-w-2xl rounded-[28px] p-6 select-text sm:p-8">
             <p className="text-[0.72rem] font-semibold tracking-wider text-accent-ink uppercase">Sud majlisi yopildi</p>
             <h2 id="court-result" className="display mt-1 text-3xl font-semibold">Tartibga rioya: {hearing.score} / 100</h2>
             <p className="mt-2 text-[0.92rem] text-ink-2">{hearing.done.filter((d) => d.attempts === 1).length} ta bosqich birinchi urinishda toʻgʻri, jami {hearing.total} ta. Ball faqat protsessual ketma-ketlikni oʻlchaydi - ishning mazmuni baholanmaydi.</p>

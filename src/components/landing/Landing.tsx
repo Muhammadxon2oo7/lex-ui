@@ -269,7 +269,8 @@ export default function Landing() {
       <main className="relative isolate w-full flex-1">
         <GlassLayer />
         <GlassToolbar>
-          <ToolbarLink href="/manbalar">Manbalar</ToolbarLink>
+          <ToolbarLink href="/sohalar">Sohalar</ToolbarLink>
+          <ToolbarLink href="/manbalar" className="max-sm:hidden">Manbalar</ToolbarLink>
           <ToolbarLink href="/protsess" className="max-sm:hidden">Kutubxona</ToolbarLink>
           {three && <ToolbarLink href="/kampus" prominent>3D kampus</ToolbarLink>}
         </GlassToolbar>
@@ -288,8 +289,9 @@ export default function Landing() {
           ))}
         </ul>
 
-        <section aria-label="Qoʻshimcha" className="mx-auto grid w-full max-w-6xl gap-3 px-5 pb-16 sm:grid-cols-3">
+        <section aria-label="Qoʻshimcha" className="mx-auto grid w-full max-w-6xl gap-3 px-5 pb-16 sm:grid-cols-2 lg:grid-cols-4">
           {[
+            ['/sohalar', 'Sohalar va caselar', 'Iqtisodiy, fuqarolik, jinoyat sohalari: tizim caselari va oʻz holatingizdan AI tuzgan case.'],
             ['/manbalar', 'Normativ manbalar', 'Har bir yoʻnalish qaysi qonun va moddalarga tayanadi: tahrir sanasi va lex.uz havolasi bilan.'],
             ['/protsess', 'Huquqiy kutubxona', 'Ariza berishdan qarorgacha: protsess xaritasi va kodekslar.'],
             ...(three ? [['/kampus', '3D kampusda yurish', 'Binoda erkin yuring va xonaga eshikdan kiring.']] : [['/hub', '2D rejim', 'WebGL2 boʻlmagan qurilmalar uchun.']]),

@@ -121,7 +121,7 @@ export const MootRoomSchema = z.object({
 });
 export type MootRoom = z.infer<typeof MootRoomSchema>;
 
-export const MootCreateSchema = z.object({ name: z.string().trim().min(2).max(40), avatar: z.enum(['man', 'woman']), size: z.number().int().min(1).max(3).default(2), assign: z.enum(['pick', 'random']).default('pick') });
+export const MootCreateSchema = z.object({ name: z.string().trim().min(2).max(40), avatar: z.enum(['man', 'woman']), size: z.number().int().min(1).max(3).default(2), assign: z.enum(['pick', 'random']).default('pick'), caseId: z.string().max(64).optional() });
 export const MootJoinSchema = z.object({ name: z.string().trim().min(2).max(40), avatar: z.enum(['man', 'woman']) });
 export const MootActSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('team'), team: TeamSchema.nullable() }),

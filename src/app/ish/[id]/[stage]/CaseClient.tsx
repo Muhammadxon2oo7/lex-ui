@@ -10,6 +10,8 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
+import { ease, modal } from '@/lib/motion';
+import { Drawer } from '@/components/ui/Drawer';
 import { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import { CaseEnvelopeSchema, StageIdSchema, type CaseActRequest, type CaseLine, type CaseSnapshot, type CaseSpeaker, type ClaimDraft, type Ruling, type StageId } from '@/contracts/case';
 import { newId } from '@/game/api';
@@ -31,7 +33,7 @@ import { PracticeRecord } from '@/components/record/PracticeRecord';
 import type { RecordLine, RecordMeta } from '@/game/practiceRecord';
 
 const CaseScene = dynamic(() => import('@/components/case/CaseScene'), { ssr: false });
-const spring = { type: 'spring', bounce: 0, duration: 0.4 } as const;
+const spring = ease.surface;
 
 async function call(path: string, body?: unknown): Promise<CaseSnapshot> {
   const res = await fetch(`/api/v1/cases${path}`, {
@@ -481,7 +483,7 @@ function Sheet({ children, label, wide = false, onDismiss }: { children: React.R
   const dismiss = useDismiss(onDismiss);
   return (
     <div {...dismiss} className="absolute inset-0 z-40 grid place-items-center overflow-y-auto bg-black/55 p-4 backdrop-blur-[2px]">
-      <motion.div initial={{ opacity: 0, y: 24, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 16 }} transition={spring}
+      <motion.div {...modal}
         role="dialog" aria-modal="true" aria-label={label} className={`w-full ${wide ? 'max-w-[36rem]' : 'max-w-md'}`}>
         {children}
       </motion.div>
@@ -682,16 +684,16 @@ function RoomRecord({ snap, stage }: { snap: CaseSnapshot; stage: CaseSnapshot['
 }
 
 function CaseFolder({ snap, onClose, onRuling }: { snap: CaseSnapshot; onClose: () => void; onRuling: (r: Ruling) => void }) {
-  const dismiss = useDismiss(onClose);
   return (
-    // a click anywhere outside the drawer puts the folder away
-    <motion.div {...dismiss} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={spring} className="absolute inset-0 z-40">
-    <motion.aside initial={{ x: 32 }} animate={{ x: 0 }} transition={spring} aria-label="Ish papkasi"
-      className="absolute top-3 right-3 bottom-3 flex w-[min(24rem,calc(100vw-1.5rem))] flex-col rounded-[24px] bg-[#0d121b]/95 ring-1 ring-white/10 backdrop-blur-xl select-text">
-      <header className="flex items-center gap-3 px-5 pt-4 pb-3">
-        <h2 className="flex-1 text-[1rem] font-semibold">Ish papkasi</h2>
-        <button type="button" className="btn btn-quiet !min-h-9 !px-3 text-[0.84rem]" onClick={onClose}>Yopish</button>
-      </header>
+    // a click anywhere outside the drawer puts the folder away; grab the header to fling it back
+    <Drawer side="right" label="Ish papkasi" onClose={onClose}
+      className="w-[min(24rem,calc(100vw-1.5rem))] rounded-[24px] bg-[#0d121b]/95 ring-1 ring-white/10 backdrop-blur-xl"
+      header={
+        <header className="flex items-center gap-3 px-5 pt-4 pb-3">
+          <h2 className="flex-1 text-[1rem] font-semibold">Ish papkasi</h2>
+          <button type="button" className="btn btn-quiet !min-h-9 !px-3 text-[0.84rem]" onClick={onClose}>Yopish</button>
+        </header>
+      }>
       <div className="scroll-soft flex-1 space-y-5 overflow-y-auto px-5 pb-5 text-[0.88rem]">
         <p className="text-[0.82rem] text-white/60">{snap.title}</p>
         <FolderList title="Holatlar" empty="Hali aniqlanmagan" items={snap.facts.map((f) => [f.label, f.detail])} />
@@ -706,8 +708,7 @@ function CaseFolder({ snap, onClose, onRuling }: { snap: CaseSnapshot; onClose: 
         )}
         <p className="text-[0.7rem] leading-snug text-white/40">{snap.note}</p>
       </div>
-    </motion.aside>
-    </motion.div>
+    </Drawer>
   );
 }
 

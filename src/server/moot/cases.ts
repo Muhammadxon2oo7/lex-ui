@@ -7,6 +7,7 @@
  * invented here: no sums, dates or articles beyond what that scenario states. New cases are
  * written and signed off by a lawyer (see docs/BACKEND_TASKS.md) - never made up in code.
  */
+import type { LibCase } from '@/contracts/library';
 import type { MootSide } from '@/contracts/moot';
 
 export interface MootCase {
@@ -64,3 +65,17 @@ export const MOOT_CASES: Record<string, MootCase> = {
 };
 
 export const DEFAULT_CASE = 'ijara';
+
+/**
+ * A case approved on the court server (GET /moot/cases/{id}) as a room's case file. Its own `points`
+ * are used when it has them; otherwise the reference scorer looks for the titles of its facts and
+ * evidence (one word stem each). Nothing is added to the case.
+ */
+export function fromLibrary(c: LibCase): MootCase {
+  const stems = (items: { title: string }[]) => items.map((i) => (i.title.split(/\s+/).sort((a, b) => b.length - a.length)[0] ?? '').toLowerCase().slice(0, 6)).filter((w) => w.length >= 4).map((w) => [w]);
+  const points = c.points?.claimant?.length && c.points?.respondent?.length ? { claimant: c.points.claimant, respondent: c.points.respondent } : { claimant: stems([...c.facts, ...c.evidence]), respondent: stems([...c.facts, ...c.evidence]) };
+  return {
+    id: c.id, title: c.title, court: c.court || 'Oʻquv sudi', summary: c.summary, parties: c.parties, claim: c.claim,
+    facts: c.facts, evidence: c.evidence, side: c.side, points, disclaimer: c.disclaimer,
+  };
+}

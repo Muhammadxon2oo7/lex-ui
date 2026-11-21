@@ -75,5 +75,30 @@ console.log('advanced — no authority');
   check(snap.status === 'report-ready' || snap.status === 'finishing' || /qoʻyilmaydi|ruxsat/i.test(r.said), `not admitted → ${snap.status} («${r.said.slice(0, 90)}…»)`);
 }
 
+// ── v1.4.5 / v1.4.6: unclear answers, swearing, an excuse ──
+console.log('unclear and human answers');
+{
+  const { say } = await court('beginner');
+  const r = await say('ha');
+  check(r.roles.includes('judge') && !/vakolat tekshirildi/i.test(r.said), `«ha» → the judge asks again («${r.said.slice(0, 70)}…»)`);
+  const low = await say('Hurmatli sud, koʻtni tozalash kerak koʻtni.');
+  check(low.roles.includes('judge') && !/vakolat tekshirildi/i.test(low.said), 'nonsense → asked again, no step forward');
+}
+{
+  const { say, call, id } = await court('beginner');
+  await say('Hurmatli sud, vakolatimni tasdiqlovchi ishonchnomani taqdim etaman.');
+  for (let i = 0; i < 3; i++) await say('pashol naxuy');
+  const snap = (await call(`/sessions/${id}`)).j.snapshot;
+  check(snap.status === 'report-ready', `swearing three times → removed from the hall (${snap.status})`);
+}
+{
+  const { say, call, id } = await court('advanced');
+  const first = await say('Hurmatli sud, ishonchnoma uyda qolib ketibdi.');
+  check(first.roles.includes('judge'), `an excuse is answered by the judge («${first.said.slice(0, 70)}…»)`);
+  await say('Hurmatli sud, uyda qolib ketibdi, olib kelaman.');
+  const snap = (await call(`/sessions/${id}`)).j.snapshot;
+  check(snap.status === 'report-ready', `advanced, still no authority → not admitted (${snap.status})`);
+}
+
 console.log(failed ? `\n${failed} check(s) failed` : '\nall live-procedure checks passed');
 process.exit(failed ? 1 : 0);

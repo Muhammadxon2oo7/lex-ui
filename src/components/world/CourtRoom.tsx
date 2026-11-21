@@ -466,9 +466,14 @@ type CourtProps = {
   papers?: { left: DeskDoc[]; right: DeskDoc[] };
   /** The hall screen: court, kind of case, … (dark when absent). */
   screen?: string[];
+  /**
+   * More people at the tables (the moot court's second and third team members): beside your
+   * principal on the left, beside the other side's representative on the right.
+   */
+  companions?: { id: string; model: CharacterModel; side: 'left' | 'right'; talking: boolean }[];
 };
 
-function Scene({ speaker, witnessPresent, witnessCalled, standing, view = 'judge', judgePresent = true, judgeEntries = 1, advocateStanding = false, advocateSpeaking = false, attention = null, moods, cue, avatar = 'man', extra, labels = { left: 'DAʼVOGAR', right: 'JAVOBGAR' }, cast, papers, screen }: CourtProps) {
+function Scene({ speaker, witnessPresent, witnessCalled, standing, view = 'judge', judgePresent = true, judgeEntries = 1, advocateStanding = false, advocateSpeaking = false, attention = null, moods, cue, avatar = 'man', extra, labels = { left: 'DAʼVOGAR', right: 'JAVOBGAR' }, cast, papers, screen, companions }: CourtProps) {
   const principal = cast?.principal === undefined ? 'client' : cast.principal;
   const opponent = cast?.opponent ?? 'lawyer';
   const witnessModel = cast?.witness ?? 'worker';
@@ -562,6 +567,20 @@ function Scene({ speaker, witnessPresent, witnessCalled, standing, view = 'judge
       <Table wood={wood} m={m} position={[3.6, 0, -0.6]} rotation={Math.PI / 2} width={1.9} label={labels.right} docs={papers?.right} />
       {chair(SEATS.respondent.position, SEATS.respondent.rotation)}
       <Character model={opponent} {...SEATS.respondent} seatTop={0.46} seed={3} mood={feel('respondent', 'neutral')} cue={gest('respondent')} restless={false} upright={0.14} talking={speaker === 'respondent'} lookAt={gaze('respondent')} standing={advocate ? lagRespondent : up('respondent')} />
+
+      {/* further members of either team, at the ends of their tables */}
+      {(['left', 'right'] as const).flatMap((side) =>
+        (companions ?? []).filter((c) => c.side === side).slice(0, 2).map((c, i) => {
+          const at: V3 = side === 'left' ? [-4.55, 0, 0.32 + i * 0.9] : [4.55, 0, i === 0 ? 0.32 : -1.5];
+          const rotation = side === 'left' ? Math.PI / 2 : -Math.PI / 2;
+          return (
+            <group key={c.id}>
+              {chair(at, rotation)}
+              <Character model={c.model} position={at} rotation={rotation} seatTop={0.46} seed={21 + i + (side === 'left' ? 0 : 4)} mood="neutral" restless={false} talking={c.talking} lookAt={c.talking ? undefined : gaze(side === 'left' ? 'claimant' : 'respondent')} standing={side === 'left' ? lagClient : lagRespondent} />
+            </group>
+          );
+        }),
+      )}
 
       {/* secretary, right, by the podium */}
       <Table wood={wood} m={m} position={[3.6, 0, -2.65]} rotation={Math.PI / 2} width={1.3} label="KOTIB" />

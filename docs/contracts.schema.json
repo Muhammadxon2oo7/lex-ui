@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "LexSim API contracts",
-  "generated": "2026-11-21T05:38:20.851Z",
+  "generated": "2026-11-21T06:23:54.277Z",
   "$defs": {
     "AppealRequest": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",

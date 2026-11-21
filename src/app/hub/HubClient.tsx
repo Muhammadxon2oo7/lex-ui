@@ -175,6 +175,19 @@ export default function HubClient() {
           </button>
         </div>
       </section>
+      <section className="mt-10" aria-labelledby="moot-title">
+        <h2 id="moot-title" className="display text-2xl font-semibold">Bahs</h2>
+        <div className="mt-3 flex flex-wrap items-center gap-5 rounded-[24px] border border-line bg-card p-6">
+          <div className="min-w-0 flex-1 basis-80">
+            <p className="text-[0.75rem] font-semibold uppercase tracking-wider text-accent-ink">Jamoaviy · 2–6 kishi · 15–20 daqiqa</p>
+            <h3 className="display mt-1 text-xl font-semibold">Kursdoshlaringiz bilan sudda bahslashing</h3>
+            <p className="mt-1.5 text-[0.92rem] leading-relaxed text-ink-2">
+              Ikki jamoa — daʼvogar va javobgar; tomon va rol qurʼa bilan tushadi. Tayyor javob yoʻq: sudya soʻz berganda oʻz soʻzingiz bilan gapirasiz. Sudya — sunʼiy intellekt: majlisni olib boradi va gʻolibni aniqlaydi.
+            </p>
+          </div>
+          <Link href="/bahs" className="btn btn-primary min-w-40 max-sm:w-full">Xona ochish yoki qoʻshilish</Link>
+        </div>
+      </section>
       {remote?.ok && remote.scenarios.length > 0 && (
         <section className="mt-10" aria-labelledby="economic-title">
           <div className="flex flex-wrap items-center justify-between gap-3">

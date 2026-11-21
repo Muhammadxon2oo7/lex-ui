@@ -156,6 +156,20 @@ export async function speak(line: string, voice: VoiceId, emotion?: string, read
   return false;
 }
 
+/**
+ * Plays a recorded line (another person's own voice in the moot court) through the same path as the
+ * actors' voices: one voice at a time, the speaker's mouth follows the sound. Resolves when it ends.
+ */
+export async function playClip(data: ArrayBuffer, text: string): Promise<boolean> {
+  stopSpeaking();
+  if (muted) return false;
+  try {
+    return await playThroughAnalyser(data, text);
+  } catch {
+    return false;
+  }
+}
+
 async function playThroughAnalyser(data: ArrayBuffer, text: string): Promise<boolean> {
   const graph = audio.graph();
   if (!graph) return false;
@@ -249,10 +263,17 @@ export interface Listening {
 let pendingVoice: ArrayBuffer[] = [];
 /** How sure the recogniser was of the last answer (0–1; null when it does not say) — sent on with the answer. */
 let lastConfidence: number | null = null;
+let lastSeconds: number | null = null;
 export function takeConfidence(): number | null {
   const c = lastConfidence;
   lastConfidence = null;
   return c;
+}
+/** How long the last spoken answer was (ms), sent with it (`stt.durationMs`). */
+export function takeDuration(): number | null {
+  const d = lastSeconds;
+  lastSeconds = null;
+  return d === null ? null : Math.round(d * 1000);
 }
 export function takeVoice(): ArrayBuffer | null {
   const all = pendingVoice;
@@ -400,11 +421,17 @@ export async function startListening(): Promise<Listening> {
         const heard = quick ? await Promise.race([server, new Promise<null>((r) => setTimeout(() => r(null), 4000))]) : await server;
         abort.abort();
         if (!heard && !quick) throw new Error('Nutqni tanib boʻlmadi. Qayta urinib koʻring.');
-        // the server is not sure of what it heard: never send a guess as the student's answer —
-        // take what the browser heard, or ask to say it again
-        if (heard?.lowConfidence && !quick) throw new Error('Aniq eshitilmadi. Yana bir bor, aniqroq ayting.');
-        const said = heard && !heard.lowConfidence && heard.text ? heard.text : quick;
-        lastConfidence = heard && !heard.lowConfidence && heard.text ? (heard.confidence ?? null) : null;
+        // the server is not sure of what it heard: never a guess as a firm answer — prefer what the browser
+        // heard; otherwise the words go on marked unsure, and whoever is listening asks again out loud
+        // (the court and the rooms re-ask without a penalty when confidence < 0.5)
+        lastSeconds = (wav.byteLength - 44) / 32000;
+        if (heard?.lowConfidence && quick) {
+          lastConfidence = null;
+          pendingVoice.push(wav);
+          return quick;
+        }
+        const said = heard?.text || quick;
+        lastConfidence = heard?.text ? (heard.confidence ?? (heard.lowConfidence ? 0.3 : null)) : null;
         if (said) pendingVoice.push(wav);
         return said;
       },

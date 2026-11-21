@@ -1,175 +1,116 @@
-# LexSim — backend uchun vazifalar (qadamma-qadam)
+# LexSim — backend uchun vazifalar
 
-**Yangilangan:** 2026-11-21, backend v1.4.4.
+**Yangilangan:** 2026-11-21, backend v1.4.6.
 **Kimga:** backend dasturchisi.
-**Server:** `https://lex-api.e-investment.uz/api/v1`.
 
-Bu fayl doimiy yangilanadi: har safar shu fayl almashtiriladi, yangi `vNN` ochilmaydi.
-
-**Tartib:** 1 → 7. Har bir ish oxirida "Qabul" bandi bor. Shu tekshiruv o'tsagina ish bajarilgan hisoblanadi.
-
-**Ilovalar:** `lines.json` (115 gap), `contracts.schema.json`.
+Bu fayl doimiy yangilanadi: har safar shu fayl almashtiriladi.
 
 ---
 
-## 0. Qisqacha: nega shu tartib
+## 0. Frontend bajardi (`LexSim_Frontend_Vazifalar.md` bo'yicha)
 
-21-noyabrdagi jonli sinovda talaba "Ish yo'li" xonasida gapirdi va 15–40 s faqat «Tushunilmoqda…» ni ko'rdi. Natija noto'g'ri matn bo'ldi («koʻtni tozalash kerak koʻtni.»), muloqot buzildi. Sabab — GPU kompyuter o'chiq edi va STT CPU zaxirasida ishladi.
+| # | Ish | Holat |
+|---|---|---|
+| 1 | `/nlu/match` → `situation`: «tushunmadim» o'rniga odamdek javob | ✅ |
+| 2 | `npcTurn.audio`: ovozni javob bilan birga olish | ✅ |
+| 3 | STT ishonchi | ✅ |
+| 4 | STT tezligini o'lchash | ✅ (2-bo'lim) |
+| 5 | Sud zali QA'si | ✅ 13/14 (1-bo'lim) |
+| 6 | `male` ovozi | ✅ |
 
-Frontend o'z tomonini tuzatdi:
-- so'zlar gapirish paytida jonli ko'rinadi;
-- server sekin bo'lsa kutilmaydi;
-- tushunilmasa, aktyor ovoz chiqarib qayta so'raydi.
+**Tafsilotlar:**
+1. **`situation`.** Ustunlik tartibi: `situation` → `match` → `clarify` → «tushunmadim».
+   - "Ish yo'li"da talabaning gapi yozuvga tushadi, so'zlovchi `replies[speaker]` dagi gapni navbat bilan aytadi, `emotion` yuzga qo'yiladi va bosqich o'zgarmaydi.
+   - `tone: bad` → hisobotga xato sifatida, `note` bilan. `ethics: true` → −30 ball, aks holda −10.
+   - **DXM'da** endi erkin gap ham `/nlu/match` ga ketadi. Fuqaro `replies.client` dagi gapni aytadi, so'kinish esa hisobotda qo'pollik deb yoziladi.
+   - Unit testlar bilan tekshirildi. **Jonli sinov Netlify'da** bo'ladi, chunki mahalliy kalit yo'q.
+2. **`npcTurn.audio`.** `audio.voice` biz tanlagan ovozga teng bo'lsa, `audio.url` dan yuklanadi va brauzer keshida doimiy saqlanadi. Aks holda `POST /voice/tts`.
+3. **STT ishonchi.**
+   - `lowConfidence` bo'lsa, matn ishonch belgisi bilan yuboriladi: sudda `turns.stt = {confidence, durationMs}`, "Ish yo'li"da `stt.confidence`. Natijada sudya yoki aktyor ovoz chiqarib qayta so'raydi, ball ayirilmaydi.
+   - Brauzer o'zi tanigan matn bo'lsa, o'sha ishlatiladi.
+4. **STT o'lchovi:** 2-bo'limga qarang.
+5. **Sud zali QA'si.** Yangi yo'llar qo'shildi: «ha», ma'nosiz gap, 3 marta so'kinish, bahona.
+6. **`male` ovozi.** Bizning server keshi 2 soatda yangilanadi.
 
-**Lekin asosiy tuzatish sizda: STT tez, barqaror va aniq bo'lishi kerak.** 1–3-ishlar shu haqda.
-
----
-
-## 1. STT kanali hech qachon uzilmasin
-
-**Nima:** GPU kompyuter bilan aloqa (tunnel) uzilsa, o'zi qayta ulansin. GPU o'chsa, darhol xabar kelsin.
-
-**Qanday:**
-1. Tunnelni oddiy `ssh -L/-R` bilan emas, `autossh` bilan va systemd xizmati sifatida ishga tushiring:
-   ```ini
-   # /etc/systemd/system/lexsim-gpu-tunnel.service
-   [Service]
-   ExecStart=/usr/bin/autossh -M 0 -N -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes <tunnel-buyrug'ingiz>
-   Restart=always
-   RestartSec=5
-   [Install]
-   WantedBy=multi-user.target
-   ```
-2. GPU kompyuterda: uxlash rejimi va o'chib qolish o'chirilsin (loyiha egasi bilan birga). Elektr tiklanganda kompyuter o'zi yonsin (BIOS: *Restore on AC power loss*). GPU xizmatlari ham systemd'da, `Restart=always` bilan ishlasin.
-3. `/health.voice.gpu.*` 2 daqiqadan ko'p `false` bo'lsa, loyiha egasiga xabar keladi (Telegram bot yoki email).
-
-**Qabul mezoni:**
-- tunnel jarayonini `kill` qilgandan keyin ≤ 30 s ichida `/voice/status` yana `"stt":"gpu"` ko'rsatadi;
-- GPU o'chirilganda xabar keladi.
+**Testlar:** 51/51. Brauzerdagi to'liq oqimlar (sud, "Ish yo'li", DXM) konsol xatolarisiz o'tdi.
 
 ---
 
-## 2. STT tezligi ≤ 2,5 s
+## 🔴 1. Yuridik xato: «ishonchnoma uyda qolib ketibdi» → «Vakolat tekshirildi»
 
-**Nima:** 5 soniyalik audio ≤ 2,5 s da tanilsin. Hozir GPU bilan ~4 s.
-
-**Qanday:**
-1. Bitta so'rovni bosqichlarga bo'lib o'lchang (logda ms bilan):
-   - qabul;
-   - formatni o'zgartirish (ffmpeg);
-   - tunnel orqali GPU'ga yuborish;
-   - model;
-   - qaytarish.
-2. Tunnelda doimiy ulanish (keep-alive / HTTP connection pool) ishlating, har so'rovda yangi ulanish ochilmasin.
-3. Audioni GPU'ga yuborishdan oldin 16 kHz mono PCM'ga keltiring. Biz allaqachon shunday yuboryapmiz, qayta kodlash shart emas: `Content-Type: audio/wav`, 16 kHz, mono, 16-bit.
-4. Model GPU'da doim yuklangan holda tursin (warm), birinchi so'rov sekin bo'lmasin.
-
-**Qabul mezoni:** 20 ta 5 soniyalik audio uchun p95 ≤ 2,5 s. Natijani `/health` da ko'rsating (3-ish).
-
----
-
-## 3. STT ishonchsiz bo'lsa — noto'g'ri matn bermang
-
-**Nima:** CPU zaxirasi yoki shovqin «koʻtni tozalash…» kabi matn berganda, bu matn talabaning javobi sifatida ketmasin.
-
-**Qanday:**
-1. Har bir natijaga **`confidence`** (0–1) hisoblang. Model bermasa, oddiy baholash ham yetadi:
-   - so'zlarning necha foizi o'zbek lug'atida yoki ssenariy lug'atida bor;
-   - takrorlanish (bir so'z ketma-ket 2+ marta);
-   - audio uzunligiga nisbatan so'zlar soni.
-2. `confidence < 0,5` bo'lsa, `text` ni qaytaring, lekin `"lowConfidence": true` belgisini qo'ying.
-3. **`POST /sessions/{id}/turns`** da `stt.confidence < 0,5` kelsa, sudya bosqichni o'zgartirmasdan aniqlashtiradi («Aniqroq ayting, iltimos.») va ball ayirilmaydi.
-4. `/health.voice` ga qo'shing:
-   ```json
-   "stt": { "engine": "gpu", "p50Ms": 1800, "p95Ms": 2400, "cpuFallbacks24h": 3, "lowConfidence24h": 5 }
-   ```
-
-**Biz nima qilamiz:** `confidence` kelishi bilan uni `turns.stt.confidence` da sizga qaytarib yuboramiz. Ishonchsiz natijada talabaning o'zidan qayta aytishni so'raymiz, noto'g'ri gapni yubormaymiz.
-
-**Qabul mezoni:** shovqin yoki ma'nosiz audio → `lowConfidence: true`; aniq gap → `confidence ≥ 0,7`.
-
----
-
-## 4. Yangi `lines.json` (115 gap) — oldindan ovozlashtirish
-
-**Nima:** ro'yxat 97 tadan 115 taga oshdi. Yangilari — tushunilmagan javobga **qayta so'rash** gaplari, har bir rol uchun o'z uslubida:
-- **rasmiy** (sudya, kotib, tergovchi, boshliq, navbatchi):
-  - «Kechirasiz, fikringizni tushunmadim. Aniqroq ayting, iltimos.»
-  - «Iltimos, qisqa va aniq bayon qiling.»
-  - «Yana bir bor takrorlang, iltimos.»
-- **oddiy** (mijoz, guvoh, taraf):
-  - «Kechirasiz, tushunmadim. Yana bir bor aytasizmi?»
-  - «Uzr, nima demoqchi ekaningizni tushunmadim.»
-  - «Bir oz soddaroq tushuntirib bering.»
-
-**Qanday:** ilova qilingan `lines.json` ni `backend/voice_lines.json` ga qo'ying. Avtomatik render qolganini o'zi yozadi.
-
-**Qabul mezoni:** `node tools/qa/voice-coverage.mjs` → `case lines 115 hit 115`, `FAIL 0`.
-
----
-
-## 5. Sud zalida ham qayta so'rash
-
-**Nima:** bo'sh, juda qisqa yoki ma'nosiz `turn` matni kelsa, sudya qayta so'rasin:
-- bosqich o'zgarmasin;
-- ball ayirilmasin;
-- `decisions[]` ga `info` yozilsin.
-
-**Qanday:**
-- shart: matn ≤ 2 so'z va «Hurmatli sud»dan boshqa mazmun yo'q, yoki 3-ishdagi `lowConfidence`;
-- sudya gaplari (2–3 variant, prerender ro'yxatiga):
-  - «Vakil, fikringizni aniqroq bayon qiling.»
-  - «Sud sizni tushunmadi. Qisqa va aniq ayting.»
-  - «Iltimos, savolga mazmunan javob bering.»
-- `emotion: "uncertain"`, `gesture: "lean-in"`.
-
-**Qabul mezoni:** `turn {text: "ha"}` va `turn {text: "koʻtni tozalash kerak"}` → sudya qayta so'raydi, bosqich o'zgarmaydi.
-
----
-
-## 6. `npcTurn.audio` — ovozni javob bilan birga berish
-
-**Nima:** oldindan ovozlashtirilgan gap uchun `npcTurn` ichida audio ma'lumoti. Shunda frontend TTS'ni alohida so'ramaydi va gap darhol eshitiladi.
-
-**Format:**
-```json
-"audio": { "id": "a7f3…", "url": "/api/v1/voice/cache/a7f3….mp3", "durationMs": 2840, "voice": "elder_m" }
+**Takrorlash** (`advanced`, sud zali, vakolat bosqichi):
+```
+turn «Hurmatli sud, ishonchnoma uyda qolib ketibdi.»
+→ [judge] «Vakolat tekshirildi.» → majlis davom etadi
 ```
 
-**Qanday:**
-- `url` — kalit yoki cookie bilan ochiladigan GET, `Cache-Control: max-age=31536000, immutable` (kesh kaliti `voice + matn` xeshi);
-- gap keshda bo'lmasa, `audio` maydonini qo'ymang. Biz odatdagidek `POST /voice/tts` qilamiz.
+Hujjat yo'q, lekin vakolat **tasdiqlandi**: gapda «ishonchnoma» so'zi bor-ku. Yuridik jihatdan noto'g'ri va talabaga noto'g'ri saboq beradi. Sizning hujjatingizdagi (v1.4.6) kutilgan javob: «Tushunaman… lekin hujjatsiz sud sizni vakil sifatida qo'ya olmaydi…».
 
-**Qabul mezoni:** sud zalidagi kanonik gaplarning ≥ 90 % ida `audio` bor.
+**Kerak:** vakolat bosqichida inkor va bahonalar («uyda qoldi», «yo'q», «olib kelmadim», «unutibman», «keyin beraman») «ishonchnoma» so'zidan **ustun** tursin. Ikkinchi marta takrorlansa, `advanced` darajada vakil majlisga qo'yilmasin.
+
+**Qabul:** `node tools/qa/live.mjs` → «an excuse is answered» va «not admitted» ✓ bo'lsin. Hozir 13/14.
 
 ---
 
-## 7. Kichik ishlar
+## 🔴 2. STT: vaqti-vaqti bilan 30–45 s qotish
 
-- **Guvoh:** guvoh bor birinchi ssenariy bilan birga. Javobgarlikni tushuntirish moddasini mentor beradi, guvohga `uncertain`/`confused` munosabatlar.
-- **v1.5:** sarlavhasiz `GET /store` → 422. Biz doim `X-LexSim-Owner` yuboramiz, bizga ta'sir qilmaydi.
-- **Qayta ishga tushirish:** faqat talabalar ishlamaydigan vaqtda (kech soat 22:00 dan keyin).
+**O'lchov** (`tools/qa/stt-timing.mjs`, 20 ta klip, 1,8–5,6 s, 16 kHz mono WAV, GPU yoniq, 21-noyabr 11:30):
+
+| Ko'rsatkich | p50 | p95 |
+|---|---|---|
+| Server: `total` | **2,84 s** | **39,8 s** |
+| `model` | 2,26 s | 39,3 s |
+| `upload` (tunnel) | 0,59 s | 0,84 s |
+| To'g'ridan-to'g'ri sizga | 3,40 s | 40,7 s |
+| Bizning server orqali | 3,36 s | 45,0 s |
+
+**Xulosa:**
+- **Bizning server vaqt qo'shmaydi** (3,36 s va 3,40 s).
+- **Oddiy holatda** `total` 2,84 s. Siz o'lchagan 1,8 s dan sekin, `upload` ning o'zi 0,6 s.
+- **20 tadan 4 tasida `model` 6–40 s** davom etdi. Shu payt `/health` da `autoPrerender: 17/173 ishlayapti`, `voice.stt.p95Ms: 26295`. Ya'ni **STT va ovoz renderi bitta GPU'da navbat talashyapti.**
+
+**Kerak:**
+1. **STT birinchi navbatda.** Talaba so'rovi render ishidan doim oldin o'tsin: ustuvor navbat, yoki STT kelganda render pauza qilinsin.
+2. **Katta renderni kechasi qiling** (22:00 dan keyin), xuddi qayta ishga tushirish kabi. Kunduzi faqat bir nechta yangi gap.
+3. **`upload` ni kamaytirish:** tunnelda ulanishni qayta ishlating (keep-alive) yoki audioni siqib yuboring (Opus yoki FLAC).
+
+**Qabul:** kunduzi, render ketayotgan paytda ham 20 ta klipda `total` p95 ≤ 3 s.
+
+---
+
+## 🟠 3. Ovoz qamrovi (`male` qayta yozilgandan keyin)
+
+`voice-coverage.mjs` (11:40):
+- sud zali **38/45** `hit` (7 tasi `miss`, lekin render qilindi);
+- "Ish yo'li" **82/115** `hit`. `FAIL 0`.
+
+Render tugagach, ikkalasi ham to'liq `hit` bo'lishi kerak. Tugaganda xabar bering, men qayta o'lchayman.
+
+---
+
+## 🟠 4. `situation` bo'yicha savollar
+
+1. **DXM fuqarosi** uchun qaysi `replies` kaliti? Biz `client` ishlatyapmiz (DXM'ga kelgan fuqaro — mijoz). Alohida `citizen` kerak bo'lsa, qo'shing, biz moslaymiz.
+2. **`situation` ga `audio` qo'shsa bo'ladimi** (xuddi `npcTurn.audio` kabi, har bir gap uchun)? Hozir matn bo'yicha `POST /voice/tts` qilyapmiz. Prerender bo'lsa tez, lekin `audio` bilan pauza umuman bo'lmaydi.
+3. Bitta haqiqiy `/nlu/match` javobini (`situation` bilan) misol sifatida yuboring. Unit testimiz sizning hujjatingizdagi shaklga yozilgan, real javob bilan solishtirib qo'yamiz.
 
 ---
 
 ## Keyinroq — loyiha egasining qarorlaridan keyin
 
-| # | Ish | Nimani kutadi | Batafsil |
-|---|---|---|---|
-| B4 | Ovozlar palitrasi, `scene.voices`, emotsiya variantlari | Ovoz namunalari va rozilik | v15, 2-bo'lim |
-| B5 | 9 ta ssenariy, linter (sana, summa, `scene.papers` ↔ `evidence`), qaror qoidalari | Mentor | v14 1, 7; v15 4 |
-| B6 | Improvizatsiya ≤ 3 s, jonli gap klon ovozda | Tez LLM kaliti | v14 2, 5 |
-| B7 | `POST /records`, `GET /teacher/records` | Saqlash siyosati | v15, 5-bo'lim |
+| # | Ish | Nimani kutadi |
+|---|---|---|
+| B4 | Ovozlar palitrasi, `scene.voices` | Ovoz namunalari |
+| B5 | 9 ta ssenariy | Mentor |
+| B6 | Erkin gapga jonli javob (LLM) | Tez LLM kaliti |
+| B7 | `POST /records` | Saqlash siyosati |
 
 ---
 
 ## Tekshirish (frontend repo, `lexsim-web`)
 
 ```bash
-curl -s https://lex-api.e-investment.uz/api/v1/voice/status   # "stt":"gpu"
-curl -s https://lex-api.e-investment.uz/api/v1/health         # voice.stt.p95Ms ≤ 2500
-node tools/qa/voice-coverage.mjs                              # FAIL 0; case 115/115
-node tools/qa/live.mjs                                        # 8/8
+node tools/qa/live.mjs                              # 14/14
+node tools/qa/stt-timing.mjs <20 ta wav papka>      # total p95 ≤ 3 s
+node tools/qa/voice-coverage.mjs                    # hit to'liq, FAIL 0
 ```
-
-Ish tugagach, javobingizda har bir band uchun **«Qabul» natijasini** yozing: raqamlar bilan.

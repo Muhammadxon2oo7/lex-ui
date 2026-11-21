@@ -36,6 +36,7 @@ import { ScriptedCharacterAgent, type Beat, type CharacterAgent } from './charac
 import { RuleIntentClassifier, type IntentClassifier, type IntentTag } from './intent';
 import { evaluate } from './evaluator';
 import { pack, unpack } from '@/server/durable';
+import { situationLine, type Situation } from '@/server/situation';
 
 export class HttpError extends Error {
   constructor(
@@ -62,6 +63,8 @@ export interface Session {
   turns: Turn[];
   userTurns: number;
   usedReplies: Set<string>;
+  /** How many times each human situation has been answered: the next variant follows. */
+  situations: Record<string, number>;
   inspectedPhone: boolean;
   unlocked: Map<string, number>;
   patience: number;
@@ -236,6 +239,7 @@ export function createSession(input: {
     turns: [],
     userTurns: 0,
     usedReplies: new Set(),
+    situations: {},
     inspectedPhone: false,
     unlocked: new Map(),
     patience: scenario.initial.patience,
@@ -284,7 +288,8 @@ export function dumpSession(id: string): unknown | null {
 export function loadSession(owner: string, raw: unknown): boolean {
   const s = unpack<Omit<Session, 'ownerToken' | 'lock'>>(raw);
   if (!s || typeof s !== 'object' || !s.id || !(s.processed instanceof Map)) return false;
-  store.sessions.set(s.id, { ...s, ownerToken: owner, lock: Promise.resolve() } as Session);
+  // (sessions stored before human situations existed have no counter yet)
+  store.sessions.set(s.id, { ...s, situations: s.situations ?? {}, ownerToken: owner, lock: Promise.resolve() } as Session);
   return true;
 }
 export const hasSession = (id: string) => store.sessions.has(id);
@@ -391,6 +396,8 @@ const FACT_TAGS: IntentTag[] = ['ask-work-period', 'ask-documents', 'ask-employe
 export function processTurn(
   s: Session,
   input: { clientTurnId: string; text?: string; optionId?: string },
+  /** A human situation the court server recognised in a free answer (swearing, small talk…): the citizen answers it. */
+  situation?: Situation | null,
 ): Promise<MutationResponse> {
   return withLock(s, async () => {
     const cached = s.processed.get(input.clientTurnId);
@@ -430,7 +437,20 @@ export function processTurn(
     let revealed: HiddenFact[] = [];
     let moodOverride: Emotion | null = null;
 
-    if (tags.has('injection')) {
+    // a person's answer to the unexpected, in the citizen's own words (court server v1.4.6)
+    const human = situation ? situationLine(situation, 'client', (s.situations[situation.id] = (s.situations[situation.id] ?? -1) + 1)) : null;
+    if (human && situation) {
+      if (situation.ethics) {
+        (s.evidence.rude ??= []).push(userTurn.id);
+        s.patience -= 18;
+        s.trust -= 8;
+      } else if (situation.tone === 'bad') {
+        (s.evidence.dismiss ??= []).push(userTurn.id);
+        s.patience -= 10;
+        s.trust -= 8;
+      } else s.patience -= 3;
+      moodOverride = human.emotion ?? null;
+    } else if (tags.has('injection')) {
       beat = 'injection';
       s.patience -= 4;
       moodOverride = 'confused';
@@ -520,7 +540,9 @@ export function processTurn(
     s.emotion = moodOverride ?? mood.emotion;
     s.intensity = moodOverride ? 0.6 : mood.intensity;
 
-    if (beat === 'bribe-pushed') {
+    if (human) {
+      npcSay(s, batch, human.text, situation?.ethics ? 'shake-head' : 'none');
+    } else if (beat === 'bribe-pushed') {
       npcSay(s, batch, s.scenario.bribe.pushLine, 'offer-envelope');
     } else {
       const reply = await character.reply(

@@ -8,6 +8,7 @@
  *   2. otherwise our own lexical matcher (src/lib/uz.ts), cautious by design.
  */
 import { matchUtterance } from '@/lib/uz';
+import { readSituation, type Situation } from '@/server/situation';
 import { keyed } from '@/server/remote/key';
 import { freeCandidates } from './engine';
 
@@ -16,13 +17,19 @@ type Nlu = {
   clarify: string | null;
   quality?: { ethics?: 'ok' | 'violation' };
   reason?: string;
+  /** v1.4.6: a recognised human situation, with a ready reply for every kind of character */
+  situation?: unknown;
 };
+
+export type Understood = { optionId: string | null; clarify: string | null; ethics: boolean; situation?: Situation | null };
 
 const FORBIDDEN = ['pora', 'tanish', 'konvert', 'pul beraman', 'kelishib qoʻyamiz'];
 
-export async function understand(id: string, owner: string | undefined, text: string, inputMode: 'text' | 'voice', stt?: { confidence?: number }) {
+export async function understand(id: string, owner: string | undefined, text: string, inputMode: 'text' | 'voice', stt?: { confidence?: number }): Promise<Understood> {
   const cand = freeCandidates(id, owner);
   if (!cand.options.length) return { optionId: null, clarify: 'Hozir javob kutilmayapti.', ethics: false };
+  // the recogniser was not sure what it heard: never judge a guess — the person you talk to asks again
+  if (inputMode === 'voice' && stt?.confidence !== undefined && stt.confidence < 0.5) return { optionId: null, clarify: 'Ovozingiz aniq eshitilmadi — yana bir bor, aniqroq ayting.', ethics: false };
   const r = await keyed<Nlu>(owner, '/nlu/match', {
     timeout: 4000,
     body: {
@@ -36,6 +43,9 @@ export async function understand(id: string, owner: string | undefined, text: st
   });
   if (r?.status === 200 && r.json) {
     const n = r.json;
+    // first: a human situation (swearing, giving up, a lost paper, Russian, small talk) — answered like a person would
+    const situation = readSituation(n.situation);
+    if (situation) return { optionId: null, clarify: null, ethics: situation.ethics, situation };
     if (n.quality?.ethics === 'violation') {
       // the room's own trap reply (envelope, connections…) if it has one, else a penalty on the spot
       const trap = cand.options.find((o) => o.tone === 'bad' && /konvert|tanish|pora/i.test(o.text));

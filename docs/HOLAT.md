@@ -33,6 +33,14 @@ Eski javoblar va topshiriqlar `arxiv/` papkasida turadi, ular endi kerak emas.
 
 ---
 
+### Yangi: «Bahs» — jamoaviy sud (21-noyabr)
+
+- Ishlaydi (lokal server): `/bahs` — xona ochish/qoʻshilish, lobbi (A/B yoki qurʼa, 1×1–3×3), ish papkasi va maxfiy faktlar, 3D zalda navbatli majlis (14 qadam, taymer, ovoz yoki matn, jamoa chati, bayonnoma), qaror va yuklab olish.
+- Sinov: `node tools/qa/moot.mjs` — ikki brauzer bilan toʻliq majlis, 11/11.
+- **Netlify da hali ishlamaydi:** xona holati Next.js xotirasida. Backend koʻchirishi kerak — `backend-tasks/LexSim_Bahs_Backend.md`.
+- Baho hozircha dastlabki (shakl va qamrov); mazmun bahosi backenddagi `/moot/judge` dan keyin.
+- Ovoz — yozib yuboriladigan boʻlak (jonli emas); 3-oʻyinchilar zalda stol chetida oʻtiradi.
+
 ## 2. Kim nima qiladi
 
 ### 🔴 Loyiha egasi (siz) — boshqa ishlar shunga bog'liq

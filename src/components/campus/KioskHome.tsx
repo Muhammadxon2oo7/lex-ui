@@ -230,7 +230,7 @@ export function KioskHome({ caseSnap, setCaseSnap, theftSnap, setTheftSnap, onEn
   // [id, label, short label on a phone, count]
   const TABS: [Tab, string, string, number][] = [
     ['cases', 'Ishlar', 'Ishlar', 2],
-    ['court', 'Sud majlislari', 'Sud', scenarios.length + 1],
+    ['court', 'Sud majlislari', 'Sud', scenarios.length + 2],
     ['other', 'Boshqa', 'Boshqa', 2],
   ];
 
@@ -263,6 +263,9 @@ export function KioskHome({ caseSnap, setCaseSnap, theftSnap, setTheftSnap, onEn
 
             {tab === 'court' && (
               <>
+                <ul className="rounded-2xl bg-white/[0.04] p-2 ring-1 ring-white/10">
+                  <Row title="Bahs — jamoaviy sud" sub="Kursdoshlar bilan 1×1, 2×2 yoki 3×3 · sudya — sunʼiy intellekt" meta="2–6 kishi" onClick={() => void go('moot', async () => '/bahs')} disabled={Boolean(starting)} busy={starting === 'moot'} />
+                </ul>
                 <section aria-labelledby="eco-title" className="rounded-2xl bg-white/[0.04] p-4 ring-1 ring-white/10 sm:p-5">
                   <p className="text-[0.66rem] font-semibold tracking-[0.18em] text-amber-200/90 uppercase">Iqtisodiy sud · tomon vakili</p>
                   <h3 id="eco-title" className="mt-1 text-[1.08rem] font-semibold">Sud majlisida oʻz soʻzingiz bilan</h3>

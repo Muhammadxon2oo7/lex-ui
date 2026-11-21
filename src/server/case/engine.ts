@@ -14,6 +14,7 @@ import jpk from '../law/jpk-case.json';
 import { checkClaim, filingRuling } from './claim';
 import { ATTACHMENTS, BOOK as LABOUR, type CaseBookShape, type CaseView, type Effect, type Line, type Node, type Opt, type Scene, type StageDef } from './ishga-tiklash';
 import { BOOK as THEFT } from './ogirlik';
+import { situationLine, type Situation } from '@/server/situation';
 
 const BOOKS: Record<CaseKind, CaseBookShape> = { labour: LABOUR, theft: THEFT };
 const LAW: Record<CaseKind, typeof fpk> = { labour: fpk, theft: jpk };
@@ -36,6 +37,8 @@ interface CaseState {
   used: Set<string>;
   lines: CaseLine[];
   seq: number;
+  /** How many times each human situation (swearing, small talk…) has been answered: the next variant follows. */
+  situations: Record<string, number>;
   feedback: CaseSnapshot['feedback'];
   standing: boolean;
   scolded: Set<string>;
@@ -307,6 +310,7 @@ function create(owner: string, kind: CaseKind, level: Level = 'beginner'): CaseS
     used: new Set(),
     lines: [],
     seq: 0,
+    situations: {},
     feedback: null,
     standing: false,
     scolded: new Set(),
@@ -354,6 +358,7 @@ export function loadCase(owner: string, raw: unknown): void {
   // cases stored before levels existed
   c.level ??= 'beginner';
   c.revealed ??= new Set();
+  c.situations ??= {};
   cases.set(c.id, c);
   byOwner.set(`${owner}:${c.kind}`, c.id);
 }
@@ -509,12 +514,27 @@ export const CLARIFY = {
 };
 export const FORMAL = new Set<string>(['judge', 'clerk', 'secretary', 'officer', 'investigator', 'chief']);
 
-export function actSaid(id: string, owner: string | undefined, input: { clientActionId: string; text: string; inputMode: InputMode }, understood: { optionId: string | null; clarify: string | null; ethics: boolean }): CaseSnapshot {
+export function actSaid(id: string, owner: string | undefined, input: { clientActionId: string; text: string; inputMode: InputMode }, understood: { optionId: string | null; clarify: string | null; ethics: boolean; situation?: Situation | null }): CaseSnapshot {
   const c = owned(id, owner);
   const cached = c.processed.get(input.clientActionId);
   if (cached) return cached;
   if (!c.stage || c.stageDone) throw new HttpError(409, 'not_in_room', 'Hozir hech qaysi xonada emassiz');
-  if (understood.optionId) choose(c, understood.optionId, input.inputMode);
+  const to = [...c.lines].reverse().find((l) => l.speaker !== 'you' && l.speaker !== 'system')?.speaker;
+  const sit = understood.situation && to ? understood.situation : null;
+  const line = sit && to ? situationLine(sit, to, (c.situations[sit.id] = (c.situations[sit.id] ?? -1) + 1)) : null;
+  if (sit && line && to) {
+    // a person's answer to the unexpected: what you said stays on record, they answer in their own
+    // words and mood, and the moment stays open (the stage does not move)
+    say(c, [['you', input.text]]);
+    say(c, [[to, line.text, ...(line.emotion ? [{ emotion: line.emotion }] : [])] as Line]);
+    if (sit.tone === 'bad') {
+      const points = sit.ethics ? 30 : 10;
+      c.penalties.push({ points, note: sit.note ?? (sit.ethics ? 'Kasbiy etikani buzish' : 'Notoʻgʻri xatti-harakat') });
+      record(c, input.text, 'bad', points, sit.note ?? null, null, null);
+      c.log[c.log.length - 1].inputMode = input.inputMode;
+      c.feedback = c.level === 'advanced' ? null : { tone: 'bad', message: sit.note ?? 'Bu gap advokatga yarashmaydi.', article: null };
+    } else c.feedback = null;
+  } else if (understood.optionId) choose(c, understood.optionId, input.inputMode);
   else if (understood.ethics) {
     say(c, [['you', input.text]]);
     c.penalties.push({ points: 40, note: 'Axloqiy chegarani buzish (pora yoki bosimga ishora)' });

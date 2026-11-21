@@ -26,7 +26,7 @@ import { ApiError, api, newId } from '@/game/api';
 import { audio } from '@/game/audio';
 import { useProfile } from '@/game/profile';
 import { useGame } from '@/game/store';
-import { lipTrack, prefetchLine, speak, stopSpeaking, voiceStatus, type VoiceId, dropVoice, takeVoice, takeConfidence } from '@/game/voice';
+import { lipTrack, prefetchLine, speak, stopSpeaking, voiceStatus, type VoiceId, dropVoice, takeVoice, takeConfidence, takeDuration } from '@/game/voice';
 import { Talk } from '@/components/hud/Talk';
 import { courtStageFor } from '@/game/courtStage';
 import { useDismiss } from '@/lib/useDismiss';
@@ -323,6 +323,7 @@ function Room({ initial }: { initial: Snapshot }) {
     if (wav) void saveVoice(id, said, wav);
     // how sure the recogniser was (the court asks again, without a penalty, when it was not)
     const heardWith = takeConfidence();
+    const heardFor = takeDuration();
     const confidence = inputMode === 'voice' ? heardWith : null;
     // the room as the answer was given (answers are sent only once every line before has been heard)
     const presence = { heardTurnId: snap.turns.at(-1)?.id, standing, ...(wav ? { spokenSeconds: Math.round(((wav.byteLength - 44) / 32000) * 10) / 10 } : {}) };
@@ -333,7 +334,7 @@ function Room({ initial }: { initial: Snapshot }) {
     void run(async () => {
       try {
         setFbGone(null); // the same note may come again for a new answer
-        await settle((await api.turn(id, clientTurnId, { text: said }, { inputMode, presence, ...(confidence !== null ? { stt: { confidence } } : {}) })).snapshot);
+        await settle((await api.turn(id, clientTurnId, { text: said }, { inputMode, presence, ...(confidence !== null ? { stt: { confidence, ...(heardFor !== null ? { durationMs: heardFor } : {}) } } : {}) })).snapshot);
       } catch (e) {
         setDraft(said); // nothing is lost: send it again (the same id would be answered once)
         throw e;

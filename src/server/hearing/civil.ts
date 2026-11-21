@@ -11,6 +11,7 @@ import { randomBytes, timingSafeEqual } from 'node:crypto';
 import type { HearingLine, HearingSnapshot, Speaker } from '@/contracts/hearing';
 import { HttpError } from '../engine/session';
 import law from '../law/fpk-hearing.json';
+import { pack, unpack } from '@/server/durable';
 
 interface Step {
   id: string;
@@ -151,6 +152,22 @@ export function createHearing(owner: string): HearingSnapshot {
   hearings.set(h.id, h);
   return snapshot(h);
 }
+
+/** The hearing as a stored document (without its owner; the last answers kept for idempotency). */
+export function dumpHearing(id: string): unknown | null {
+  const h = hearings.get(id);
+  if (!h) return null;
+  const { owner: _owner, processed, ...rest } = h;
+  void _owner;
+  return pack({ ...rest, processed: new Map([...processed].slice(-8)) });
+}
+export function loadHearing(owner: string, raw: unknown): boolean {
+  const h = unpack<Omit<Hearing, 'owner'>>(raw);
+  if (!h || typeof h !== 'object' || !h.id || !(h.processed instanceof Map)) return false;
+  hearings.set(h.id, { ...h, owner });
+  return true;
+}
+export const hasHearing = (id: string) => hearings.has(id);
 
 function owned(id: string, owner: string | undefined): Hearing {
   const h = hearings.get(id);

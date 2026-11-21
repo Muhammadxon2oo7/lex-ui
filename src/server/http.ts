@@ -3,8 +3,11 @@
  * owner cookie, body validation, rate limiting and uniform error envelopes.
  */
 import { cookies } from 'next/headers';
+import { after } from 'next/server';
 import type { z } from 'zod';
-import { HttpError, getSession, newOwnerToken, type Session } from './engine/session';
+import { HttpError, dumpSession, getSession, hasSession, loadSession, newOwnerToken, type Session } from './engine/session';
+import { dumpHearing, hasHearing, loadHearing } from './hearing/civil';
+import { durable, storeGet, storePut } from './durable';
 
 const COOKIE = 'lexsim_owner';
 const MAX_BODY_BYTES = 16 * 1024;
@@ -25,8 +28,42 @@ export async function ownerToken(create = false): Promise<string | undefined> {
   return token;
 }
 
-export async function ownedSession(id: string): Promise<Session> {
-  return getSession(id, await ownerToken());
+/** Store document ids: one per session / hearing. */
+const docId = (kind: 'dxm' | 'hearing', id: string) => `${kind}-${id}`;
+
+/**
+ * The owner's session — read back from the store when this server instance has never seen it.
+ * `writes`: the request changes it, so it is written through once the response has gone out.
+ */
+export async function ownedSession(id: string, writes = false): Promise<Session> {
+  const owner = await ownerToken();
+  if (owner && !hasSession(id) && durable()) {
+    const raw = await storeGet(owner, docId('dxm', id));
+    if (raw) loadSession(owner, raw);
+  }
+  const s = getSession(id, owner);
+  if (writes) keep('dxm', id, owner);
+  return s;
+}
+
+/** The same for a presiding-judge hearing (the engine checks the owner itself). */
+export async function restoreHearing(id: string): Promise<void> {
+  const owner = await ownerToken();
+  if (!owner || hasHearing(id) || !durable()) return;
+  const raw = await storeGet(owner, docId('hearing', id));
+  if (raw) loadHearing(owner, raw);
+}
+
+/**
+ * After the response has gone out, write the session / hearing through to the store
+ * (the student never waits for it; on a serverless host the next request may land elsewhere).
+ */
+export function keep(kind: 'dxm' | 'hearing', id: string, owner: string | undefined) {
+  if (!owner || !durable()) return;
+  after(async () => {
+    const state = kind === 'dxm' ? dumpSession(id) : dumpHearing(id);
+    if (state) await storePut(owner, docId(kind, id), kind === 'dxm' ? 'dxm-session' : 'hearing', state);
+  });
 }
 
 /* Fixed-window limiter: plenty for a single-node reference backend. */

@@ -505,6 +505,8 @@ interface Props {
   robe?: boolean;
   /** A gesture that belongs to what is being said right now (new `id` = play it once). */
   cue?: { id: string; clip: Gesture } | null;
+  /** Seated at a desk with hands on it, working (a clerk keeping the record) instead of the plain chair idle. */
+  atWork?: boolean;
   /**
    * Waiting-room behaviour: now and then checks the watch, sighs, looks round
    * the hall. Right for extras; wrong for someone in a conversation with you.
@@ -518,7 +520,7 @@ interface Props {
   upright?: number;
 }
 
-export function Character({ model, position, rotation, seatTop, driven = false, mood = 'neutral', seed = 1, talking = false, lookAt, doppi = false, standing = false, exitPath, enterPath, leave = false, robe = false, cue = null, restless = true, firstPerson = false, track, upright = 0 }: Props) {
+export function Character({ model, position, rotation, seatTop, driven = false, mood = 'neutral', seed = 1, talking = false, lookAt, doppi = false, standing = false, exitPath, enterPath, leave = false, robe = false, cue = null, atWork = false, restless = true, firstPerson = false, track, upright = 0 }: Props) {
   const live = useRef({ talking, lookAt, standing, exitPath, leave, cue });
   useEffect(() => {
     live.current = { talking, lookAt, standing, exitPath, leave, cue };
@@ -649,7 +651,8 @@ export function Character({ model, position, rotation, seatTop, driven = false, 
       }
       return act;
     };
-    const idle = action('sit_idle');
+    // a clerk at work keeps her hands on the desk (the record is being kept); everyone else sits back
+    const idle = (atWork ? action('sit_table_idle') : null) ?? action('sit_idle');
     const talks = ['sit_talk_1', 'sit_talk_2', 'sit_talk_3'].map((n) => action(n)).filter(Boolean) as THREE.AnimationAction[];
     const nod = action('sit_nod', true);
     const shake = action('sit_head_shake', true);
@@ -672,7 +675,7 @@ export function Character({ model, position, rotation, seatTop, driven = false, 
       mixer.stopAllAction();
       mixer.uncacheRoot(rig.scene);
     };
-  }, [rig, takes, seed]);
+  }, [rig, takes, seed, atWork]);
 
   const anim = useRef({
     pose: { ...POSES[mood] },

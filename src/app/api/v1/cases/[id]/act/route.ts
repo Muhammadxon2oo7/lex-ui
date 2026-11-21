@@ -2,6 +2,7 @@ import { CaseActRequestSchema } from '@/contracts/case';
 import { act, actSaid } from '@/server/case/engine';
 import { reportRoom, restoreCase, saveCase } from '@/server/case/persist';
 import { understand } from '@/server/case/understand';
+import { after } from 'next/server';
 import { handle, ownerToken, rateLimit, readBody, type IdContext } from '@/server/http';
 
 export const POST = handle(async (request: Request, { params }: IdContext) => {
@@ -15,7 +16,7 @@ export const POST = handle(async (request: Request, { params }: IdContext) => {
     ? actSaid(id, owner, input, await understand(id, owner, input.text, input.inputMode, input.stt))
     : act(id, owner, input);
   // write-through (durable across restarts) and, when a room ends, its record for the teacher
-  void saveCase(owner, snap);
-  void reportRoom(owner, snap);
+  // (after the response: the student never waits for the store, and a serverless host still finishes it)
+  after(() => Promise.all([saveCase(owner, snap), reportRoom(owner, snap)]));
   return { case: snap };
 });

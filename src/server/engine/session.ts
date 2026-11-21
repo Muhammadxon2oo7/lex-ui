@@ -35,6 +35,7 @@ import { SCENARIOS, type HiddenFact, type ScenarioDefinition } from '../scenario
 import { ScriptedCharacterAgent, type Beat, type CharacterAgent } from './character';
 import { RuleIntentClassifier, type IntentClassifier, type IntentTag } from './intent';
 import { evaluate } from './evaluator';
+import { pack, unpack } from '@/server/durable';
 
 export class HttpError extends Error {
   constructor(
@@ -268,6 +269,25 @@ export function createSession(input: {
   store.sessions.set(s.id, s);
   return s;
 }
+
+/** The session as a stored document (without its owner token and lock; the last answers kept for idempotency). */
+export function dumpSession(id: string): unknown | null {
+  const s = store.sessions.get(id);
+  if (!s) return null;
+  const { lock: _lock, ownerToken: _owner, processed, ...rest } = s;
+  void _lock;
+  void _owner;
+  return pack({ ...rest, processed: new Map([...processed].slice(-8)) });
+}
+
+/** Brings a stored session back under this owner (the store has already checked the owner's hash). */
+export function loadSession(owner: string, raw: unknown): boolean {
+  const s = unpack<Omit<Session, 'ownerToken' | 'lock'>>(raw);
+  if (!s || typeof s !== 'object' || !s.id || !(s.processed instanceof Map)) return false;
+  store.sessions.set(s.id, { ...s, ownerToken: owner, lock: Promise.resolve() } as Session);
+  return true;
+}
+export const hasSession = (id: string) => store.sessions.has(id);
 
 export function getSession(id: string, ownerToken: string | undefined): Session {
   const s = store.sessions.get(id);

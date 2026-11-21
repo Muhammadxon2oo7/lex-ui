@@ -9,7 +9,7 @@ export const POST = handle(async (request: Request, { params }: IdContext) => {
     rateLimit(`act:${id}`, 60);
     return remoteCourt.interact((await ownerToken(true))!, id, await readBody(request, InteractionRequestSchema));
   }
-  const session = await ownedSession(id);
+  const session = await ownedSession(id, true);
   rateLimit(`act:${session.id}`, 60);
   const body = await readBody(request, InteractionRequestSchema);
   // standing up / sitting down is a courtroom rule, kept by the court backend

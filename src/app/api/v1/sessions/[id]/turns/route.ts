@@ -12,7 +12,7 @@ export const POST = handle(async (request: Request, { params }: IdContext) => {
     rateLimit(`turn:${id}`, 30);
     return remoteCourt.turn((await ownerToken(true))!, id, await readBody(request, TurnRequestSchema));
   }
-  const session = await ownedSession(id);
+  const session = await ownedSession(id, true);
   rateLimit(`turn:${session.id}`, 30);
   return processTurn(session, await readBody(request, TurnRequestSchema));
 });

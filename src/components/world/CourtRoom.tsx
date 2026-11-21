@@ -549,7 +549,7 @@ function Scene({ speaker, witnessPresent, witnessCalled, standing, view = 'judge
       {/* secretary, right, by the podium */}
       <Table wood={wood} m={m} position={[3.6, 0, -2.65]} rotation={Math.PI / 2} width={1.3} label="KOTIB" />
       {chair(SEATS.secretary.position, SEATS.secretary.rotation)}
-      <Character model="secretary" {...SEATS.secretary} seatTop={0.46} seed={5} mood={feel('secretary', 'calm')} cue={gest('secretary')} restless={false} upright={0.08} talking={speaker === 'secretary'} lookAt={gaze('secretary')} standing={advocate ? lagSecretary : up('secretary')} />
+      <Character model="secretary" {...SEATS.secretary} seatTop={0.46} seed={5} atWork mood={feel('secretary', 'calm')} cue={gest('secretary')} restless={false} upright={0.08} talking={speaker === 'secretary'} lookAt={gaze('secretary')} standing={advocate ? lagSecretary : up('secretary')} />
 
       {/* the witness lectern, in the middle, facing the bench */}
       {!advocate && chair(SEATS.witness.position, SEATS.witness.rotation)}

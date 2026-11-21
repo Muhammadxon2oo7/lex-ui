@@ -3,7 +3,7 @@
 **Yangilangan:** 2026-11-21. Backend v1.4.2, frontend `main`.
 **Kimlar uchun:** loyiha egasi, backend dasturchisi, mentor.
 
-Bu **yagona boshqaruv hujjati**. Nima ishlayotgani, kim nima qilishi va qaysi tartibda — shu yerda. Batafsil texnik topshiriqlar ikkita faylda:
+Bu **yagona boshqaruv hujjati**. Nima ishlayotgani, kim nima qilishi va qaysi tartibda — shu yerda. Backendning ochiq ishlari: **`LexSim_Backend_Vazifalar_v16.md`**. Batafsil texnik topshiriqlar ikkita faylda:
 - `LexSim_Backend_Vazifalar_v14.md` — 10 ssenariy, ssenariy paketi, improvizatsiya, ovoz qatlamlari, sahna (`scene`);
 - `LexSim_Backend_Vazifalar_v15.md` — ovozlar palitrasi, emotsiya va imo-ishora, yuridik tekshiruv varaqasi, "tirik" zal.
 
@@ -25,7 +25,8 @@ Eski javoblar va topshiriqlar `arxiv/` papkasida turadi, ular endi kerak emas.
 | Terminal: bo'limlar, bosqichlar zanjiri, tasodifiy ish | ✅ |
 | Har bir ish o'z sahnasida: aktyorlar, stoldagi hujjatlar, ekran | ✅ (10 tur uchun preset) |
 | Amaliyot yozuvi: transkript, talabaning o'z ovozi, butun majlis audiosi, PDF, Word, WAV | ✅ |
-| "Tirik" zal: turmagan talabaga hamma qaraydi, jimlikda sudya kutadi | ✅ |
+| "Tirik" zal: turmagan talabaga hamma qaraydi, jimlikda sudya kutadi, kotib stolda ishlaydi | ✅ |
+| Serverless (Netlify): DXM, raislik majlisi va "Ish yo'li" holati backend omboriga yoziladi va qayta o'qiladi | ✅ frontend tayyor; kalit va B9 kerak |
 
 ---
 
@@ -42,7 +43,7 @@ Eski javoblar va topshiriqlar `arxiv/` papkasida turadi, ular endi kerak emas.
 | E5 | **Tez LLM API kaliti** (Gemini Flash yoki Groq) | `advanced` darajada erkin nutqqa 1–3 s javob (hozir 7–20 s) |
 | E6 | **Yozuvlarni saqlash siyosati:** muddat (taklif — 180 kun), shifrlash kaliti, o'chirish tartibi | O'qituvchi panelida talabalar yozuvi (`POST /records`) |
 
-### 🟠 Backend dasturchisi — hozir qilinadigan
+### 🟠 Backend dasturchisi — batafsil: `LexSim_Backend_Vazifalar_v16.md`
 
 | # | Ish | Qayerda batafsil |
 |---|---|---|
@@ -54,6 +55,7 @@ Eski javoblar va topshiriqlar `arxiv/` papkasida turadi, ular endi kerak emas.
 | B6 | E5 dan keyin: improvizatsiya ≤ 3 s, «qisqa bo'lak + tayyor javob», jonli gap klon ovozda | v14 2, 5 |
 | B7 | E6 dan keyin: `POST /records`, `GET /teacher/records` | v15 5 |
 | B8 | `npcTurn.audio = {id, durationMs}` | v14 5.6 |
+| B9 | Ombor: `dxm-session` va `hearing` hujjatlari, muddat, limit, egasi tekshiruvi (serverless uchun) | v16 |
 
 ### 🟢 Frontend — keyingi navbat
 
@@ -61,8 +63,8 @@ Eski javoblar va topshiriqlar `arxiv/` papkasida turadi, ular endi kerak emas.
 |---|---|
 | F1 | E1 dan keyin: kalitli yo'llarni (NLU, saqlash, xAPI, har xonada ovoz) jonli sinash va hisobot yozish |
 | F2 | B7 dan keyin: «O'qituvchiga yuborish» tugmasi, rozilik oynasi |
-| F3 | Zal backlogi: kotib yozib o'tiradi, raqib va mijoz pichirlashadi, zalning yengil fon tovushi |
-| F4 | Netlify uchun server holatini Redis'ga ko'chirish. DXM va "Ish yo'li" sessiyalari serverless'da yo'qolmasligi uchun. Hozir faqat sud sessiyasi himoyalangan |
+| F3 | ✅ Kotib stolda ishlaydi. Qoldi: zalning yengil fon tovushi (ovoz fayli kerak) |
+| F4 | ✅ Redis kerak emas: holat backend omboriga yoziladi (kalit kelishi bilan ishlaydi; B9) |
 | F5 | Har bir yangi ssenariy kelganda: sahna, ovozlar va hujjatlarni ko'rib chiqish, QA |
 
 ### 🔵 Mentor
@@ -106,7 +108,7 @@ Ikkalasi ham hozir serverga yuborilmoqda va `200` qaytadi. To'liq sxema: `contra
 4. **E3 → B4** — ovozlar palitrasi.
 5. **E5 → B6** — tez improvizatsiya.
 6. **E6 → B7 → F2** — o'qituvchi paneli.
-7. **F4** — barqaror hosting (Netlify'da qolsangiz, majburiy).
+7. **F4** ✅ qilindi. Kalit va B9 bilan Netlify'da ham barqaror.
 
 ---
 
@@ -120,6 +122,7 @@ node tools/qa/economic.mjs                                  # brauzerda to'liq o
 ```
 
 **Backendga beriladigan fayllar:**
+- `LexSim_Backend_Vazifalar_v16.md` (ochiq ishlar);
 - shu hujjat;
 - `LexSim_Backend_Vazifalar_v14.md`;
 - `LexSim_Backend_Vazifalar_v15.md`;

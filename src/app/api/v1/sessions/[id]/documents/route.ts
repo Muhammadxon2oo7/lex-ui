@@ -9,7 +9,7 @@ export const POST = handle(async (request: Request, { params }: IdContext) => {
     rateLimit(`doc:${id}`, 60);
     return remoteCourt.document((await ownerToken(true))!, id, await readBody(request, DocumentRequestSchema));
   }
-  const session = await ownedSession(id);
+  const session = await ownedSession(id, true);
   rateLimit(`doc:${session.id}`, 60);
   return saveDocument(session, await readBody(request, DocumentRequestSchema));
 });

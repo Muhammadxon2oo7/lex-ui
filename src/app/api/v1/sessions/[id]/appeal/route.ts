@@ -10,7 +10,7 @@ export const POST = handle(async (request: Request, { params }: IdContext) => {
     const { reason } = await readBody(request, AppealRequestSchema);
     return { report: await remoteCourt.appeal((await ownerToken(true))!, id, reason) };
   }
-  const session = await ownedSession(id);
+  const session = await ownedSession(id, true);
   rateLimit(`appeal:${session.id}`, 5);
   const { reason } = await readBody(request, AppealRequestSchema);
   return { report: appeal(session, reason) };

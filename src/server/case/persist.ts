@@ -11,44 +11,26 @@
  */
 import type { CaseKind, CaseSnapshot } from '@/contracts/case';
 import { statementsFor } from '@/lib/xapi';
+import { storeGet, storePut } from '@/server/durable';
 import { keyed, remoteKeyed, studentHash } from '@/server/remote/key';
 import { currentCaseId, dumpCase, hasCase, loadCase } from './engine';
 
-const g = globalThis as unknown as { __lexCaseVersions?: Map<string, number>; __lexXapiSent?: Set<string> };
-const versions = (g.__lexCaseVersions ??= new Map());
+const g = globalThis as unknown as { __lexXapiSent?: Set<string> };
 const sent = (g.__lexXapiSent ??= new Set());
 const indexId = (owner: string, kind: CaseKind) => `idx-${studentHash(owner).slice(0, 24)}-${kind}`;
-
-type Stored = { id: string; state: unknown; version: number; kind: string };
-
-async function put(owner: string, id: string, kind: string, state: unknown) {
-  for (let attempt = 0; attempt < 2; attempt++) {
-    const version = versions.get(id) ?? 0;
-    const r = await keyed<{ version?: number }>(owner, `/store/cases/${encodeURIComponent(id)}`, { method: 'PUT', body: { owner: studentHash(owner), kind, state, version } });
-    if (!r) return;
-    if (r.status === 200 && typeof r.json?.version === 'number') {
-      versions.set(id, r.json.version);
-      return;
-    }
-    // someone else wrote in between: take their version and write ours on top (the engine in memory is the truth)
-    if (r.status === 409 && typeof r.json?.version === 'number') versions.set(id, r.json.version);
-    else return;
-  }
-}
 
 /** Write the case (and the owner's index for its kind) through to the store. Never throws. */
 export async function saveCase(owner: string | undefined, snap: CaseSnapshot) {
   if (!owner || !remoteKeyed()) return;
   const d = dumpCase(snap.caseId);
   if (!d) return;
-  await Promise.all([put(owner, snap.caseId, d.kind, d.state), put(owner, indexId(owner, snap.kind), 'index', { caseId: snap.caseId })]).catch(() => {});
+  await Promise.all([storePut(owner, snap.caseId, d.kind, d.state), storePut(owner, indexId(owner, snap.kind), 'index', { caseId: snap.caseId })]).catch(() => {});
 }
 
 async function fetchCase(owner: string, id: string): Promise<boolean> {
-  const r = await keyed<Stored>(owner, `/store/cases/${encodeURIComponent(id)}`);
-  if (r?.status !== 200 || !r.json) return false;
-  versions.set(id, r.json.version);
-  loadCase(owner, r.json.state);
+  const state = await storeGet(owner, id);
+  if (!state) return false;
+  loadCase(owner, state);
   return hasCase(id);
 }
 
@@ -61,9 +43,8 @@ export async function restoreCase(owner: string | undefined, id: string) {
 /** The owner's current case of this kind, read back from the store when memory has none. */
 export async function restoreCurrent(owner: string | undefined, kind: CaseKind) {
   if (!owner || currentCaseId(owner, kind) || !remoteKeyed()) return;
-  const r = await keyed<Stored>(owner, `/store/cases/${indexId(owner, kind)}`).catch(() => null);
-  const caseId = (r?.json?.state as { caseId?: string } | undefined)?.caseId;
-  if (r?.status === 200 && caseId) await fetchCase(owner, caseId).catch(() => false);
+  const caseId = ((await storeGet(owner, indexId(owner, kind))) as { caseId?: string } | null)?.caseId;
+  if (caseId) await fetchCase(owner, caseId).catch(() => false);
 }
 
 /** A finished room → xAPI statements for the teacher (once per result). */

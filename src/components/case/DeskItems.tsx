@@ -18,18 +18,21 @@ import { hand } from './interaction';
 import { audio } from '@/game/audio';
 
 const pageTextures = new Map<string, THREE.CanvasTexture>();
-/** A page drawn once at print resolution and reused (desk, hand, folder). */
-export function pageTexture(doc: DeskDoc, index: number): THREE.CanvasTexture {
-  const key = `${doc.id}:${index}:${doc.pages[index]?.title}`;
+/**
+ * A page drawn once and reused (desk, hand, folder). `width`: print resolution (1000 px) for papers you
+ * pick up and read; papers that only lie on a far table need far fewer pixels (and GPU memory).
+ */
+export function pageTexture(doc: DeskDoc, index: number, width = 1000): THREE.CanvasTexture {
+  const key = `${doc.id}:${index}:${doc.pages[index]?.title}:${width}`;
   let t = pageTextures.get(key);
   if (!t) {
     const c = document.createElement('canvas');
-    c.width = 1000;
-    c.height = 1414;
+    c.width = width;
+    c.height = Math.round(width * 1.414);
     drawPage(c.getContext('2d')!, c.width, c.height, doc.pages[index]);
     t = new THREE.CanvasTexture(c);
     t.colorSpace = THREE.SRGBColorSpace;
-    t.anisotropy = 8;
+    t.anisotropy = width >= 1000 ? 8 : 4;
     pageTextures.set(key, t);
   }
   return t;
@@ -43,8 +46,8 @@ const _plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
 const _hit = new THREE.Vector3();
 
 /** The physical shape of a document (sizes in metres, real A4 / folder / phone box). */
-export function DocShape({ doc, hovered = false }: { doc: DeskDoc; hovered?: boolean }) {
-  const top = useMemo(() => pageTexture(doc, 0), [doc]);
+export function DocShape({ doc, hovered = false, res = 1000 }: { doc: DeskDoc; hovered?: boolean; res?: number }) {
+  const top = useMemo(() => pageTexture(doc, 0, res), [doc, res]);
   const glow = hovered ? 0.18 : 0;
   if (doc.kind === 'folder') {
     return (

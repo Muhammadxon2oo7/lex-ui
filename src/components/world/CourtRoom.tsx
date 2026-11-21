@@ -28,7 +28,7 @@ import type { DeskDoc } from '@/components/case/documents';
 import { Prop } from './Furniture';
 import { TILE, UI_FONT, canvasTexture, tiledBox, useMaterials, type Materials } from './materials';
 import { Flag, StateEmblem } from './SetDressing';
-import { Adaptive, DevProbe, FitFov, FrameForPanel, RoomFx, SeatCamera, Window } from '@/components/case/stagecraft';
+import { DevProbe, FitFov, FrameForPanel, QualityGovernor, RoomFx, SeatCamera, Window, useTier } from '@/components/case/stagecraft';
 import { audio } from '@/game/audio';
 
 type V3 = [number, number, number];
@@ -365,6 +365,8 @@ function Table({ wood, m, position, rotation = 0, width = 1.6, label, decor = tr
  * sitters (+z), each a little askew like real papers; extra ones stack.
  */
 function TablePapers({ docs, width }: { docs: DeskDoc[]; width: number }) {
+  // seen from a chair a metre or two away: a smaller page is just as legible and far lighter on the GPU
+  const res = { low: 512, medium: 640, high: 768 }[useTier()];
   const slots = Math.max(1, Math.floor((width - 0.7) / 0.29));
   return (
     <>
@@ -375,7 +377,7 @@ function TablePapers({ docs, width }: { docs: DeskDoc[]; width: number }) {
         const tilt = ((i * 37) % 9 - 4) * 0.035;
         return (
           <group key={d.id + i} position={[x, 0.768 + layer * 0.004, 0.1 + layer * 0.03]} rotation={[0, Math.PI + tilt, 0]}>
-            <DocShape doc={d} />
+            <DocShape doc={d} res={res} />
           </group>
         );
       })}
@@ -590,7 +592,7 @@ export default function CourtRoom(props: CourtProps) {
         <Scene {...props} />
         {advocate && <FrameForPanel />}
         <FitFov />
-        <Adaptive />
+        <QualityGovernor />
         <DevProbe />
         <RoomFx />
       </Suspense>

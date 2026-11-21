@@ -175,7 +175,10 @@ describe('Ish yoʻli engine', () => {
     // gibberish: asked again, nothing lost
     const before = s3.lines.length;
     s3 = actSaid(adv.caseId, 'owner-adv', { clientActionId: id('adv'), text: 'bugun havo yaxshi', inputMode: 'text' }, await understand(adv.caseId, 'owner-adv', 'bugun havo yaxshi', 'text'));
-    expect(s3.lines.length).toBe(before);
+    // not understood: what was said stays on record and the person you talk to asks again, out loud
+    expect(s3.lines.length).toBe(before + 2);
+    expect(s3.lines.at(-2)?.speaker).toBe('you');
+    expect(s3.lines.at(-1)?.speaker).not.toBe('you');
     expect(s3.feedback?.tone).toBe('info');
   });
 });

@@ -12,6 +12,7 @@ import { useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
 import * as THREE from 'three';
 import { TILE, UI_FONT, canvasTexture, ornamentTexture, tiledBox, type Materials } from '@/components/world/materials';
 import { hand } from './interaction';
+import { TIERS, deviceTier, markDocument, type Tier } from '@/lib/deviceTier';
 
 export type V3 = [number, number, number];
 
@@ -129,34 +130,98 @@ export function DevProbe() {
   return null;
 }
 
-/* ── quality that follows the device: when frames drop, render fewer pixels and skip ambient occlusion ── */
-const quality = { lite: false, subs: new Set<() => void>() };
-const setLite = (v: boolean) => {
-  if (quality.lite === v) return;
-  quality.lite = v;
+/* ── quality that follows the device ── */
+/*
+ * Decided before the first frame (lib/deviceTier) and only ever stepped DOWN while a scene runs:
+ *   high   — every effect, up to 1.75 px per px, 2048 shadows;
+ *   medium — bloom + vignette, no ambient occlusion / MSAA, 1.25 px per px, 1024 shadows;
+ *   low    — no post chain (the renderer tone-maps), no shadows, 0.8 px per px, a steady 30 fps.
+ * A flip-flop between tiers is itself a stutter, so a tier that was dropped never comes back.
+ */
+const quality = { tier: 'medium' as Tier, ready: false, subs: new Set<() => void>() };
+function setTier(t: Tier) {
+  if (quality.ready && quality.tier === t) return;
+  quality.tier = t;
+  quality.ready = true;
+  markDocument(t);
   quality.subs.forEach((f) => f());
-};
+}
 const subscribe = (f: () => void) => {
   quality.subs.add(f);
   return () => quality.subs.delete(f);
 };
-
-/** Watches the frame rate: on a slow device the pixel ratio drops to 1 and the heavy effects go. */
-export function Adaptive() {
-  const setDpr = useThree((s) => s.setDpr);
-  const lite = () => {
-    setDpr(1);
-    setLite(true);
-  };
-  return (
-    <PerformanceMonitor flipflops={3} onDecline={lite} onFallback={lite}
-      onIncline={() => {
-        setDpr(Math.min(1.75, window.devicePixelRatio));
-        setLite(false);
-      }} />
-  );
+/** The current tier (the same for every scene on the page). */
+export function useTier(): Tier {
+  return useSyncExternalStore(subscribe, () => (quality.ready ? quality.tier : deviceTier()), () => 'medium');
 }
+// low renders 0.8 px per px: a third fewer pixels, barely softer — the single biggest saving on a weak GPU
+const DPR: Record<Tier, number> = { low: 0.8, medium: 1.25, high: 1.75 };
+const SHADOW: Record<Tier, number> = { low: 0, medium: 1024, high: 2048 };
 
+/** Applies the tier to the renderer (pixels, shadows, frame pace) and steps it down when frames drop. */
+export function QualityGovernor() {
+  const tier = useTier();
+  const gl = useThree((s) => s.gl);
+  const scene = useThree((s) => s.scene);
+  const setDpr = useThree((s) => s.setDpr);
+  const setFrameloop = useThree((s) => s.setFrameloop);
+  const advance = useThree((s) => s.advance);
+  const camera = useThree((s) => s.camera);
+  useEffect(() => {
+    if (!quality.ready) setTier(deviceTier());
+  }, []);
+  // compile every shader in the background once the room has loaded: the first glance at a new
+  // material then costs nothing (otherwise a 100–200 ms hitch the first time it comes into view)
+  useEffect(() => {
+    const t = setTimeout(() => void gl.compileAsync?.(scene, camera).catch(() => {}), 1500);
+    return () => clearTimeout(t);
+  }, [gl, scene, camera, tier]);
+  useEffect(() => {
+    setDpr(Math.min(DPR[tier], window.devicePixelRatio || 1));
+    // shadows: off on low, smaller on medium (the maps are rebuilt at the new size)
+    const size = SHADOW[tier];
+    const wasOn = gl.shadowMap.enabled;
+    gl.shadowMap.enabled = size > 0;
+    scene.traverse((o) => {
+      const light = o as THREE.DirectionalLight;
+      if (light.isLight && light.shadow && light.castShadow && size > 0 && light.shadow.mapSize.x !== size) {
+        light.shadow.mapSize.set(size, size);
+        light.shadow.map?.dispose();
+        light.shadow.map = null as unknown as THREE.WebGLRenderTarget;
+      }
+      // the shader programs depend on whether shadows exist: rebuild them once
+      if (wasOn !== gl.shadowMap.enabled) {
+        const mat = (o as THREE.Mesh).material as THREE.Material | THREE.Material[] | undefined;
+        (Array.isArray(mat) ? mat : mat ? [mat] : []).forEach((m) => (m.needsUpdate = true));
+      }
+    });
+    gl.shadowMap.needsUpdate = true;
+    // low: no post chain, so the renderer itself tone-maps (ACES, as the chain would)
+    gl.toneMapping = tier === 'low' ? THREE.ACESFilmicToneMapping : THREE.NoToneMapping;
+    // low: a steady 30 fps — an even pace reads smoother than an uneven 40, and halves the GPU work
+    if (tier !== 'low') {
+      setFrameloop('always');
+      return;
+    }
+    setFrameloop('never');
+    let raf = 0;
+    let last = 0;
+    const loop = (t: number) => {
+      raf = requestAnimationFrame(loop);
+      if (t - last < 1000 / 30 - 2) return;
+      last = t;
+      advance(t);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => {
+      cancelAnimationFrame(raf);
+      setFrameloop('always');
+    };
+  }, [tier, gl, scene, setDpr, setFrameloop, advance]);
+  const down = () => setTier(TIERS[Math.max(0, TIERS.indexOf(quality.tier) - 1)]);
+  // judged only while running at full pace (the 30 fps cap is not a decline)
+  return tier === 'low' ? null : <PerformanceMonitor ms={400} iterations={6} threshold={0.75} flipflops={2} onDecline={down} onFallback={() => setTier('low')} />;
+}
 /**
  * The rooms are framed for a landscape screen (~16:10). On a narrower screen
  * (portrait phone, split window) the lens widens so the desk and the people
@@ -175,10 +240,13 @@ export function FitFov({ base = 60, design = 1.6, max = 80 }: { base?: number; d
   return null;
 }
 
+/** The post chain for the tier: full on high, light on medium, none on low (the renderer tone-maps). */
 export function RoomFx() {
-  const lite = useSyncExternalStore(subscribe, () => quality.lite, () => false);
-  return lite ? (
+  const tier = useTier();
+  if (tier === 'low') return null;
+  return tier === 'medium' ? (
     <EffectComposer multisampling={0} enableNormalPass={false}>
+      <Bloom mipmapBlur luminanceThreshold={1.05} intensity={0.25} />
       <Vignette eskil={false} offset={0.25} darkness={0.4} />
       <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
     </EffectComposer>

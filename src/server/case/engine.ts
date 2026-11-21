@@ -502,6 +502,13 @@ export function freeCandidates(id: string, owner: string | undefined) {
  * An answer in own words, already understood: either it lands on a reply (then it is that reply, said in
  * the student's words), or it is unclear (the room asks again, no points), or it crosses an ethical line.
  */
+/** Asking again when an answer was not understood (pre-rendered: tools/voice/lines.mjs reads these). */
+export const CLARIFY = {
+  formal: ['Kechirasiz, fikringizni tushunmadim. Aniqroq ayting, iltimos.', 'Iltimos, qisqa va aniq bayon qiling.', 'Yana bir bor takrorlang, iltimos.'],
+  plain: ['Kechirasiz, tushunmadim. Yana bir bor aytasizmi?', 'Uzr, nima demoqchi ekaningizni tushunmadim.', 'Bir oz soddaroq tushuntirib bering.'],
+};
+export const FORMAL = new Set<string>(['judge', 'clerk', 'secretary', 'officer', 'investigator', 'chief']);
+
 export function actSaid(id: string, owner: string | undefined, input: { clientActionId: string; text: string; inputMode: InputMode }, understood: { optionId: string | null; clarify: string | null; ethics: boolean }): CaseSnapshot {
   const c = owned(id, owner);
   const cached = c.processed.get(input.clientActionId);
@@ -515,7 +522,14 @@ export function actSaid(id: string, owner: string | undefined, input: { clientAc
     c.log[c.log.length - 1].inputMode = input.inputMode;
     c.feedback = c.level === 'advanced' ? null : { tone: 'bad', message: 'Bunday gap — korrupsion ishora. Mutlaqo mumkin emas.', article: null };
   } else {
-    // not understood: the room asks again; nothing is lost
+    // not understood: what you said stays on record, and whoever you are talking to asks again — out loud,
+    // in their own way (a judge formally, a client plainly); nothing is lost, the moment stays open
+    say(c, [['you', input.text]]);
+    const to = [...c.lines].reverse().find((l) => l.speaker !== 'you' && l.speaker !== 'system')?.speaker;
+    if (to) {
+      const set = FORMAL.has(to) ? CLARIFY.formal : CLARIFY.plain;
+      say(c, [[to, set[c.seq % set.length]]]);
+    }
     c.feedback = { tone: 'info', message: understood.clarify ?? 'Fikringizni aniqroq, toʻliq gap bilan ayting.', article: null };
   }
   const result = snapshot(c);

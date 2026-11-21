@@ -20,24 +20,25 @@ async function authFor(owner?: string): Promise<Record<string, string> | null> {
 }
 
 /** Is the court backend's voice up? (checked once a minute; the hub must never wait on it) */
-let remoteVoice: { at: number; tts: boolean; stt: boolean } | null = null;
+let remoteVoice: { at: number; tts: boolean; stt: boolean; slow: boolean } | null = null;
 async function remoteVoiceStatus() {
-  if (!REMOTE) return { tts: false, stt: false };
-  if (remoteVoice && Date.now() - remoteVoice.at < 60_000) return remoteVoice;
+  if (!REMOTE) return { tts: false, stt: false, slow: false };
+  if (remoteVoice && Date.now() - remoteVoice.at < 30_000) return remoteVoice;
   try {
     const r = (await fetch(`${REMOTE}/voice/status`, { cache: 'no-store', signal: AbortSignal.timeout(3000) }).then((x) => x.json())) as { tts?: string | null; stt?: string | null; sttEngine?: string | null };
     // since v1.4.2 `stt` is the engine actually up ("gpu" / "cpu"), null when none is
-    remoteVoice = { at: Date.now(), tts: Boolean(r.tts), stt: Boolean(r.stt) };
+    // "cpu" = the GPU machine is off: recognition works but takes 15–40 s (the page then prefers the browser's own)
+    remoteVoice = { at: Date.now(), tts: Boolean(r.tts), stt: Boolean(r.stt), slow: r.stt === 'cpu' };
   } catch {
-    remoteVoice = { at: Date.now(), tts: false, stt: false };
+    remoteVoice = { at: Date.now(), tts: false, stt: false, slow: false };
   }
   return remoteVoice;
 }
 
 /** Per student: with the server key everyone gets the court server's voice; without it, only those with a court session there. */
 export async function voiceStatus(owner?: string) {
-  const r = (await authFor(owner)) ? await remoteVoiceStatus() : { tts: false, stt: false };
-  return { tts: r.tts ? 'server' : null, stt: r.stt ? 'server' : null } as const;
+  const r = (await authFor(owner)) ? await remoteVoiceStatus() : { tts: false, stt: false, slow: false };
+  return { tts: r.tts ? 'server' : null, stt: r.stt ? 'server' : null, sttSlow: r.stt && r.slow } as const;
 }
 
 /** Small in-memory cache: the same scripted lines are spoken again and again. */

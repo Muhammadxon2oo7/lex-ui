@@ -32,7 +32,8 @@ export function lipTrack(text: string, ms: number) {
   speech.track = { segments: visemeTrack(text), start: performance.now(), duration: Math.max(300, ms) };
 }
 
-type Status = { tts: 'server' | null; stt: 'server' | null };
+/** `sttSlow`: the court server recognises speech on its CPU (15–40 s) — the browser's own words are used then. */
+type Status = { tts: 'server' | null; stt: 'server' | null; sttSlow?: boolean };
 let statusPromise: Promise<Status> | null = null;
 /** Read once per page; `refresh` after opening a court session (its server voice becomes available). */
 export function voiceStatus(refresh = false): Promise<Status> {
@@ -262,6 +263,44 @@ async function capture(ctx: AudioContext, source: MediaStreamAudioSourceNode) {
   };
 }
 
+/** The browser's own recognition, for live words only (null where it does not speak Uzbek). */
+function browserPreview(): { onPartial: (cb: (t: string) => void) => void; stop: () => Promise<string>; abort: () => void } | null {
+  const Ctor = recognitionCtor();
+  if (!Ctor || browserUzUnsupported) return null;
+  try {
+    const rec = new Ctor();
+    rec.lang = 'uz-UZ';
+    rec.interimResults = true;
+    rec.continuous = true;
+    let text = '';
+    let cb: (t: string) => void = () => {};
+    let ended: () => void = () => {};
+    const endedP = new Promise<void>((r) => (ended = r));
+    rec.onresult = (e) => {
+      let all = '';
+      for (let i = 0; i < e.results.length; i++) all += e.results[i][0].transcript;
+      text = all.trim();
+      cb(text);
+    };
+    rec.onerror = (e) => {
+      if (e.error === 'language-not-supported' || e.error === 'language-unavailable') browserUzUnsupported = true;
+    };
+    rec.onend = () => ended();
+    rec.start();
+    return {
+      onPartial: (f) => (cb = f),
+      stop: async () => {
+        rec.stop();
+        await Promise.race([endedP, new Promise((r) => setTimeout(r, 1200))]);
+        return text;
+      },
+      abort: () => rec.abort(),
+    };
+  } catch {
+    return null;
+  }
+}
+
 /** Starts capturing. Throws a user-facing message if the mic is unavailable. */
 export async function startListening(): Promise<Listening> {
   stopSpeaking(); // the student interrupts — the actor stops talking
@@ -307,21 +346,41 @@ export async function startListening(): Promise<Listening> {
   };
 
   if (support === 'server') {
+    // the browser's own recognition runs alongside, only to SHOW the words as they are said
+    // (and to answer at once when the server is slow); the server's text is the better one when it comes in time
+    const preview = browserPreview();
     const stop = () => {
       cap.stop();
       release();
     };
     return {
       level,
-      onPartial: () => {},
-      cancel: stop,
+      onPartial: (cb) => preview?.onPartial(cb),
+      cancel: () => {
+        preview?.abort();
+        stop();
+      },
       finish: async () => {
         stop();
         const wav = encodeWav(cap.chunks, ctx.sampleRate, 16000);
-        if (wav.byteLength < 8000) return ''; // under ~0.25 s: nothing said
-        const res = await fetch('/api/v1/voice/stt', { method: 'POST', headers: { 'Content-Type': 'audio/wav' }, body: wav, signal: AbortSignal.timeout(45_000) });
-        if (!res.ok) throw new Error('Nutqni tanib boʻlmadi. Qayta urinib koʻring.');
-        const said = ((await res.json()) as { text: string }).text;
+        const quick = preview ? await preview.stop() : '';
+        if (wav.byteLength < 8000) return quick; // under ~0.25 s: nothing said
+        const slow = Boolean((await voiceStatus()).sttSlow);
+        if (quick && slow) {
+          // the GPU machine is off: do not keep the student waiting half a minute
+          pendingVoice.push(wav);
+          return quick;
+        }
+        const abort = new AbortController();
+        const server = fetch('/api/v1/voice/stt', { method: 'POST', headers: { 'Content-Type': 'audio/wav' }, body: wav, signal: typeof AbortSignal.any === 'function' ? AbortSignal.any([abort.signal, AbortSignal.timeout(45_000)]) : abort.signal })
+          .then(async (res) => (res.ok ? ((await res.json()) as { text: string }).text : null))
+          .catch(() => null);
+        // the server's (better) text if it comes within ~4 s; otherwise what the browser heard
+        const said = quick
+          ? await Promise.race([server.then((t) => t || quick), new Promise<string>((r) => setTimeout(() => r(quick), 4000))])
+          : await server;
+        abort.abort();
+        if (said === null) throw new Error('Nutqni tanib boʻlmadi. Qayta urinib koʻring.');
         if (said) pendingVoice.push(wav);
         return said;
       },

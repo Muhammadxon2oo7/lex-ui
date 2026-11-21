@@ -1,6 +1,6 @@
 {
-  "generated": "2026-11-21T01:43:03.542Z",
-  "count": 97,
+  "generated": "2026-11-21T03:18:47.522Z",
+  "count": 115,
   "lines": [
     {
       "voice": "male",
@@ -472,6 +472,90 @@
       "stage": "hearing"
     },
     {
+      "voice": "male",
+      "text": "Kechirasiz, tushunmadim. Yana bir bor aytasizmi?",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "any"
+    },
+    {
+      "voice": "male",
+      "text": "Uzr, nima demoqchi ekaningizni tushunmadim.",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "any"
+    },
+    {
+      "voice": "male",
+      "text": "Bir oz soddaroq tushuntirib bering.",
+      "speaker": "client",
+      "case": "labour",
+      "stage": "any"
+    },
+    {
+      "voice": "female",
+      "text": "Kechirasiz, fikringizni tushunmadim. Aniqroq ayting, iltimos.",
+      "speaker": "clerk",
+      "case": "labour",
+      "stage": "any"
+    },
+    {
+      "voice": "female",
+      "text": "Iltimos, qisqa va aniq bayon qiling.",
+      "speaker": "clerk",
+      "case": "labour",
+      "stage": "any"
+    },
+    {
+      "voice": "female",
+      "text": "Yana bir bor takrorlang, iltimos.",
+      "speaker": "clerk",
+      "case": "labour",
+      "stage": "any"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Kechirasiz, fikringizni tushunmadim. Aniqroq ayting, iltimos.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "any"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Iltimos, qisqa va aniq bayon qiling.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "any"
+    },
+    {
+      "voice": "elder_m",
+      "text": "Yana bir bor takrorlang, iltimos.",
+      "speaker": "judge",
+      "case": "labour",
+      "stage": "any"
+    },
+    {
+      "voice": "female_alt",
+      "text": "Kechirasiz, tushunmadim. Yana bir bor aytasizmi?",
+      "speaker": "respondent",
+      "case": "labour",
+      "stage": "any"
+    },
+    {
+      "voice": "female_alt",
+      "text": "Uzr, nima demoqchi ekaningizni tushunmadim.",
+      "speaker": "respondent",
+      "case": "labour",
+      "stage": "any"
+    },
+    {
+      "voice": "female_alt",
+      "text": "Bir oz soddaroq tushuntirib bering.",
+      "speaker": "respondent",
+      "case": "labour",
+      "stage": "any"
+    },
+    {
       "voice": "female",
       "text": "Kecha kechqurun bozorda sumkamdan telefonimni olib qoʻyishdi… Endi nima qilamiz?",
       "speaker": "client",
@@ -680,6 +764,48 @@
       "speaker": "chief",
       "case": "theft",
       "stage": "complaint"
+    },
+    {
+      "voice": "female",
+      "text": "Kechirasiz, tushunmadim. Yana bir bor aytasizmi?",
+      "speaker": "client",
+      "case": "theft",
+      "stage": "any"
+    },
+    {
+      "voice": "female",
+      "text": "Uzr, nima demoqchi ekaningizni tushunmadim.",
+      "speaker": "client",
+      "case": "theft",
+      "stage": "any"
+    },
+    {
+      "voice": "female",
+      "text": "Bir oz soddaroq tushuntirib bering.",
+      "speaker": "client",
+      "case": "theft",
+      "stage": "any"
+    },
+    {
+      "voice": "male",
+      "text": "Kechirasiz, fikringizni tushunmadim. Aniqroq ayting, iltimos.",
+      "speaker": "officer",
+      "case": "theft",
+      "stage": "any"
+    },
+    {
+      "voice": "male",
+      "text": "Iltimos, qisqa va aniq bayon qiling.",
+      "speaker": "officer",
+      "case": "theft",
+      "stage": "any"
+    },
+    {
+      "voice": "male",
+      "text": "Yana bir bor takrorlang, iltimos.",
+      "speaker": "officer",
+      "case": "theft",
+      "stage": "any"
     }
   ]
 }

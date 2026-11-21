@@ -3,7 +3,7 @@
 **Yangilangan:** 2026-11-21. Backend v1.4.2, frontend `main`.
 **Kimlar uchun:** loyiha egasi, backend dasturchisi, mentor.
 
-Bu **yagona boshqaruv hujjati**. Nima ishlayotgani, kim nima qilishi va qaysi tartibda — shu yerda. Backendning ochiq ishlari: **`LexSim_Backend_Vazifalar_v16.md`**. Batafsil texnik topshiriqlar ikkita faylda:
+Bu **yagona boshqaruv hujjati**. Nima ishlayotgani, kim nima qilishi va qaysi tartibda — shu yerda. Backendning ochiq ishlari: **`LexSim_Backend_Vazifalar.md`** (doimiy yangilanadi). Batafsil texnik topshiriqlar ikkita faylda:
 - `LexSim_Backend_Vazifalar_v14.md` — 10 ssenariy, ssenariy paketi, improvizatsiya, ovoz qatlamlari, sahna (`scene`);
 - `LexSim_Backend_Vazifalar_v15.md` — ovozlar palitrasi, emotsiya va imo-ishora, yuridik tekshiruv varaqasi, "tirik" zal.
 
@@ -26,7 +26,10 @@ Eski javoblar va topshiriqlar `arxiv/` papkasida turadi, ular endi kerak emas.
 | Har bir ish o'z sahnasida: aktyorlar, stoldagi hujjatlar, ekran | ✅ (10 tur uchun preset) |
 | Amaliyot yozuvi: transkript, talabaning o'z ovozi, butun majlis audiosi, PDF, Word, WAV | ✅ |
 | "Tirik" zal: turmagan talabaga hamma qaraydi, jimlikda sudya kutadi, kotib stolda ishlaydi | ✅ |
-| Serverless (Netlify): DXM, raislik majlisi va "Ish yo'li" holati backend omboriga yoziladi va qayta o'qiladi | ✅ frontend tayyor; kalit va B9 kerak |
+| Serverless (Netlify): DXM, raislik majlisi va "Ish yo'li" holati backend omboriga yoziladi va qayta o'qiladi | ✅ (kalit va B9 bilan) |
+| Kalit Netlify'da | ✅ |
+| Zaif qurilmalar: qurilma darajasi (low / medium / high), yengil modellar, 30 fps rejimi | ✅ |
+| Ovozli javob: so'zlar jonli ko'rinadi, server sekin bo'lsa kutilmaydi, tushunilmasa aktyor qayta so'raydi | ✅ |
 
 ---
 
@@ -36,14 +39,14 @@ Eski javoblar va topshiriqlar `arxiv/` papkasida turadi, ular endi kerak emas.
 
 | # | Ish | Nima ochiladi |
 |---|---|---|
-| E1 | **`LEXSIM_REMOTE_KEY`** ni backenddan shaxsan olib, Netlify'ga va `.env.local` ga qo'yish | "Ish yo'li" va DXM'da server ovozi, NLU, ishni saqlash, xAPI |
-| E2 | **GPU kompyuter doim yoniq bo'lishi** (uxlash rejimi o'chirilsin) | Klon ovozlar, tez STT. U o'chsa, hamma narsa sekin va boshqa ovozda ishlaydi |
+| E1 | ✅ Kalit Netlify'da. Qoldi: `lexsim-web/.env.local` ga ham qo'yish (mahalliy sinov uchun) | — |
+| E2 | **GPU kompyuter doim yoniq bo'lishi** (uxlash rejimi o'chirilsin). **21-noyabr sinovidagi "qotish" shundan edi:** STT CPU'da 15–40 s ishladi | Tez va aniq STT, klon ovozlar |
 | E3 | **Ovoz namunalari va rozilik:** 3 sudya, 2 kotib, 4 vakil, 3 taraf, 2 guvoh; ayol ovozlari muhim | Har bir ish o'zgacha eshitiladi, ayol aktyorlar ayol ovozida gapiradi |
 | E4 | **Mentor yoki huquqshunos** topib, 9 ta yangi ssenariyning huquqiy mazmunini yozdirish va imzolatish | 10 ta ish (format va tekshiruvchi tayyor) |
 | E5 | **Tez LLM API kaliti** (Gemini Flash yoki Groq) | `advanced` darajada erkin nutqqa 1–3 s javob (hozir 7–20 s) |
 | E6 | **Yozuvlarni saqlash siyosati:** muddat (taklif — 180 kun), shifrlash kaliti, o'chirish tartibi | O'qituvchi panelida talabalar yozuvi (`POST /records`) |
 
-### 🟠 Backend dasturchisi — batafsil: `LexSim_Backend_Vazifalar_v16.md`
+### 🟠 Backend dasturchisi — batafsil: `LexSim_Backend_Vazifalar.md`
 
 | # | Ish | Qayerda batafsil |
 |---|---|---|
@@ -122,7 +125,7 @@ node tools/qa/economic.mjs                                  # brauzerda to'liq o
 ```
 
 **Backendga beriladigan fayllar:**
-- `LexSim_Backend_Vazifalar_v16.md` (ochiq ishlar);
+- `LexSim_Backend_Vazifalar.md` (ochiq ishlar);
 - shu hujjat;
 - `LexSim_Backend_Vazifalar_v14.md`;
 - `LexSim_Backend_Vazifalar_v15.md`;

@@ -141,6 +141,23 @@ kbd {
   scrollbar-color: rgba(120, 120, 128, 0.4) transparent;
 }
 
+/*
+ * Light mode (weak device, lib/deviceTier): glass over a live 3D view is re-blurred on every frame,
+ * which a weak GPU cannot afford. Panels go solid — same colours, same legibility, no blur.
+ */
+:root[data-quality='low'] .glass {
+  background: rgba(16, 20, 28, 0.94);
+}
+:root[data-quality='low'] .glass-light {
+  background: rgba(250, 250, 252, 0.97);
+}
+:root[data-quality='low'] *,
+:root[data-quality='low'] *::before,
+:root[data-quality='low'] *::after {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
 @media (prefers-reduced-transparency: reduce) {
   .glass {
     background: #10141c;

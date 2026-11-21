@@ -26,7 +26,7 @@ import CourtRoom, { useMahogany } from '@/components/world/CourtRoom';
 import { Prop } from '@/components/world/Furniture';
 import { UI_FONT, canvasTexture, useMaterials, type Materials } from '@/components/world/materials';
 import { Flag, StateEmblem } from '@/components/world/SetDressing';
-import { Adaptive, againstWall, DevProbe, Bookcase, Box, Desk, FitFov, Folder, FrameForPanel, Monitor, Ornament, Papers, RoomFx, SeatCamera, Shell, TrayCeiling, WallSign, Window, type V3 } from './stagecraft';
+import { QualityGovernor, againstWall, DevProbe, Bookcase, Box, Desk, FitFov, Folder, FrameForPanel, Monitor, Ornament, Papers, RoomFx, SeatCamera, Shell, TrayCeiling, WallSign, Window, type V3 } from './stagecraft';
 
 export interface SceneProps {
   /** Papers on the desk you can pick up, move and take in your hands. */
@@ -420,7 +420,7 @@ export default function CaseScene(props: SceneProps) {
         <Desk3D {...props} />
         <FrameForPanel side={props.stage === 'draft' ? 'left' : 'right'} />
         <FitFov />
-        <Adaptive />
+        <QualityGovernor />
         <DevProbe />
         <RoomFx />
       </Suspense>

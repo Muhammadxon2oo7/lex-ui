@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const jiti = createJiti(import.meta.url, { alias: { '@': `${root}src` } });
 const { spokenText } = await jiti.import(`${root}src/lib/spoken.ts`);
+const { CLARIFY, FORMAL } = await jiti.import(`${root}src/server/case/engine.ts`);
 const books = [(await jiti.import(`${root}src/server/case/ishga-tiklash.ts`)).BOOK, (await jiti.import(`${root}src/server/case/ogirlik.ts`)).BOOK];
 const OUT = process.argv[2] ?? `${root}tools/voice/lines.json`;
 
@@ -29,6 +30,13 @@ for (const book of books) {
         const key = `${voice[speaker]}|${text}`;
         if (!seen.has(key)) seen.set(key, { voice: voice[speaker], text, speaker, case: book.kind, stage: stage.id });
       }
+  // asking again when an answer is not understood: every voiced party, in its own register
+  for (const [speaker, v] of Object.entries(voice)) {
+    for (const text of (FORMAL.has(speaker) ? CLARIFY.formal : CLARIFY.plain)) {
+      const key = `${v}|${text}`;
+      if (!seen.has(key)) seen.set(key, { voice: v, text, speaker, case: book.kind, stage: 'any' });
+    }
+  }
 }
 const lines = [...seen.values()];
 writeFileSync(OUT, JSON.stringify({ generated: new Date().toISOString(), count: lines.length, lines }, null, 2) + '\n');

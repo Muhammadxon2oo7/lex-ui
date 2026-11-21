@@ -17,6 +17,7 @@ import { Physics } from '@react-three/rapier';
 import { ToneMappingMode } from 'postprocessing';
 import { Suspense, useEffect } from 'react';
 import * as THREE from 'three';
+import { deviceTier, lower, markDocument } from '@/lib/deviceTier';
 import { NPC_SEAT, SPAWN } from '@/game/manifest';
 import { useGame, type Quality } from '@/game/store';
 import { Building } from './Building';
@@ -132,6 +133,14 @@ const RUSTAM_EXIT: [number, number][] = [
 
 export default function WorldCanvas({ onContextLost }: { onContextLost: () => void }) {
   const quality = useGame((s) => s.settings.quality);
+  // automatic quality starts where the device can carry it (never above the student's own choice)
+  useEffect(() => {
+    const { settings, setSettings } = useGame.getState();
+    const start = settings.autoQuality ? lower(settings.quality, deviceTier()) : settings.quality;
+    if (start !== settings.quality) setSettings({ quality: start });
+    markDocument(start);
+  }, []);
+  useEffect(() => markDocument(quality), [quality]);
   const fov = useGame((s) => s.settings.fov);
   const preset = PRESET[quality];
 

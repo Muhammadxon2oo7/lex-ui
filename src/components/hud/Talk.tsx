@@ -33,6 +33,17 @@ export function Talk({ enabled, onHeard, onError, compact = false }: { enabled: 
   const support = useSupport();
   const [phase, setPhase] = useState<Phase>('idle');
   const [partial, setPartial] = useState('');
+  // how long the words have been on their way to meaning (shown when it is more than a moment)
+  const [waited, setWaited] = useState(0);
+  useEffect(() => {
+    if (phase !== 'thinking') return;
+    const start = Date.now();
+    const t = setInterval(() => setWaited(Math.floor((Date.now() - start) / 1000)), 1000);
+    return () => {
+      clearInterval(t);
+      setWaited(0);
+    };
+  }, [phase]);
   const session = useRef<Listening | null>(null);
   const holding = useRef(false);
   const bars = useRef<HTMLDivElement>(null);
@@ -151,15 +162,31 @@ export function Talk({ enabled, onHeard, onError, compact = false }: { enabled: 
             transition={{ type: 'spring', bounce: 0, duration: 0.3 }}
             role="status"
             aria-live="polite"
-            className="glass pointer-events-none fixed inset-x-0 bottom-[42%] z-40 mx-auto flex w-fit max-w-[min(40rem,calc(100vw-2rem))] items-center gap-4 rounded-[24px] px-5 py-3.5"
+            // in the middle of the view, above the conversation panel — never over the replies
+            className="glass pointer-events-none fixed inset-x-0 top-[26%] z-40 mx-auto flex w-fit max-w-[min(42rem,calc(100vw-2rem))] items-center gap-4 rounded-[24px] px-5 py-3.5"
           >
-            <span className="flex h-8 items-end gap-[3px]" ref={bars} aria-hidden>
-              {Array.from({ length: 7 }, (_, i) => (
-                <span key={i} className="block h-8 w-[4px] origin-bottom rounded-full bg-red-400 transition-transform duration-75" style={{ transform: 'scaleY(0.15)' }} />
-              ))}
-            </span>
-            <span className="text-[1rem] leading-snug">
-              {phase === 'thinking' ? 'Tushunilmoqda…' : phase === 'starting' ? 'Mikrofon yoqilmoqda…' : partial || 'Eshitilmoqda…'}
+            {phase === 'thinking' ? (
+              <span className="grid size-8 shrink-0 place-items-center" aria-hidden>
+                <span className="size-5 rounded-full border-2 border-white/25 border-t-white motion-safe:animate-spin" />
+              </span>
+            ) : (
+              <span className="flex h-8 shrink-0 items-end gap-[3px]" ref={bars} aria-hidden>
+                {Array.from({ length: 7 }, (_, i) => (
+                  <span key={i} className="block h-8 w-[4px] origin-bottom rounded-full bg-red-400 transition-transform duration-75" style={{ transform: 'scaleY(0.15)' }} />
+                ))}
+              </span>
+            )}
+            <span className="min-w-0">
+              {/* what you are saying, as you say it — and it stays there while it is being understood */}
+              <span className={`block text-[1.05rem] leading-snug ${partial ? 'text-white' : 'text-white/70'}`}>
+                {partial ? `«${partial}»` : phase === 'starting' ? 'Mikrofon yoqilmoqda…' : phase === 'thinking' ? 'Ovozingiz tanilmoqda…' : 'Gapiring, eshityapman…'}
+              </span>
+              {phase === 'thinking' && (
+                <span className="mt-0.5 block text-[0.76rem] text-white/50 tabular-nums">
+                  {waited < 3 ? 'Tushunilmoqda…' : `Tushunilmoqda… ${waited} s${waited >= 8 ? ' · server sekin ishlayapti' : ''}`}
+                </span>
+              )}
+              {phase === 'listening' && <span className="mt-0.5 block text-[0.76rem] text-white/45">Qoʻyib yuborsangiz — yuboriladi</span>}
             </span>
           </motion.div>
         )}
